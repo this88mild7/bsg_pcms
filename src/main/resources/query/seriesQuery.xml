@@ -5,7 +5,7 @@
 <mapper namespace="seriesQuery">
 
     <!-- INSERT -->
-    <insert id="createSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO" useGeneratedKeys="true" keyProperty="series_mgmtno">
+    <insert id="createSeries" parameterType="com.bsg.pcms.dto.SeriesDTO" useGeneratedKeys="true" keyProperty="series_mgmtno">
         INSERT INTO SERIES (
             series_name,
             cate_id,
@@ -20,7 +20,7 @@
     </insert>
 
     <!-- SELECT -->
-    <select id="getSeriesList" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+    <select id="getSeriesList" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
         SELECT
             *
         FROM SERIES
@@ -49,7 +49,7 @@
         </where>
     </select>
     
-    <select id="getSeriesListByCpMgmtno" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <select id="getSeriesListByCpMgmtno" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.CompanyDTO">
         SELECT
             SERIES.*,
             COUNT(SERIES.series_name) as totCnt
@@ -60,7 +60,7 @@
         GROUP BY SERIES.series_name
     </select>
 
-    <select id="getSeriesCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+    <select id="getSeriesCount" resultType="int" parameterType="com.bsg.pcms.dto.SeriesDTO">
         SELECT
             count(*)
         FROM
@@ -89,7 +89,7 @@
             ) tmp
     </select>
 
-    <select id="getSeries" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+    <select id="getSeries" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
         SELECT
             *
         FROM SERIES
@@ -97,7 +97,7 @@
     </select>
 
     <!-- UPDATE -->
-    <update id="updateSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+    <update id="updateSeries" parameterType="com.bsg.pcms.dto.SeriesDTO">
         UPDATE SERIES
         <set>
             <if test="series_name != null">series_name = #{ series_name },</if>
@@ -108,7 +108,7 @@
     </update>
 
     <!-- DELETE -->
-    <delete id="deleteSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+    <delete id="deleteSeries" parameterType="com.bsg.pcms.dto.SeriesDTO">
         DELETE FROM SERIES
         WHERE series_mgmtno = #{ series_mgmtno }
         LIMIT 1

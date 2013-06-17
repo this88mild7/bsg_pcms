@@ -5,7 +5,7 @@
 <mapper namespace="contentQuery">
 
     <!-- INSERT -->
-    <insert id="createContent" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <insert id="createContent" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         INSERT INTO CONTENTS( 
             contents_cd,
             <if test="company_mgmtno > 0">company_mgmtno,</if> 
@@ -29,7 +29,7 @@
     </insert>
 
     <!-- SELECT -->
-    <select id="getContent" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <select id="getContent" resultType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery.getContent 2013.06.04 정대원 */
             *
         FROM CONTENTS
@@ -43,7 +43,7 @@
         WHERE series_mgmtno = #{ series_mgmtno }
     </select>
 
-    <select id="getContentCount" resultType="int" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <select id="getContentCount" resultType="int" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
     SELECT /* contentQuery.getContentCount 2013.06.04 정대원 */
         count(*)
     FROM
@@ -94,7 +94,7 @@
         ) tmp
     </select>
 
-    <select id="getContentCodeBy" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <select id="getContentCodeBy" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery.getContentCodeBy 2013.06.04 정대원 */
             MAX(contents_cd) as contents_cd
         FROM CONTENTS
@@ -102,7 +102,7 @@
         AND series_mgmtno = #{ series_mgmtno }
     </select>
 
-   <select id="getContentCodeListBySeriesMgmtno" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+   <select id="getContentCodeListBySeriesMgmtno" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery."getContentCodeListBySeriesMgmtno" 2013.06.04 정대원 */
             *
         FROM CONTENTS
@@ -111,7 +111,7 @@
         ORDER BY reg_dt DESC
     </select>
 
-   <select id="getContentCodeListByCateId" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+   <select id="getContentCodeListByCateId" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery."getContentCodeListByCateId" 2013.06.04 정대원 */
             *
         FROM CONTENTS
@@ -120,7 +120,7 @@
         ORDER BY reg_dt DESC
     </select>
 
-   <select id="getContentListByCpId" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+   <select id="getContentListByCpId" resultType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery.getContentListByCpId 2013.06.04 정대원 */
 	       *
         FROM CONTENTS
@@ -128,7 +128,7 @@
         ORDER BY reg_dt DESC
     </select>
 
-    <select id="getContentList" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx" resultType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <select id="getContentList" parameterType="com.bsg.pcms.provision.content.ContentDTOEx" resultType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery.getContentList 2013.06.04 정대원 */
             CONTENTS.*,
             CATE.cate_name,
@@ -180,7 +180,7 @@
     </select>
     
     <!-- UPDATE -->
-    <update id="updateContent" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <update id="updateContent" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         UPDATE CONTENTS
         <set>
             <if test="name != null">name = #{ name },</if>
@@ -195,7 +195,7 @@
     </update>
 
     <!-- DELETE -->
-    <delete id="deleteContent" parameterType="com.bigstarglobal.cms.provision.content.ContentDTOEx">
+    <delete id="deleteContent" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         DELETE FROM CONTENTS
         WHERE contents_cd = #{ contents_cd }
     </delete>

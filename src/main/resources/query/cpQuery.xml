@@ -5,7 +5,7 @@
 <mapper namespace="cpQuery">
 
     <!-- INSERT -->
-    <insert id="createCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO" useGeneratedKeys="true" keyProperty="company_mgmtno">
+    <insert id="createCp" parameterType="com.bsg.pcms.dto.CompanyDTO" useGeneratedKeys="true" keyProperty="company_mgmtno">
         INSERT INTO COMPANY (
             company_name,
             company_no,
@@ -35,7 +35,7 @@
     </insert>
 
     <!-- SELECT -->
-    <select id="getCpList" resultType="com.bigstarglobal.cms.dto.CompanyDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <select id="getCpList" resultType="com.bsg.pcms.dto.CompanyDTO" parameterType="com.bsg.pcms.dto.CompanyDTO">
         SELECT /* cpQuery.getCpList 2013.06.04 정대원 */
         *
         FROM COMPANY
@@ -67,7 +67,7 @@
         </if>
     </select>
 
-    <select id="getCpCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <select id="getCpCount" resultType="int" parameterType="com.bsg.pcms.dto.CompanyDTO">
         SELECT /* cpQuery.getCpCount 2013.06.04 정대원 */
         count(*)
         FROM
@@ -100,7 +100,7 @@
         ) tmp
     </select>
 
-    <select id="getCp" resultType="com.bigstarglobal.cms.dto.CompanyDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <select id="getCp" resultType="com.bsg.pcms.dto.CompanyDTO" parameterType="com.bsg.pcms.dto.CompanyDTO">
         SELECT /* cpQuery.getCp 2013.06.04 정대원 */
         *
         FROM COMPANY
@@ -110,7 +110,7 @@
     </select>
 
     <!-- UPDATE -->
-    <update id="updateCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <update id="updateCp" parameterType="com.bsg.pcms.dto.CompanyDTO">
         UPDATE COMPANY SET
         company_name = #{company_name},
         company_no = #{company_no},
@@ -123,7 +123,7 @@
         WHERE company_mgmtno = #{ company_mgmtno }
     </update>
     
-    <update id="updateBank" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <update id="updateBank" parameterType="com.bsg.pcms.dto.CompanyDTO">
         UPDATE COMPANY SET
             deposit_bank = #{ deposit_bank },
             account_no = #{ account_no },
@@ -132,7 +132,7 @@
         WHERE company_mgmtno = #{ company_mgmtno }
     </update>
     
-    <update id="deleteCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+    <update id="deleteCp" parameterType="com.bsg.pcms.dto.CompanyDTO">
         UPDATE COMPANY /* cpQuery.deleteCp "del_yn 컬럼을 'Y'로 변경한다." 2013.06.04 정대원 */
             <set>
             del_yn = 'Y',

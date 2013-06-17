@@ -5,7 +5,7 @@
 <mapper namespace="saleCompanyQuery">
 
    <insert id="createContract" 
-   		parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" 
+   		parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" 
    		useGeneratedKeys="true" 
    		keyProperty="contract_mgmtno">
        INSERT /* saleCompanyQuery.createContract 2013.06.03 최지순 */ 
@@ -53,7 +53,7 @@
    
    
    <insert id="createCompany" 
-   	parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+   	parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
        INSERT /* saleCompanyQuery.createCompany 2013.06.03 최지순 */   
        INTO COMPANY ( 
             COMPANY_NAME,
@@ -90,7 +90,7 @@
    </insert>
    
    <insert id="createContentsGroup" 
-   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+   parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
        INSERT /* saleCompanyQuery.createContentsGroup 2013.06.03 최지순 */   
        INTO CONTRACT_CONTENTS_GROUP ( 
             CONTRACT_MGMTNO,
@@ -111,7 +111,7 @@
    </insert>
    
    <insert id="createContractDetail" 
-   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+   parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
        INSERT /* saleCompanyQuery.createContentsDetail 2013.06.03 최지순 */   
        INTO CONTRACT_DETAIL ( 
             CONTRACT_MGMTNO,
@@ -129,8 +129,8 @@
 
 
    <select id="contractList" 
-   			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx"
-   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx"
+   			parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx"
+   			resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx"
    			>
 		SELECT /* saleCompanyQuery.contractList 2013.06.03 최지순 */ 
 			CT.CONTRACT_MGMTNO, 
@@ -172,7 +172,7 @@
    </select>
    
    <select id="contractContensList" 
-   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContentsDTOEx">
+   			resultType="com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx">
 		SELECT /* SaleCompany.getContractContentsList 2013.06.03 최지순 */
 			CCG.CONTENTS_CD, 
 			CON.NAME,
@@ -188,7 +188,7 @@
    </select>
    
    <select id="contractDetail" 
-   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+   			resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
       SELECT /* SaleCompany.getContractDetail 2013.06.03 최지순 */
       		CT.CONTRACT_MGMTNO, 
 			COM.COMPANY_NAME,
@@ -233,8 +233,8 @@
    </select>
    
    <select id="companyList" 
-		   resultType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx" 
-		   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+		   resultType="com.bsg.pcms.sale.company.dto.CompanyDTOEx" 
+		   parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
        SELECT /* SaleCompany.companyList 2013.06.03 최지순 */
           COMPANY_MGMTNO,
           COMPANY_NAME,
@@ -288,7 +288,7 @@
   
    
    <select id="saleTypeList" 
-		   resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" 
+		   resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" 
 		   >
        SELECT /* SaleCompany.deviceList 2013.06.03 최지순 */
           CD AS contract_type,
@@ -301,7 +301,7 @@
    </select>
    
 	<update id="modifyCompany" 
-			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+			parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
 		UPDATE /* SaleCompany.modify 2013.06.03 최지순 */ 
 			COMPANY 
 		SET 
@@ -320,7 +320,7 @@
 	</update>
 	
 	<update id="deleteCompany"
-			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+			parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
 		UPDATE /* SaleCompany.delete 2013.06.03 최지순 */  COMPANY 
 		SET 
 			DEL_YN = 'Y',
@@ -339,7 +339,7 @@
 	</update>
 	
 	<update id="modifyContract" 
-   		parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" >
+   		parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" >
        UPDATE /* saleCompanyQuery.modifyContract 2013.06.03 최지순 */ 
 		CONTRACT
        SET 
@@ -372,35 +372,5 @@
 		FROM CONTRACT_CONTENTS_GROUP
 		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
 	</delete>
-   
-   <!-- 기존
-   
-   <select id="getCustomer" resultType="com.bigstarglobal.cms.dto.CustomerDTO" parameterType="com.bigstarglobal.cms.dto.CustomerDTO">
-       SELECT 
-          *
-       FROM  bg_customer
-       <where>
-         <if test="customer_id > 0">
-         customer_id = #{ customer_id }
-         </if>
-         <if test="type != null">
-         	<choose>
-            <when test="type eq '판매처명'">
-            customer_name like '%${query}%'
-            </when>
-         </choose>
-         </if>
-      </where>
-   </select>
-   
-   <select id="getSaleCompantDeviceList" resultType="com.bigstarglobal.cms.dto.CustomerDTO">
-       SELECT /* getSaleCompantDeviceList 2013.06.03 최지순*/
-          DEV_NAME,
-          DEV_TYPE
-       FROM  SALE_COMPANY_SUPPLEMENT_DEV
-       WHERE SALE_COMPANY_MGMTNO = #{sale_company_mgmtno}       
-   </select>
-    -->
-
    
 </mapper>

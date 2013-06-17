@@ -15,10 +15,10 @@
       </environment>
    </environments>
    <mappers>
-      <mapper resource="com/bigstarglobal/pms/dao/mybatis/cp.xml" />
-      <mapper resource="com/bigstarglobal/pms/dao/mybatis/member.xml" />
-      <mapper resource="com/bigstarglobal/pms/dao/mybatis/content.xml" />
-      <mapper resource="com/bigstarglobal/pms/dao/mybatis/category.xml" />
-      <mapper resource="com/bigstarglobal/pms/dao/mybatis/contract.xml" />
+      <mapper resource="com/bsg/pcms/dao/mybatis/cp.xml" />
+      <mapper resource="com/bsg/pcms/dao/mybatis/member.xml" />
+      <mapper resource="com/bsg/pcms/dao/mybatis/content.xml" />
+      <mapper resource="com/bsg/pcms/dao/mybatis/category.xml" />
+      <mapper resource="com/bsg/pcms/dao/mybatis/contract.xml" />
    </mappers>
 </configuration>

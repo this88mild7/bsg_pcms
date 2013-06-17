@@ -5,7 +5,7 @@
 <mapper namespace="fileQuery">
    
    <!-- INSERT -->
-   <insert id="createFile" parameterType="com.bigstarglobal.cms.dto.MultiFileDTO" useGeneratedKeys="true" keyProperty="file_id">
+   <insert id="createFile" parameterType="com.bsg.pcms.dto.MultiFileDTO" useGeneratedKeys="true" keyProperty="file_id">
        INSERT INTO bg_file( file, file_name, file_size, file_cdate )
 	   VALUES( #{file}, #{file_name}, #{file_size}, NOW() )
    </insert>

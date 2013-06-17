@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bigstar</groupId>
 	<artifactId>pcms</artifactId>
-	<name>bg_cms</name>
+	<name>bsg_pcms</name>
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<properties>

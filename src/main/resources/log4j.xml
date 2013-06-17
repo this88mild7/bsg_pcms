@@ -15,7 +15,7 @@
         <level value="ERROR" />
     </logger>
     
-    <logger name="com.bigstarglobal.cms">
+    <logger name="com.bsg.pcms">
       <level value="INFO" />
     </logger>
     

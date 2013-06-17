@@ -5,7 +5,7 @@
 <mapper namespace="productQuery">
    
    <!-- INSERT -->
-   <insert id="createProduct" parameterType="com.bigstarglobal.cms.dto.ProductDTO" useGeneratedKeys="true" keyProperty="product_id">
+   <insert id="createProduct" parameterType="com.bsg.pcms.dto.ProductDTO" useGeneratedKeys="true" keyProperty="product_id">
        INSERT INTO bg_products ( 
             group_id,
             customer_id,
@@ -32,7 +32,7 @@
 
    <!-- SELECT -->
    <!-- 판매 상품 리스트 -->
-   <select id="getSaleProductList" resultType="com.bigstarglobal.cms.dto.ProductDTO" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+   <select id="getSaleProductList" resultType="com.bsg.pcms.dto.ProductDTO" parameterType="com.bsg.pcms.dto.ProductDTO">
       SELECT 
          bg_products.*, 
          bg_customer.customer_name
@@ -51,7 +51,7 @@
    </select>
    
    <!-- 판매 상품 상세 -->
-   <select id="getProductDetail" resultType="com.bigstarglobal.cms.dto.ProductDTO" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+   <select id="getProductDetail" resultType="com.bsg.pcms.dto.ProductDTO" parameterType="com.bsg.pcms.dto.ProductDTO">
       SELECT 
          bg_products.*, 
          bg_customer.customer_name
@@ -61,7 +61,7 @@
       WHERE product_id = #{ product_id }
    </select>
    
-   <select id="selectSeries" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+   <select id="selectSeries" resultType="com.bsg.pcms.dto.CateDTO" parameterType="com.bsg.pcms.dto.CateDTO">
       select
       	bg_contract.category_id, 
       	bg_category.category_name,
@@ -81,7 +81,7 @@
    </select>
 
    <!-- UPDATE -->
-   <update id="updateProduct" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+   <update id="updateProduct" parameterType="com.bsg.pcms.dto.ProductDTO">
       UPDATE bg_products SET 
          group_id = #{ group_id },
          customer_type = #{ contract_type }, 

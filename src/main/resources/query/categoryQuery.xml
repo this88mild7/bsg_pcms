@@ -5,7 +5,7 @@
 <mapper namespace="categoryQuery">
 
    <!-- INSERT -->
-    <insert id="createCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO" useGeneratedKeys="true" keyProperty="cate_id">
+    <insert id="createCategory" parameterType="com.bsg.pcms.dto.CateDTO" useGeneratedKeys="true" keyProperty="cate_id">
         INSERT INTO CATE ( /* 상위 카테고리 존재시 parent_id가 필요함 */
             <if test="parent_id > 0">parent_id,</if>
             cate_name,
@@ -20,7 +20,7 @@
     </insert>
 
     <!-- SELECT -->
-    <select id="getCategoryList" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+    <select id="getCategoryList" resultType="com.bsg.pcms.dto.CateDTO" parameterType="com.bsg.pcms.dto.CateDTO">
         SELECT /* categoryQuery.getCategoryList 2013.06.04 정대원 */  
             *
         FROM CATE
@@ -42,7 +42,7 @@
         </where>
     </select>
 
-    <select id="getCategoryCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+    <select id="getCategoryCount" resultType="int" parameterType="com.bsg.pcms.dto.CateDTO">
         SELECT /* categoryQuery.getCategoryCount 2013.06.04 정대원 */ 
             count(*)
         FROM
@@ -69,7 +69,7 @@
             ) tmp
     </select>
 
-    <select id="getCategory" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+    <select id="getCategory" resultType="com.bsg.pcms.dto.CateDTO" parameterType="com.bsg.pcms.dto.CateDTO">
         SELECT /* categoryQuery.getCategory 2013.06.04 정대원 */
             *
         FROM CATE
@@ -77,7 +77,7 @@
     </select>
 
     <!-- UPDATE -->
-    <update id="updateCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+    <update id="updateCategory" parameterType="com.bsg.pcms.dto.CateDTO">
         UPDATE CATE
         <set>
             <if test="cate_name != null">cate_name = #{ cate_name },</if>
@@ -88,7 +88,7 @@
     </update>
 
     <!-- DELETE -->
-    <delete id="deleteCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+    <delete id="deleteCategory" parameterType="com.bsg.pcms.dto.CateDTO">
         DELETE FROM CATE
         WHERE cate_id = #{ cate_id }
         LIMIT 1

@@ -5,7 +5,7 @@
 <mapper namespace="contractQuery">
 
     <!-- INSERT -->
-    <insert id="createContract" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" useGeneratedKeys="true" keyProperty="contract_mgmtno">
+    <insert id="createContract" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx" useGeneratedKeys="true" keyProperty="contract_mgmtno">
         INSERT INTO CONTRACT (
             company_mgmtno,
             user_mgmtseq,
@@ -89,7 +89,7 @@
     </insert>
 
     <!-- SELECT -->
-    <select id="getContract" resultType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+    <select id="getContract" resultType="com.bsg.pcms.provision.contract.ContractDTOEx" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
             CONTRACT.*,
             COMPANY.deposit_bank,
@@ -102,14 +102,14 @@
         AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno
     </select>
 
-    <select id="getContractDetailList" resultType="com.bigstarglobal.cms.dto.ContractDetailDTO" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+    <select id="getContractDetailList" resultType="com.bsg.pcms.dto.ContractDetailDTO" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
             *
         FROM CONTRACT_DETAIL
         WHERE contract_mgmtno = #{ contract_mgmtno }
     </select>
 
-    <select id="getContractContentsGroupList" resultType="com.bigstarglobal.cms.dto.ContractContentsGroupDTO" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+    <select id="getContractContentsGroupList" resultType="com.bsg.pcms.dto.ContractContentsGroupDTO" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
             *
         FROM CONTRACT_CONTENTS_GROUP
@@ -117,7 +117,7 @@
         ORDER BY reg_dt DESC
     </select>
 
-    <select id="getContractList" resultType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+    <select id="getContractList" resultType="com.bsg.pcms.provision.contract.ContractDTOEx" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
             COMPANY.company_name,
             SERIES.series_name,
@@ -155,7 +155,7 @@
         </if>
     </select>
 
-    <select id="getContractListCount" resultType="int" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+    <select id="getContractListCount" resultType="int" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
         	count(*)
         FROM
@@ -196,7 +196,7 @@
     </select>
 
     <!-- UPDATE -->
-    <update id="updateContract" parameterType="com.bigstarglobal.cms.dto.ContractDTO">
+    <update id="updateContract" parameterType="com.bsg.pcms.dto.ContractDTO">
         UPDATE CONTRACT SET
             company_mgmtno = #{ company_mgmtno },
             user_mgmtseq = #{ user_mgmtseq },
@@ -219,7 +219,7 @@
         WHERE contract_mgmtno = #{ contract_mgmtno }
     </update>
     
-    <update id="deleteContract" parameterType="com.bigstarglobal.cms.dto.ContractDTO">
+    <update id="deleteContract" parameterType="com.bsg.pcms.dto.ContractDTO">
         UPDATE CONTRACT SET
             del_yn = 'Y',
             mod_dt = NOW()

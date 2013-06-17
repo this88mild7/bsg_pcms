@@ -7,7 +7,7 @@
    <!-- INSERT -->
    
    <!-- SELECT -->
-   <select id="getLoginResult" parameterType="com.bigstarglobal.cms.dto.UserDTO"  resultType="Integer">
+   <select id="getLoginResult" parameterType="com.bsg.pcms.dto.UserDTO"  resultType="Integer">
        SELECT /* userQuery.getLoginResult  정대원 */
           COUNT(id) 
        FROM    USER
@@ -15,14 +15,14 @@
        AND     PWD = #{ pwd }
    </select>
    
-   <select id="getUser" parameterType="com.bigstarglobal.cms.dto.UserDTO"  resultType="com.bigstarglobal.cms.dto.UserDTO">
+   <select id="getUser" parameterType="com.bsg.pcms.dto.UserDTO"  resultType="com.bsg.pcms.dto.UserDTO">
        SELECT /* userQuery.getUser  정대원 */
           id
        FROM    USER
        WHERE   id = #{ id }
    </select>
    
-   <select id="getUserList" resultType="com.bigstarglobal.cms.dto.UserDTO">
+   <select id="getUserList" resultType="com.bsg.pcms.dto.UserDTO">
        SELECT /* userQuery.getUserList  정대원 */
           *
        FROM USER
