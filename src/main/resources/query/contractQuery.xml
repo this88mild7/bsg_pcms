@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="contractQuery">
+
+    <!-- INSERT -->
+    <insert id="createContract" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" useGeneratedKeys="true" keyProperty="contract_mgmtno">
+        INSERT INTO CONTRACT (
+            company_mgmtno,
+            user_mgmtseq,
+            license_cd,
+            license_cd_detail,
+            license_country,
+            license_country_detail,
+            reg_dt,
+            mod_dt,
+            str_date,
+            end_date,
+            expi_yn,
+            sale_price,
+            sale_profit_rate,
+            sale_profit_type,
+            etc,
+            contract_type,
+            contract_type_detail,
+            balance_type,
+            balance_detail
+        )
+        VALUES (
+            #{ company_mgmtno },
+            #{ user_mgmtseq },
+            #{ license_cd },
+            #{ license_cd_detail },
+            #{ license_country },
+            #{ license_country_detail },
+            NOW(),
+            NOW(),
+            #{ str_date },
+            #{ end_date },
+            'N',
+            #{ sale_price },
+            #{ sale_profit_rate },
+            #{ sale_profit_type },
+            #{ etc },
+            #{ contract_type },
+            #{ contract_type_detail },
+            #{ balance_type },
+            #{ balance_type_detail }
+        )
+    </insert>
+
+    <insert id="createContractContentsGroup" parameterType="list">
+        INSERT INTO CONTRACT_CONTENTS_GROUP (
+            contract_mgmtno,
+            contents_cd,
+            cate_id,
+            series_mgmtno,
+            reg_dt,
+            mod_dt
+        )
+        VALUES (
+            <foreach collection="list" item="ccg" open="" close="" separator="),(">
+            #{ ccg.contract_mgmtno },
+            #{ ccg.contents_cd },
+            #{ ccg.cate_id },
+            #{ ccg.series_mgmtno },
+            NOW(),
+            NOW()
+            </foreach>
+        )
+    </insert>
+
+    <insert id="createContractDetail" parameterType="list">
+        INSERT INTO CONTRACT_DETAIL (
+            contract_mgmtno,
+            sale_type,
+            reg_dt,
+            mod_dt
+        )
+        VALUES (
+            <foreach collection="list" item="cd" open="" close="" separator="),(">
+            #{ cd.contract_mgmtno },
+            #{ cd.sale_type },
+            NOW(),
+            NOW()
+            </foreach>
+        )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getContract" resultType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+        SELECT
+            CONTRACT.*,
+            COMPANY.deposit_bank,
+            COMPANY.account_no,
+            COMPANY.account_holder
+        FROM CONTRACT, COMPANY
+        WHERE CONTRACT.contract_mgmtno = #{ contract_mgmtno }
+        AND COMPANY.del_yn = 'N'
+        AND CONTRACT.del_yn = 'N'
+        AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno
+    </select>
+
+    <select id="getContractDetailList" resultType="com.bigstarglobal.cms.dto.ContractDetailDTO" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+        SELECT
+            *
+        FROM CONTRACT_DETAIL
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </select>
+
+    <select id="getContractContentsGroupList" resultType="com.bigstarglobal.cms.dto.ContractContentsGroupDTO" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+        SELECT
+            *
+        FROM CONTRACT_CONTENTS_GROUP
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+        ORDER BY reg_dt DESC
+    </select>
+
+    <select id="getContractList" resultType="com.bigstarglobal.cms.provision.contract.ContractDTOEx" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+        SELECT
+            COMPANY.company_name,
+            SERIES.series_name,
+            CONTRACT.*
+        FROM CONTRACT, CONTRACT_CONTENTS_GROUP, COMPANY, SERIES
+        <where>
+            <if test="type != null">
+                /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq 'CP업체'">
+                        COMPANY.company_name like '%${query}%'
+                    </when>
+                    <when test="type eq '시리즈'">
+                        SERIES.series_name like '%${query}%'
+                    </when>
+                    <otherwise>
+                        (
+                        COMPANY.company_name like '%${query}%'
+                        OR
+                        SERIES.series_name like '%${query}%'
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            AND CONTRACT.del_yn = 'N'
+            AND COMPANY.company_type = 'CP'
+            AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno
+            AND CONTRACT.contract_mgmtno = CONTRACT_CONTENTS_GROUP.contract_mgmtno
+            AND CONTRACT_CONTENTS_GROUP.series_mgmtno = SERIES.series_mgmtno
+        </where>
+        GROUP BY CONTRACT.contract_mgmtno
+        ORDER BY reg_dt DESC
+        <if test="pageNum gt 0">
+            LIMIT #{ startRownum }, #{ perPage }
+        </if>
+    </select>
+
+    <select id="getContractListCount" resultType="int" parameterType="com.bigstarglobal.cms.provision.contract.ContractDTOEx">
+        SELECT
+        	count(*)
+        FROM
+        (
+        SELECT
+            COMPANY.company_name,
+            SERIES.series_name,
+            CONTRACT.*
+        FROM CONTRACT, CONTRACT_CONTENTS_GROUP, COMPANY, SERIES
+        <where>
+            <if test="type != null">
+                /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq 'CP업체'">
+                        COMPANY.company_name like '%${query}%'
+                    </when>
+                    <when test="type eq '시리즈'">
+                        SERIES.series_name like '%${query}%'
+                    </when>
+                    <otherwise>
+                        (
+                        COMPANY.company_name like '%${query}%'
+                        OR
+                        SERIES.series_name like '%${query}%'
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            AND CONTRACT.del_yn = 'N'
+            AND COMPANY.company_type = 'CP'
+            AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno
+            AND CONTRACT.contract_mgmtno = CONTRACT_CONTENTS_GROUP.contract_mgmtno
+            AND CONTRACT_CONTENTS_GROUP.series_mgmtno = SERIES.series_mgmtno
+        </where>
+        GROUP BY CONTRACT.contract_mgmtno
+        ORDER BY reg_dt DESC
+        ) tmp
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateContract" parameterType="com.bigstarglobal.cms.dto.ContractDTO">
+        UPDATE CONTRACT SET
+            company_mgmtno = #{ company_mgmtno },
+            user_mgmtseq = #{ user_mgmtseq },
+            license_cd = #{ license_cd },
+            license_cd_detail = #{ license_cd_detail },
+            license_country = #{ license_country },
+            license_country_detail = #{ license_country_detail },
+            str_date = #{ str_date },
+            end_date = #{ end_date },
+            expi_yn = 'N',
+            sale_price = #{ sale_price },
+            sale_profit_rate = #{ sale_profit_rate },
+            sale_profit_type = #{ sale_profit_type },
+            etc = #{ etc },
+            contract_type = #{ contract_type },
+            contract_type_detail = #{ contract_type_detail },
+            balance_type = #{ balance_type },
+            balance_detail = #{ balance_type_detail },
+            mod_dt = NOW()
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </update>
+    
+    <update id="deleteContract" parameterType="com.bigstarglobal.cms.dto.ContractDTO">
+        UPDATE CONTRACT SET
+            del_yn = 'Y',
+            mod_dt = NOW()
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deleteContractDetail" parameterType="int">
+        DELETE FROM CONTRACT_DETAIL
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </delete>
+
+    <delete id="deleteContractContentsGroup" parameterType="int">
+        DELETE FROM CONTRACT_CONTENTS_GROUP
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </delete>
+
+
+</mapper>

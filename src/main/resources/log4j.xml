@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    
+    <!-- 콘솔 로그 -->
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    	<!-- 패턴 레이아웃 설정.. -->
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p %c{1} %L] - %m%n"/>
+        </layout>
+    </appender>
+   
+    <logger name="org.springframework">
+        <level value="ERROR" />
+    </logger>
+    
+    <logger name="com.bigstarglobal.cms">
+      <level value="INFO" />
+    </logger>
+    
+    <logger name="java.sql">
+    	<level value="DEBUG" />
+    </logger>
+    
+    <!-- 
+    <logger name="org.apache.tiles">
+      <level value="INFO" />
+    </logger>
+    <logger name="org.springframework.security">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.springframework.jdbc.core.JdbcTemplate">
+        <level value="DEBUG" />
+        <appender-ref ref="slf4j" />
+    </logger>
+     -->
+    
+    <root>
+        <priority value="INFO" />
+        <appender-ref ref="stdout" />
+    </root>	
+
+</log4j:configuration>

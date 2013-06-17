@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cpQuery">
+
+    <!-- INSERT -->
+    <insert id="createCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO" useGeneratedKeys="true" keyProperty="company_mgmtno">
+        INSERT INTO COMPANY (
+            company_name,
+            company_no,
+            addr,
+            phoneno,
+            master,
+            master_email,
+            master_phoneno,
+            reg_dt,
+            mod_dt,
+            del_yn,
+            company_type
+        )
+        VALUES(
+            #{company_name},
+            #{company_no},
+            #{addr},
+            #{phoneno},
+            #{ master },
+            #{ master_email },
+            #{ master_phoneno },
+            NOW(),
+            NOW(),
+            'N',
+            'CP'
+        )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getCpList" resultType="com.bigstarglobal.cms.dto.CompanyDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        SELECT /* cpQuery.getCpList 2013.06.04 정대원 */
+        *
+        FROM COMPANY
+        <where>
+            <if test="type != null">
+                /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq '회사명'">
+                        company_name like '%${query}%'
+                    </when>
+                    <when test="type eq 'COMPANY코드'">
+                        company_mgmtno = #{query}
+                    </when>
+                    <otherwise>
+                        (
+                        company_name like '%${query}%'
+                        OR
+                        company_mgmtno = #{query}
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            AND del_yn = 'N'
+            AND company_type = 'CP'
+        </where>
+        ORDER BY reg_dt DESC
+        <if test="pageNum gt 0">
+            LIMIT #{ startRownum }, #{ perPage }
+        </if>
+    </select>
+
+    <select id="getCpCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        SELECT /* cpQuery.getCpCount 2013.06.04 정대원 */
+        count(*)
+        FROM
+        (
+        SELECT
+        *
+        FROM COMPANY
+        <where>
+            <if test="type != null">
+            /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq '회사명'">
+                        company_name like '%${query}%'
+                    </when>
+                    <when test="type eq 'COMPANY코드'">
+                        company_mgmtno = #{query}
+                    </when>
+                    <otherwise>
+                        (
+                        company_name like '%${query}%'
+                        OR
+                        company_mgmtno = #{query}
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            AND del_yn = 'N'
+            AND company_type = 'CP'
+        </where>
+        ) tmp
+    </select>
+
+    <select id="getCp" resultType="com.bigstarglobal.cms.dto.CompanyDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        SELECT /* cpQuery.getCp 2013.06.04 정대원 */
+        *
+        FROM COMPANY
+        WHERE company_mgmtno = #{ company_mgmtno }
+        AND del_yn = 'N'
+        AND company_type = 'CP'
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        UPDATE COMPANY SET
+        company_name = #{company_name},
+        company_no = #{company_no},
+        addr = #{addr},
+        phoneno = #{phoneno},
+        master = #{ master },
+        master_email = #{ master_email },
+        master_phoneno = #{ master_phoneno },
+        mod_dt = NOW()
+        WHERE company_mgmtno = #{ company_mgmtno }
+    </update>
+    
+    <update id="updateBank" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        UPDATE COMPANY SET
+            deposit_bank = #{ deposit_bank },
+            account_no = #{ account_no },
+            account_holder = #{ account_holder },
+            mod_dt = NOW()
+        WHERE company_mgmtno = #{ company_mgmtno }
+    </update>
+    
+    <update id="deleteCp" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        UPDATE COMPANY /* cpQuery.deleteCp "del_yn 컬럼을 'Y'로 변경한다." 2013.06.04 정대원 */
+            <set>
+            del_yn = 'Y',
+            mod_dt = NOW()
+            </set>
+        WHERE company_mgmtno = #{ company_mgmtno }
+    </update>
+
+    <!-- DELETE -->
+
+</mapper>

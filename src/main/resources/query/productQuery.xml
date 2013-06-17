@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productQuery">
+   
+   <!-- INSERT -->
+   <insert id="createProduct" parameterType="com.bigstarglobal.cms.dto.ProductDTO" useGeneratedKeys="true" keyProperty="product_id">
+       INSERT INTO bg_products ( 
+            group_id,
+            customer_id,
+            product_sale_type, 
+            product_price, 
+            product_source_type, 
+            product_etc, 
+            product_device_type,
+            product_cdate,
+            member_id
+       )
+	   VALUES ( 
+            #{ group_id }, 
+            #{ customer_id }, 
+            #{ product_sale_type }, 
+            #{ product_price }, 
+            #{ product_source_type }, 
+            #{ product_etc }, 
+            #{ product_device_type }, 
+            NOW(), 
+            #{ member_id } 
+        )
+   </insert>
+
+   <!-- SELECT -->
+   <!-- 판매 상품 리스트 -->
+   <select id="getSaleProductList" resultType="com.bigstarglobal.cms.dto.ProductDTO" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+      SELECT 
+         bg_products.*, 
+         bg_customer.customer_name
+      FROM bg_products
+      INNER JOIN bg_customer
+      ON bg_products.CUSTOMER_ID = bg_customer.CUSTOMER_ID 
+       <where>
+         <if test="type != null">
+         	<choose>
+	            <when test="type eq '판매처명'">
+	            	customer_name like '%${query}%'
+	            </when>
+         	</choose>
+         </if>
+      </where>
+   </select>
+   
+   <!-- 판매 상품 상세 -->
+   <select id="getProductDetail" resultType="com.bigstarglobal.cms.dto.ProductDTO" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+      SELECT 
+         bg_products.*, 
+         bg_customer.customer_name
+      FROM bg_products
+      INNER JOIN bg_customer
+      ON bg_products.CUSTOMER_ID = bg_customer.CUSTOMER_ID 
+      WHERE product_id = #{ product_id }
+   </select>
+   
+   <select id="selectSeries" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+      select
+      	bg_contract.category_id, 
+      	bg_category.category_name,
+      	tmp.series_price
+      from bg_contract
+      inner join
+      (
+      	SELECT 
+      		category_id2,
+            SUM(content_price) as series_price
+         FROM bg_contents
+         GROUP BY category_id2
+      ) tmp
+      on bg_contract.category_id = tmp.category_id2
+      inner join bg_category
+      ON bg_contract.category_id = bg_category.category_id
+   </select>
+
+   <!-- UPDATE -->
+   <update id="updateProduct" parameterType="com.bigstarglobal.cms.dto.ProductDTO">
+      UPDATE bg_products SET 
+         group_id = #{ group_id },
+         customer_type = #{ contract_type }, 
+         customer_rate = #{ contract_rate }, 
+         customer_sdate = #{ contract_sdate }, 
+         customer_edate = #{ contract_edate }, 
+         customer_balancetype = #{ contract_balancetype }, 
+         customer_balance_detail = #{ contract_balance_detail }, 
+         customer_bankname = #{ contract_bankname }, 
+         customer_account = #{ contract_account }, 
+         customer_license = #{ contract_license }, 
+         customer_license_detail = #{ contract_license_detail }, 
+         customer_country_detail = #{ contract_country_detail }, 
+         customer_country = #{ contract_country }, 
+         customer_price = #{ contract_price }, 
+         customer_etc = #{ contract_etc }, 
+         customer_has_picturebook = #{ contract_has_picturebook }, 
+         customer_has_ebook = #{ contract_has_ebook }, 
+         customer_has_2d = #{ contract_has_2d }, 
+         customer_has_3d = #{ contract_has_3d }, 
+         customer_has_game = #{ contract_has_game }, 
+         customer_count = #{contract_count}
+      WHERE customer_id = #{ customer_id }
+   </update>
+
+   <!-- DELETE -->
+   <delete id="deleteProduct" parameterType="int">
+       DELETE FROM bg_products
+       WHERE  product_id = #{ product_id }
+   </delete>
+   
+</mapper>

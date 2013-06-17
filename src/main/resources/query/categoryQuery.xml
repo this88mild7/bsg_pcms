@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="categoryQuery">
+
+   <!-- INSERT -->
+    <insert id="createCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO" useGeneratedKeys="true" keyProperty="cate_id">
+        INSERT INTO CATE ( /* 상위 카테고리 존재시 parent_id가 필요함 */
+            <if test="parent_id > 0">parent_id,</if>
+            cate_name,
+            reg_dt,
+            mod_dt 
+        ) VALUES(
+            <if test="parent_id > 0">#{ parent_id },</if>
+            #{ cate_name },
+            NOW(),
+            NOW() 
+        )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getCategoryList" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+        SELECT /* categoryQuery.getCategoryList 2013.06.04 정대원 */  
+            *
+        FROM CATE
+        <where>
+            <if test="type != null" >
+                /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq '카테고리명'">
+                        cate_name like '%${query}%'
+                    </when>
+                    <otherwise>
+                        cate_name like '%${query}%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="parent_id > 0">
+                AND parent_id = #{ parent_id }
+            </if>
+        </where>
+    </select>
+
+    <select id="getCategoryCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+        SELECT /* categoryQuery.getCategoryCount 2013.06.04 정대원 */ 
+            count(*)
+        FROM
+            (
+            SELECT
+                *
+            FROM CATE
+            <where>
+                <if test="type != null" >
+                    /* type이 null 이 아니면 검색 */
+                    <choose>
+                        <when test="type eq '카테고리명'">
+                            cate_name like '%${query}%'
+                        </when>
+                        <otherwise>
+                            cate_name like '%${query}%'
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="parent_id > 0">
+                    AND parent_id = #{ parent_id }
+                </if>
+            </where>
+            ) tmp
+    </select>
+
+    <select id="getCategory" resultType="com.bigstarglobal.cms.dto.CateDTO" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+        SELECT /* categoryQuery.getCategory 2013.06.04 정대원 */
+            *
+        FROM CATE
+        WHERE cate_id = #{ cate_id }
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+        UPDATE CATE
+        <set>
+            <if test="cate_name != null">cate_name = #{ cate_name },</if>
+            <if test="parent_id > 0">parent_id = #{ parent_id },</if>
+            mod_dt = NOW(),
+        </set>
+        WHERE cate_id = #{ cate_id }
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deleteCategory" parameterType="com.bigstarglobal.cms.dto.CateDTO">
+        DELETE FROM CATE
+        WHERE cate_id = #{ cate_id }
+        LIMIT 1
+    </delete>
+   
+</mapper>

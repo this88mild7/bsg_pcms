@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xmlns:beans="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:util="http://www.springframework.org/schema/util"
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd 
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+   
+   <context:component-scan base-package="com.bigstarglobal.cms" />
+   
+   <interceptors>
+	  <interceptor>
+         <mapping path="/**" />
+         <beans:bean class="com.bigstarglobal.cms.utility.BigstarglobalInterceptor" />
+	  </interceptor>
+   </interceptors>
+   
+   <annotation-driven />
+
+   <util:properties id="pmsProperties" location="classpath:pms.properties" />
+   
+   <!-- FOR JSP PAGE 
+   <util:properties id="urlProp" location="/WEB-INF/cfg/url.properties" />
+   -->
+   
+   <!-- 
+   <resources mapping="/resources/**" location="/resources/" />
+   <beans:bean id="fileDownload" class="tc.FileDownload"/>
+    -->
+   
+   <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+      <beans:property name="order" value="0"/>
+   </beans:bean>
+   <beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+	  <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
+      <beans:property name="viewNames" value="*" />
+      <beans:property name="order" value="1"/>
+   </beans:bean>
+   <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	  <beans:property name="prefix" value="/WEB-INF/views/" />
+      <beans:property name="suffix" value=".jsp" />
+      <beans:property name="order" value="2"/>
+   </beans:bean>
+   
+   <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+   <!-- 
+   <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+      <beans:property name="definitions">
+         <beans:list>
+            <beans:value>/WEB-INF/tiles/general-layout.xml</beans:value>
+            <beans:value>/WEB-INF/tiles/tiles-context.xml</beans:value>
+         </beans:list>
+      </beans:property>
+   </beans:bean>
+    -->
+   
+   <beans:bean id="propertyPlaceholderConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <beans:property name="locations">
+            <beans:value>jdbc.properties</beans:value>
+        </beans:property>
+    </beans:bean>
+    
+    <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+      destroy-method="close">
+      <beans:property name="driverClassName" value="${jdbc.driverClassName}" />
+      <beans:property name="url" value="${jdbc.url}" />
+      <beans:property name="username" value="${jdbc.username}" />
+      <beans:property name="password" value="${jdbc.password}" />
+    </beans:bean>
+    
+    <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">     
+      <beans:property name="dataSource" ref="dataSource" />                                         
+      <beans:property name="mapperLocations" value="classpath:query/*.xml" />  
+      <beans:property name="configLocation" value="mybatis-config.xml" />         
+      <!-- 
+      <property name="transactionFactory">                                                    
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+      </property>
+       -->
+    </beans:bean>
+    
+    <beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+      <beans:constructor-arg index="0" ref="sqlSessionFactory" /> 
+    </beans:bean>
+    
+    <beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
+
+</beans:beans>

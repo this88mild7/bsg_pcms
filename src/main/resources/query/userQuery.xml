@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userQuery">
+
+   <!-- INSERT -->
+   
+   <!-- SELECT -->
+   <select id="getLoginResult" parameterType="com.bigstarglobal.cms.dto.UserDTO"  resultType="Integer">
+       SELECT /* userQuery.getLoginResult  정대원 */
+          COUNT(id) 
+       FROM    USER
+       WHERE   ID = #{ id }
+       AND     PWD = #{ pwd }
+   </select>
+   
+   <select id="getUser" parameterType="com.bigstarglobal.cms.dto.UserDTO"  resultType="com.bigstarglobal.cms.dto.UserDTO">
+       SELECT /* userQuery.getUser  정대원 */
+          id
+       FROM    USER
+       WHERE   id = #{ id }
+   </select>
+   
+   <select id="getUserList" resultType="com.bigstarglobal.cms.dto.UserDTO">
+       SELECT /* userQuery.getUserList  정대원 */
+          *
+       FROM USER
+   </select>
+   
+   <!-- UPDATE -->
+   
+   <!-- DELETE -->
+   
+</mapper>

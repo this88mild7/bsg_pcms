@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="saleCompanyQuery">
+
+   <insert id="createContract" 
+   		parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" 
+   		useGeneratedKeys="true" 
+   		keyProperty="contract_mgmtno">
+       INSERT /* saleCompanyQuery.createContract 2013.06.03 최지순 */ 
+       INTO CONTRACT ( 
+            USER_MGMTSEQ,
+            COMPANY_MGMTNO,
+            LICENSE_CD, 
+            LICENSE_CD_DETAIL, 
+            REG_DT, 
+            MOD_DT, 
+            STR_DATE, 
+            END_DATE,
+            SALE_PRICE, 
+            SALE_PRICE_TYPE, 
+            SALE_PROFIT_RATE, 
+            SALE_PROFIT_TYPE,
+            SALE_PROFIT_TYPE_DETAIL, 
+            ETC,
+            CONTRACT_TYPE, 
+            CONTRACT_TYPE_DETAIL,
+            BALANCE_TYPE,
+            BALANCE_DETAIL
+       )
+	   VALUES ( 
+            #{user_mgmtseq}, 
+            #{company_mgmtno}, 
+	        #{license_cd}, 
+	        #{license_cd_detail}, 
+	        now(), 
+	        now(), 
+	        #{str_date}, 
+	        #{end_date}, 
+	        #{sale_price}, 
+	        #{sale_price_type}, 
+	        #{sale_profit_rate}, 
+	        #{sale_profit_type},
+	        #{sale_profit_type_detail}, 
+	        #{etc}, 
+	        #{contract_type}, 
+	        #{contract_type_detail},
+	        #{balance_type},
+            #{balance_type_detail}        
+        )
+   </insert>
+   
+   
+   <insert id="createCompany" 
+   	parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+       INSERT /* saleCompanyQuery.createCompany 2013.06.03 최지순 */   
+       INTO COMPANY ( 
+            COMPANY_NAME,
+            ADDR, 
+            PHONENO, 
+            MASTER, 
+            MASTER_EMAIL, 
+            MASTER_PHONENO,
+            COMPANY_NO,
+            DEPOSIT_BANK,
+            ACCOUNT_NO,
+            ACCOUNT_HOLDER,
+            DEL_YN,
+            COMPANY_TYPE,
+            REG_DT,
+            MOD_DT
+       )
+	   VALUES ( 
+            #{company_name}, 
+            #{addr}, 
+            #{phoneno}, 
+            #{master}, 
+            #{master_email}, 
+            #{master_phoneno}, 
+            #{company_no},
+            #{deposit_bank},
+            #{account_no},
+            #{account_holder},
+            'N',
+            'SC', 
+            now(), 
+            now() 
+        )
+   </insert>
+   
+   <insert id="createContentsGroup" 
+   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+       INSERT /* saleCompanyQuery.createContentsGroup 2013.06.03 최지순 */   
+       INTO CONTRACT_CONTENTS_GROUP ( 
+            CONTRACT_MGMTNO,
+            CATE_ID, 
+            SERIES_MGMTNO, 
+            CONTENTS_CD, 
+            REG_DT, 
+            MOD_DT
+       )
+	   VALUES ( 
+            #{contract_mgmtno},
+            (SELECT CATE_ID FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
+            (SELECT SERIES_MGMTNO FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
+            #{contents_cd},
+            now(), 
+            now() 
+        )
+   </insert>
+   
+   <insert id="createContractDetail" 
+   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+       INSERT /* saleCompanyQuery.createContentsDetail 2013.06.03 최지순 */   
+       INTO CONTRACT_DETAIL ( 
+            CONTRACT_MGMTNO,
+            SALE_TYPE, 
+            REG_DT, 
+            MOD_DT
+       )
+	   VALUES ( 
+            #{contract_mgmtno},
+            #{sale_type},
+            now(), 
+            now() 
+        )
+   </insert>
+
+
+   <select id="contractList" 
+   			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx"
+   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx"
+   			>
+		SELECT /* saleCompanyQuery.contractList 2013.06.03 최지순 */ 
+			CT.CONTRACT_MGMTNO, 
+			COM.COMPANY_MGMTNO, 
+			COM.COMPANY_NAME, 
+			COUNT(DISTINCT(CCG.CONTENTS_CD)) AS contents_count, 
+			group_concat(DISTINCT(CTD.SALE_TYPE) SEPARATOR  ', ') AS sale_type,	
+			CT.REG_DT,
+			(SELECT CD_DETAIL FROM CD WHERE CD = CT.CONTRACT_TYPE) AS CONTRACT_TYPE
+		FROM CONTRACT CT, COMPANY COM, CONTRACT_CONTENTS_GROUP CCG, CONTRACT_DETAIL CTD
+		WHERE 1=1
+		AND CT.COMPANY_MGMTNO = COM.COMPANY_MGMTNO
+		AND CT.CONTRACT_MGMTNO = CCG.CONTRACT_MGMTNO
+		AND CT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
+		AND COM.COMPANY_TYPE = 'SC'
+		AND CT.DEL_YN = 'N'
+		<if test="searchType != null">
+			<choose>
+				<when test="searchType eq '판매처명'">
+					AND COM.COMPANY_NAME like '%${searchQuery}%'					
+				</when>
+				<otherwise>
+					AND (
+							CT.CONTRACT_MGMTNO like '%${searchQuery}%'
+							OR
+							COM.PHONENO like '%${searchQuery}%'
+							OR
+							CTD.SALE_TYPE like '%${searchQuery}%'
+					OR CT.CONTRACT_MGMTNO in (
+													SELECT CONTRACT_MGMTNO FROM CONTRACT_CONTENTS_GROUP A, CONTENTS B WHERE 1=1
+													AND A.CONTENTS_CD = B.CONTENTS_CD
+													AND B.NAME like '%${searchQuery}%'
+												 ) 
+						)
+				</otherwise>
+			</choose>
+		</if>
+		GROUP BY CT.CONTRACT_MGMTNO
+   </select>
+   
+   <select id="contractContensList" 
+   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContentsDTOEx">
+		SELECT /* SaleCompany.getContractContentsList 2013.06.03 최지순 */
+			CCG.CONTENTS_CD, 
+			CON.NAME,
+			CON.SALE_PRICE
+		FROM 
+			CONTRACT CT,  CONTENTS CON, CONTRACT_CONTENTS_GROUP CCG
+		WHERE 1=1
+		AND CT.CONTRACT_MGMTNO = CCG.CONTRACT_MGMTNO
+		AND CCG.CONTENTS_CD = CON.CONTENTS_CD
+		AND CT.DEL_YN = 'N'
+		AND CT.CONTRACT_MGMTNO = #{contract_mgmtno}
+		GROUP BY CCG.CONTENTS_CD
+   </select>
+   
+   <select id="contractDetail" 
+   			resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx">
+      SELECT /* SaleCompany.getContractDetail 2013.06.03 최지순 */
+      		CT.CONTRACT_MGMTNO, 
+			COM.COMPANY_NAME,
+			CT.LICENSE_CD, 
+			CT.LICENSE_CD_DETAIL,
+			CT.CONTRACT_TYPE,
+			CT.CONTRACT_TYPE_DETAIL,
+			CT.STR_DATE,
+			CT.END_DATE,			
+			CT.BALANCE_TYPE,
+			CT.BALANCE_DETAIL,
+			CT.SALE_PRICE,
+			CT.SALE_PRICE_TYPE,
+			CT.SALE_PROFIT_RATE,
+			CT.SALE_PROFIT_TYPE,
+			CT.SALE_PROFIT_TYPE_DETAIL,
+			CT.EXPI_YN,
+			CT.ETC,
+			CT.REG_DT,
+			CT.BALANCE_DETAIL AS balance_type_detail,
+			CT.BALANCE_TYPE
+		FROM 
+			CONTRACT CT, CONTRACT_DETAIL CTD, COMPANY COM, CONTENTS CON
+		WHERE 1=1
+		AND CT.CONTRACT_MGMTNO = #{contract_mgmtno}
+		AND CT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
+		AND CT.COMPANY_MGMTNO = COM.COMPANY_MGMTNO		
+		AND CT.DEL_YN = 'N'
+		GROUP BY CT.CONTRACT_MGMTNO
+   </select>
+   
+    <select id="contractedDeviceList" 
+		   resultType="String" 
+		   >
+       SELECT /* SaleCompany.contractedDeviceList 2013.06.03 최지순 */
+          SALE_TYPE AS device_cd
+       FROM  CONTRACT_DETAIL
+       WHERE 1=1
+       AND CONTRACT_MGMTNO = #{contract_mgmtno}
+       ORDER BY CONTRACT_DETAIL_SEQ
+       
+   </select>
+   
+   <select id="companyList" 
+		   resultType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx" 
+		   parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+       SELECT /* SaleCompany.companyList 2013.06.03 최지순 */
+          COMPANY_MGMTNO,
+          COMPANY_NAME,
+          DATE_FORMAT(REG_DT,'%Y-%m-%d') AS REG_DT,
+          PHONENO,
+          COMPANY_NO,
+          MASTER,
+          MASTER_EMAIL,
+          ADDR,
+          DEPOSIT_BANK,
+          ACCOUNT_NO,
+          ACCOUNT_HOLDER
+       FROM  COMPANY
+       <where>
+       	  DEL_YN = 'N'
+       	  AND COMPANY_TYPE = 'SC'
+         <if test="company_mgmtno > 0">
+         AND COMPANY_MGMTNO = #{company_mgmtno}
+         </if>
+         <if test="searchType != null">
+         	<choose>
+	            <when test="searchType eq '판매처명'">
+	            	AND COMPANY_NAME like '%${searchQuery}%'
+	            </when>
+	            <otherwise>
+	            	AND(
+	            	  COMPANY_NAME like '%${searchQuery}%'
+	            	  OR
+	            	  PHONENO like '%${searchQuery}%'
+	            	  OR
+	            	  COMPANY_NO like '%${searchQuery}%'
+	            	)
+	            </otherwise>
+       		</choose>
+         </if>
+      </where>
+   </select>
+   
+   <select id="deviceList" 
+		   resultType="String" 
+		   >
+       SELECT /* SaleCompany.deviceList 2013.06.03 최지순 */
+          CD_DETAIL AS device_name
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'DV'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+       
+   </select>
+  
+   
+   <select id="saleTypeList" 
+		   resultType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" 
+		   >
+       SELECT /* SaleCompany.deviceList 2013.06.03 최지순 */
+          CD AS contract_type,
+          CD_DETAIL AS contract_type_detail
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'CT'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+   </select>
+   
+	<update id="modifyCompany" 
+			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+		UPDATE /* SaleCompany.modify 2013.06.03 최지순 */ 
+			COMPANY 
+		SET 
+			COMPANY_NAME = #{company_name},
+			ADDR = #{addr},
+			PHONENO = #{phoneno},
+			MASTER_EMAIL = #{master_email},
+			MASTER = #{master},
+			MASTER_PHONENO = #{master_phoneno},
+			COMPANY_NO = #{company_no},
+			DEPOSIT_BANK = #{deposit_bank},
+			ACCOUNT_NO = #{account_no},
+			ACCOUNT_HOLDER = #{account_holder},
+			MOD_DT = now()
+		WHERE COMPANY_MGMTNO = #{company_mgmtno}
+	</update>
+	
+	<update id="deleteCompany"
+			parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyDTOEx">
+		UPDATE /* SaleCompany.delete 2013.06.03 최지순 */  COMPANY 
+		SET 
+			DEL_YN = 'Y',
+			MOD_DT = now()
+		WHERE COMPANY_MGMTNO = #{company_mgmtno}
+	</update>
+	
+	<update id="deleteContract" 
+			parameterType="String">
+		UPDATE /* SaleCompany.deleteContract 2013.06.03 최지순 */  
+			CONTRACT 
+		SET 
+			DEL_YN = 'Y',
+			MOD_DT = now()
+		WHERE CONTRACT_MGMTNO = #{contractMgmtno}
+	</update>
+	
+	<update id="modifyContract" 
+   		parameterType="com.bigstarglobal.cms.sale.company.dto.CompanyContractDTOEx" >
+       UPDATE /* saleCompanyQuery.modifyContract 2013.06.03 최지순 */ 
+		CONTRACT
+       SET 
+            LICENSE_CD = #{license_cd}, 
+            LICENSE_CD_DETAIL = #{license_cd_detail}, 
+            REG_DT = now(), 
+            MOD_DT = now(), 
+            STR_DATE = #{str_date}, 
+            END_DATE = #{end_date},
+            SALE_PRICE = #{sale_price}, 
+            SALE_PRICE_TYPE = #{sale_price_type}, 
+            SALE_PROFIT_RATE = #{sale_profit_rate}, 
+            SALE_PROFIT_TYPE = #{sale_profit_type}, 
+            ETC = #{etc},
+            CONTRACT_TYPE = #{contract_type}, 
+            CONTRACT_TYPE_DETAIL = #{contract_type_detail} ,
+            BALANCE_TYPE = #{balance_type},            
+            BALANCE_DETAIL = #{balance_type_detail}
+		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
+   </update>
+	
+	<delete id="deleteContractDetail" parameterType="Integer">
+		DELETE /* saleCompanyQuery.deleteContractDetail 2013.06.03 최지순 */  
+		FROM CONTRACT_DETAIL
+		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
+	</delete>
+	
+	<delete id="deleteContractContentsGroup" parameterType="Integer">
+		DELETE /* saleCompanyQuery.deleteContractContentsGroup 2013.06.03 최지순 */  
+		FROM CONTRACT_CONTENTS_GROUP
+		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
+	</delete>
+   
+   <!-- 기존
+   
+   <select id="getCustomer" resultType="com.bigstarglobal.cms.dto.CustomerDTO" parameterType="com.bigstarglobal.cms.dto.CustomerDTO">
+       SELECT 
+          *
+       FROM  bg_customer
+       <where>
+         <if test="customer_id > 0">
+         customer_id = #{ customer_id }
+         </if>
+         <if test="type != null">
+         	<choose>
+            <when test="type eq '판매처명'">
+            customer_name like '%${query}%'
+            </when>
+         </choose>
+         </if>
+      </where>
+   </select>
+   
+   <select id="getSaleCompantDeviceList" resultType="com.bigstarglobal.cms.dto.CustomerDTO">
+       SELECT /* getSaleCompantDeviceList 2013.06.03 최지순*/
+          DEV_NAME,
+          DEV_TYPE
+       FROM  SALE_COMPANY_SUPPLEMENT_DEV
+       WHERE SALE_COMPANY_MGMTNO = #{sale_company_mgmtno}       
+   </select>
+    -->
+
+   
+</mapper>

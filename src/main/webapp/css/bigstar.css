@@ -1,0 +1,160 @@
+/*
+INDEX
+
+0. CSS RESET
+리셋 할 엘리먼트 관련
+
+1. HEADER
+tiles header 관련
+
+2. CONTENT
+tiles content 관련 
+
+3. FOOTER
+tiles footer 관련 
+
+4. COMMON
+공통
+
+*/
+
+
+/* --------------------------------------------------------------
+0. CSS RESET
+-------------------------------------------------------------- */
+@CHARSET "UTF-8";
+body { 
+	font-family: Malgun Gothic, sans-serif, Dotum, Arial ;
+	min-width: 1024px; 
+}
+
+
+/* --------------------------------------------------------------
+1. HEADER
+-------------------------------------------------------------- */
+@media (max-width: 979px) {
+	.navbar .brand {width: 154px;}
+	.loginfo{right:80px;}
+}
+.logo { width : 154px; height : 37px; }
+.nav > li { line-height: 37px; }
+.user { padding-top: 10px; } 
+.nav-header { font-size: 17px; }
+.btn-group { padding-bottom: 10px; }
+.navbar { position:relative; }
+.loginfo { position:absolute;top:0px;right:20px; }
+.logout-btn { margin-bottom: 7px; }
+form.no-margin-bottom { margin-bottom : 0px; }
+.navbar {
+	/*
+	border-bottom: 3px solid #ff8000;
+	*/
+}
+
+/* --------------------------------------------------------------
+2. CONTENT
+-------------------------------------------------------------- */
+.page-name{
+	color: #B404AE;
+	border-bottom: 1px dotted #e2e2e2;
+	margin-bottom: 10px;	
+}
+.page-name img{
+	margin-bottom: 5px;	
+}
+.container {
+	width: 1280px;
+}
+.table th, .table td {
+	text-align : center;
+}
+
+/* SIDEBAR */
+.sidebar {
+	margin-top: 20px;
+}
+.lnb {
+	padding: 0;
+	list-style: none;
+}
+.lnb>a {
+	display: block;
+	padding-left: 10px;
+	border-bottom: 1px dotted #e5e5e5;
+	line-height: 40px;
+	color: #585858;
+}
+.lnb>a:hover {
+	text-decoration: none;
+	background-color: #EB9400;
+}
+.lnb>a.active {
+	color: #B404AE;
+	font-weight:bold;
+}
+
+/* CP */
+div.cp-create-radio .radio {
+	float: left;
+}
+label.error {
+	font-size: 17px;
+	color: red;
+}
+
+.table-contract td{
+	border-top: 0px;
+}
+
+.modal.fade.in {
+	/* modal 창 높이 조절 시 사용.
+	top: 20%;
+	*/
+}
+
+.body-fix {
+	/* 기본높이 조절 */
+	min-height:777px;
+}
+
+
+/* --------------------------------------------------------------
+3. FOOTER
+-------------------------------------------------------------- */
+footer {
+	background: #222;
+	height: 287px;
+}
+footer a {
+	color: #dbe4ea;	
+
+}
+footer h5 {
+	color: white;	
+
+}
+footer a:hover {
+	color: white;
+	text-decoration: none;
+}
+footer .footer-logo {
+	color: white;
+	position: relative;
+	top: -70px;
+	left: 80%;
+}
+footer .footer-logo img {
+	margin-right: 291px;
+	width: 30px;
+	height: 30px;
+}
+div.footer-menu {
+	margin-top: 30px;
+}
+
+/* --------------------------------------------------------------
+4. COMMON
+-------------------------------------------------------------- */
+/* IE placeholder 지원을 위한 css*/
+label.handler{ position : absolute; color : #A4A4A4; cursor : text; overflow : hidden; white-space : nowrap; }
+.border-color-red { border-color : #b94a48; }

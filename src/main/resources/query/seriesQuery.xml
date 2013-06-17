@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="seriesQuery">
+
+    <!-- INSERT -->
+    <insert id="createSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO" useGeneratedKeys="true" keyProperty="series_mgmtno">
+        INSERT INTO SERIES (
+            series_name,
+            cate_id,
+            reg_dt,
+            mod_dt 
+        ) VALUES (
+            #{ series_name },
+            #{ cate_id },
+            NOW(), 
+            NOW() 
+                )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getSeriesList" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+        SELECT
+            *
+        FROM SERIES
+        <where>
+            <if test="type != null">
+            /* type이 null 이 아니면 검색 */
+                <choose>
+                    <when test="type eq '시리즈명'">
+                        series_name like '%${query}%'
+                    </when>
+                    <when test="type eq 'SERIES코드'">
+                        series_mgmtno = #{query}
+                    </when>
+                    <otherwise>
+                        (
+                        series_name like '%${query}%'
+                        OR
+                        series_mgmtno = #{query}
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="cate_id > 0">
+                AND cate_id = #{ cate_id }
+            </if>
+        </where>
+    </select>
+    
+    <select id="getSeriesListByCpMgmtno" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.CompanyDTO">
+        SELECT
+            SERIES.*,
+            COUNT(SERIES.series_name) as totCnt
+        FROM COMPANY, CONTENTS, SERIES
+        WHERE COMPANY.company_mgmtno = CONTENTS.company_mgmtno
+        AND CONTENTS.series_mgmtno = SERIES.series_mgmtno
+        AND COMPANY.company_mgmtno = #{ company_mgmtno }
+        GROUP BY SERIES.series_name
+    </select>
+
+    <select id="getSeriesCount" resultType="int" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+        SELECT
+            count(*)
+        FROM
+            (
+            SELECT
+                *
+            FROM SERIES
+            /* type이 null 이 아니면 검색 */
+            <if test="type != null">
+                <where>
+                    <choose>
+                        <when test="type eq '시리즈명'">
+                            series_name like '%${query}%'
+                        </when>
+                        <when test="type eq 'SERIES코드'">
+                            series_mgmtno = #{query}
+                        </when>
+                        <otherwise>
+                            series_name like '%${query}%'
+                            OR
+                            series_mgmtno = #{query}
+                        </otherwise>
+                    </choose>
+                </where>
+            </if>
+            ) tmp
+    </select>
+
+    <select id="getSeries" resultType="com.bigstarglobal.cms.dto.SeriesDTO" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+        SELECT
+            *
+        FROM SERIES
+        WHERE series_mgmtno = #{ series_mgmtno }
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+        UPDATE SERIES
+        <set>
+            <if test="series_name != null">series_name = #{ series_name },</if>
+            <if test="cate_id > 0">cate_id = #{ cate_id },</if>
+            mod_dt = NOW(),
+        </set>
+        WHERE series_mgmtno = #{ series_mgmtno }
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deleteSeries" parameterType="com.bigstarglobal.cms.dto.SeriesDTO">
+        DELETE FROM SERIES
+        WHERE series_mgmtno = #{ series_mgmtno }
+        LIMIT 1
+    </delete>
+
+</mapper>

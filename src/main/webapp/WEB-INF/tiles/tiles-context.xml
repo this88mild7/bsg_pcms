@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+    
+    <definition name="404" extends=".layout-default">
+        <put-attribute name="content" value="/WEB-INF/views/common/not-found.jsp" />
+    </definition>
+
+    <definition name="500" extends=".layout-default">
+        <put-attribute name="content" value="/WEB-INF/views/common/exception.jsp" />
+    </definition>
+   
+    <definition name="index" template="/WEB-INF/views/index.jsp">
+    </definition>
+    
+    <!-- DASHBOARD -->
+    <definition name="dashboard" extends=".layout-default">
+        <put-attribute name="content" value="/WEB-INF/views/dashboard/dashboard.jsp" />
+    </definition>
+    
+    <!-- CP -->
+    <definition name="cp-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/cp/cp-list.jsp" />
+    </definition>
+    <definition name="cp-info" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/cp/cp-info.jsp" />
+    </definition>
+    
+    <!-- CATEGORY -->
+    <definition name="category-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/category/category-list.jsp" />
+    </definition>
+    
+    <!-- CONTENT -->
+    <definition name="content-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/content/content-list.jsp" />
+    </definition>
+    <definition name="content-info" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/content/content-info.jsp" />
+    </definition>
+    
+    <!-- CONTRACT -->
+    <definition name="contract-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/contract/contract-list.jsp" />
+    </definition>
+    <definition name="contract-info" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-cp.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/contract/contract-info.jsp" />
+    </definition>
+    
+    <!-- SALE_COMPANY -->
+    <definition name="sale-company-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-list.jsp" />
+    </definition>
+    <definition name="sale-company-create" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-create.jsp" />
+    </definition>
+    <definition name="sale-company-contract-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-list.jsp" />
+    </definition>
+    <definition name="sale-company-contract-create" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-create.jsp" />
+    </definition>
+    <definition name="sale-company-contract-detail" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-detail.jsp" />
+    </definition>
+    <definition name="sale-company-detail" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-detail.jsp" />
+    </definition>
+    
+    <!-- PRODUCT -->
+    <definition name="product-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-customer.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/product/product-list.jsp" />
+    </definition>
+    <definition name="product-create" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-customer.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/product/product-create.jsp" />
+    </definition>
+    <definition name="product-detail" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-customer.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/product/product-detail.jsp" />
+    </definition>
+    
+    <!-- BALANCE -->
+    <definition name="balance" extends=".layout-default">
+        <put-attribute name="content" value="/WEB-INF/views/balance/balance.jsp" />
+    </definition>
+    
+    <!-- STATISTICS -->
+    <definition name="statistics" extends=".layout-default">
+        <put-attribute name="content" value="/WEB-INF/views/statistics/statistics.jsp" />
+    </definition>
+    
+    <!-- SITE -->
+    <definition name="site-manage" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-site.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/site/site-manage.jsp" />
+    </definition>
+    
+</tiles-definitions>
