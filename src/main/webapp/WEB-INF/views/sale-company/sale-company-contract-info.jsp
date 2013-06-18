@@ -4,9 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%>
 	
 <div class="page-name">
+<c:choose>
+			<c:when test="${viewType eq 1 }">
 	<h4>
-		판매 계약 상세 정보 <small>&gt;&gt; 계약 정보 수정시 상세히 입력해 주세요.</small>
+		계약 등록
 	</h4>
+			</c:when>
+			<c:otherwise>
+	<h4>
+		계약 정보
+	</h4>
+			</c:otherwise>
+</c:choose>
 </div>
 
 <div class="row-fluid product-box">
@@ -26,7 +35,7 @@
 				<div class="controls">
 				<c:choose>
 					<c:when test="${viewType eq 1}">
-						<select size="1" name="company_mgmtno" id="customer" >
+						<select size="1" name="company_mgmtno">
 							<c:forEach items="${ salCompanyList }" var="company">
 								<option value="${ company.company_mgmtno }" >${ company.company_name }</option>
 							</c:forEach>
@@ -38,6 +47,48 @@
 				</c:choose>
 				</div>
 			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급대금</label>
+				<div class="btn-group">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">전체</a></li>
+								<li><a href="#">판매처명</a></li>
+							</ul>
+						</div>
+						<div class="input-append">
+								<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" >								
+						</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급방식</label>
+				<div class="controls">
+					<select size="1" name="company_mgmtno" id="customer" >
+						<option value="일시지급" >일시지급</option>
+						<option value="분납지급" >분납지급</option>
+						<option value="기타방식" >기타방식</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 계약기간 </label>
+				<div class="controls">
+					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
+					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
+					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
+					<script>
+					$('#tip3')
+						.tooltip({
+							"title":"시작일과 종료일을 넣어주세요.",
+							"placement":"bottom"
+						});
+					</script>
+				</div>
+			</div>
+			
 			<div class="control-group">
 				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 라이선스</label>
 				<div class="controls">
@@ -49,6 +100,14 @@
 							</label>
 							<label class="radio inline">
 								<input type="radio" name="license_cd" value="2">
+								에듀엔조이 소유
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="3">
+								플레이북스 소유
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="4">
 								공동 소유
 							</label>
 							<label class="radio inline">
@@ -66,6 +125,14 @@
 							</label>
 							<label class="radio inline">
 								<input type="radio" name="license_cd" value="2" <c:if test="${saleContractDetail.license_cd == 2}">checked</c:if>>
+								에듀엔조이 소유
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="3" <c:if test="${saleContractDetail.license_cd == 3}">checked</c:if>>
+								플레이북스 소유
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="4" <c:if test="${saleContractDetail.license_cd == 4}">checked</c:if>>
 								공동 소유
 							</label>
 							<label class="radio inline">
@@ -84,100 +151,20 @@
 					</c:choose>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="customer_contract_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
-				<div class="controls">
-					<c:choose>
-						<c:when test="${viewType eq 1 }">
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="1" checked>쉐어
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="2" >선금
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="3" >후지급
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="0" >기타
-							</label>
-							<div>
-								<textarea class="span10" id= "sale_profit_type_detail" rows="4" name="sale_profit_type_detail" placeholder="기타 설정시 필수입력" style="display:none;"></textarea>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="1" <c:if test="${saleContractDetail.sale_profit_type == 1}">checked</c:if>>
-								쉐어
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="2" <c:if test="${saleContractDetail.sale_profit_type == 2}">checked</c:if>>
-								선금
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="3" <c:if test="${saleContractDetail.sale_profit_type == 3}">checked</c:if>>
-								후지급
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="sale_profit_type" value="0" <c:if test="${saleContractDetail.sale_profit_type == 0}">checked</c:if>>
-								기타
-							</label>
-							<div>
-								<c:if test="${not empty saleContractDetail.license_cd_detail}">
-								<textarea class="span10" rows="4" id="sale_profit_type_detail" name="sale_profit_type_detail" placeholder="기타 설정시 필수입력">${saleContractDetail.sale_profit_type_detail}</textarea>
-								
-								</c:if>
-								<c:if test="${empty saleContractDetail.license_cd_detail}">
-								
-								<textarea class="span10" rows="4" id="sale_profit_type_detail" name="sale_profit_type_detail" placeholder="기타 설정시 필수입력" style="display:none;"></textarea>
-								</c:if>
-							</div>
-						</c:otherwise>
-					</c:choose>
-					
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률 </label>
-				<div class="controls">
-					<input type="text" id="customer_rate" name="sale_profit_rate" value="${saleContractDetail.sale_profit_rate }" placeholder="수익률을 입력 하세요" data-validation-required-message="수익률 필수값 입니다." required>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 계약기간 </label>
-				<div class="controls">
-					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
-					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
-					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
-					<script>
-					$('#tip3')
-						.tooltip({
-							"title":"시작일과 종료일을 넣어주세요.",
-							"placement":"bottom"
-						});
-					</script>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">계약서 등록</label>
-				<div class="controls">
-				
-					<input id="fileData" name="mf" type="file" style="display:none">
-					<div class="input-append">
-					   <input id="fileName" name="fileName"class="input-large" type="text">
-					   <a class="btn" onclick="$('input[id=fileData]').click();">파일찾기</a>
-					</div>
-					
-					<script type="text/javascript">
-					$( "input[ id=fileData ]" ).change(function() {
-					   $( "#fileName" ).val( $(this).val() );
-					});
-					</script>
-					
-				</div>
-			</div>
-			<input type="hidden" name="group_id" id="group_id" />
-				
+<div class="page-name">
+<c:choose>
+			<c:when test="${viewType eq 1 }">
+	<h4>
+		상세 상품정보 입력
+	</h4>
+			</c:when>
+			<c:otherwise>
+	<h4>
+		상세 상품정보
+	</h4>
+			</c:otherwise>
+</c:choose>
+</div>
 			<div class="control-group">
 				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태
 				<i class="icon-plus-sign"></i></label>
@@ -304,28 +291,28 @@
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 가격정보</label>
+				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 판매가 결정</label>
 				<div class="controls">
 					<c:choose>
 						<c:when test="${viewType eq 1}">
 							<label class="radio inline">
-								<input type="radio" name="sale_price_type" value="1" checked>
-								기본 판매가격
-							</label>
-							<label class="radio inline">
 								<input type="radio" id="sale_price_type" name="sale_price_type" value="0">
 								기타 판매가격
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="sale_price_type" value="1" checked>
+								기본 판매가격
 							</label>
 							<input type="number" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
 						</c:when>
 						<c:otherwise>
 							<label class="radio inline">
-								<input type="radio" name="sale_price_type" value="1" <c:if test="${saleContractDetail.sale_price_type == 1}">checked</c:if>>
-								기본 판매가격
-							</label>
-							<label class="radio inline">
 								<input type="radio" name="sale_price_type" value="0" <c:if test="${saleContractDetail.sale_price_type == 0}">checked</c:if>>
 								기타 판매가격
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="sale_price_type" value="1" <c:if test="${saleContractDetail.sale_price_type == 1}">checked</c:if>>
+								기본 판매가격
 							</label>
 							<input type="number" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
 							<p class="help-block"></p>
@@ -333,54 +320,6 @@
 					</c:choose>					
 				</div>
 			</div>
-			<div class="page-name">
-				<h4>
-					정산정보 입력
-				</h4>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="balance_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 정산방식</label>
-				<div class="controls">
-					<c:choose>
-						<c:when test="${viewType eq 1}">
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="1" checked>
-								월정산
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="2" >
-								연정산
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="0" >
-								기타
-							</label>
-							<div class="clearfix">
-								<textarea class="span10" rows="4" id="balance_type_detail" name="balance_type_detail" placeholder="정산방식 상세정보 입력 필수"></textarea>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="1" <c:if test="${saleContractDetail.balance_type == 1}">checked</c:if>>
-								월정산
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="2" <c:if test="${saleContractDetail.balance_type == 2}">checked</c:if>>
-								연정산
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="balance_type" value="0" <c:if test="${saleContractDetail.balance_type == 0}">checked</c:if>>
-								기타
-							</label>
-							<div class="clearfix">
-								<textarea class="span10" rows="4" id="balance_type_detail" name="balance_type_detail" placeholder="정산방식 상세정보 입력 필수"	>${saleContractDetail.balance_type_detail}</textarea>
-							</div>
-						</c:otherwise>
-					</c:choose>
-					
-				</div>
-			</div>
-			
 			<div class="control-group">
 				<label class="control-label" ></label>
 				<div class="controls">

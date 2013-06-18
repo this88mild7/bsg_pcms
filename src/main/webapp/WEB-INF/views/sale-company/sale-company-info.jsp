@@ -45,15 +45,22 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="customer_master">담당자</label>
+				<label class="control-label">담당PD</label>
 				<div class="controls">
-					<input type="text" id="customer_master" name="master" placeholder="담당자" value="${ saleCompany.master }">
+					<input type="text" id="admin_name" name="admin_name" placeholder="담당PD" value="${ saleCompany.admin_name }">
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="customer_master_email">담당자 이메일</label>
+				<label class="control-label" for="customer_master">업체담당자</label>
+				<div class="controls">
+					<input type="text" id="master" name="master" placeholder="업체담당자" value="${ saleCompany.master }">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="customer_master_email">업체담당자 연락처</label>
 				<div class="controls">
 					<input type="email" id="customer_master_email" name="master_email" placeholder="담당자 이메일" value="${ saleCompany.master_email }" data-validation-email-message="e-mail 형식이 아닙니다.">
+					<input type="text" id="customer_master_email" name="master_phoneno" placeholder="전화번호" value="${ saleCompany.master_phoneno }" >
 				</div>
 			</div>
 			
