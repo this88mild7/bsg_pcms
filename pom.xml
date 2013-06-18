@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.bigstar</groupId>
-	<artifactId>pcms</artifactId>
+	<groupId>com.bsg</groupId>
+	<artifactId>bsg_pcms</artifactId>
 	<name>bsg_pcms</name>
 	<packaging>war</packaging>
 	<version>1.0</version>
@@ -24,8 +24,8 @@
       </repository>
     -->
       <repository>
-         <id>Terascope</id>
-         <url>http://jisoon.net:8080/nexus/content/groups/public/</url>
+         <id>JISOON</id>
+         <url>http://jisoon.net/nexus/content/groups/public/</url>
       </repository>
    </repositories>
    
@@ -335,26 +335,6 @@
                     </connectors>
                 </configuration>
             </plugin> 
-            
-          <!-- 
-            <plugin>
-              <groupId>org.mortbay.jetty</groupId>
-              <artifactId>jetty-maven-plugin</artifactId>
-              <version>8.1.11.v20130520</version>
-              <configuration>
-                <scanIntervalSeconds>3</scanIntervalSeconds>
-                <webApp>
-                  <contextPath>/pcms</contextPath>
-                </webApp>
-                <connectors>
-                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>80</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
-              </configuration>
-            </plugin>
-            -->
 
         </plugins>
    </build>

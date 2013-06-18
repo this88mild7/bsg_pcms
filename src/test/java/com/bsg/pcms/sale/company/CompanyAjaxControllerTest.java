@@ -57,21 +57,21 @@ public class CompanyAjaxControllerTest {
 
 	@Test
 	public void testSeriesList(){
-		String seriesResult = _saleCompanyAjaxController.seriesList(null);
+		String seriesResult = _saleCompanyAjaxController.seriesList(null, null);
 		logger.info("{}", seriesResult);
 		assertNotNull(seriesResult);
 	}
 	
 	@Test
 	public void testCateList(){
-		String cateResul3t = _saleCompanyAjaxController.cateList();
+		String cateResult = _saleCompanyAjaxController.cateList();
 		logger.info("{}", cateResult);
 		assertNotNull(cateResult);
 	}
 	
 	@Test
 	public void testContentsList(){
-		String cateResult = _saleCompanyAjaxController.contentsList("38");
+		String cateResult = _saleCompanyAjaxController.contentsList("38", null);
 		logger.info("{}", cateResult);
 		assertNotNull(cateResult);
 	}

@@ -28,7 +28,6 @@ public class BalanceComController {
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		
 		return mav;
-		//주석 테스트561616161
 		
 	}
 	
