@@ -13,17 +13,19 @@
             series_mgmtno,
             name, 
             sale_price, 
-            age, 
+            age,
+            contents_type, 
             reg_dt,
             mod_dt
         ) VALUES( 
-            #{contents_cd}, 
-            <if test="company_mgmtno > 0">#{company_mgmtno},</if> 
-            #{cate_id}, 
-            #{series_mgmtno}, 
-            #{name}, 
-            #{sale_price}, 
-            #{age}, 
+            #{ contents_cd }, 
+            <if test="company_mgmtno > 0">#{ company_mgmtno },</if> 
+            #{ cate_id }, 
+            #{ series_mgmtno }, 
+            #{ name }, 
+            #{ sale_price }, 
+            #{ age },
+            #{ contents_type }, 
             NOW(),
             NOW() )
     </insert>

@@ -26,7 +26,7 @@
 			<div class="control-group">
 				<label class="control-label" for="company_name"><img src='<spring:eval expression="@urlProp['v']"/>'> 회사명</label>
 				<div class="controls">
-					<input type="text" id="company_name" name="company_name" placeholder="회사명" value="${ cp.company_name }" class="input-xlarge" />
+					<input type="text" id="company_name" name="company_name" placeholder="회사명" value="${ cp.company_name }" class="input-xlarge" data-validation-required-message="회사명을 입력해 주세요." required />
 				</div>
 			</div>
 			<div class="control-group">
@@ -38,7 +38,7 @@
 			<div class="control-group">
 				<label class="control-label" for="phoneno"><img src='<spring:eval expression="@urlProp['v']"/>'> 연락처</label>
 				<div class="controls">
-					<input type="text" id="phoneno" name="phoneno" placeholder="연락처" value="${ cp.phoneno }" class="input-xlarge" />
+					<input type="text" id="phoneno" name="phoneno" placeholder="연락처" value="${ cp.phoneno }" class="input-xlarge" data-validation-required-message="연락처를 입력해 주세요." required/>
 				</div>
 			</div>
 			<div class="control-group">
@@ -56,13 +56,13 @@
 			<div class="control-group">
 				<label class="control-label" for="master_email">담당자 이메일</label>
 				<div class="controls">
-					<input type="text" id="master_email" name="master_email" placeholder="이메일" class="input-xlarge" value="${ cp.master_email }" />
+					<input type="email" id="master_email" name="master_email" placeholder="이메일" class="input-xlarge" value="${ cp.master_email }" />
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="master_phoneno">담당자 연락처</label>
 				<div class="controls">
-					<input type="text" id="master_phoneno" name="master_phoneno" placeholder="이메일" class="input-xlarge" value="${ cp.master_phoneno }" />
+					<input type="text" id="master_phoneno" name="master_phoneno" placeholder="연락처" class="input-xlarge" value="${ cp.master_phoneno }" />
 				</div>
 			</div>
 		</form>
@@ -89,6 +89,9 @@
 <!--/row-->
 <script>
 $(function(){
+	
+	//유효성 체크
+	$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
 	
 	//목록가기 버튼
 	$("#btn-cp-list").click(function(){
@@ -124,59 +127,6 @@ $(function(){
 			}
 		});  
 	});
-			
-	// 유효성 체크
-	cpValidation();
-	
-	function cpValidation() {
-		$("#cpForm").validate({
-			rules: {
-				company_name: {
-					required: true,
-				},
-				phoneno: {
-					required: true,
-				},
-				cp_master_email:{
-					//email: true
-				}
-			},
-			messages: {
-				company_name: {
-					required: "&nbsp;",
-				},
-				phoneno: {
-					required: "&nbsp;",
-				},
-				cp_master_email: "email 형식에 맞게 넣어주세요."
-			},
-			// the errorPlacement has to take the table layout into account
-			errorPlacement: function(error, element) {
-				if ( element.is(":radio") )
-					error.appendTo( element.parent().next().next() );
-				else if ( element.is(":checkbox") )
-					error.appendTo ( element.next() );
-				else {
-					error.appendTo( element.next() );
-					//element.after( error );
-					$( element )
-						//.attr( "placeholder", $( error ).text() )
-						//.after( $( error ).text() )
-						.parent().parent()
-						.addClass( "error" );
-					
-				}
-			},
-			success: function(label, element) {
-				// set &nbsp; as text for IE
-				label.html("&nbsp;").addClass("checked");
-				$(element).parent().parent().removeClass( "error" );
-			},
-			highlight: function(element, errorClass) {
-				$(element).parent().next().find("." + errorClass).removeClass("checked");
-			}
-		});
-	}
 	
 });
 </script>
