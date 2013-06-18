@@ -113,66 +113,6 @@ function placeholderForIE(){
 		});
 	}
 	
-	// 콘텐츠
-	//TODO 폼체크 관련해서 수정해야할 부분 시작
-	// 콘텐츠 계약
-	$( "label[for='fix-contract_license_detail']" ).hide();
-	$( "label[for='fix-contract_country_detail']" ).hide();
-	$( "label[for='fix-contract_etc']" ).hide();
-	
-	// 기타 선택시 상세정보 입력창 가리기/보이기
-	$( "input[name='contract_license'],input[name='customer_license']" ).on( "click", function(){
-		if( $( this ).val() == 0 ) {
-			$( "textarea[name='contract_license_detail'],textarea[name='customer_license_detail']" ).show();
-			$( "label[for='fix-contract_license_detail'],label[for='fix-customer_license_detail']" ).show();
-		} else {
-			$( "textarea[name='contract_license_detail'],textarea[name='customer_license_detail']" ).hide().val( "" );
-			$( "label[for='fix-contract_license_detail'],label[for='fix-customer_license_detail']" ).hide();
-		}
-	});
-	$( "input[name='contract_country']" ).on( "click", function(){
-		if( $( this ).val() == 0 ) {
-			$( "textarea[name='contract_country_detail']" ).show();
-			$( "label[for='fix-contract_country_detail']" ).show();
-		} else {
-			$( "textarea[name='contract_country_detail']" ).hide().val( "" );
-			$( "label[for='fix-contract_country_detail']" ).hide();
-		}
-	});
-	$( "input[name='contract_type'],input[name='customer_contract_type']" ).on( "click", function(){
-		if( $( this ).val() == 0 ) {
-			$( "textarea[name='contract_etc'],textarea[name='customer_contract_type_detail']" ).show();
-			$( "label[for='fix-contract_etc'],label[for='fix-customer_contract_type_detail']" ).show();
-		} else {
-			$( "textarea[name='contract_etc'],textarea[name='customer_contract_type_detail']" ).hide().val( "" );
-			$( "label[for='fix-contract_etc'],label[for='fix-customer_contract_type_detail']" ).hide();
-		}
-	});
-	
-	$( "select[name='contract_bankname'],select[name='customer_bankname']" ).change(function(){
-		if( "선택하기" != $(this).val() ) {
-			$( "div.account-group" ).show();	
-		} else {
-			$( "div.account-group" ).hide().val( "" );	
-			
-		}		
-	});
-	
-	$( "input[name='optionsRadio']" ).on( "click", function(){
-		if( $( this ).val() == "true" ) {
-			$( "div.price-group" ).show();
-			$( "label[for='fix-content_price']" ).show();
-		} else {
-			$( "div.price-group" ).hide().val( "" );
-			$( "label[for='fix-content_price']" ).hide();
-		}
-	});
-	// 폼체크 관련해서 수정해야할 부분 마침
-}
-
-{ // CUSTOMER
-	
-	
 }
 
 /* --------------------------------------------------------------
