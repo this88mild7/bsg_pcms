@@ -16,7 +16,7 @@
 			<div class="control-group">
 				<label class="control-label" for="customer_name"><img src='<spring:eval expression="@urlProp['v']"/>'> 회사명</label>
 				<div class="controls">
-					<input type="text" id="company_name" name="company_name" placeholder="회사명">
+					<input type="text" id="company_name" name="company_name" placeholder="회사명" required data-validation-required-message="회사명은 필수 값입니다.">
 				</div>
 			</div>
 			<div class="control-group">
@@ -28,7 +28,7 @@
 			<div class="control-group">
 				<label class="control-label" for="customer_tel"><img src='<spring:eval expression="@urlProp['v']"/>'> 연락처</label>
 				<div class="controls">
-					<input type="text" id="phoneno" name="phoneno" placeholder="연락처">
+					<input type="text" id="phoneno" name="phoneno" placeholder="연락처" required data-validation-required-message="연락처는 필수 값입니다.">
 				</div>
 			</div>
 			<div class="control-group">
@@ -46,7 +46,7 @@
 			<div class="control-group">
 				<label class="control-label" for="master_email">담당자 이메일</label>
 				<div class="controls">
-					<input type="text" id="master_email" name="master_email" placeholder="담당자 이메일">
+					<input type="text" id="master_email" name="master_email" placeholder="담당자 이메일" data-validation-email-message="e-mail 형식이 아닙니다.">
 				</div>
 			</div>
 			<div class="control-group">
