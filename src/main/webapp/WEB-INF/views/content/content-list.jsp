@@ -31,10 +31,10 @@
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li><a href="#">전체</a></li>
+					<li><a href="#">CP업체</a></li>
 					<li><a href="#">카테고리</a></li>
 					<li><a href="#">시리즈</a></li>
 					<li><a href="#">콘텐츠</a></li>
-					<li><a href="#">CP업체</a></li>
 				</ul>
 			</div>
 			<div class="input-append">
@@ -50,10 +50,10 @@
 		<tr>
 			<th><input class="check-all" type="checkbox" name="checkbox_all" value="false" data-toggle="tooltip"></th>
 			<th>콘텐츠 코드</th>
+			<th>CP업체</th>
 			<th>카테고리</th>
 			<th>시리즈</th>
 			<th>콘텐츠명</th>
-			<th>CP업체</th>
 			<th>등록일</th>
 			<th>상세보기</th>
 		</tr>
@@ -61,10 +61,10 @@
 		<tr>
 			<td><input type="checkbox" name="check_list" value="${ content.contents_cd }"></td>
 			<td>${ content.contents_cd }</td>
+			<td>${ content.company_name }</td>
 			<td>${ content.cate_name }</td>
 			<td>${ content.series_name }</td>
 			<td>${ content.name }</td>
-			<td>${ content.company_name }</td>
 			<td>${ content.reg_dt }</td>
 			<td><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contentDetail']"/>?contents_cd=${ content.contents_cd }">상세보기</button></td>
 		</tr>
