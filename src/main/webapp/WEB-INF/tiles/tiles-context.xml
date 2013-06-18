@@ -74,13 +74,13 @@
         <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
         <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-create.jsp" />
     </definition>
-    <definition name="sale-company-contract-detail" extends=".layout-with-sidebar">
+    <definition name="sale-company-contract-info" extends=".layout-with-sidebar">
         <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
-        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-detail.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-contract-info.jsp" />
     </definition>
-    <definition name="sale-company-detail" extends=".layout-with-sidebar">
+    <definition name="sale-company-info" extends=".layout-with-sidebar">
         <put-attribute name="sidebar"    value="/WEB-INF/views/common/sidebar-sale-company.jsp" />
-        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-detail.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/sale-company/sale-company-info.jsp" />
     </definition>
     
     <!-- PRODUCT -->

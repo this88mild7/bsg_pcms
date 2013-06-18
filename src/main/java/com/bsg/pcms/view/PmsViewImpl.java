@@ -23,11 +23,10 @@ public class PmsViewImpl implements PmsView {
 	private final String _VW_SALE_COMPANY_LIST = 					"sale-company-list";
 	private final String _OB_SALE_COMPANY_LIST = 					"salCompanyList";
 	
-	private final String _VW_SALE_COMPANY_DETAIL = 				"sale-company-detail";
+	private final String _VW_SALE_COMPANY_INFO = 					"sale-company-info";
 	private final String _OB_SALE_COMPANY_DETTAIL = 				"saleCompany";
 	
-	private final String _VW_SALE_COMPANY_CREATE = 				"sale-company-create";
-	private final String _OB_SALE_COMPANY_BANK_LIST = 		"bankList";
+	private final String _OB_SALE_COMPANY_BANK_LIST = 			"bankList";
 	
 	
 	private final String _VW_SALE_COMPANY_CONTRACT_LIST = 		"sale-company-contract-list";
@@ -36,9 +35,7 @@ public class PmsViewImpl implements PmsView {
 	private final String _OB_SALE_COMPANY_CONTRACTED_DEVICE = 	"contractedDeviceList";
 	private final String _OB_SALE_COMPANY_CONTRACT_TYPE = 		"contractTypeList";
 	
-	private final String _VW_SALE_COMPANY_CONTRACT_CREATE = 		"sale-company-contract-create";
-	
-	private final String _VW_SALE_COMPANY_CONTRACT_DETAIL = 		"sale-company-contract-detail";
+	private final String _VW_SALE_COMPANY_CONTRACT_INFO = 		"sale-company-contract-info";
 	private final String _OB_SALE_COMPANY_CONTRACT_DETAIL = 		"saleContractDetail";
 	
 	@Autowired
@@ -60,20 +57,22 @@ public class PmsViewImpl implements PmsView {
 	@Override
 	public ModelAndView getSaleCompanyCreateView(ArrayList<BankDTO> bankList) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(_VW_SALE_COMPANY_CREATE);
+		mav.setViewName(_VW_SALE_COMPANY_INFO);
 		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY());
 		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
 		mav.addObject( _OB_SALE_COMPANY_BANK_LIST, bankList );
+		mav.addObject( "viewType", "1");
 		return mav;
 	}
 
 	@Override
 	public ModelAndView getSaleCompanyDetailView(CompanyDTOEx companyDTOEx) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(_VW_SALE_COMPANY_DETAIL);
+		mav.setViewName(_VW_SALE_COMPANY_INFO);
 		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY() );
 		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
 		mav.addObject( _OB_SALE_COMPANY_DETTAIL, companyDTOEx );
+		mav.addObject( "viewType", "2");
 		return mav;
 	}
 	
@@ -88,28 +87,20 @@ public class PmsViewImpl implements PmsView {
 		return mav;
 	}
 	
-	@Override
-	public ModelAndView getSaleCompanyCreateContractView(List<CompanyContractDTOEx> customerList) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(_VW_SALE_COMPANY_CONTRACT_CREATE);
-		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY_CONTRACT());
-		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
-		mav.addObject( _OB_SALE_COMPANY_LIST, customerList );
-		return mav;
-	}
 
 	@Override
 	public ModelAndView getSaleCompanyContractDetailView(
 			CompanyContractDTOEx contractDetail,
 			List<CompanyContractDTOEx> contractTypeList) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(_VW_SALE_COMPANY_CONTRACT_DETAIL);
+		mav.setViewName(_VW_SALE_COMPANY_CONTRACT_INFO);
 		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY_CONTRACT() );
 		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DETAIL, contractDetail);
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DEVICE, contractDetail.getDevice_cd_list() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACTED_DEVICE, contractDetail.getContractedDeviceList() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_TYPE, contractTypeList );
+		mav.addObject( "viewType", "2");
 		return mav;
 	}
 
@@ -120,12 +111,13 @@ public class PmsViewImpl implements PmsView {
 			List<String> deviceList,
 			List<CompanyContractDTOEx> contractTypeList) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(_VW_SALE_COMPANY_CONTRACT_CREATE);
+		mav.setViewName(_VW_SALE_COMPANY_CONTRACT_INFO);
 		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY_CONTRACT());
 		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
 		mav.addObject( _OB_SALE_COMPANY_LIST, saleCompanyList );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DEVICE, deviceList );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_TYPE, contractTypeList );
+		mav.addObject( "viewType", "1");
 		return mav;
 	}
 
