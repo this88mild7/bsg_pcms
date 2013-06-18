@@ -129,10 +129,16 @@ data-series_mgmtno="${ content.series_mgmtno }"
 					<script>
 					$('#tip2')
 						.tooltip({
-							"title":"설정 판매가를 숫자로 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"title":"콘텐츠 판매가는 실제 판매상품 등록 시 여러 환율 단위로 등록이 가능합니다. 대표 가격만 입력해주세요.",
 							"placement":"bottom"
 						});
 					</script>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="file_path">콘텐츠 파일경로</label>
+				<div class="controls">
+					<input type="text" id="file_path" name="file_path" placeholder="콘텐츠 파일경로" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
 				</div>
 			</div>
 		</form>

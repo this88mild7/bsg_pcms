@@ -108,9 +108,35 @@
 				</div>
 			</div>
 			
+			<div class="control-group">
+				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 라이선스</label>
+				<div class="controls">
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="1" checked="checked">개발대행
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="2">라이센싱
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="0">상품판매납품(협력)
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="0">외주의뢰
+					</label>
+					<a id="tip1" href="#" data-toggle="tooltip" >tip</a>
+					<script>
+					$('#tip1')
+						.tooltip({
+							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"placement":"bottom"
+						});
+					</script>
+				</div>
+			</div>
+
 			<div class="page-name">
 				<h4>
-					개발물 저작권
+					상세정보 입력
 				</h4>
 			</div>
 			
@@ -121,10 +147,19 @@
 						<input type="radio" name="license_cd" value="1" checked="checked">빅스타 소유
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="2">공동 소유
+						<input type="radio" name="license_cd" value="2">에듀엔조이 소유
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="0">기타
+						<input type="radio" name="license_cd" value="3">플레이북스 소유
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="4">공동 소유
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="5">업체 소유
+					</label>
+					<label class="radio inline">
+						<input type="radio" name="license_cd" value="6">기타
 					</label>
 					<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력" style="display:none;">${ contract.license_cd_detail }</textarea>
 				</div>
@@ -141,20 +176,6 @@
 					</label>
 					<br />
 					<textarea class="span10" rows="4" id="license_country_detail" name="license_country_detail" placeholder="라이선스 유효국가 상세정보 입력" style="display:none;">${ contract.license_country_detail }</textarea>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="sale_price">계약대금</label>
-				<div class="controls">
-					<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
-					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
-					<script>
-					$('#tip2')
-						.tooltip({
-							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
-							"placement":"bottom"
-						});
-					</script>
 				</div>
 			</div>
 			<div class="control-group">
@@ -179,6 +200,33 @@
 						</label>
 						<textarea class="span10" rows="4" id="contract_type_detail"  name="contract_type_detail" placeholder="기타 설정시 필수입력" style="display:none;">${ contract.contract_type_detail }</textarea>
 					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="sale_price">계약대금</label>
+				<div class="controls">
+					<input type="hidden" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
+					<div class="input-prepend">
+						<div class="btn-group">
+							<button class="btn dropdown-toggle" data-toggle="dropdown">
+								Action <span class="caret">WON</span>
+							</button>
+							<ul class="dropdown-menu">
+								<li>WON</li>
+								<li>US</li>
+								<li>JYP</li>
+							</ul>
+						</div>
+						<input id="prependedDropdownButton" type="text">
+					</div>
+					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
+					<script>
+					$('#tip2')
+						.tooltip({
+							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"placement":"bottom"
+						});
+					</script>
 				</div>
 			</div>
 			<div class="control-group">

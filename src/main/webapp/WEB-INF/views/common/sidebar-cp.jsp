@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="sidebar lnb">
-	<a href="<spring:eval expression="@urlProp['cpList']"/>">CP 업체 리스트</a>
+	<a href="<spring:eval expression="@urlProp['cpList']"/>">업체 리스트</a>
 	<a href="<spring:eval expression="@urlProp['categoryList']"/>">카테고리 리스트</a>
 	<a href="<spring:eval expression="@urlProp['contentList']"/>">콘텐츠 리스트</a>
 	<a href="<spring:eval expression="@urlProp['contractList']"/>">계약 리스트</a>

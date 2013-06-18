@@ -37,11 +37,8 @@
 		</a>
 		<div class="gnb">
 			<a class="dashboard" href="/pcms/dashboard.do">메인</a>
-			<a class="cp" href="/pcms/cp/list.do">CP 업체관리</a>
-			<!-- 
-			<a class="customer" href="<spring:eval expression="@urlProp['saleCompanyList']"/>">판매업체관리</a>
-			 -->
-			<a class="customer" href="/pcms/saleCompany/list.do">판매업체관리</a>
+			<a class="cp" href="/pcms/cp/list.do">업체관리</a>
+			<a class="customer" href="/pcms/saleCompany/list.do">판매관리</a>
 			<a class="statistics" href="/pcms/balance.do">정산</a>						
 			<a class="statistics" href="/pcms/statistics.do">통계</a>						
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
@@ -54,12 +51,14 @@
 	</div>
 </div>
 <script>
-//로그아웃
-var logout = function(){
-	window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
-};
-//GNB 하이라이트 표시
-var nav_seq = $("body").data("nav_seq");
-$("div.gnb")
-	.find("a").eq( nav_seq ).addClass( "active" );
+$(function(){
+	//로그아웃
+	var logout = function(){
+		window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
+	};
+	//GNB 하이라이트 표시
+	var nav_seq = $("body").data("nav_seq");
+	$("div.gnb")
+		.find("a").eq( nav_seq ).addClass( "active" );
+});
 </script>

@@ -48,21 +48,27 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="master">담당자</label>
+				<label class="control-label" for="master">담당PD</label>
 				<div class="controls">
-					<input type="text" id="master" name="master" placeholder="담당자" class="input-xlarge" value="${ cp.master }" />
+					<input type="text" id="master" name="master" placeholder="담당PD" class="input-xlarge" value="${ cp.master }" />
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="master_email">담당자 이메일</label>
+				<label class="control-label" for="master">업체 담당자</label>
 				<div class="controls">
-					<input type="email" id="master_email" name="master_email" placeholder="이메일" class="input-xlarge" value="${ cp.master_email }" />
+					<input type="text" id="master" name="master" placeholder="업체 담당자" class="input-xlarge" value="${ cp.master }" />
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="master_phoneno">담당자 연락처</label>
+				<label class="control-label" for="master_email">업체 담당자 이메일</label>
 				<div class="controls">
-					<input type="text" id="master_phoneno" name="master_phoneno" placeholder="연락처" class="input-xlarge" value="${ cp.master_phoneno }" />
+					<input type="email" id="master_email" name="master_email" placeholder="업체 담당자 이메일" class="input-xlarge" value="${ cp.master_email }" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="master_phoneno">업체 담당자 연락처</label>
+				<div class="controls">
+					<input type="text" id="master_phoneno" name="master_phoneno" placeholder="업체 담당자 연락처" class="input-xlarge" value="${ cp.master_phoneno }" />
 				</div>
 			</div>
 		</form>

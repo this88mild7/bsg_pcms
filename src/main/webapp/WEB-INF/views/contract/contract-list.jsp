@@ -37,6 +37,8 @@
 			<th>CP업체</th>
 			<th>시리즈</th>
 			<th>계약기간</th>
+			<th>계약종류</th>
+			<th>계약대금</th>
 			<th>수익률</th>
 			<th>상세보기</th>
 		</tr>
@@ -46,6 +48,8 @@
 			<td>${ contract.company_name }</td>
 			<td>${ contract.series_name }</td>
 			<td>${ contract.str_date } ~ ${ contract.end_date }</td>
+			<td>라이센싱</td>
+			<td>10,000,0000</td>
 			<td>${ contract.sale_profit_rate }</td>
 			<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contractDetail']"/>?contract_mgmtno=${ contract.contract_mgmtno }">상세보기</button></td>
 		</tr>
