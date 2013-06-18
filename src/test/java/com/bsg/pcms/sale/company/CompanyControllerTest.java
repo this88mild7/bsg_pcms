@@ -53,10 +53,8 @@ public class CompanyControllerTest {
 	public void testSaleCompanyCreate() {
 		try {
 			companyDTOEx = generateCompanyDto();
-			ModelAndView resView = _saleCompanyController.create(companyDTOEx);
-			List<CompanyDTOEx>  resultcode = (List<CompanyDTOEx> )resView.getModel().get("salCompanyList");
-			assertThat(resultcode.size(), is(not(0)));
-			logger.info("{}", resultcode);
+			String result = _saleCompanyController.create(companyDTOEx);
+			assertNotNull(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("{}", e.getMessage());
@@ -92,7 +90,7 @@ public class CompanyControllerTest {
 	@Test
 	public void testSaleCompanyList() {
 		try {
-			ModelAndView resView = _saleCompanyController.list(companyDTOEx);
+			ModelAndView resView = _saleCompanyController.list();
 			List<CompanyDTOEx>  resultcode = (List<CompanyDTOEx> )resView.getModel().get("salCompanyList");
 			assertThat(resultcode.size(), is(not(0)));
 			logger.info("{}", resultcode);

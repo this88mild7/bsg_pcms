@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bsg.pcms.balance.svc.BalanceService;
 import com.bsg.pcms.dto.BalanceDTO;
 import com.bsg.pcms.utility.BigstarConstant;
 
@@ -18,9 +19,13 @@ public class BalanceComController {
 	private Logger logger = LoggerFactory.getLogger(BalanceComController.class);
 	
 	@Autowired
-	BigstarConstant bigstarConstant; 
+	BigstarConstant bigstarConstant;
 	
-	@RequestMapping(value = "list", method = RequestMethod.GET)
+	@Autowired
+	private BalanceService balanceService;
+	
+	
+	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public ModelAndView list() {
 		
 		ModelAndView mav = new ModelAndView();
@@ -31,18 +36,16 @@ public class BalanceComController {
 		
 	}
 	
-	@RequestMapping(value = "creat", method = RequestMethod.GET)
-	public ModelAndView create(BalanceDTO balanceDto) {
+	@RequestMapping(value = "creat.do", method = RequestMethod.GET)
+	public String create(BalanceDTO balanceDto) {
+		logger.info("balance/sale-company/create.do");
 		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		balanceService.createSaleCompany(balanceDto);
 		
-		return mav;
-		
+		return "redirect:/balance/sale-company/list.to";
 	}
 	
-	@RequestMapping(value = "creatView", method = RequestMethod.GET)
+	@RequestMapping(value = "creatView.do", method = RequestMethod.GET)
 	public ModelAndView creatView(BalanceDTO balanceDto) {
 		
 		ModelAndView mav = new ModelAndView();
