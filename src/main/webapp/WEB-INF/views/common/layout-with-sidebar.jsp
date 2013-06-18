@@ -48,10 +48,8 @@
 	<script src="/pcms/js/json2.js"></script>
 	<script src="/pcms/js/bootstrap-datepicker.js"></script>
 	<script src="/pcms/js/bootbox.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" charset="ISO-8859-1"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
-	
 	<script src="/pcms/js/bigstar-validation.js"></script>
+	<script src="/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/bigstar.js"></script>
 	
 </body>
