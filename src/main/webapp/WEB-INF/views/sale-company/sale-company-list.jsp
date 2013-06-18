@@ -52,7 +52,7 @@
 	<div class="clearfix">
 		<p class="pull-right">
 			<button id ="btn-delete" class="btn ">선택삭제</button>
-			<button class="btn btn-primary" data-url="<spring:eval expression="@urlProp['saleCompanyCreate']"/>">판매처 등록</button>
+			<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyCreate']"/>">판매처 등록</button>
 		</p>
 	</div>
 	

@@ -32,7 +32,6 @@
 	<script src="/pcms/js/bootstrap.min.js"></script>
 	<script src="/pcms/js/bootstrap-datepicker.js"></script>
 	<script src="/pcms/js/bootbox.min.js"></script>
-	<script src="/pcms/js/bigstar-validation.js"></script>
 	<script src="/pcms/js/bigstar.js"></script>
 	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/flotr2.js"></script>
