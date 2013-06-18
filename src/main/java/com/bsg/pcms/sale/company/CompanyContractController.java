@@ -52,6 +52,10 @@ public class CompanyContractController {
 	
 	@RequestMapping( value = "search.do", method = RequestMethod.GET )
 	public ModelAndView search(CompanyContractDTOEx companyDTO) {
+		_logger.info(companyDTO.getSearchQuery());
+		if(StringUtils.isBlank(companyDTO.getSearchQuery())){
+			companyDTO.setSearchType(null);
+		}
 		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.search(companyDTO);
 		return _pmsView.getSaleCompanyContractListView(saleCompanyContractList);
 	}
@@ -100,11 +104,11 @@ public class CompanyContractController {
 		List<String> sessionContentsStringList = getSessionContentList(request);
 		_logger.info("{}", companyDTO.getContract_type());
 		if(sessionContentsStringList.size() > 0){
+			_logger.info("{}", sessionContentsStringList);
 			_saleContractService.modify(companyDTO, sessionContentsStringList);
 		}else{
 			List<CompanyContentsDTOEx> sessionContentsList = (List<CompanyContentsDTOEx>)request.getSession().getAttribute("selectedContentsList");
 			companyDTO.setContentsList(sessionContentsList);
-			request.getSession().removeAttribute("selectedContentsList");
 			_saleContractService.modify(companyDTO);
 		}
 		
@@ -118,7 +122,6 @@ public class CompanyContractController {
 		if(sessionContentsList == null){
 			sessionContentsList = new ArrayList<String>();
 		}
-		
 		request.getSession().removeAttribute("contentsList");
 		
 		return sessionContentsList;

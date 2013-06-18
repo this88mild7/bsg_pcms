@@ -47,7 +47,7 @@
 			<div class="control-group">
 				<label class="control-label">담당PD</label>
 				<div class="controls">
-					<input type="text" id="admin_name" name="admin_name" placeholder="담당PD" value="${ saleCompany.admin_name }">
+					<input type="text" id="pd_name" name="pd_name" placeholder="담당PD" value="${ saleCompany.pd_name }">
 				</div>
 			</div>
 			<div class="control-group">
@@ -64,33 +64,6 @@
 				</div>
 			</div>
 			
-			<!-- 정산 정보는 판매 계약시 입금 하는 걸로 하는게 현 시스템에 좋을 듯 한데..
-			<div class="page-name">
-				<h4>
-					정산정보 입력
-				</h4>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="customer_balancetype"><img src='<spring:eval expression="@urlProp['v']"/>'> 정산방식</label>
-				<div class="controls">
-					<label class="radio inline">
-						<input type="radio" name="customer_balancetype" value="1" checked>
-						월정산
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="customer_balancetype" value="2" >
-						연정산
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="customer_balancetype" value="0" >
-						기타
-					</label>
-					<div class="clearfix">
-						<textarea class="span10" rows="4" id="customer_balance_detail" name="contract_balance_detail" placeholder="정산방식 상세정보 입력 필수"></textarea>
-					</div>
-				</div>
-			</div>
-			 -->
 			<div class="control-group">
 				<label class="control-label" for="customer_bankname">입금은행</label>
 				<div class="controls">

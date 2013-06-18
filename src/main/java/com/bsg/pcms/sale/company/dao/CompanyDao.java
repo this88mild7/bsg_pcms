@@ -12,8 +12,8 @@ import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 @Component
 public class CompanyDao extends SqlSessionDaoSupport {
 
-	public Integer create( CompanyDTOEx saleCompany ) {
-		return getSqlSession().insert( "saleCompanyQuery.createCompany", saleCompany );
+	public void create( CompanyDTOEx saleCompany ) {
+		getSqlSession().insert( "saleCompanyQuery.createCompany", saleCompany );
 	}
 	
 	public List<CompanyDTOEx> list(CompanyDTOEx saleCompany) {
@@ -31,23 +31,20 @@ public class CompanyDao extends SqlSessionDaoSupport {
 		return (CompanyDTOEx)getSqlSession().selectOne( "saleCompanyQuery.companyList", saleCompany );
 	}
 	
-
-//	public List<CompanyDTO> getSaleCompantDeviceList(int sale_company_mgmtno) {
-//		return getSqlSession().selectList( "saleCompanyQuery.getSaleCompantDeviceList", sale_company_mgmtno );
-//	}
-//	public int updateSaleCompany(CompanyDTOEx customer) {
-//		return getSqlSession().update( "saleCompanyQuery.updateCustomer", customer);
-//	}
-//	
-//	public Integer deleteCustomer( int customer_id ) {
-//		return getSqlSession().delete( "saleCompanyQuery.deleteCustomer", customer_id );
-//	}
-
 	public void modify(CompanyDTOEx saleCompany) {
 		getSqlSession().update( "saleCompanyQuery.modifyCompany", saleCompany);
 	}
 	
 	public void delete(CompanyDTOEx saleCompany) {
 		getSqlSession().update( "saleCompanyQuery.deleteCompany", saleCompany);
+	}
+
+	public void createCompanyAdministor(CompanyDTOEx compDto) {
+		getSqlSession().insert("saleCompanyQuery.createCompanyAdministor", compDto);
+		
+	}
+	
+	public void modifyCompanyAdministor(CompanyDTOEx saleCompany) {
+		getSqlSession().update( "saleCompanyQuery.modifyCompanyAdministor", saleCompany);
 	}
 }

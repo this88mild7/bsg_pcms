@@ -7,14 +7,6 @@ import com.bsg.pcms.dto.CompanyDTO;
 public class CompanyDTOEx extends CompanyDTO {
 	
 	
-//	private int company_mgmtno; 
-//	private String company_name; 
-//    private String addr;
-//    private String phoneno; 
-//    private String master; 
-//    private String master_email; 
-//    private String master_phoneno; 
-//    private String company_no;
     private String deposit_bank;
     private String account_no;
     private String account_holder;
@@ -25,7 +17,17 @@ public class CompanyDTOEx extends CompanyDTO {
 	private String searchType;
 	private String searchQuery;
 	
+	private String pd_name;
 	
+	
+	public String getPd_name() {
+		return pd_name;
+	}
+
+	public void setPd_name(String pd_name) {
+		this.pd_name = pd_name;
+	}
+
 	public String getSearchQuery() {
 		return searchQuery;
 	}

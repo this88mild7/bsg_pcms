@@ -48,27 +48,41 @@
 				</div>
 			</div>
 			
+			
+			
 			<div class="control-group">
 				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급대금</label>
-				<div class="btn-group">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">전체</a></li>
-								<li><a href="#">판매처명</a></li>
-							</ul>
-						</div>
-						<div class="input-append">
-								<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" >								
-						</div>
+				<div class="controls">
+					<div class="btn-group">
+						<a  id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>KRW</span><span class="caret"></span></a>
+						<ul id="currency-menu" class="dropdown-menu">
+							<li><a href="#">KRW</a></li>
+							<li><a href="#">USD</a></li>
+							<li><a href="#">CHW</a></li>
+						</ul>
+					</div>
+					<div class="input-append">
+						<input type="hidden" id="currency" name="currency" value="KRW">
+						<input class="inputError" type="text" id="payments" name="payments" class="input-medium" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+					</div>
+					<span class="help-inline"><a id="tip4" href="#" data-toggle="tooltip" >tip</a></span>
+					<script>
+					$('#tip4')
+						.tooltip({
+							"title":"지급대금을 입력해 주세요",
+							"placement":"bottom"
+						});
+					</script>
+				</div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급방식</label>
+				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 지급방식</label>
 				<div class="controls">
-					<select size="1" name="company_mgmtno" id="customer" >
-						<option value="일시지급" >일시지급</option>
-						<option value="분납지급" >분납지급</option>
-						<option value="기타방식" >기타방식</option>
+					<select size="1" name="payments_type" id="payments_type" >
+						<option value="일시지급" <c:if test="${saleContractDetail.payments_type eq '일시지급'}">selected="selected"</c:if>>일시지급</option>
+						<option value="분납지급" <c:if test="${saleContractDetail.payments_type eq '분납지급'}">selected="selected"</c:if>>분납지급</option>
+						<option value="기타방식" <c:if test="${saleContractDetail.payments_type eq '기타방식'}">selected="selected"</c:if>>기타방식</option>
 					</select>
 				</div>
 			</div>
@@ -414,6 +428,13 @@
 
 var seletedTotlaPrice = 0;
 $(function(){
+	
+	// payments_type 이벤트
+	$("#currency-menu").find("a").click(function(){
+		$("#currency-toggle span" ).first().text( $(this).text() );
+		$("#currency").val($(this).text());
+		
+	});
 	
 	// submit validation
 	{
