@@ -33,4 +33,8 @@ public class BalanceDao extends SqlSessionDaoSupport{
 		
 	}
 
+	public BalanceDTOEx detail(BalanceDTOEx balanceDto) {
+		return (BalanceDTOEx)getSqlSession().selectOne("balanceQuery.detail", balanceDto);
+	}
+
 }

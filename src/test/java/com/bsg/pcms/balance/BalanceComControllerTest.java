@@ -47,12 +47,12 @@ public class BalanceComControllerTest {
 //		fail("Not yet implemented");
 //	}
 
-	@Test
-	public void testCreate() {
-		String result = _balanceComContr.create(balanceDto);
-		assertNotNull(result);
-		logger.info(result);
-	}
+//	@Test
+//	public void testCreate() {
+//		String result = _balanceComContr.create(balanceDto);
+//		assertNotNull(result);
+//		logger.info(result);
+//	}
 
 //	@Test
 //	public void testCreatView() {

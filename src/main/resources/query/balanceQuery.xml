@@ -5,7 +5,10 @@
 <mapper namespace="balanceQuery">
    
    <!-- INSERT -->
-   <insert id="createSaleCompany" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" useGeneratedKeys="true" keyProperty="file_id">
+   <insert id="createSaleCompany" 
+   	parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" 
+   	useGeneratedKeys="true" 
+   	keyProperty="balance_mgmtno">
 		INSERT INTO BALANCE
 			( 
 				COMPANY_MGMTNO,
@@ -40,6 +43,7 @@
 		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.DEL_YN = 'N'
 		AND BAL.REG_DT
 			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
 			AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
@@ -61,13 +65,15 @@
 		</if>
 	</select>
 	
+	
 	<select id="searchByDate" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
 		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.DEL_YN = 'N'
 		AND BAL.REG_DT 
-			BETWEEN #{sale_str_date}  
-			AND #{sale_end_date}
+			BETWEEN #{searchStrDate}  
+			AND #{searchEndDate}
 		<!-- 등록순 -->
 		<if test="printType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
@@ -87,9 +93,13 @@
 	</select>
 	
 	<select id="searchByWord" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+		SELECT 
+			BAL.*, 
+			COM.COMPANY_NAME 
+		FROM BALANCE BAL, COMPANY COM
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.DEL_YN = 'N'
 		AND COM.COMPANY_NAME like '%${searchQuery}%'
 		<!-- 등록순 -->
 		<if test="printType == 1">
@@ -107,6 +117,14 @@
 		<if test="printType == 4">
 			ORDER BY BAL.TOTAL_SALE_COUNT DESC
 		</if>
+	</select>
+	
+	<select id="detail" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.BALANCE_MGMTNO =  #{balance_mgmtno} 
+		AND BAL.DEL_YN = 'N'
 	</select>
    <!-- UPDATE -->
 
