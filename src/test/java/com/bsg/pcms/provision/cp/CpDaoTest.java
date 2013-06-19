@@ -5,7 +5,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +34,11 @@ public class CpDaoTest {
 	@Autowired
 	private PageUtil pageUtil; 
 
+	// 업체 만들기 테스트
 	@Test
 	public void testCreateCp() {
 		CompanyDTO cpDTO = new CompanyDTO();
-		cpDTO.setCompany_name("대원3");
+		cpDTO.setCompany_name("업체이름테스트");
 		cpDTO.setCompany_no("123");
 		cpDTO.setAddr("일산");
 		cpDTO.setPhoneno("4338");
@@ -45,6 +49,26 @@ public class CpDaoTest {
 		
 		int result = cpDao.createCp(cpDTO);
 		assertThat( result, is(1) );
+	}
+	
+	// 업체 담당 PD 만들기 테스트
+	@Test
+	public void testCreatePd() {
+		
+		Map<String, String> map1 = new HashMap<String, String>();
+		map1.put("company_mgmtno", "33");
+		map1.put("pd_name", "대원");
+		
+		Map<String, String> map2 = new HashMap<String, String>();
+		map2.put("company_mgmtno", "33");
+		map2.put("pd_name", "지순");
+		
+		List<Map<String, String>> pdList = new ArrayList<Map<String, String>>();
+		pdList.add(map1);
+		pdList.add(map2);
+		
+		int result = cpDao.createPd(pdList);
+		assertThat( result, is(2) );
 	}
 	
 	@Test
@@ -75,6 +99,27 @@ public class CpDaoTest {
 		assertThat( result, is(1) );
 	}
 	
+//	@Ignore //삭제 테스트 할때는 제거
+	@Test
+	public void testDeletePdAll() {
+		int companyMgmtno = 33;
+		
+		int result = cpDao.deletePdAll(companyMgmtno);
+		assertThat( result, is(1) );
+	}
+	
+	//담당PD 목록 가져오기 테스트
+	@Test
+	public void testGetPdList() {
+		
+		int companyMgmtno = 33;
+		
+		List<CpDTOEx> resultDTO = cpDao.getPdList(companyMgmtno);
+		assertNotNull( resultDTO );
+		assertThat( resultDTO.size(), not(0) );
+		logger.info(resultDTO.toString());
+	}
+	
 	@Test
 	public void testGetCpList() {
 		
@@ -100,7 +145,7 @@ public class CpDaoTest {
 	@Test
 	public void testGetCp() {
 		
-		int companyMgmtno = 2; // null 에러시 선 DB조회 후 테스트
+		int companyMgmtno = 33; // null 에러시 선 DB조회 후 테스트
 		CompanyDTO cpDTO = new CompanyDTO();
 		cpDTO.setCompany_mgmtno(companyMgmtno);
 		

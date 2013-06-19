@@ -3,6 +3,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style>
+.no-padding {
+	padding : 0px;
+}
+</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -109,7 +114,7 @@
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 라이선스</label>
+				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
 				<div class="controls">
 					<label class="radio inline">
 						<input type="radio" name="license_cd" value="1" checked="checked">개발대행
@@ -205,25 +210,26 @@
 			<div class="control-group">
 				<label class="control-label" for="sale_price">계약대금</label>
 				<div class="controls">
-					<input type="hidden" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
 					<div class="input-prepend">
-						<div class="btn-group">
+						<div class="btn-group no-padding">
 							<button class="btn dropdown-toggle" data-toggle="dropdown">
-								Action <span class="caret">WON</span>
+								<span id="currency">KRW</span><span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li>WON</li>
-								<li>US</li>
-								<li>JYP</li>
+								<li><a href="#">KRW(한국)</a></li>
+								<li><a href="#">USD(미국)</a></li>
+								<li><a href="#">JPY(일본)</a></li>
+								<li><a href="#">CNY(중국)</a></li>
+								<li><a href="#">EUR(유럽)</a></li>
 							</ul>
 						</div>
-						<input id="prependedDropdownButton" type="text">
+						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
 					</div>
 					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
 					<script>
 					$('#tip2')
 						.tooltip({
-							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"title":"콘텐츠 판매가는 실제 판매상품 등록 시 여러 환율 단위로 등록이 가능합니다. 대표 가격만 입력해주세요.",
 							"placement":"bottom"
 						});
 					</script>
@@ -364,6 +370,8 @@
 <script>
 $(function(){
 	
+	$('#sale_price').autoNumeric('init',{aPad: false });
+	
 	placeholderForIE();
 	
 	contractValidation();
@@ -432,7 +440,8 @@ $(function(){
 				}
 			});
 		});
-		if(${empty isNew}) {
+		var isEtc = ${empty isNew};
+		if(isEtc) {
 			//기타 일시 상세펼치기
 			if(boxData.license_country == 0 ){
 				$licenseCountryDetail.show();
