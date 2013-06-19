@@ -9,8 +9,8 @@
 				<h5>메인</h5>
 			</div>
 			<div class="span2">
-				<h5>CP업체 관리</h5>
-				<a href='<spring:eval expression="@urlProp['cpList']"/>'>CP업체 리스트</a>
+				<h5>업체 관리</h5>
+				<a href='<spring:eval expression="@urlProp['cpList']"/>'>업체 리스트</a>
 				<br />
 				<a href='<spring:eval expression="@urlProp['categoryList']"/>'>카테고리 리스트</a>
 				<br />
@@ -19,7 +19,7 @@
 				<a href='<spring:eval expression="@urlProp['contractList']"/>'>계약 리스트</a>
 			</div>
 			<div class="span2">
-				<h5>판매업체 관리</h5>
+				<h5>판매 관리</h5>
 				<a href='<spring:eval expression="@urlProp['customerList']"/>'>판매업체 리스트</a>
 				<br />
 				<a href='<spring:eval expression="@urlProp['productList']"/>'>판매상품 리스트</a>
