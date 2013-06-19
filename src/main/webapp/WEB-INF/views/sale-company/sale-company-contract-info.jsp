@@ -317,7 +317,7 @@
 								<input type="radio" name="sale_price_type" value="1" checked>
 								기본 판매가격
 							</label>
-							<input type="number" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
+							<input type="text" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
 						</c:when>
 						<c:otherwise>
 							<label class="radio inline">
@@ -328,7 +328,7 @@
 								<input type="radio" name="sale_price_type" value="1" <c:if test="${saleContractDetail.sale_price_type == 1}">checked</c:if>>
 								기본 판매가격
 							</label>
-							<input type="number" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+							<input type="text" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
 							<p class="help-block"></p>
 						</c:otherwise>
 					</c:choose>					
@@ -429,7 +429,12 @@
 var seletedTotlaPrice = 0;
 $(function(){
 	
+	// 가격 구분바 표시
+	$('#sale_price').autoNumeric('init',{aPad: false });
+	$('#payments').autoNumeric('init',{aPad: false });
+	
 	// payments_type 이벤트
+	
 	$("#currency-menu").find("a").click(function(){
 		$("#currency-toggle span" ).first().text( $(this).text() );
 		$("#currency").val($(this).text());
@@ -443,6 +448,9 @@ $(function(){
 	    $("#btn-modify").click(function(){
 	    	bootbox.confirm( "수정 하시겠습니까?", function(result) {
 				if( result ){
+					// 구분자 제거
+					$('#sale_price').val($('#sale_price').autoNumeric('get'));
+					$('#payments').val($('#payments').autoNumeric('get'));
 					$("#registeForm" ).submit();
 				}
 			}); 
@@ -451,14 +459,13 @@ $(function(){
 	    $("#btn-registe").click(function(){
 	    	bootbox.confirm( "등록 하시겠습니까?", function(result) {
 				if( result ){
+					// 구분자 제거
+					$('#sale_price').val($('#sale_price').autoNumeric('get'));
+					$('#payments').val($('#payments').autoNumeric('get'));
 					$("#registeForm" ).submit();
 				}
 			}); 
 		});
-	}
-	
-	function submitFunc(confirmMsg){
-			
 	}
 	
 	//목록으로 돌아가기
