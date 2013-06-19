@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bsg.pcms.dto.CompanyDTO;
+import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 
 @Service
 public class CpService {
