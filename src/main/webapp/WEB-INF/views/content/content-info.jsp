@@ -36,7 +36,7 @@ data-series_mgmtno="${ content.series_mgmtno }"
 			<div class="control-group">
 				<label class="control-label" for="name"><img src='<spring:eval expression="@urlProp['v']"/>'> 콘텐츠명</label>
 				<div class="controls">
-					<input type="text" id="name" name="name" placeholder="콘텐츠명" value="${ content.name }">
+					<input type="text" id="name" name="name" placeholder="콘텐츠명" value="${ content.name }" required="required" data-validation-required-message="콘텐츠명을 입력해 주세요.">
 				</div>
 			</div>
 			<div class="control-group">
@@ -110,11 +110,11 @@ data-series_mgmtno="${ content.series_mgmtno }"
 				<label class="control-label" for="optionsRadio">판매가설정</label>
 				<div class="controls">
 					<label class="radio inline">
-						<input type="radio" name="optionsRadio" value="true" checked>
+						<input type="radio" name="optionsRadio" value="1" checked>
 						판매가설정
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="optionsRadio" value="false">
+						<input type="radio" name="optionsRadio" value="0">
 						설정안함
 					</label>
 				</div>
@@ -122,14 +122,14 @@ data-series_mgmtno="${ content.series_mgmtno }"
 			<div class="control-group price-group">
 				<label class="control-label" for="content_price">판매단가</label>
 				<div class="controls">
-					<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }">
+					<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
 					<span class="help-inline">
 						<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
 					</span>
 					<script>
 					$('#tip2')
 						.tooltip({
-							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"title":"설정 판매가를 숫자로 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
 							"placement":"bottom"
 						});
 					</script>
@@ -140,7 +140,7 @@ data-series_mgmtno="${ content.series_mgmtno }"
 			<div class="control-group">
 				<label class="control-label" ></label>
 				<div class="controls">
-					<button class="btn btn-content-list">목록가기</button>
+					<button id="btn-content-list" class="btn">목록가기</button>
 					<c:choose>
 						<c:when test="${empty isNew}">
 							<button id="btn-content-delete-action" class="btn">삭제</button>
@@ -165,7 +165,40 @@ data-series_mgmtno="${ content.series_mgmtno }"
 <script>
 $(function(){
 	
-	contentValidation();
+	//유효성 체크
+	$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+	$('#sale_price').autoNumeric('init',{aSign:' 원', pSign:'s',aPad: false });
+	
+	$('input[name="optionsRadio"]').click(function(){
+		var $this = $(this);
+		if(1 == $this.val() ) {
+			$( "div.price-group" ).show();
+			$('#sale_price').prop("required", true);
+			//유효성 체크 다시 걸기
+			$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+		} else {
+			$( "div.price-group" ).hide();
+			$('#sale_price').prop("required", false);
+			
+		}
+	});
+	
+	// 판매가가 없으면 판매가 설정안함으로 라디오 체크
+	if( $( "div.box" ).data( "sale_price" ).length == 0 ) {
+		$( "input[name='optionsRadio']" ).each(function(){
+			if( "0" == $(this).val() ){
+				$( this ).prop("checked", true);
+				$( "div.price-group" ).hide();
+			}
+		});
+	}
+	
+	$("#contentForm").submit(function(){
+		
+		// 10,000 원 => 숫자로만 변경
+		$('#sale_price').val($('#sale_price').autoNumeric('get'));
+	});
+	
 	// CP 업체 선택
 	$("#company_mgmtno").find("option[value='" + $("div.box").data("company_mgmtno") + "']").prop("selected", true);
 	
@@ -177,16 +210,6 @@ $(function(){
 	});
 	// 연령 선택
 	$("#age").find("option[value='" + $( "div.box" ).data( "content_age" ) + "']" ).prop("selected", true);
-	
-	// 판매가가 없으면 판매가 설정안함으로 라디오 체크
-	if( $( "div.box" ).data( "sale_price" ).length == 0 ) {
-		$( "input[name='optionsRadio']" ).each(function(){
-			if( "false" == $(this).val() ){
-				$( this ).prop("checked", true);
-				$( "div.price-group" ).hide();
-			}
-		});
-	}
 	
 	$("#btn-content-list").click(function(){
 		bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {

@@ -33,6 +33,30 @@ public class CompanyContractDTOEx extends ContractDTO{
 	
 	private String searchQuery;
 	
+	private double payments;
+	
+	private String currency;
+	
+	private String payments_type;
+	
+	public double getPayments() {
+		return payments;
+	}
+	public void setPayments(double payments) {
+		this.payments = payments;
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public String getPayments_type() {
+		return payments_type;
+	}
+	public void setPayments_type(String payments_type) {
+		this.payments_type = payments_type;
+	}
 	public String getSearchType() {
 		return searchType;
 	}

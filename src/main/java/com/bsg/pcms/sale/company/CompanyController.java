@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class CompanyController {
 	
 	@RequestMapping( value = "search.do", method = RequestMethod.GET )
 	public ModelAndView search(CompanyDTOEx saleCompany) {
+		if(StringUtils.isBlank(saleCompany.getSearchQuery())){
+			saleCompany.setSearchType(null);
+		}
 		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.search(saleCompany);
 		return _pmsView.getSaleCompanyListView(saleCompanyList);
 	}
@@ -69,6 +73,7 @@ public class CompanyController {
 
 	@RequestMapping( value = "create.do", method = RequestMethod.POST )
 	public String create(CompanyDTOEx companyDTOEx) {
+		
 		_saleCompanyService.create(companyDTOEx);
 		return "redirect:/saleCompany/list.do";
 	}

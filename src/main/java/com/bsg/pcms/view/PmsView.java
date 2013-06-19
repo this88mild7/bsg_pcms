@@ -25,8 +25,6 @@ public interface PmsView {
 	public ModelAndView getSaleCompanyContractListView(
 			List<CompanyContractDTOEx> customerContractList);
 	
-	public ModelAndView getSaleCompanyCreateContractView(
-			List<CompanyContractDTOEx> customerList);
 	
 	public ModelAndView getSaleCompanyContractDetailView(
 			CompanyContractDTOEx customerList,

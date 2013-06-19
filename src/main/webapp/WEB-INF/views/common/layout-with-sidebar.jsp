@@ -48,9 +48,9 @@
 	<script src="/pcms/js/json2.js"></script>
 	<script src="/pcms/js/bootstrap-datepicker.js"></script>
 	<script src="/pcms/js/bootbox.min.js"></script>
-	<script src="/pcms/js/bigstar-validation.js"></script>
-	<script src="/js/jqBootstrapValidation.js"></script>
+	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/bigstar.js"></script>
+	<script src="/pcms/js/autoNumeric.js"></script>
 	
 </body>
 </html>

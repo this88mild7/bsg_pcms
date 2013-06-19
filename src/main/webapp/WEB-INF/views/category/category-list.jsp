@@ -149,7 +149,7 @@ $( "#category1 button" ).click(function(){
 			
 			//validation
 			if( cateName.length === 0 ){
-				alert( "이름을 입력해 주십시오." );
+				bootbox.alert( "이름을 입력해 주십시오." );
 				$( "#category_name1" ).focus();
 				break;
 			}
@@ -159,7 +159,7 @@ $( "#category1 button" ).click(function(){
 				.find("option").each(function(){
 				
 					if( $( this ).text() == cateName ){
-						alert( "이미 같은 이름이 있습니다." );
+						bootbox.alert( "이미 같은 이름이 있습니다." );
 						$("#category_name1").focus();
 						answer1 = false;
 						return false;
@@ -182,7 +182,7 @@ $( "#category1 button" ).click(function(){
 						var $html = '<option value="' + result.cate_id + '">' + result.cate_name + '</option>';
 	
 						$( "#category-id1" ).append( $html );
-						alert("카테고리 생성 완료");
+						bootbox.alert("카테고리 생성 완료");
 						
 						// 카테고리 셀렉트 해제
 						$( "#category-id1 option" ).each(function(){
@@ -194,7 +194,7 @@ $( "#category1 button" ).click(function(){
 						$("#series").find( "option" ).remove();
 					},
 					error : function() {
-						alert("카테고리 생성 실패, 관리자에게 문의하여 주십시오.");
+						bootbox.alert("카테고리 생성 실패, 관리자에게 문의하여 주십시오.");
 					}
 				});
 			}
@@ -205,7 +205,7 @@ $( "#category1 button" ).click(function(){
 			var categoryName = $target.text();
 			
 			if( $target.size() === 0 ){
-				alert( "삭제할 카테고리를 선택해 주십시오." );
+				bootbox.alert( "삭제할 카테고리를 선택해 주십시오." );
 				break;				
 			}
 			if ( !confirm( "하위 카테고리까지 전부 삭제 됩니다.\n" + categoryName + "를 삭제하시겠습니까? " ) ){
@@ -220,14 +220,14 @@ $( "#category1 button" ).click(function(){
 				dataType : "json",
 				success : function( data ) {
 					
-					alert("카테고리 삭제 완료");
+					bootbox.alert("카테고리 삭제 완료");
 					// 선택한 카테고리 삭제
 					$target.remove();
 					//하위카테고리 삭제
 					$("#select").find("option").remove();
 				},
 				error : function() {
-					alert("카테고리 삭제 실패, 관리자에게 문의하여 주십시오.");
+					bootbox.alert("카테고리 삭제 실패, 관리자에게 문의하여 주십시오.");
 				}
 			});
 			break;
@@ -254,11 +254,11 @@ $( "#category1 button" ).click(function(){
 							dataType : "json",
 							success : function( data ) {
 								
-								alert("카테고리 변경 완료");
+								bootbox.alert("카테고리 변경 완료");
 								$target.text(result);
 							},
 							error : function() {
-								alert("카테고리 변경 실패, 관리자에게 문의하여 주십시오.");
+								bootbox.alert("카테고리 변경 실패, 관리자에게 문의하여 주십시오.");
 							}
 						});
 						
@@ -288,11 +288,11 @@ $( "#series_box button" ).click(function(){
 			var cateId = $("#category-id1").find("option").filter(":selected").val();
 			
 			if( cateId == null ){
-				alert( "카테고리를 선택해 주세요!" );
+				bootbox.alert( "카테고리를 선택해 주세요!" );
 				break;
 			}
 			if( seriesName.length === 0 ){
-				alert( "시리즈명을 입력해 주세요!" );
+				bootbox.alert( "시리즈명을 입력해 주세요!" );
 				$( "#series_name" ).focus();
 				break;
 			}
@@ -302,7 +302,7 @@ $( "#series_box button" ).click(function(){
 			$("#select").find("option").each(function(){
 				
 				if( $( this ).text() == seriesName ){
-					alert( "이미 같은 이름이 있습니다." );
+					bootbox.alert( "이미 같은 이름이 있습니다." );
 					answer2 = false;
 					$( "#series_name" ).focus();
 					return false;
@@ -325,11 +325,11 @@ $( "#series_box button" ).click(function(){
 	
 						$( "select[name='series']" ).append( $html );
 						$( "#series_name" ).val( "" );
-						alert("시리즈 생성 완료");
+						bootbox.alert("시리즈 생성 완료");
 						
 					},
 					error : function() {
-						alert("시리즈 생성 실패, 관리자에게 문의하여 주십시오.");
+						bootbox.alert("시리즈 생성 실패, 관리자에게 문의하여 주십시오.");
 					}
 				});
 			}
@@ -337,7 +337,7 @@ $( "#series_box button" ).click(function(){
 		case 'delete':
 			var $target = $("#series").find("option").filter(":selected");
 			if( $target.size() === 0 ){
-				alert( "삭제할 시리즈를 선택해 주십시오." );
+				bootbox.alert( "삭제할 시리즈를 선택해 주십시오." );
 				break;				
 			}
 			
@@ -359,11 +359,11 @@ $( "#series_box button" ).click(function(){
 					console.info("success");
 					console.info( data );
 					
-					alert("시리즈 삭제 완료");
+					bootbox.alert("시리즈 삭제 완료");
 					$target.remove();
 				},
 				error : function() {
-					alert("시리즈 삭제 실패, 관리자에게 문의하여 주십시오.");
+					bootbox.alert("시리즈 삭제 실패, 관리자에게 문의하여 주십시오.");
 				}
 			});
 			break;
@@ -373,7 +373,7 @@ $( "#series_box button" ).click(function(){
 			var $target = $("#series").find("option").filter(":selected");
 			
 			if( $target.size() === 0 ){
-				alert( "삭제할 시리즈를 선택해 주십시오." );
+				bootbox.alert( "삭제할 시리즈를 선택해 주십시오." );
 				break;				
 			}
 			
@@ -396,11 +396,11 @@ $( "#series_box button" ).click(function(){
 							dataType : "json",
 							success : function( data ) {
 								
-								alert("시리즈 이름 변경 완료");
+								bootbox.alert("시리즈 이름 변경 완료");
 								$target.text(result);
 							},
 							error : function() {
-								alert("시리즈 이름 변경 실패, 관리자에게 문의하여 주십시오.");
+								bootbox.alert("시리즈 이름 변경 실패, 관리자에게 문의하여 주십시오.");
 							}
 						});
 						
@@ -426,14 +426,14 @@ var selectValidation = function( result, selectElement ) {
 	
 	var returnValue = true;
 	if( result.length < 1) {
-		alert("빈 값은 허용하지 않습니다.");				
+		bootbox.alert("빈 값은 허용하지 않습니다.");				
 		returnValue = false;
 	}
 	
 	selectElement
 		.find("option").each(function(){
 			if( result == $(this).text() ) {
-				alert("같은 이름은 허용하지 않습니다.");
+				bootbox.alert("같은 이름은 허용하지 않습니다.");
 				returnValue = false;
 			}
 		});
