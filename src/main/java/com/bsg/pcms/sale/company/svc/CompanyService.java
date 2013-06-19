@@ -19,8 +19,13 @@ public class CompanyService {
 	@Autowired
 	private CompanyDao _saleCompanyDao;
 	
-	public int create( CompanyDTOEx compDto ){
-		return _saleCompanyDao.create( compDto );
+	public void create( CompanyDTOEx compDto ){
+		
+		// 마스터 테이블 insert
+		_saleCompanyDao.create( compDto );
+		
+		// 업체 관리자 테이블 insert
+		_saleCompanyDao.createCompanyAdministor(compDto);
 	}
 	
 	public List<CompanyDTOEx> list() {
@@ -37,6 +42,9 @@ public class CompanyService {
 	
 	public void modify(CompanyDTOEx saleCompany) {
 		_saleCompanyDao.modify(saleCompany);
+		
+		// 업체 관리자 테이블 update
+		_saleCompanyDao.modifyCompanyAdministor(saleCompany);
 	}
 
 	public List<CompanyDTOEx> getSaleCompanyList() {

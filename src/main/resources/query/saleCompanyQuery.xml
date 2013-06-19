@@ -27,7 +27,10 @@
             CONTRACT_TYPE, 
             CONTRACT_TYPE_DETAIL,
             BALANCE_TYPE,
-            BALANCE_DETAIL
+            BALANCE_DETAIL,
+            PAYMENTS,
+            PAYMENTS_TYPE,
+            CURRENCY
        )
 	   VALUES ( 
             #{user_mgmtseq}, 
@@ -47,13 +50,18 @@
 	        #{contract_type}, 
 	        #{contract_type_detail},
 	        #{balance_type},
-            #{balance_type_detail}        
+            #{balance_type_detail},
+            #{payments},
+            #{payments_type},
+            #{currency}  
         )
    </insert>
    
    
    <insert id="createCompany" 
-   	parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
+   	parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx"
+   		useGeneratedKeys="true" 
+   		keyProperty="company_mgmtno">
        INSERT /* saleCompanyQuery.createCompany 2013.06.03 최지순 */   
        INTO COMPANY ( 
             COMPANY_NAME,
@@ -86,6 +94,22 @@
             'SC', 
             now(), 
             now() 
+        )
+   </insert>
+   <insert id="createCompanyAdministor" 
+   	parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx">
+       INSERT /* saleCompanyQuery.createCompanyAdministor 2013.06.03 최지순 */   
+       INTO COMPANY_ADMIN ( 
+            PD_NAME,
+            COMPANY_MGMTNO, 
+            REG_DT,
+            MOD_DT
+       )
+	   VALUES ( 
+            #{pd_name}, 
+            #{company_mgmtno}, 
+            now(),
+            now()
         )
    </insert>
    
@@ -159,7 +183,10 @@
 							COM.PHONENO like '%${searchQuery}%'
 							OR
 							CTD.SALE_TYPE like '%${searchQuery}%'
-					OR CT.CONTRACT_MGMTNO in (
+							OR
+							COM.COMPANY_NAME like '%${searchQuery}%'
+							OR 
+							CT.CONTRACT_MGMTNO in (
 													SELECT CONTRACT_MGMTNO FROM CONTRACT_CONTENTS_GROUP A, CONTENTS B WHERE 1=1
 													AND A.CONTENTS_CD = B.CONTENTS_CD
 													AND B.NAME like '%${searchQuery}%'
@@ -209,7 +236,10 @@
 			CT.ETC,
 			CT.REG_DT,
 			CT.BALANCE_DETAIL AS balance_type_detail,
-			CT.BALANCE_TYPE
+			CT.BALANCE_TYPE,
+			CT.PAYMENTS,
+			CT.PAYMENTS_TYPE,
+			CT.CURRENCY
 		FROM 
 			CONTRACT CT, CONTRACT_DETAIL CTD, COMPANY COM, CONTENTS CON
 		WHERE 1=1
@@ -236,36 +266,38 @@
 		   resultType="com.bsg.pcms.sale.company.dto.CompanyDTOEx" 
 		   parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
        SELECT /* SaleCompany.companyList 2013.06.03 최지순 */
-          COMPANY_MGMTNO,
-          COMPANY_NAME,
-          DATE_FORMAT(REG_DT,'%Y-%m-%d') AS REG_DT,
-          PHONENO,
-          COMPANY_NO,
-          MASTER,
-          MASTER_EMAIL,
-          ADDR,
-          DEPOSIT_BANK,
-          ACCOUNT_NO,
-          ACCOUNT_HOLDER
-       FROM  COMPANY
-       <where>
-       	  DEL_YN = 'N'
-       	  AND COMPANY_TYPE = 'SC'
+          COM.COMPANY_MGMTNO,
+          COM.COMPANY_NAME,
+          DATE_FORMAT(COM.REG_DT,'%Y-%m-%d') AS REG_DT,
+          COM.PHONENO,
+          COM.COMPANY_NO,
+          COM.MASTER,
+          COM.MASTER_EMAIL,
+          COM.ADDR,
+          COM.DEPOSIT_BANK,
+          COM.ACCOUNT_NO,
+          COM.ACCOUNT_HOLDER,
+          CA.PD_NAME
+       FROM  
+       COMPANY_ADMIN CA LEFT OUTER JOIN COMPANY COM  ON COM.COMPANY_MGMTNO = CA.COMPANY_MGMTNO
+       <where>       	  
+       	  COM.DEL_YN = 'N'
+       	  AND COM.COMPANY_TYPE = 'SC'
          <if test="company_mgmtno > 0">
-         AND COMPANY_MGMTNO = #{company_mgmtno}
+         AND COM.COMPANY_MGMTNO = #{company_mgmtno}
          </if>
          <if test="searchType != null">
          	<choose>
 	            <when test="searchType eq '판매처명'">
-	            	AND COMPANY_NAME like '%${searchQuery}%'
+	            	AND COM.COMPANY_NAME like '%${searchQuery}%'
 	            </when>
 	            <otherwise>
 	            	AND(
-	            	  COMPANY_NAME like '%${searchQuery}%'
+	            	  COM.COMPANY_NAME like '%${searchQuery}%'
 	            	  OR
-	            	  PHONENO like '%${searchQuery}%'
+	            	  COM.PHONENO like '%${searchQuery}%'
 	            	  OR
-	            	  COMPANY_NO like '%${searchQuery}%'
+	            	  COM.COMPANY_NO like '%${searchQuery}%'
 	            	)
 	            </otherwise>
        		</choose>
@@ -319,6 +351,16 @@
 		WHERE COMPANY_MGMTNO = #{company_mgmtno}
 	</update>
 	
+	<update id="modifyCompanyAdministor" 
+			parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
+		UPDATE /* SaleCompany.modifyCompanyAdministor 2013.06.03 최지순 */ 
+			COMPANY_ADMIN 
+		SET 
+			PD_NAME = #{company_name},			
+			MOD_DT = now()
+		WHERE COMPANY_MGMTNO = #{company_mgmtno}
+	</update>
+	
 	<update id="deleteCompany"
 			parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
 		UPDATE /* SaleCompany.delete 2013.06.03 최지순 */  COMPANY 
@@ -357,7 +399,10 @@
             CONTRACT_TYPE = #{contract_type}, 
             CONTRACT_TYPE_DETAIL = #{contract_type_detail} ,
             BALANCE_TYPE = #{balance_type},            
-            BALANCE_DETAIL = #{balance_type_detail}
+            BALANCE_DETAIL = #{balance_type_detail},
+            PAYMENTS = #{payments},
+            PAYMENTS_TYPE = #{payments_type},
+            CURRENCY = #{currency}
 		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
    </update>
 	

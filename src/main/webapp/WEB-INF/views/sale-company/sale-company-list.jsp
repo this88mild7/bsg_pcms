@@ -13,15 +13,15 @@
 
 	<div class="pull-right">
 		<div class="btn-group">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
-			<ul class="dropdown-menu">
+			<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+			<ul id="search-menu" class="dropdown-menu">
 				<li><a href="#">전체</a></li>
 				<li><a href="#">판매처명</a></li>
 			</ul>
 		</div>
 		<div class="input-append">
 			<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanySearch']"/>">
-				<input type="hidden" id="customerType" name="searchType" >
+				<input type="hidden" id="searchType" name="searchType" value="전체">			
 				<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" value="${ salCompany.query }">
 				<button id="btn-search" class="btn" type="button"><i class="icon-search"></i></button>
 			</form>
@@ -64,12 +64,19 @@
 <script>
 $(function(){
 	
+	// 검색종류 클릭한 글자로 변경.
+	$("#search-menu").find("a").click(function(){
+		$("#search-toggle span" ).first().text( $(this).text() );
+		$("#searchType").val($(this).text());
+	});
+	
 	// 검색 버튼 이벤트
 	$("#btn-search").click(function(){
 		//if( $( "#customerQuery").val().length ) {
 			//검색어 체크 해야할까?
 		//};
-		
+		//var typeText = $("a.dropdown-toggle").find("span").first().text();
+		//$("#searchType").val(typeText);
 		$( "#search-form" ).submit();
 	});
 
