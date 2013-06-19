@@ -1,7 +1,6 @@
 package com.bsg.pcms.provision.cp;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.bsg.pcms.dto.CommonDTO;
 import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.utility.BigstarConstant;
@@ -74,8 +72,8 @@ public class CpController {
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CP());
 		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
 
-		CompanyDTO _cp = cpService.getCp(companyDTO);
-		mav.addObject("cp", _cp);
+		mav.addObject("cp", cpService.getCp(companyDTO));
+		mav.addObject("pdList", cpService.getPdList(companyDTO.getCompany_mgmtno()));
 
 		return mav;
 	}
@@ -111,11 +109,11 @@ public class CpController {
 	}
 
 	@RequestMapping(value = "updateAction.do", method = RequestMethod.POST)
-	public ModelAndView update(CompanyDTO companyDTO) {
+	public ModelAndView update(CpDTOEx cpDTOEx) throws SQLException {
 
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
 
-		int result = cpService.updateCp(companyDTO);
+		int result = cpService.updateCp(cpDTOEx);
 		mav.addObject("result", result);
 
 		return mav;
@@ -123,11 +121,11 @@ public class CpController {
 	}
 
 	@RequestMapping(value = "createAction.do", method = RequestMethod.POST)
-	public ModelAndView createAction(CompanyDTO companyDTO) {
+	public ModelAndView createAction(CpDTOEx cpDTOEx) throws SQLException {
 
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
 
-		int result = cpService.createCp(companyDTO);
+		int result = cpService.createCp(cpDTOEx);
 
 		String resultMsg = "CP 업체등록에 성공하였습니다.";
 		if (result != 1) {

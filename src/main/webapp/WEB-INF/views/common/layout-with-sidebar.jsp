@@ -9,6 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/pcms/img/favicon.ico" />
 	<link href="/pcms/css/bootstrap.css" rel="stylesheet">
+	<link href="/pcms/css/bootstrap.icon-large.min.css" rel="stylesheet">
 	<!-- 
 	<link href="/pcms/css/bootstrap-responsive.min.css" rel="stylesheet">
 	 -->

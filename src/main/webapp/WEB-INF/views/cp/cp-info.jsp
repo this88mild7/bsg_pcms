@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style>
+.removePd:hover {
+	cursor : pointer;
+}
+.mt5 {
+	margin-top : 5px; 
+}
+</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -48,9 +57,51 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="master">담당PD</label>
-				<div class="controls">
-					<input type="text" id="master" name="master" placeholder="담당PD" class="input-xlarge" value="${ cp.master }" />
+				<label class="control-label" for="pdNameList">담당PD</label>
+				<div class="controls pd-group">
+					<c:choose>
+						<c:when test="${ fn:length(pdList) == 0 }">
+							<div>
+								<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" />
+								<img id="addPd" src="/pcms/img/plus.png" alt="+"/>
+								<a id="pdNameList_tip" href="#" data-toggle="tooltip" >tip</a>
+									<script>
+									$('#pdNameList_tip')
+										.tooltip({
+											"title":"최대 5명까지 입력 가능합니다.",
+											"placement":"bottom"
+										});
+									</script>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<c:forEach items="${pdList}" var="pdObj" varStatus="status">
+								<c:if test="${status.first }">
+									<div>
+										<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" />
+										<img id="addPd" src="/pcms/img/plus.png" alt="+"/>
+										<a id="pdNameList_tip" href="#" data-toggle="tooltip" >tip</a>
+											<script>
+											$('#pdNameList_tip')
+												.tooltip({
+													"title":"최대 5명까지 입력 가능합니다.",
+													"placement":"bottom"
+												});
+											</script>
+									</div>
+								</c:if>
+	    						<c:if test="${not status.first }">
+	    							<div class="mt5">
+		    							<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" >
+		    							<img class="removePd" src="/pcms/img/remove.png" alt="x">
+	    							</div>
+	    						</c:if>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+					<!-- 
+					담당PD 추가될 공간
+					 -->
 				</div>
 			</div>
 			<div class="control-group">
@@ -97,7 +148,33 @@
 $(function(){
 	
 	//유효성 체크
-	$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+	$("#company_name,#phoneno").not("[type=submit]").jqBootstrapValidation();
+	
+	//담당PD 추가 버튼
+	$("#addPd")
+		.hover(function(){
+			$(this).css("cursor", "pointer");
+		})
+		.click(function(){
+			//최대 5명 까지 가능
+			if( 5 == $("input[name='pdNameList']").size() ) {
+				bootbox.alert("최대 5명까지 입력 하실 수 있습니다.");
+				return false;
+			}
+			//추가될 공간
+			var $target = $("div.pd-group");
+			//추가될 HTML
+			var html =  '<div class="mt5">';
+				html += '<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" /> ';	
+				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x"/>';	
+				html += '</div>';
+			
+			$target.append(html);
+		});
+	
+	$("div.pd-group").on("click", ".removePd", function(event){
+		  $(this).parent().remove();
+	});
 	
 	//목록가기 버튼
 	$("#btn-cp-list").click(function(){
