@@ -39,5 +39,8 @@ public class BalanceService {
 		BalanceDTOEx balanceDto = new BalanceDTOEx();
 		return balanceDao.list(balanceDto);
 	}
+	public void delete(BalanceDTOEx balanceDto) {
+		balanceDao.delete(balanceDto);
+	}
 
 }

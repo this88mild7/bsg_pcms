@@ -6,7 +6,6 @@
    
    <!-- INSERT -->
    <insert id="createSaleCompany" 
-   	parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" 
    	useGeneratedKeys="true" 
    	keyProperty="balance_mgmtno">
 		INSERT INTO BALANCE
@@ -127,6 +126,28 @@
 		AND BAL.DEL_YN = 'N'
 	</select>
    <!-- UPDATE -->
+   
+   <update id="modify">
+		UPDATE BALANCE 
+		SET
+			SALE_STR_DATE = #{sale_str_date}, 
+			SALE_END_DATE= #{sale_end_date}, 
+			SALE_COMMISSION= #{sale_commission}, 
+			CP_COMMISSION= #{cp_commission}, 
+			OWNER_PROFIT= #{owner_profit}, 
+			TOTAL_SALE_COUNT= #{total_sale_count}, 
+			TOTAL_SALE_PRICE= #{total_sale_price}, 
+			MOD_DT= NOW()
+		WHERE BALANCE_MGMTNO = #{balance_mgmtno}
+   </update>
+   
+   <update id="delete">
+		UPDATE BALANCE 
+		SET
+			DEL_YN = 'Y', 
+			MOD_DT= NOW()
+		WHERE BALANCE_MGMTNO = #{balance_mgmtno}
+   </update>
 
    <!-- DELETE -->
    

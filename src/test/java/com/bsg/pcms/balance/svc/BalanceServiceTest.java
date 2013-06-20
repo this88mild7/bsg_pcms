@@ -3,6 +3,7 @@ package com.bsg.pcms.balance.svc;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -31,13 +32,7 @@ public class BalanceServiceTest {
 	@Autowired
 	private BalanceService balanceService;
 	
-	private BalanceDTOEx balanceDto;
-	
-
-private BalanceDTOEx balanceDtoEx;
-	
-	private List<BalanceDTOEx> _balanceList;
-	
+	private BalanceDTOEx balanceDtoEx;
 	
 	private List<Integer> companyMgmtList;
 
@@ -83,14 +78,15 @@ private BalanceDTOEx balanceDtoEx;
 	@Test
 	public void testCreate() {
 		// 세팅
-		// setUp 메소드에서 setting
+		int preCreateBalanceMgmtno = balanceDtoEx.getBalance_mgmtno();
 		
 		// 기능
 		balanceService.create(balanceDtoEx);
 		
 		// 검증
-		BalanceDTOEx result = balanceService.detail(balanceDtoEx);
-		assertThat(result, is(notNullValue()) );
+		BalanceDTOEx resultOfCreate = balanceService.detail(balanceDtoEx);
+		assertThat(resultOfCreate, is(notNullValue()) );
+		assertThat(resultOfCreate.getBalance_mgmtno() > preCreateBalanceMgmtno, is(true));
 		
 	}
 	
@@ -114,11 +110,35 @@ private BalanceDTOEx balanceDtoEx;
 	public void testModyfi() {
 
 		// given 
+		BalanceDTOEx resultOfCreate = balanceService.create(balanceDtoEx);
+		resultOfCreate.setTotal_sale_count(1);
+		resultOfCreate.setTotal_sale_price(1);
 
 		// when
+		balanceService.modify(balanceDtoEx);
 
 		// then
-
-		
+		BalanceDTOEx resultOfDetail = balanceService.detail(balanceDtoEx);
+		assertThat(resultOfDetail, is(notNullValue()));
+		assertThat(resultOfDetail.getTotal_sale_count(), is(1));
+		assertThat(resultOfDetail.getTotal_sale_price(), is(new Double(1)));
 	}
+	
+	@Test
+	public void testDelete() {
+
+		// given 
+		int preCreateBalanceMgmtno = balanceDtoEx.getBalance_mgmtno();
+		BalanceDTOEx resultOfCreate = balanceService.create(balanceDtoEx);
+		assertThat(resultOfCreate.getBalance_mgmtno(), is(notNullValue()));
+		assertThat(resultOfCreate.getBalance_mgmtno() > preCreateBalanceMgmtno, is(true));
+
+		// when
+		balanceService.delete(resultOfCreate);
+
+		// then
+		BalanceDTOEx resultOfDetail = balanceService.detail(resultOfCreate);
+		assertThat(resultOfDetail, is(nullValue()));
+	}
+	
 }
