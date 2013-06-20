@@ -93,6 +93,10 @@ form.no-margin-bottom { margin-bottom : 0px; }
 	font-weight:bold;
 }
 
+.no-padding {
+	padding : 0px;
+}
+
 /* CP */
 div.cp-create-radio .radio {
 	float: left;
