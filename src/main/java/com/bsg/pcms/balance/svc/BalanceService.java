@@ -1,5 +1,7 @@
 package com.bsg.pcms.balance.svc;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,12 @@ public class BalanceService {
 	@Autowired
 	private BalanceDao balanceDao;
 
-	public void create(BalanceDTOEx balanceDto) {
+	public BalanceDTOEx create(BalanceDTOEx balanceDto) {
 		balanceDao.create(balanceDto);
+		return balanceDto;
 	}
 	public void list(BalanceDTOEx balanceDto) {
-		balanceDao.list(balanceDto);
+		
 	}
 	public void modify(BalanceDTOEx balanceDto) {
 		balanceDao.modify(balanceDto);
@@ -28,6 +31,16 @@ public class BalanceService {
 	
 	public void searchByWord(BalanceDTOEx balanceDto) {
 		balanceDao.create(balanceDto);
+	}
+	public BalanceDTOEx detail(BalanceDTOEx balanceDto) {
+		return balanceDao.detail(balanceDto);
+	}
+	public List<BalanceDTOEx> list() {
+		BalanceDTOEx balanceDto = new BalanceDTOEx();
+		return balanceDao.list(balanceDto);
+	}
+	public void delete(BalanceDTOEx balanceDto) {
+		balanceDao.delete(balanceDto);
 	}
 
 }

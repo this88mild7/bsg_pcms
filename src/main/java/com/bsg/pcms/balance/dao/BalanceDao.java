@@ -29,8 +29,16 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	}
 
 	public void modify(BalanceDTOEx balanceDto) {
-		// TODO Auto-generated method stub
+		getSqlSession().update("balanceQuery.modify", balanceDto);
 		
+	}
+
+	public BalanceDTOEx detail(BalanceDTOEx balanceDto) {
+		return (BalanceDTOEx)getSqlSession().selectOne("balanceQuery.detail", balanceDto);
+	}
+
+	public void delete(BalanceDTOEx balanceDto) {
+		getSqlSession().update("balanceQuery.delete", balanceDto);
 	}
 
 }

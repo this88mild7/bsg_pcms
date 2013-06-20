@@ -131,8 +131,8 @@ public class BalanceDaoTest {
 		
 		String currencyYYYYMM = BsgDateUtils.getCurrentYyyymm();
 		balanceDtoEx.setDateSortingType("1");
-		balanceDtoEx.setSale_str_date("20130601");
-		balanceDtoEx.setSale_end_date(currencyYYYYMM+BsgDateUtils.getStringLastDayOfMon("201306"));
+		balanceDtoEx.setSearchStrDate("20130601");
+		balanceDtoEx.setSearchEndDate(currencyYYYYMM+BsgDateUtils.getStringLastDayOfMon("201306"));
 		
 		
 		_balanceList = balanceDao.searchByDate(balanceDtoEx);
@@ -192,7 +192,7 @@ public class BalanceDaoTest {
 	}
 	
 	private void assertTotalSalePriceOderby(List<BalanceDTOEx> balanceList) {
-		
+		assertThat(balanceList, is(notNullValue()) );
 		if(balanceList.size() > 2){
 			double firstPrice = balanceList.get(0).getTotal_sale_price();
 			double seconPrice = balanceList.get(1).getTotal_sale_price();
@@ -203,7 +203,7 @@ public class BalanceDaoTest {
 	}
 
 	private void assertOwnerProfitOderby(List<BalanceDTOEx> balanceList) {
-		
+		assertThat(balanceList, is(notNullValue()) );
 		if(balanceList.size() > 2){
 			assertThat(balanceList, is(notNullValue()) );
 			double firstPrice = balanceList.get(0).getOwner_profit();
@@ -215,7 +215,7 @@ public class BalanceDaoTest {
 	}
 	
 	private void assertTotalSaleCountOderby(List<BalanceDTOEx> balanceList) {
-		
+		assertThat(balanceList, is(notNullValue()) );
 		if(balanceList.size() > 2){
 			assertThat(balanceList, is(notNullValue()) );
 			double firstPrice = balanceList.get(0).getTotal_sale_count();

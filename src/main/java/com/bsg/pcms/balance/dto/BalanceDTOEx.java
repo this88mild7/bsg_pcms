@@ -23,6 +23,10 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String searchQuery;
 	
+	private String searchStrDate;
+	
+	private String searchEndDate;
+	
 
 	public List<String> getContentList() {
 		return contentList;
@@ -88,13 +92,32 @@ public class BalanceDTOEx extends BalanceDTO{
 		this.searchQuery = searchQuery;
 	}
 
+	public String getSearchStrDate() {
+		return searchStrDate;
+	}
+
+	public void setSearchStrDate(String searchStrDate) {
+		this.searchStrDate = searchStrDate;
+	}
+
+	public String getSearchEndDate() {
+		return searchEndDate;
+	}
+
+	public void setSearchEndDate(String searchEndDate) {
+		this.searchEndDate = searchEndDate;
+	}
+
 	@Override
 	public String toString() {
 		return "BalanceDTOEx [contentList=" + contentList + ", salePrice="
 				+ salePrice + ", saleCount=" + saleCount + ", dateSortingType="
 				+ dateSortingType + ", sortingStrDate=" + sortingStrDate
 				+ ", sortingEndDate=" + sortingEndDate + ", printType="
-				+ printType + ", searchQuery=" + searchQuery + "]";
+				+ printType + ", searchQuery=" + searchQuery
+				+ ", searchStrDate=" + searchStrDate + ", searchEndDate="
+				+ searchEndDate + "]";
 	}
+
 	
 }

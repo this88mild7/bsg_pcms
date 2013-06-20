@@ -86,12 +86,42 @@
 					</select>
 				</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 분납방식</label>
+				<div class="controls installments-group">
+					<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+					  <input class="span2" size="160px" type="text" value="" placeholder="분납일">
+					  <span class="add-on"><i class="icon-calendar"></i></span>
+					  <img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+					</div>
+					<!-- 
+					<div class="input-prepend bfh-datepicker-toggle" data-toggle="bfh-datepicker">
+					    <span id="datepicker" class="add-on"><i class="icon-calendar"></i></span>
+					    <input type="text" id="installments_dt" class="input-medium" data-date-format="yyyy-mm-dd" readonly>
+					  </div>
+					 -->
+				</div>
+			</div>
+			<!-- 
+			<div class="control-group">
+				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 분납방식</label>
+				<div class="controls installments-group" >
+					<div>
+							<input class="installments-date" id="installments-date" type="text" data-date-format="yyyy-mm-dd" style="width:100px"  name="installments_dt" placeholder="분납일" />
+							<i class="installments-date icon-calendar"></i>
+							<input type="text" id="installments" name="installments" placeholder="분납 금액" class="input-xlarge" />
+							<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+						</div>
+				</div>
+			
+			</div>
+			 -->
 			
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 계약기간 </label>
 				<div class="controls">
-					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
-					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
+					<input class="contract-date" id="str_date" type="text"  name="str_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
+					<input class="contract-date" id="end_date" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
 					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
 					<script>
 					$('#tip3')
@@ -429,6 +459,45 @@
 var seletedTotlaPrice = 0;
 $(function(){
 	
+	// 분납 방식 달력
+	 $( ".installments-date" ).datepicker({
+		 autoclose: true
+	 });
+	
+	
+	
+	// 분납 방식 추가 버튼
+	$("#addInstallments")
+		.hover(function(){
+			$(this).css("cursor", "pointer");
+		})
+		.click(function(){
+			//최대 5명 까지 가능
+			if( 5 == $("input[name='installments']").size() ) {
+				bootbox.alert("최대 5명까지 입력 하실 수 있습니다.");
+				return false;
+			}
+			//추가될 공간
+			var $target = $("div.installments-group");
+			//추가될 HTML
+			var html =  '<div class="installments-date input-append date"  data-date-format="yyyy-mm-dd">';
+				html += '<input class="span2" size="160px" type="text" value="" placeholder="분납일"> ';	
+				html += '<span class="add-on"><i class="icon-calendar"></i></span>';	
+				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x"/>';	
+				html += '</div>';
+			
+			$target.append(html);
+			$( ".installments-date" ).datepicker({
+				 autoclose: true
+			 });
+		});
+	
+	// 분납 방식 X 아이콘 이벤트
+	$("div.installments-group").on("click", ".removePd", function(event){
+		  $(this).parent().remove();
+	});
+	
+	
 	// 가격 구분바 표시
 	$('#sale_price').autoNumeric('init',{aPad: false });
 	$('#payments').autoNumeric('init',{aPad: false });
@@ -482,9 +551,9 @@ $(function(){
 	// 계약 시작일, 종료일 계산위해
 	var sdate, edate;
 
-	$( "input.datepicker" ).datepicker()
+	$( "input.contract-date" ).datepicker()
 		.on('changeDate', function(ev){
-			if( "customer_sdate" === $(this).attr("name") ) {
+			if( "str_date" === $(this).attr("name") ) {
 				sdate = ev.date.valueOf();
 			} else {
 				edate = ev.date.valueOf();
@@ -492,15 +561,15 @@ $(function(){
 					bootbox.alert( "계약종료일 재설정" );
 					$( this ).val( "" );
 				}
-				$( "input[name=customer_sdate]" ).datepicker( "hide" );
+				$( "input[name=str_date]" ).datepicker( "hide" );
 			}
 		})
 		.on('show', function(ev){
 			// 2개의 달력을 동시에 안보이게 함.
-			if( "customer_sdate" === $(this).attr("name") ) {
-				$( "input[name=customer_edate]" ).datepicker( "hide" );
+			if( "str_date" === $(this).attr("name") ) {
+				$( "input[name=end_date]" ).datepicker( "hide" );
 			} else {
-				$( "input[name=customer_sdate]" ).datepicker( "hide" );
+				$( "input[name=str_date]" ).datepicker( "hide" );
 			}
 		});
 	
@@ -542,35 +611,6 @@ $(function(){
 		});
 	}
 	
-	//판매처 변경시 판매형태 변경
-	/*
-	$("#customer").change(function(){
-		$.ajax({
-			dataType: "json",
-			url: '<spring:eval expression="@urlProp['ajaxCustomerDeviceTypeList']"/>',
-			data: { "sale_company_mgmtno" : $(this).find("option").filter(":selected").val()},
-			success: function(data){
-				
-				console.info("--------------------------");
-				console.info(data.result);
-				console.info("--------------------------");
-				
-				$target = $("#customer_device_type");
-				//init
-				$target.html(""); //성공시 리스트 초기화
-				
-				$json = data.result;
-				$.each($json, function(){
-					
-					$('<option value="'+this.ty+'">'+this.na+'</option>')
-						.appendTo($target);
-				});
-				
-				$("input[name='product_device_type']").first().prop("checked", true);
-			}
-		});
-	}).trigger("change");
-	*/
 	{ // 판매 형태 등록
 		$form = $("#device-list");
 		$("div.product-box").on( "click", "i", function(){
