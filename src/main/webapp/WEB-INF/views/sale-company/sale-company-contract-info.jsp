@@ -89,39 +89,18 @@
 			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 분납방식</label>
 				<div class="controls installments-group">
-					<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+					<div class="installments-date input-append date" >
 					  <input class="span2" size="160px" type="text" value="" placeholder="분납일">
 					  <span class="add-on"><i class="icon-calendar"></i></span>
 					  <img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
 					</div>
-					<!-- 
-					<div class="input-prepend bfh-datepicker-toggle" data-toggle="bfh-datepicker">
-					    <span id="datepicker" class="add-on"><i class="icon-calendar"></i></span>
-					    <input type="text" id="installments_dt" class="input-medium" data-date-format="yyyy-mm-dd" readonly>
-					  </div>
-					 -->
 				</div>
 			</div>
-			<!-- 
-			<div class="control-group">
-				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 분납방식</label>
-				<div class="controls installments-group" >
-					<div>
-							<input class="installments-date" id="installments-date" type="text" data-date-format="yyyy-mm-dd" style="width:100px"  name="installments_dt" placeholder="분납일" />
-							<i class="installments-date icon-calendar"></i>
-							<input type="text" id="installments" name="installments" placeholder="분납 금액" class="input-xlarge" />
-							<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
-						</div>
-				</div>
-			
-			</div>
-			 -->
-			
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 계약기간 </label>
 				<div class="controls">
-					<input class="contract-date" id="str_date" type="text"  name="str_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
-					<input class="contract-date" id="end_date" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
+					<input class="contract-date" id="str_date" type="text"  name="str_date"  value="${saleContractDetail.str_date }" data-validation-required-message="계약 시작일은 필수값 입니다." required> - 
+					<input class="contract-date" id="end_date" type="text" name="end_date" value="${saleContractDetail.end_date }" data-validation-required-message="계약 종료일은 필수값 입니다." required>
 					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
 					<script>
 					$('#tip3')
@@ -456,15 +435,17 @@
 
 <script>
 
+
 var seletedTotlaPrice = 0;
 $(function(){
 	
+	
+	
 	// 분납 방식 달력
 	 $( ".installments-date" ).datepicker({
-		 autoclose: true
+		 autoclose: true,
+		 format : 'yyyy-mm-dd'
 	 });
-	
-	
 	
 	// 분납 방식 추가 버튼
 	$("#addInstallments")
@@ -488,7 +469,8 @@ $(function(){
 			
 			$target.append(html);
 			$( ".installments-date" ).datepicker({
-				 autoclose: true
+				 autoclose: true,
+				 format : 'yyyy-mm-dd'
 			 });
 		});
 	
@@ -551,7 +533,12 @@ $(function(){
 	// 계약 시작일, 종료일 계산위해
 	var sdate, edate;
 
-	$( "input.contract-date" ).datepicker()
+	$( "input.contract-date" ).datepicker({
+		autoclose: true,
+		language : 'kr',
+		startView : 0,
+		format : 'yyyy-mm-dd'
+	})
 		.on('changeDate', function(ev){
 			if( "str_date" === $(this).attr("name") ) {
 				sdate = ev.date.valueOf();

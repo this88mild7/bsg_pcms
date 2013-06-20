@@ -18,6 +18,7 @@
 	
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="/pcms/js/bootstrap.min.js"></script>
+	
 	<script>
 	$(function(){
 		
@@ -52,6 +53,7 @@
 	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/bigstar.js"></script>
 	<script src="/pcms/js/autoNumeric.js"></script>
+	<script src="/pcms/js/locales/datepicker-kr.js"></script>
 	
 </body>
 </html>

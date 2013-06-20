@@ -35,6 +35,7 @@
 	<script src="/pcms/js/bigstar.js"></script>
 	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/flotr2.js"></script>
+	<script src="/pcms/js/locales/datepicker-kr.js"></script>
 	
 </body>
 </html>
