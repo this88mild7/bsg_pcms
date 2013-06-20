@@ -25,6 +25,7 @@ data-age="${ content.age }"
 data-company_mgmtno="${ content.company_mgmtno }"
 data-cate_id="${ content.cate_id }"
 data-series_mgmtno="${ content.series_mgmtno }"
+data-currency="${ content.currency }"
 >
 
 	<div class="span12">
@@ -122,10 +123,23 @@ data-series_mgmtno="${ content.series_mgmtno }"
 			<div class="control-group price-group">
 				<label class="control-label" for="content_price">판매단가</label>
 				<div class="controls">
-					<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
-					<span class="help-inline">
-						<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
-					</span>
+					<div class="input-prepend">
+						<div class="btn-group no-padding">
+							<button class="btn dropdown-toggle" data-toggle="dropdown">
+								<span id="currency-view">KRW</span><span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" id="currency-menu">
+								<li><a href="#">KRW</a></li>
+								<li><a href="#">USD</a></li>
+								<li><a href="#">JPY</a></li>
+								<li><a href="#">CNY</a></li>
+								<li><a href="#">EUR</a></li>
+							</ul>
+						</div>
+						<input type="hidden" id="currency" name="currency" value="KRW">
+						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
+					</div>
+					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
 					<script>
 					$('#tip2')
 						.tooltip({
@@ -138,7 +152,7 @@ data-series_mgmtno="${ content.series_mgmtno }"
 			<div class="control-group">
 				<label class="control-label" for="file_path">콘텐츠 파일경로</label>
 				<div class="controls">
-					<input type="text" id="file_path" name="file_path" placeholder="콘텐츠 파일경로" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
+					<input type="text" id="file_path" name="file_path" placeholder="콘텐츠 파일경로" value="${ content.file_path }">
 				</div>
 			</div>
 		</form>
@@ -173,7 +187,7 @@ $(function(){
 	
 	//유효성 체크
 	$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-	$('#sale_price').autoNumeric('init',{aSign:' 원', pSign:'s',aPad: false });
+	$('#sale_price').autoNumeric('init',{aPad: false });
 	
 	$('input[name="optionsRadio"]').click(function(){
 		var $this = $(this);
@@ -184,7 +198,10 @@ $(function(){
 			$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
 		} else {
 			$( "div.price-group" ).hide();
-			$('#sale_price').prop("required", false);
+			$('#sale_price')
+				.prop("required", false)
+				.end()
+				.val("");
 			
 		}
 	});
@@ -205,6 +222,15 @@ $(function(){
 		$('#sale_price').val($('#sale_price').autoNumeric('get'));
 	});
 	
+	//환율 변경
+	$("#currency-menu").find("a").click(function(){
+		var nowCurrency = $(this).text();
+		$("#currency-view").text(nowCurrency);
+		$("#currency").val(nowCurrency);
+		
+	});
+	
+	
 	// CP 업체 선택
 	$("#company_mgmtno").find("option[value='" + $("div.box").data("company_mgmtno") + "']").prop("selected", true);
 	
@@ -216,6 +242,11 @@ $(function(){
 	});
 	// 연령 선택
 	$("#age").find("option[value='" + $( "div.box" ).data( "content_age" ) + "']" ).prop("selected", true);
+	
+	// 환율 선택
+	if($("div.box").data("currency").length > 0) {
+		$("#currency-view").text($("div.box").data("currency"));
+	}
 	
 	$("#btn-content-list").click(function(){
 		bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {
