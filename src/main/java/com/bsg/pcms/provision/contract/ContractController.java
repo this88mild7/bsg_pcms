@@ -131,7 +131,7 @@ public class ContractController {
 		mav.setViewName("contract-info");
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTRACTS());
 		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
-		mav.addObject("isNew", true);
+		mav.addObject("isCreate", 1);
 
 		mav.addObject("cpList", cpService.getCpListAll());
 		mav.addObject("bankList", bankListMaker.getBankList());

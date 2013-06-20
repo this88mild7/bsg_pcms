@@ -3,6 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style>
+div[class="tooltip-inner"] {
+    max-width: 300px;
+    text-align: left;
+}
+</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -30,12 +36,13 @@
 	data-deposit_bank="${ contract.deposit_bank }"
 	data-account_no="${ contract.account_no }"
 	data-account_holder="${ contract.account_holder }"
+	data-is_create="${ isCreate }"
 	>
 
 	<div class="span12">
 		
 		<form id="contractForm" class="form-horizontal " method="POST" action="<spring:eval expression="@urlProp['contractCreateAction']"/>">
-			<c:if test="${empty isNew}">
+			<c:if test="${empty isCreate}">
 				<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${ contract.contract_mgmtno }" />
 			</c:if>
 			<div class="control-group">
@@ -109,25 +116,32 @@
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
+				<label class="control-label" for="contract_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
 				<div class="controls">
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="1" checked="checked">개발대행
+						<input type="radio" name="contract_type" value="si" checked="checked">개발대행
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="2">라이센싱
+						<input type="radio" name="contract_type" value="license">라이센싱
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="0">상품판매납품(협력)
+						<input type="radio" name="contract_type" value="collaboration">상품판매납품(협력)
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="0">외주의뢰
+						<input type="radio" name="contract_type" value="outsider">외주의뢰
 					</label>
-					<a id="tip1" href="#" data-toggle="tooltip" >tip</a>
+					<label class="radio inline">
+						<a id="contract_type_tip" href="#" data-toggle="tooltip" >tip</a>
+					</label>
 					<script>
-					$('#tip1')
+						titleStr  = "1. 개발대행 : 콘텐츠의 개발대행 업무<br/>";
+						titleStr += "2. 라이센싱 : 저작물의 라이선스 협력 계약(빅스타가 구매하는 경우)<br/>";
+						titleStr += "3. 삼품판매납품 : 콘텐츠저작권자와 빅스타가 라이선스 협력 후 판매처에 판매를 위해 수익률을 나눠 개발<br/>";
+						titleStr += "4. 외주의뢰 : 당사가 외주 개발 용역 계약<br/>";
+					$('#contract_type_tip')
 						.tooltip({
-							"title":"설정 판매가를 입력하세요. 상품 등록 시 기본 판매가로 책정됩니다.",
+							"html": true,
+							"title": titleStr,
 							"placement":"bottom"
 						});
 					</script>
@@ -159,7 +173,7 @@
 						<input type="radio" name="license_cd" value="5">업체 소유
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="license_cd" value="6">기타
+						<input type="radio" name="license_cd" value="0">기타
 					</label>
 					<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력" style="display:none;">${ contract.license_cd_detail }</textarea>
 				</div>
@@ -324,7 +338,7 @@
 				<div class="controls">
 					<button id="btn-contract-list" class="btn">목록가기</button>
 					<c:choose>
-						<c:when test="${empty isNew}">
+						<c:when test="${empty isCreate}">
 							<button id="btn-contract-delete-action" class="btn">삭제</button>
 							<button id="btn-contract-update-action" class="btn btn-primary">수정하기</button>
 						</c:when>
@@ -364,247 +378,245 @@
 
 <script>
 $(function(){
-	
-	$('#sale_price').autoNumeric('init',{aPad: false });
-	
-	placeholderForIE();
-	
-	contractValidation();
-	
+		
 	var boxData = $("div.contract-box").data();
-	//CP업체 셋팅
-	$("#company_mgmtno")
-		.find("option").filter(function(index){
-			return $(this).val() == boxData.company_mgmtno;
-		}).prop("selected", true);
+	console.info(boxData);
 	
-	//출판 형태 셋팅
-	$.each($(boxData.publishing_type.split(",")), function(index, value) {
-		switch (value) {
-			case 'pb': $( "select[name='isPicturebook'] option[value='Y']" ).prop("selected", true); break;
-			case 'ebook': $( "select[name='isEbook'] option[value='Y']" ).prop("selected", true); break;
-			case '2d': $( "select[name='is2d'] option[value='Y']" ).prop("selected", true); break;
-			case '3d': $( "select[name='is3d'] option[value='Y']" ).prop("selected", true); break;
-			case 'game': $( "select[name='isGame'] option[value='Y']" ).prop("selected", true); break;
-			default: break;
-		}
-	});
+	{//엘리먼트 이벤트
+		
+		$('#sale_price').autoNumeric('init',{aPad: false });
+		
+		$("#contractForm").submit(function(){
+			// 10,000 원 => 숫자로만 변경
+			$('#sale_price').val($('#sale_price').autoNumeric('get'));
+		});
+		
+		//계약방식에 따른 UI변경
+		$("input[name='contract_type']").change(function(){
+			var contractType = $(this).val();
+			console.info("계약방식 : " + contractType);
+		});
 	
-	{//라이센스 체크 & 이벤트
-		$( "input[name='license_cd']" ).each(function(){
-			var $this = $(this);
+		$("input[name='license_cd']").change(function(){
 			var $licenseCdDetail = $("#license_cd_detail");
-			console.info(boxData.license_cd == $this.val());
-			if(boxData.license_cd == $this.val() ){
-				$this.prop("checked", true);
+			if( $(this).val() == 0 ){
+				$licenseCdDetail.show();
+			} else {
+				$licenseCdDetail.hide().val("");
 			}
-			//add event
-			$this.click(function(){
-				if( $this.val() == 0 ){
-					$licenseCdDetail.show();
+		});
+		
+		//계약 시작일, 종료일 계산위해
+		var sdate, edate;
+		$( "input.datepicker" ).datepicker()
+			.on('changeDate', function(ev){
+				if( "str_date" === $(this).attr("name") ) {
+					sdate = ev.date.valueOf();
 				} else {
-					$licenseCdDetail.hide().val("");
+					edate = ev.date.valueOf();
+					if( sdate > edate ) {
+						bootbox.alert( "계약종료일 재설정" );
+						$( this ).val( "" );
+					}
+					$( "input[name=str_date]" ).datepicker( "hide" );
+				}
+			})
+			.on('show', function(ev){
+				// 2개의 달력을 동시에 안보이게 함.
+				if( "str_date" === $(this).attr("name") ) {
+					$( "input[name=end_date]" ).datepicker( "hide" );
+				} else {
+					$( "input[name=str_date]" ).datepicker( "hide" );
 				}
 			});
-		});
-		if(${empty isNew}) {
-			//상세정보 펼치기
-			if(boxData.license_cd == 0 ){
-				$("#license_cd_detail").show();
-			}
-		};
-	}//라이센스 체크 & 이벤트
-	
-	
-	{//라이센스 국가 제한 체크 & 이벤트
-		var $licenseCountryDetail = $("#license_country_detail");
-		$( "input[name='license_country']" ).each(function(){
-			var $this = $(this);
-			if(boxData.license_country == $this.val() ){
-				$this.prop("checked", true);
-			}
-			
-			//add event
-			$this.click(function(){
-				if( $this.val() == 0 ){
-					$licenseCountryDetail.show();
-				} else {
-					$licenseCountryDetail
-						.hide()
-						.val("");
-				}
-			});
-		});
-		var isEtc = ${empty isNew};
-		if(isEtc) {
-			//기타 일시 상세펼치기
-			if(boxData.license_country == 0 ){
-				$licenseCountryDetail.show();
-			}
-		}
-	}//라이센스 국가 제한 체크 & 이벤트
-	
-	
-	{// 계약 방식 체크 & 이벤트
-		$( "input[name='contract_type']" ).each(function(){
-			var $this = $(this);
-			var $contractTypeDetail = $("#contract_type_detail");
-			if(boxData.contract_type == $this.val() ){
-				$this.prop("checked", true);
-			}
-			//add event
-			$this.click(function(){
-				if( $this.val() == 0 ){
-					$contractTypeDetail.show();
-				} else {
-					$contractTypeDetail.hide().val("");
-				}
-			});
-		});
-		if(${empty isNew}) {
-			//기타 일시 상세펼치기
-			if(boxData.contract_type == 0 ){
-				$contractTypeDetail.show();
-			}
-		}
-	}// 계약 방식 체크 & 이벤트
-	
-	// 정산 방식 체크
-	$( "input[name='balance_type']" ).each(function(){
-		var $this = $(this);
-		if(boxData.balance_type == $this.val() ){
-			$this.prop("checked", true);
-		}
-	});
-	
-	// 은행 체크
-	$("select[name='deposit_bank']")
-		.change(function(){
+		
+		// 은행 체크
+		$("select[name='deposit_bank']").change(function(){
 			var $this = $(this);
 			if($this.val() == 0) {
-				$("div.account-group")
-					.hide();
+				$("div.account-group").hide();
 			} else {
 				$("div.account-group").show();
 			}
-		}).trigger("change")
-		.find("option").filter(function(){
+		});
+		
+		$( "input[name='license_country']" ).change(function(){
 			var $this = $(this);
-			if($this.val() == boxData.deposit_bank) {
-				$("div.account-group").show();
-				return $this;
-			}
-		}).prop("selected", true);
-
-	//계약 시작일, 종료일 계산위해
-	var sdate, edate;
-	
-	$( "input.datepicker" ).datepicker()
-		.on('changeDate', function(ev){
-			if( "str_date" === $(this).attr("name") ) {
-				sdate = ev.date.valueOf();
+			var $licenseCountryDetail = $("#license_country_detail");
+			if( $this.val() == 0 ){
+				$licenseCountryDetail.show();
 			} else {
-				edate = ev.date.valueOf();
-				if( sdate > edate ) {
-					bootbox.alert( "계약종료일 재설정" );
-					$( this ).val( "" );
+				$licenseCountryDetail.hide().val("");
+			}
+		});
+		
+	}//엘리먼트 이벤트
+	
+	
+	{//BUTTON EVENT
+		
+		$("#btn-contract-list").click(function(){
+			bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {
+				if( result ) {
+					window.location.href = "<spring:eval expression="@urlProp['contractList']"/>";
 				}
-				$( "input[name=str_date]" ).datepicker( "hide" );
-			}
-		})
-		.on('show', function(ev){
-			// 2개의 달력을 동시에 안보이게 함.
-			if( "str_date" === $(this).attr("name") ) {
-				$( "input[name=end_date]" ).datepicker( "hide" );
-			} else {
-				$( "input[name=str_date]" ).datepicker( "hide" );
-			}
+			}); 
 		});
-	
-	$("#btn-contract-list").click(function(){
-		bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {
-			if( result ) {
-				window.location.href = "<spring:eval expression="@urlProp['contractList']"/>";
-			}
-		}); 
-	});
-	
-	$("#btn-contract-delete-action").click(function(){
-		bootbox.confirm( "삭제하시겠습니까?", function(result) {
-			if( result ) {
-				window.location.href = "<spring:eval expression="@urlProp['contractDeleteAction']"/>?strList=" + ${ contract.contract_mgmtno } + "";
-			}
-		}); 
-	});
-	
-	$("#btn-contract-update-action").click(function(){
-		bootbox.confirm( "업데이트 하시겠습니까?", function(result) {
-			if( result ) {
-				$("#contractForm")
-					.attr("action", '<spring:eval expression="@urlProp['contractUpdateAction']"/>')
-					.submit();
-			}
-		}); 
-	});
-	
-	$("#btn-contract-create-action").click(function(){
-		bootbox.confirm( "등록 하시겠습니까?", function(result) {
-			if( result ) {
-				$( "#contractForm" ).submit();
-			}
-		}); 
-	});
-	
-	// 찾아보기 버튼 눌렀을때 시리즈 목록 MODAL로 가져오기
-	$("#btn-find-content").click(function(){
-		$selectedCp = $("#company_mgmtno").find("option").filter(":selected");
 		
-		$.getJSON('<spring:eval expression="@urlProp['seriesAjaxListByCpMgmtno']"/>', { company_mgmtno : $selectedCp.val() }, function(data) {
-			console.info( data );
+		$("#btn-contract-delete-action").click(function(){
+			bootbox.confirm( "삭제하시겠습니까?", function(result) {
+				if( result ) {
+					window.location.href = "<spring:eval expression="@urlProp['contractDeleteAction']"/>?strList=" + ${ contract.contract_mgmtno } + "";
+				}
+			}); 
+		});
+		
+		$("#btn-contract-update-action").click(function(){
+			bootbox.confirm( "업데이트 하시겠습니까?", function(result) {
+				if( result ) {
+					$("#contractForm")
+						.attr("action", '<spring:eval expression="@urlProp['contractUpdateAction']"/>')
+						.submit();
+				}
+			}); 
+		});
+		
+		$("#btn-contract-create-action").click(function(){
+			bootbox.confirm( "등록 하시겠습니까?", function(result) {
+				if( result ) {
+					$( "#contractForm" ).submit();
+				}
+			}); 
+		});
+		
+		// 찾아보기 버튼 눌렀을때 시리즈 목록 MODAL로 가져오기
+		$("#btn-find-content").click(function(){
+			$selectedCp = $("#company_mgmtno").find("option").filter(":selected");
 			
-			$("#findContent tbody").remove();
-			
-			if( data.resultCnt > 0 ){
-				$.each( data.result, function(){
-					$html = 	'<tr><td>';
-					$html += 	'<label class="radio">';
-					$html += 	'<input name="series" type="radio" data-series_name="' + this.series_name + '" data-cate_id="' + this.cate_id + '" data-tot-cnt="' + this.totCnt + '" value="' + this.series_mgmtno + '">';
-					$html += 	this.series_name + '';
-					$html += 	'</label>';
-					$html += 	'</td></tr>';
-					
-					$("#findContent")
-						.find("table").append( $html );
-					
-				} );
+			$.getJSON('<spring:eval expression="@urlProp['seriesAjaxListByCpMgmtno']"/>', { company_mgmtno : $selectedCp.val() }, function(data) {
+				console.info( data );
 				
-				$('#findContent')
-					.find( "h3" ).text("[" + $selectedCp.text() + "] 카테고리 목록" )
-					.end()
-					.modal('toggle');
-			} else {
-				bootbox.alert( "카테고리 없음" );
-			}
-				  
+				$("#findContent tbody").remove();
+				
+				if( data.resultCnt > 0 ){
+					$.each( data.result, function(){
+						$html = 	'<tr><td>';
+						$html += 	'<label class="radio">';
+						$html += 	'<input name="series" type="radio" data-series_name="' + this.series_name + '" data-cate_id="' + this.cate_id + '" data-tot-cnt="' + this.totCnt + '" value="' + this.series_mgmtno + '">';
+						$html += 	this.series_name + '';
+						$html += 	'</label>';
+						$html += 	'</td></tr>';
+						
+						$("#findContent")
+							.find("table").append( $html );
+						
+					} );
+					
+					$('#findContent')
+						.find( "h3" ).text("[" + $selectedCp.text() + "] 카테고리 목록" )
+						.end()
+						.modal('toggle');
+				} else {
+					bootbox.alert( "카테고리 없음" );
+				}
+					  
+			});
+			
+			return false;
 		});
 		
-		return false;
-	});
-	
-	//시리즈 목록에서 시리즈 선택했을때
-	$("#btn-select-series").click(function() {
-		
-		var $selectedSeries = $("input[name='series']").filter(":checked");
-		console.info( $selectedSeries );
-		//시리즈 값 셋팅
-		$("#series_name").text( $selectedSeries.data("series_name") );
-		$("#cate_id").val( $selectedSeries.data("cate_id") );
-		$("#series_mgmtno").val( $selectedSeries.val() );
-		$("#series_cnt").text( $selectedSeries.data("totCnt") );
-		
-		$('#findContent').modal('toggle');
-		
-	});
+		//시리즈 목록에서 시리즈 선택했을때
+		$("#btn-select-series")
+			.click(function() {
+				var $selectedSeries = $("input[name='series']").filter(":checked");
+				console.info( $selectedSeries );
+				//시리즈 값 셋팅
+				$("#series_name").text( $selectedSeries.data("series_name") );
+				$("#cate_id").val( $selectedSeries.data("cate_id") );
+				$("#series_mgmtno").val( $selectedSeries.val() );
+				$("#series_cnt").text( $selectedSeries.data("totCnt") );
+				
+				$('#findContent').modal('toggle');
+			});
 
+	};//BUTTON EVENT
+	
+	{//상세보기 기존 값 체크 시작
+		if(boxData.is_create != 1) {
+			
+			//CP업체 셋팅
+			$("#company_mgmtno")
+				.find("option").filter(function(index){
+					return $(this).val() == boxData.company_mgmtno;
+				}).prop("selected", true);
+		
+			//출판 형태 셋팅
+			$.each($(boxData.publishing_type.split(",")), function(index, value) {
+				switch (value) {
+					case 'pb': 		$("select[name='isPicturebook'] option[value='Y']").prop("selected", true); break;
+					case 'ebook': 	$("select[name='isEbook'] option[value='Y']").prop("selected", true); break;
+					case '2d': 		$("select[name='is2d'] option[value='Y']").prop("selected", true); break;
+					case '3d': 		$("select[name='is3d'] option[value='Y']").prop("selected", true); break;
+					case 'game': 	$("select[name='isGame'] option[value='Y']").prop("selected", true); break;
+				}
+			});
+			
+			// 계약 방식 체크 & 이벤트
+			$( "input[name='contract_type']" ).each(function(){
+				var $this = $(this);
+				var $contractTypeDetail = $("#contract_type_detail");
+				if(boxData.contract_type == $this.val() ){
+					$this.prop("checked", true);
+				}
+				//add event
+				$this.click(function(){
+					if( $this.val() == 0 ){
+						$contractTypeDetail.show();
+					} else {
+						$contractTypeDetail.hide().val("");
+					}
+				});
+			});
+			
+			//라이센스 체크 이벤트
+			$( "input[name='license_cd']" ).each(function(){
+				var $this = $(this);
+				if(boxData.license_cd == $this.val() ) {
+					$this.prop("checked", true);
+					$this.trigger("change");
+				};
+			});
+			
+			//정산 방식 체크
+			$( "input[name='balance_type']").each(function(){
+				var $this = $(this);
+				if(boxData.balance_type == $this.val() ){
+					$this.prop("checked", true);
+				};
+			});
+			
+			//은행 체크
+			$("select[name='deposit_bank']")
+				.find("option").each(function(){
+					var $this = $(this);
+					if($this.val() == boxData.deposit_bank) {
+						$this.prop("selected", true);
+						$("div.account-group")
+							.show();
+					};
+				});
+			
+			//라이센스 국가 제한 체크
+			$("input[name='license_country']").each(function(){
+				var $this = $(this);
+				if(boxData.license_country == $this.val() ){
+					$this.prop("checked", true);
+					$this.trigger("change");
+				};
+			});
+		};
+		
+	};//상세보기 기존 값 체크 시작
+	
 });
 </script>
