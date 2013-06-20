@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="installmentsQuery">
+
+    <!-- INSERT -->
+    <insert id="createInstallments" parameterType="list">
+        INSERT INTO INSTALLMENTS (
+            contract_mgmtno,
+            installments_dt,
+            installments_price,
+            installments_detail,
+            reg_dt,
+            mod_dt
+        )
+        VALUES(
+            <foreach collection="list" item="obj" open="" close="" separator="),(">
+            #{ obj.contract_mgmtno },
+            #{ obj.installments_dt },
+            #{ obj.installments_price},
+            #{ obj.installments_detail},
+            NOW(),
+            NOW()
+            </foreach>
+        )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getInstallmentsList" resultType="com.bsg.pcms.dto.InstallmentsDTO" parameterType="int">
+        SELECT /* installmentsQuery.getInstallmentsList 2013.06.20 정대원 */
+            *
+        FROM INSTALLMENTS
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+        ORDER BY installments_dt DESC
+    </select>
+
+    <!-- UPDATE -->
+
+    <!-- DELETE -->
+    <delete id="deleteInstallmentsAll" parameterType="int">
+        DELETE FROM INSTALLMENTS
+        WHERE contract_mgmtno = #{ contract_mgmtno }
+    </delete>
+
+</mapper>
