@@ -198,20 +198,20 @@ $(function(){
 			$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
 		} else {
 			$( "div.price-group" ).hide();
-			$('#sale_price')
-				.prop("required", false)
-				.end()
-				.val("");
+			$('#sale_price').prop("required", false);
 			
+			console.info($('#sale_price').val());
+			$('#sale_price').val(0);
+			console.info($('#sale_price').val());
 		}
 	});
 	
 	// 판매가가 없으면 판매가 설정안함으로 라디오 체크
-	if( $( "div.box" ).data( "sale_price" ).length == 0 ) {
-		$( "input[name='optionsRadio']" ).each(function(){
-			if( "0" == $(this).val() ){
-				$( this ).prop("checked", true);
-				$( "div.price-group" ).hide();
+	if($("div.box").data("sale_price").length == 0 || $("div.box").data("sale_price") == 0) {
+		$("input[name='optionsRadio']").each(function(){
+			if("0" == $(this).val()){
+				$(this ).prop("checked", true);
+				$("div.price-group").hide();
 			}
 		});
 	}
