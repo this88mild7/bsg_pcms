@@ -5,13 +5,109 @@
 <mapper namespace="balanceQuery">
    
    <!-- INSERT -->
-   <insert id="createSaleCompany" parameterType="com.bsg.pcms.dto.BalanceDTO" useGeneratedKeys="true" keyProperty="file_id">
-       INSERT INTO bg_file( file, file_name, file_size, file_cdate )
-	   VALUES( #{file}, #{file_name}, #{file_size}, NOW() )
+   <insert id="createSaleCompany" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" useGeneratedKeys="true" keyProperty="file_id">
+		INSERT INTO BALANCE
+			( 
+				COMPANY_MGMTNO,
+				USER_MGMTSEQ, 
+				SALE_STR_DATE, 
+				SALE_END_DATE, 
+				SALE_COMMISSION, 
+				CP_COMMISSION, 
+				OWNER_PROFIT, 
+				TOTAL_SALE_COUNT, 
+				TOTAL_SALE_PRICE, 
+				MOD_DT, 
+				REG_DT )
+		VALUES
+			( 
+				#{company_mgmtno}, 
+				#{user_mgmtseq}, 
+				#{sale_str_date}, 
+				#{sale_end_date}, 
+				#{sale_commission}, 
+				#{cp_commission}, 
+				#{owner_profit}, 
+				#{total_sale_count}, 
+				#{total_sale_price}, 
+				NOW(), 
+				NOW() 
+			)
    </insert>
 
    <!-- SELECT -->
-
+	<select id="list" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.REG_DT
+			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
+			AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
+		<!-- 등록순 -->
+		<if test="printType == 1">
+			ORDER BY BAL.BALANCE_MGMTNO 
+		</if>
+		<!-- 매출순 -->
+		<if test="printType == 2">
+			ORDER BY BAL.TOTAL_SALE_PRICE DESC
+		</if>
+		<!-- 수익순 -->
+		<if test="printType == 3">
+			ORDER BY BAL.OWNER_PROFIT DESC
+		</if>
+		<!-- 판매순 -->
+		<if test="printType == 4">
+			ORDER BY BAL.TOTAL_SALE_COUNT DESC
+		</if>
+	</select>
+	
+	<select id="searchByDate" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.REG_DT 
+			BETWEEN #{sale_str_date}  
+			AND #{sale_end_date}
+		<!-- 등록순 -->
+		<if test="printType == 1">
+			ORDER BY BAL.BALANCE_MGMTNO 
+		</if>
+		<!-- 매출순 -->
+		<if test="printType == 2">
+			ORDER BY BAL.TOTAL_SALE_PRICE DESC
+		</if>
+		<!-- 수익순 -->
+		<if test="printType == 3">
+			ORDER BY BAL.OWNER_PROFIT DESC
+		</if>
+		<!-- 판매순 -->
+		<if test="printType == 4">
+			ORDER BY BAL.TOTAL_SALE_COUNT DESC
+		</if>
+	</select>
+	
+	<select id="searchByWord" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND COM.COMPANY_NAME like '%${searchQuery}%'
+		<!-- 등록순 -->
+		<if test="printType == 1">
+			ORDER BY BAL.BALANCE_MGMTNO 
+		</if>
+		<!-- 매출순 -->
+		<if test="printType == 2">
+			ORDER BY BAL.TOTAL_SALE_PRICE DESC
+		</if>
+		<!-- 수익순 -->
+		<if test="printType == 3">
+			ORDER BY BAL.OWNER_PROFIT DESC
+		</if>
+		<!-- 판매순 -->
+		<if test="printType == 4">
+			ORDER BY BAL.TOTAL_SALE_COUNT DESC
+		</if>
+	</select>
    <!-- UPDATE -->
 
    <!-- DELETE -->

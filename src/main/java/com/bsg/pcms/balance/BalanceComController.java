@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
 import com.bsg.pcms.dto.BalanceDTO;
 import com.bsg.pcms.utility.BigstarConstant;
@@ -37,16 +38,16 @@ public class BalanceComController {
 	}
 	
 	@RequestMapping(value = "creat.do", method = RequestMethod.GET)
-	public String create(BalanceDTO balanceDto) {
+	public String create(BalanceDTOEx balanceDto) {
 		logger.info("balance/sale-company/create.do");
 		
-		balanceService.createSaleCompany(balanceDto);
+		balanceService.create(balanceDto);
 		
 		return "redirect:/balance/sale-company/list.to";
 	}
 	
 	@RequestMapping(value = "creatView.do", method = RequestMethod.GET)
-	public ModelAndView creatView(BalanceDTO balanceDto) {
+	public ModelAndView creatView(BalanceDTOEx balanceDto) {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance");
