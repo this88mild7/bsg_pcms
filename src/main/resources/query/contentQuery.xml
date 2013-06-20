@@ -15,6 +15,8 @@
             sale_price, 
             age,
             contents_type, 
+            currency, 
+            file_path, 
             reg_dt,
             mod_dt
         ) VALUES( 
@@ -26,6 +28,8 @@
             #{ sale_price }, 
             #{ age },
             #{ contents_type }, 
+            #{ currency }, 
+            #{ file_path }, 
             NOW(),
             NOW() )
     </insert>
@@ -186,11 +190,16 @@
         UPDATE CONTENTS
         <set>
             <if test="name != null">name = #{ name },</if>
+            <if test="currency != null">currency = #{ currency },</if>
+            <if test="file_path != null">file_path = #{ file_path },</if>
             <if test="series_mgmtno > 0">series_mgmtno = #{ series_mgmtno },</if>
             <if test="cate_id > 0">cate_id = #{ cate_id },</if>
             <if test="company_mgmtno > 0">company_mgmtno = #{ company_mgmtno },</if>
-            <if test="sale_price > 0">sale_price = #{ sale_price },</if>
             <if test="age > 0">age = #{ age },</if>
+            <choose>
+                <when test="sale_price == 0">sale_price = NULL,</when>
+                <otherwise>sale_price = #{ sale_price },</otherwise>
+            </choose>
             mod_dt = NOW()
         </set>
         WHERE contents_cd = #{ contents_cd }

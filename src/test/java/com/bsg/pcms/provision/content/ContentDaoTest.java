@@ -134,6 +134,7 @@ public class ContentDaoTest {
 		contentDTOEx.setSeries_mgmtno(1);
 		contentDTOEx.setCompany_mgmtno(1);
 		contentDTOEx.setSale_price(1000);
+		contentDTOEx.setCurrency("KRW");
 		
 		int result = contentDao.createContent(contentDTOEx);
 		assertThat( result, is(1) );
