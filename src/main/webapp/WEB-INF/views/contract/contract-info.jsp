@@ -3,11 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<style>
-.no-padding {
-	padding : 0px;
-}
-</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -216,11 +211,11 @@
 								<span id="currency">KRW</span><span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li><a href="#">KRW(한국)</a></li>
-								<li><a href="#">USD(미국)</a></li>
-								<li><a href="#">JPY(일본)</a></li>
-								<li><a href="#">CNY(중국)</a></li>
-								<li><a href="#">EUR(유럽)</a></li>
+								<li><a href="#">KRW</a></li>
+								<li><a href="#">USD</a></li>
+								<li><a href="#">JPY</a></li>
+								<li><a href="#">CNY</a></li>
+								<li><a href="#">EUR</a></li>
 							</ul>
 						</div>
 						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
