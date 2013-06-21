@@ -71,15 +71,13 @@ public class CompanyAjaxController {
 		
 		if(StringUtils.isBlank(cateId)){
 			seriesList = _seriesService.getSeriesList(null);
-			seriesJson = _jsonResponseMaker.generateSeries(seriesList);
-			return seriesJson;
 		}else{
 			SeriesDTO seriesDTO = new SeriesDTO();
 			seriesDTO.setCate_id(Integer.parseInt(cateId));
 			seriesList = _seriesService.getSeriesList(seriesDTO);
-			seriesJson = _jsonResponseMaker.generateSeries(seriesList);
-			return seriesJson;
 		}
+		seriesJson = _jsonResponseMaker.generateSeries(seriesList);
+		return seriesJson;
 	}
 	@RequestMapping( value = "cateList.ajax", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public @ResponseBody

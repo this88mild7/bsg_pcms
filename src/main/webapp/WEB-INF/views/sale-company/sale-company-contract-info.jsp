@@ -92,7 +92,7 @@
 					<div class="installments-date input-append date" >
 					  <input class="span2" size="160px" type="text" value="" placeholder="분납일">
 					  <span class="add-on"><i class="icon-calendar"></i></span>
-					  <img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+					  <img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>					  					 
 					</div>
 				</div>
 			</div>
@@ -190,7 +190,7 @@
 </div>
 			<div class="control-group">
 				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태
-				<i class="icon-plus-sign"></i></label>
+				<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/></label>
 				<div class="controls customer-device" >
 					<c:choose>
 						<c:when test="${viewType eq 1}">
@@ -273,43 +273,9 @@
 
 			<div class="control-group">
 				<label class="control-label" for=""></label>
-				<div class="controls">
-							<c:choose>
-								<c:when test="${viewType eq 1}">
-							        <input type="hidden" id="hasContents" data-validation-required-message="콘텐츠는 필수값 입니다." required />
-								</c:when>
-								<c:otherwise>
-							        <input type="hidden" id="hasContents" value="${fn:length(saleContractDetail.contentsList)}" data-validation-required-message="콘텐츠는 필수값 입니다." required />
-								</c:otherwise>
-							</c:choose>
-						<table class="table table-condensed table-striped table-bordered table-content">
-							<c:choose>
-								<c:when test="${viewType eq 1}">
-									<thead>
-										<!-- ajax -->
-									</thead>
-									<tbody>
-										<!-- ajax -->
-									</tbody>
-								</c:when>
-								<c:otherwise>
-									<thead>
-										<tr>
-											<th>콘텐츠명</th>
-											<th>가격</th>
-										</tr>
-									</thead>
-									<tbody>
-											<c:forEach items="${ saleContractDetail.contentsList }" var="contentList">
-												<tr>
-													<td>${contentList.name }</td>
-													<td>${contentList.sale_price }</td>
-												</tr>
-											</c:forEach>
-									</tbody>
-								</c:otherwise>
-							</c:choose>
-						</table>
+				<div class="controls" >
+					<table id="product-content-tb" style="width:650px" class="table table-hover product-table">
+					</table>				
 				</div>
 			</div>
 			
@@ -648,9 +614,15 @@ $(function(){
 						var $json = data.result;
 						$.each($json, function(){
 							$html = 	'<tr>';
-							$html += 	'<td><input name="check_list" type="checkbox" data-series_price="' + (this.series_price==null?'':this.series_price) + '" data-series_name="' + this.series_name + '" value="' + this.series_mgmtno + '"></td>';
+							$html += 	'<td><input name="check_list" type="checkbox" data-series_price="' 
+											+ (this.series_price==null?'':this.series_price) 
+											+ '" data-content_name="' + this.series_name 
+											+ '" date-content_mgmtno='+this.series_mgmtno
+											+ '" date-content_price='+this.sale_price
+											+' value="' + this.series_mgmtno 
+											+ '"></td>';
 							$html += 	'<td>' + this.series_name + '</td>';
-							$html += 	'<td>' + (this.series_price==null?'':this.series_price) + '</td>';
+							$html += 	'<td>' + (this.sale_price==null?'':this.sale_price) + '</td>';
 							$html += 	'</tr>';
 							$target.append( $html );
 							
@@ -706,7 +678,6 @@ $(function(){
 				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
 				success: function(data){
 					
-					console.info( data );
 					var $target = $("#findEachBody");
 					
 					//init
@@ -716,6 +687,7 @@ $(function(){
 						
 						var $json = data.result;
 						$.each($json, function(){
+							var productHtml; 
 							$html = 	'<tr>';
 							$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' + this.content_price + '" data-content_name="' + this.content_name + '" value="' + this.content_cd + '"></td>';
 							$html += 	'<td>' + this.content_name + '</td>';
@@ -742,35 +714,58 @@ $(function(){
 		
 		//시리즈 등록
 		if( $this.is(".btn-series-select") ) {
-			var $target = $("table.table-content");
-			$target.find("thead,tbody").empty();
+			var $productTable = $("table.product-table");
+			$productTable.find("thead,tbody").empty();
 
 			var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
+			var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
 			
 			if( $selectedItem.size() == 0 ){
 				bootbox.alert("1개 이상 선택해 주세요!");				
-				return false;				
+				return false;		
+			
 			} else {
-				var arr = [];
+				var arrParam = [];
 				$selectedItem.each(function( index ){
-					//arr.push( { series_mgmtno : $( this ).val() } );
-					arr.push($( this ).val());
+					arrParam.push( { series_mgmtno : $( this ).val() } );
+					arrParam.push($( this ).val());
 				});
-				var json = { 'contentList' : arr };
+				var json = { 'contentList' : arrParam };
 				
+				// 상품 목록 저장
 				jQuery.ajaxSettings.traditional = true;
 				$.ajax({
 					url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
 					type : "POST",
 					data : json,
 					dataType : "json",
-					success : function( data ) {
-						if( data.code === 200 ){
+					success : function(result) {
+						if( result.code === 200 ){
 							seletedTotlaPrice = 0;	
-							$target.find("thead").append("<tr><th>시리즈명</th><th>가격</th></tr>");
+							// $target.find("thead").append("<tr><th>시리즈명</th><th>가격</th></tr>");
 							$selectedItem.each(function(){
 								var $this = $(this);
-								$target.find("tbody").append("<tr><td>" + $this.data("series_name") + "</td><td>" + $this.data("series_price") + "</td></tr>");
+								var productHtml;
+								if($selectedItemCount > 5){
+									productHtml += '<tbody  style="display:block; overflow:auto; height:230px;">';
+								}else{
+									productHtml += '<tbody  style="display:block; overflow:auto; ">';
+								}
+								productHtml +='<tr>';
+								productHtml +='<td>02P02_001</td>';
+								productHtml +='<td> | '+$this.data("content_name")+'</td>';
+								productHtml +='<td> | ybm 시사</td>';
+								productHtml +='<td>';
+								productHtml +='<input type="hidden" name="contents_cd" />';
+								productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+								productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
+								productHtml +='</td>';
+								productHtml +='</tr>';
+								productHtml +='</tbody>';
+								
+								var $this = $(this);								
+								$("#product-content-tb").append(productHtml);
+								//$productTable.find("tbody").append("<tr><td>" + $this.data("series_name") + "</td><td>" + $this.data("series_price") + "</td></tr>");
 								seletedTotlaPrice += $this.data("series_price");
 							});
 							$("#sale_price").val(seletedTotlaPrice);
@@ -792,7 +787,7 @@ $(function(){
 		} 
 		// 개별 등록 버튼 클릭
 		else if( $this.is(".btn-each-select") ) {
-			var $target = $("table.table-content");
+			var $target = $("table.product-table");
 			$target.find("thead,tbody").empty();
 
 			var $selectedItem = $("#findEach").find("input[name='content_checkbox']").filter(":checked");
@@ -816,6 +811,24 @@ $(function(){
 					dataType : "json",
 					success : function( data ) {
 						if( data.code === 200 ){
+							
+							$selectedItem.each(function(){
+								var $this = $(this);
+								var productHtml;
+								productHtml +='<tr>';
+								productHtml +='<td>02P02_001</td>';
+								productHtml +='<td> | '+$this.data("content_name")+'</td>';
+								productHtml +='<td> | ybm 시사</td>';
+								productHtml +='<td>';
+								productHtml +='<input type="hidden" name="contents_cd" />';
+								productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+								productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
+								productHtml +='</td>';
+								productHtml +='</tr>';
+								$target.find("tbody").append(productHtml);
+								seletedTotlaPrice += $this.data("content_price");
+							});
+							/*
 							seletedTotlaPrice = 0;	
 							$target.find("thead").append("<tr><th>콘텐츠명</th><th>가격</th></tr>");
 							$selectedItem.each(function(){
@@ -823,6 +836,7 @@ $(function(){
 								$target.find("tbody").append("<tr><td>" + $this.data("content_name") + "</td><td>" + $this.data("content_price") + "</td></tr>");
 								seletedTotlaPrice += $this.data("content_price");
 							});
+							*/
 							$("#sale_price").val(seletedTotlaPrice);
 						} else {
 							alert("에러 발생! 관리자에게 문의하여 주십시오.");
@@ -889,7 +903,9 @@ $(function(){
 							var $json = data.result;
 							$.each($json, function(){
 								$html = 	'<tr>';
-								$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' + this.content_price + '" data-content_name="' + this.content_name + '" value="' + this.content_cd + '"></td>';
+								$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' 
+											+ this.content_price + '" data-content_name="' 
+											+ this.content_name + '" value="' + this.content_cd + '"></td>';
 								$html += 	'<td>' + this.content_name + '</td>';
 								$html += 	'<td>' + this.content_price + '</td>';
 								$html += 	'</tr>';

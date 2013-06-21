@@ -22,20 +22,21 @@
     <!-- SELECT -->
     <select id="getSeriesList" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
         SELECT
-            *
-        FROM SERIES
+            SE.*, CON.SALE_PRICE
+        FROM SERIES SE, CONTENTS CON
         <where>
+        	SE.SERIES_MGMTNO = CON.CONTENTS_CD
             <if test="type != null">
             /* type이 null 이 아니면 검색 */
                 <choose>
                     <when test="type eq '시리즈명'">
-                        series_name like '%${query}%'
+                        AND series_name like '%${query}%'
                     </when>
                     <when test="type eq 'SERIES코드'">
-                        series_mgmtno = #{query}
+                        AND series_mgmtno = #{query}
                     </when>
                     <otherwise>
-                        (
+                        AND (
                         series_name like '%${query}%'
                         OR
                         series_mgmtno = #{query}
