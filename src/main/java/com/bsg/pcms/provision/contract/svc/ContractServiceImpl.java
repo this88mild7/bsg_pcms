@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.dto.ContractContentsGroupDTO;
 import com.bsg.pcms.dto.ContractDetailDTO;
+import com.bsg.pcms.dto.InstallmentsDTO;
+import com.bsg.pcms.installments.dao.InstallmentsDao;
 import com.bsg.pcms.provision.contract.ContractDTOEx;
 import com.bsg.pcms.provision.contract.ContractDao;
 import com.bsg.pcms.provision.cp.CpService;
@@ -28,6 +30,9 @@ public class ContractServiceImpl implements ContractService {
 	
 	@Autowired
 	private ContractDao contractDao;
+	
+	@Autowired
+	private InstallmentsDao installmentsDao;
 	
 	@Autowired
 	private CpService cpService;
@@ -77,6 +82,29 @@ public class ContractServiceImpl implements ContractService {
 			}
 			int detailResult = contractDao.createContractDetail(detailList);
 			logger.debug("detailResult " + detailResult);
+		}
+
+		{
+			//분납일시 INSTALLMENTS 테이블 작업	
+			String paymentType = cde.getPayment_type();
+			if(paymentType.equalsIgnoreCase("installment")) {
+				List<String> insDtList = cde.getInstallments_dt();
+				List<String> insPriceList = cde.getInstallments_price();
+				int insCnt = insDtList.size();
+				List<InstallmentsDTO> dtoList = new ArrayList<InstallmentsDTO>();
+				for( int insSeq = 0; insSeq < insCnt; insSeq++ ) {
+					
+					InstallmentsDTO insParamDTO = new InstallmentsDTO();
+					insParamDTO.setContract_mgmtno(contractMgmtno);
+					insParamDTO.setInstallments_dt(insDtList.get(insSeq));
+					insParamDTO.setInstallments_price(Double.valueOf(insPriceList.get(insSeq)));
+					
+					dtoList.add(insParamDTO);
+				}
+				int installmentsResultCnt = installmentsDao.createInstallments(dtoList);
+				logger.debug("installmentsResultCnt " + installmentsResultCnt);
+			}
+			
 		}
 		
 		return result;

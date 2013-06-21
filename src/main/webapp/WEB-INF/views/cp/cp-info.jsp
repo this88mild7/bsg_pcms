@@ -3,14 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<style>
-.removePd:hover {
-	cursor : pointer;
-}
-.mt5 {
-	margin-top : 5px; 
-}
-</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -164,9 +156,9 @@ $(function(){
 			//추가될 공간
 			var $target = $("div.pd-group");
 			//추가될 HTML
-			var html =  '<div class="mt5">';
+			var html =  '<div style="margin-top : 5px;">';
 				html += '<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" /> ';	
-				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x"/>';	
+				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>';	
 				html += '</div>';
 			
 			$target.append(html);

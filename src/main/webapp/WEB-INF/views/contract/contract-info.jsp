@@ -31,8 +31,8 @@ div[class="tooltip-inner"] {
 	data-license_country_detail="${ contract.license_country_detail }"
 	data-contract_type="${ contract.contract_type }"
 	data-contract_type_detail="${ contract.contract_type_detail }"
-	data-balance_type="${ contract.balance_type }"
-	data-balance_type_detail="${ contract.balance_type_detail }"
+	data-payment="${ contract.payment }"
+	data-payment_type="${ contract.payment_type }"
 	data-deposit_bank="${ contract.deposit_bank }"
 	data-account_no="${ contract.account_no }"
 	data-account_holder="${ contract.account_holder }"
@@ -192,39 +192,31 @@ div[class="tooltip-inner"] {
 					<textarea class="span10" rows="4" id="license_country_detail" name="license_country_detail" placeholder="라이선스 유효국가 상세정보 입력" style="display:none;">${ contract.license_country_detail }</textarea>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="contract_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
+			<div class="control-group"id="payment-parent" >
+				<label class="control-label" for="payment_type"><img src='<spring:eval expression="@urlProp['v']"/>'> <span id="payment_type_text"></span></label>
 				<div class="controls">
-					<div class="row-fluid">
-						<label class="radio inline">
-							<input type="radio" name="contract_type" value="1" checked="checked">
-							쉐어
-						</label>
-						<label class="radio inline">
-							<input type="radio" name="contract_type" value="2" >
-							선금
-						</label>
-						<label class="radio inline">
-							<input type="radio" name="contract_type" value="3" >
-							후지급
-						</label>
-						<label class="radio inline">
-							<input type="radio" name="contract_type" value="0" >
-							기타
-						</label>
-						<textarea class="span10" rows="4" id="contract_type_detail"  name="contract_type_detail" placeholder="기타 설정시 필수입력" style="display:none;">${ contract.contract_type_detail }</textarea>
-					</div>
+					<!-- 
+					계약방식에 의해 변경됨.
+					 -->
+				</div>
+			</div>
+			<div class="control-group" id="payment-children" style="display:none" >
+				<label class="control-label" for="payment"><img src='<spring:eval expression="@urlProp['v']"/>'> <span>분납방법</span></label>
+				<div class="controls">
+					<!-- 
+					입금방식에 의해 변경됨.
+					 -->
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="sale_price">계약대금</label>
+				<label class="control-label" for="sale_price"><img src='<spring:eval expression="@urlProp['v']"/>'> <span id="price_text"></span></label>
 				<div class="controls">
 					<div class="input-prepend">
 						<div class="btn-group no-padding">
 							<button class="btn dropdown-toggle" data-toggle="dropdown">
-								<span id="currency">KRW</span><span class="caret"></span>
+								<span id="currency-view">KRW</span><span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu">
+							<ul class="dropdown-menu" id="currency-menu">
 								<li><a href="#">KRW</a></li>
 								<li><a href="#">USD</a></li>
 								<li><a href="#">JPY</a></li>
@@ -232,11 +224,12 @@ div[class="tooltip-inner"] {
 								<li><a href="#">EUR</a></li>
 							</ul>
 						</div>
+						<input type="hidden" id="currency" name="currency" value="${ contract.currency }">
 						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
 					</div>
-					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
+					<a id="sale_price_tip" href="#" data-toggle="tooltip" >tip</a>
 					<script>
-					$('#tip2')
+					$('#sale_price_tip')
 						.tooltip({
 							"title":"콘텐츠 판매가는 실제 판매상품 등록 시 여러 환율 단위로 등록이 가능합니다. 대표 가격만 입력해주세요.",
 							"placement":"bottom"
@@ -244,7 +237,7 @@ div[class="tooltip-inner"] {
 					</script>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group" id="profit-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률 </label>
 				<div class="controls">
 					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }">
@@ -284,30 +277,13 @@ div[class="tooltip-inner"] {
 				</div>
 			</div>
 			
-			<div class="page-name">
-				<h4>
-					정산정보입력
-				</h4>
-			</div>
 			<div class="control-group">
-				<label class="control-label" for="inputEmail"><img src='<spring:eval expression="@urlProp['v']"/>'> 정산방식</label>
+				<label class="control-label" for="inputEmail">특이사항</label>
 				<div class="controls">
-					<label class="radio inline">
-						<input type="radio" name="balance_type" value="1" checked="checked">
-						월정산
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="balance_type" value="2">
-						연정산
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="balance_type" value="0">
-						기타
-					</label>
-					<textarea class="span10" rows="4" id="balance_type_detail" name="balance_type_detail" placeholder="상세정보입력">${ contract.balance_detail }</textarea>
+					<textarea class="span10" rows="4" id="etc" name="etc" placeholder="특이사항입력">${ contract.etc }</textarea>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group" id="bank">
 				<label class="control-label" for="contract_bankname">입금은행</label>
 				<div class="controls">
 					<select name="deposit_bank" >
@@ -389,20 +365,33 @@ $(function(){
 		$("#contractForm").submit(function(){
 			// 10,000 원 => 숫자로만 변경
 			$('#sale_price').val($('#sale_price').autoNumeric('get'));
+			$("input[name='installments_price']").val($("input[name='installments_price']").autoNumeric('get'));
 		});
 		
-		//계약방식에 따른 UI변경
-		$("input[name='contract_type']").change(function(){
-			var contractType = $(this).val();
-			console.info("계약방식 : " + contractType);
-		});
-	
+		//환율 변경
+		$("#currency-menu").find("a").click(function(){
+			var nowCurrency = $(this).text();
+			$("#currency-view").text(nowCurrency);
+			$("#currency").val(nowCurrency);
+			
+		});		
+		
 		$("input[name='license_cd']").change(function(){
 			var $licenseCdDetail = $("#license_cd_detail");
 			if( $(this).val() == 0 ){
 				$licenseCdDetail.show();
 			} else {
 				$licenseCdDetail.hide().val("");
+			}
+		});
+	
+		$("input[name='payment_type']").change(function(){
+			var $paymentChildren = $("#payment-children");
+			
+			if($(this).val() == 'etc' ){
+				$payment.show();
+			} else {
+				$payment.hide().val("");
 			}
 		});
 		
@@ -561,27 +550,27 @@ $(function(){
 				}
 			});
 			
-			// 계약 방식 체크 & 이벤트
+			// 계약 방식 체크
 			$( "input[name='contract_type']" ).each(function(){
 				var $this = $(this);
-				var $contractTypeDetail = $("#contract_type_detail");
 				if(boxData.contract_type == $this.val() ){
 					$this.prop("checked", true);
 				}
-				//add event
-				$this.click(function(){
-					if( $this.val() == 0 ){
-						$contractTypeDetail.show();
-					} else {
-						$contractTypeDetail.hide().val("");
-					}
-				});
 			});
 			
-			//라이센스 체크 이벤트
+			//라이센스 체크 
 			$( "input[name='license_cd']" ).each(function(){
 				var $this = $(this);
 				if(boxData.license_cd == $this.val() ) {
+					$this.prop("checked", true);
+					$this.trigger("change");
+				};
+			});
+			
+			//지급방식 체크 
+			$( "input[name='payment_type']" ).each(function(){
+				var $this = $(this);
+				if(boxData.payment_type == $this.val() ) {
 					$this.prop("checked", true);
 					$this.trigger("change");
 				};
@@ -618,5 +607,190 @@ $(function(){
 		
 	};//상세보기 기존 값 체크 시작
 	
+	//계약방식에 따른 UI변경
+	$("input[name='contract_type']").change(function(){
+		var contractType = $(this).val();
+		console.info("계약방식 : " + contractType);
+		if(contractType == "si") {
+			//si 셀렉트 셋팅
+			$("#price_text").text("계약대금");
+			$("#payment_type_text").text("입금방식");
+			$("#bank").show();
+			$(".account-group").show();
+			$("#profit-group").show();
+			
+			setSiSelect();
+		} else if(contractType == "license") {
+			//license 셀렉트 셋팅
+			$("#price_text").text("지급대금");
+			$("#payment_type_text").text("지급방식");
+			$("#bank").hide();
+			$(".account-group").hide();
+			$("#profit-group").show();
+			
+			setLicenseSelect();
+		} else if(contractType == "collaboration"){
+			//협력 셀렉트 셋팅
+			$("#price_text").text("계약대금");
+			$("#payment_type_text").text("수익쉐어");
+			$("#bank").show();
+			$(".account-group").show();
+			$("#profit-group").hide();
+			
+			setCollboSelect();
+		} else {
+			$("#price_text").text("계약대금");
+			$("#payment_type_text").text("외주");
+			//외주 코드 생성 예정 
+			setOutsiderSelect();
+		}
+	}).first().trigger("change");
+	
+		function setSiSelect(){
+			var $paymentParent = $("#payment-parent");
+			var html  = '<select size="1" id="payment_type" name="payment_type">'; 
+				html += '<option value="lump_sum" >일시불</option>';
+				html += '<option value="installment">분납</option>';
+				html += '<option value="etc">기타</option>';
+				html += '</select>';
+			$paymentParent
+				.find(".controls")
+					.text("")
+					.append(html);
+			$("#payment-children").hide();
+		}
+		
+	
+			$("#payment-parent").on("change", "#payment_type", function(){
+				var value = $(this).val();
+				var $paymentChildren = $("#payment-children");
+				if(value == "lump_sum") {
+					//일시불
+					$paymentChildren.hide();
+				} else if(value == "installment") {
+					//분납
+					var html  = '<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">';
+						html += '<input type="text" name="installments_dt" placeholder="분납일">';
+						html += '<span class="add-on"><i class="icon-calendar"></i></span>';
+						html += '</div>';
+						html += '&nbsp;';
+						html += '<input type="text" name="installments_price" placeholder="금액">';
+						html += '&nbsp;';
+						html += '<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;">';
+					
+					$paymentChildren
+						.find(".controls")
+							.text("")
+							.append(html)
+							.end()
+						.show();
+					
+					$(".installments-date").datepicker({autoclose: true});
+					$("input[name='installments_price']").autoNumeric('init',{aPad: false });
+					
+				} else {
+					//기타
+					var html = '<textarea class="span10" rows="4" id="payment" name="payment" placeholder="상세정보입력"></textarea>';
+					$paymentChildren
+						.find(".controls")
+							.text("")
+							.append(html)
+							.end()
+						.show();
+				}
+			});
+			
+			//분납 추가 버튼
+			$("body").on("click", "#addInstallments", function(){
+				
+				//최대 4개 까지 가능
+				if( 4 == $("input[name='installments_dt']").size() ) {
+					bootbox.alert("분납은 4번까지 입력 하실 수 있습니다.");
+					return false;
+				}
+				//추가될 HTML
+				var html  = '<div style="margin-top : 5px;">';
+					html += '<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">';
+					html += '<input type="text" name="installments_dt" placeholder="분납일">';
+					html += '<span class="add-on"><i class="icon-calendar"></i></span>';
+					html += '</div>';
+					html += '&nbsp;';
+					html += '<input type="text" name="installments_price" placeholder="금액">';
+					html += '&nbsp;';
+					html += '<img class="removeInstallments" src="/pcms/img/remove.png" alt="+" style="cursor: pointer;">';
+					html += '</div>';
+				
+				$("#payment-children")
+					.find(".controls")
+						.append(html);
+				
+				$(".installments-date").datepicker({autoclose: true});
+				$("input[name='installments_price']").autoNumeric('init',{aPad: false });
+			});
+			//분납 삭제 버튼
+			$("body").on("click", "img.removeInstallments", function(){
+				$(this).parent().remove();
+			});
+			
+		function setLicenseSelect(){
+			var $paymentParent = $("#payment-parent");
+			var html  = '<select size="1" id="payment_type" name="payment_type">'; 
+				html += '<option value="installment">분납</option>';
+				html += '<option value="etc">기타</option>';
+				html += '</select>';
+			$paymentParent
+				.find(".controls")
+					.text("")
+					.append(html);
+			
+			$("#payment_type").trigger("change");
+		}
+		
+		function setCollboSelect(){
+			var $paymentParent = $("#payment-parent");
+			var html  = '<div class="input-prepend">'; 
+				html += '<div class="btn-group no-padding">';
+				html += '<button class="btn dropdown-toggle" data-toggle="dropdown">';
+				html += '<span id="payment_type_view">%</span><span class="caret"></span>';
+				html += '</button>';
+				html += '<ul class="dropdown-menu" id="payment_type_list">';
+				html += '<li><a href="#" data-type="percent">%</a></li>';
+				html += '<li><a href="#" data-type="ratio">비율</a></li>';
+				html += '</ul>';
+				html += '</div>';
+				html += '<input type="hidden" id="payment_type" name="payment_type">';
+				html += '<input type="text" id="payment" name="payment" placeholder="수익쉐어" >';
+				html += '</div>';
+				html += '<a id="payment_tip" href="#" data-toggle="tooltip" >tip</a>';
+			$paymentParent
+				.find(".controls")
+					.text("")
+					.append(html);
+			
+			$('#payment_tip')
+			.tooltip({
+				"title":"%, 비율에 따라 금액이 달라지니 주의해 주십시오.",
+				"placement":"bottom"
+			});
+			
+			$("#payment-children").hide();
+			
+		}
+			$("body").on("click", "#payment_type_list a", function(){
+				var nowPaymentType = $(this).text();
+				$("#payment_type_view").text(nowPaymentType);
+				$("#payment_type").val($(this).data("type"));
+			});
+		
+		function setOutsiderSelect(){
+			var $paymentParent = $("#payment-parent");
+			//외주 코드 작성 예정
+			var html  = '개발예정'; 
+			$paymentParent
+				.find(".controls")
+					.text("")
+					.append(html);
+			$("#payment-children").hide();
+		}
 });
 </script>

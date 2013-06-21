@@ -24,8 +24,9 @@
             etc,
             contract_type,
             contract_type_detail,
-            balance_type,
-            balance_detail
+            payment,
+            payment_type,
+            currency
         )
         VALUES (
             #{ company_mgmtno },
@@ -45,8 +46,9 @@
             #{ etc },
             #{ contract_type },
             #{ contract_type_detail },
-            #{ balance_type },
-            #{ balance_type_detail }
+            #{ payment },
+            #{ payment_type },
+            #{ currency }
         )
     </insert>
 

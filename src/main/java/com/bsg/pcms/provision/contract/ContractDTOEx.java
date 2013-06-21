@@ -1,5 +1,7 @@
 package com.bsg.pcms.provision.contract;
 
+import java.util.List;
+
 import com.bsg.pcms.dto.ContractDTO;
 
 public class ContractDTOEx extends ContractDTO{
@@ -19,6 +21,13 @@ public class ContractDTOEx extends ContractDTO{
 	private String is3d;
 	private String isGame;
 	private String balance_detail;
+	
+	private String currency;
+	private String payment;
+	private String payment_type;
+	
+	private List<String> installments_dt; 
+	private List<String> installments_price; 
 	
 	public int getSeries_cnt() {
 		return series_cnt;
@@ -92,10 +101,40 @@ public class ContractDTOEx extends ContractDTO{
 	public void setCompany_name(String company_name) {
 		this.company_name = company_name;
 	}
-	
+	public String getPayment() {
+		return payment;
+	}
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}
+	public String getPayment_type() {
+		return payment_type;
+	}
+	public void setPayment_type(String payment_type) {
+		this.payment_type = payment_type;
+	}
+	public List<String> getInstallments_dt() {
+		return installments_dt;
+	}
+	public void setInstallments_dt(List<String> installments_dt) {
+		this.installments_dt = installments_dt;
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public List<String> getInstallments_price() {
+		return installments_price;
+	}
+	public void setInstallments_price(List<String> installments_price) {
+		this.installments_price = installments_price;
+	}
 	@Override
 	public String toString() {
-		return "\nContractDTOEx [cate_name=" + cate_name + ", series_name=" + series_name + ", company_name=" + company_name + ", cate_id=" + cate_id + ", series_mgmtno=" + series_mgmtno + ", series_cnt=" + series_cnt + ", isPicturebook=" + isPicturebook + ", isEbook=" + isEbook + ", is2d=" + is2d + ", is3d=" + is3d + ", isGame=" + isGame + ", balance_detail=" + balance_detail + "]\n";
+		return "\nContractDTOEx [cate_name=" + cate_name + ", series_name=" + series_name + ", company_name=" + company_name + ", cate_id=" + cate_id + ", series_mgmtno=" + series_mgmtno + ", series_cnt=" + series_cnt + ", isPicturebook=" + isPicturebook + ", isEbook=" + isEbook + ", is2d=" + is2d + ", is3d=" + is3d + ", isGame=" + isGame + ", balance_detail=" + balance_detail + ", currency="
+				+ currency + ", payment=" + payment + ", payment_type=" + payment_type + ", installments_dt=" + installments_dt + ", installments_price=" + installments_price + "]\n";
 	}
 	
 	
