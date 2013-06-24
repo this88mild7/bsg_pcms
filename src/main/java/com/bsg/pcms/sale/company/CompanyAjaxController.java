@@ -49,7 +49,7 @@ public class CompanyAjaxController {
 	private JsonResponseMaker _jsonResponseMaker;
 	
 	
-	@RequestMapping( value = "seriesList.ajax", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping( value = "seriesList.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody
 	String seriesList(
 			@RequestParam(value="cate_id", required=false)String cateId,
@@ -79,7 +79,7 @@ public class CompanyAjaxController {
 		seriesJson = _jsonResponseMaker.generateSeries(seriesList);
 		return seriesJson;
 	}
-	@RequestMapping( value = "cateList.ajax", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping( value = "cateList.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody
 	String cateList() {
 		List<CateDTO> cateList = _cateService.getCategoryList();
@@ -88,7 +88,7 @@ public class CompanyAjaxController {
 		logger.info("cateJons : {}", cateJson);
 		return cateJson;
 	}
-	@RequestMapping( value = "contentsList.ajax", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping( value = "contentsList.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody
 	String contentsList(
 			@RequestParam(value="series_id", required=false)String seriesId,
@@ -115,7 +115,7 @@ public class CompanyAjaxController {
 	}
 	
 	
-	@RequestMapping( value = "saveContents.ajax", method = RequestMethod.POST, produces = "application/json;charset=UTF-8" )
+	@RequestMapping( value = "saveContents.ajax", produces = "application/json;charset=UTF-8" )
 	@ResponseBody
 	public String saveContents(
 			@RequestParam(value="contentList", required=true) List<String> contentList, 

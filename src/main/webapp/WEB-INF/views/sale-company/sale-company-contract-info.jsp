@@ -58,7 +58,9 @@
 						<ul id="currency-menu" class="dropdown-menu">
 							<li><a href="#">KRW</a></li>
 							<li><a href="#">USD</a></li>
-							<li><a href="#">CHW</a></li>
+							<li><a href="#">JPY</a></li>
+							<li><a href="#">CNY</a></li>
+							<li><a href="#">EUR</a></li>
 						</ul>
 					</div>
 					<div class="input-append">
@@ -81,13 +83,13 @@
 				<div class="controls">
 					<select size="1" name="payments_type" id="payments_type" >
 						<option value="일시지급" <c:if test="${saleContractDetail.payments_type eq '일시지급'}">selected="selected"</c:if>>일시지급</option>
-						<option value="분납지급" <c:if test="${saleContractDetail.payments_type eq '분납지급'}">selected="selected"</c:if>>분납지급</option>
+						<option value="지급" <c:if test="${saleContractDetail.payments_type eq '분납지급'}">selected="selected"</c:if>>분납지급</option>
 						<option value="기타방식" <c:if test="${saleContractDetail.payments_type eq '기타방식'}">selected="selected"</c:if>>기타방식</option>
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="">분납방식</label>
+				<label class="control-label" for="">분납방식</label> 
 				<div class="controls installments-group">
 					<div >
 					<c:choose>
@@ -100,7 +102,7 @@
 							<c:forEach items="${saleContractDetail.installmentList }" var="installment">
 							 	<input class="installments-date" type="text"  name="installments_dt"  value="${saleContractDetail.str_date }" placeholder="분납입">
 								<input type="text" class="installments_price" name="installments_price" placeholder="금액" value="${installment.installments_price}">
-								<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+								<div class="span2 device-remove-icon">
 							</c:forEach>
 						
 						</c:otherwise>
@@ -201,13 +203,12 @@
 </c:choose>
 </div>
 			<div class="control-group">
-				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태
-				<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/></label>
-				<div class="controls customer-device" >
+				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
+				<div class="controls sale-device" >
 					<c:choose>
 						<c:when test="${viewType eq 1}">
 							<div class="row-fluid" >
-								<div id="device-list">
+								<div>
 									<div class="span3">
 										<select size="1" name="device_cd_list">
 											<c:forEach items="${ deviceList }" var="device">
@@ -215,7 +216,8 @@
 											</c:forEach>
 										</select>
 									</div>
-									<div class="span2 device-remove-icon">
+									<div class="span2 device-add-icon">
+										<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
 									</div>
 									<!-- 아래로만 추가 하기 위한 empty -->
 									<div class="span7">
@@ -234,7 +236,7 @@
 						<c:otherwise>
 							<c:forEach items="${ saleContractDetail.contractedDeviceList }" var="contractedDeviceList">
 								<div class="row-fluid">
-									<div id="device-list">
+									<div>
 										<div class="span3">							
 											<select size="1" name="device_cd_list">
 												<c:forEach items="${ deviceList }" var="device">
@@ -243,7 +245,7 @@
 											</select>
 										</div>
 										<div class="span2 device-remove-icon">
-											<i class='icon-remove-sign'></i>
+											<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
 										</div>
 										<!-- 아래로만 추가 하기 위한 empty -->
 										<div class="span7">
@@ -278,8 +280,8 @@
 			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 콘텐츠</label>
 				<div class="controls">
-					<button class="btn btn-series-create">시리즈등록</button>
-					<button class="btn btn-each-create">개별상품등록</button>
+					<button id="btn-series-create" class="btn">시리즈등록</button>
+					<button id="btn-each-create" class="btn ">개별상품등록</button>
 				</div>
 			</div>
 
@@ -343,8 +345,8 @@
 </div>
 <!--/row-->
 
-<!-- MODAL -->
-<div id="findSeries" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- MODAL-SERIES -->
+<div id="series-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 class="text-center">시리즈 등록</h3>
@@ -368,11 +370,12 @@
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">등록취소</button>
-		<button class="btn btn-primary btn-series-select">등록하기</button>
+		<button id="btn-series-select" class="btn btn-primary">등록하기</button>
 	</div>
 </div>
 
-<div id="findEach" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- MODAL-EACH-PRODUCT -->
+<div id="product-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3 class="text-center">개별상품 등록</h3>
@@ -405,117 +408,425 @@
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">목록가기</button>
-		<button class="btn btn-primary btn-each-select">등록하기</button>
+		<button id="btn-each-select" class="btn btn-primary">등록하기</button>
 	</div>
 </div>
 
+<!-- 분납방식 추가 HTML -->
+<div id="installment-add-html" hidden="true">
+	<input class="installments-date" type="text"  name="installments_dt"  placeholder="분납입">
+	<input type="text" class="installments_price" name="installments_price" placeholder="금액">	
+	<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
+</div>
 
+<!--판매형태 추가 HTML -->
+<div id="device-list" hidden="true">
+	<div class="span3">
+		<select size="1" name="device_cd_list">
+			<c:forEach items="${ deviceList }" var="device">
+				<option value="${device}" >${device}</option>
+			</c:forEach>
+		</select>
+	</div>
+	<div class="span2 device-remove-icon">
+		<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
+	</div>
+	<!-- 아래로만 추가 하기 위한 empty -->
+	<div class="span7">
+		<!--  empty -->
+	</div>
+	
+	<!-- 기타 일 경우 나타 나게
+	<div class="span3">
+		<div class="span3">기기명</div>
+		<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
+	</div>
+	 -->
+</div>
 <script>
 
-	// 가격표시 객체
-	{
-		function BsgNumeric() {};
-		BsgNumeric.prototype = {
-			autoNumeric: function(target) {
-				$(target).autoNumeric('init',{aPad: false });
-	    	},
-		};
-		// 생성자 명시????????
-		// BsgNumertic.prototype.construnctor = BsgNumertic;
-	}
-	
-	// 메뉴 셀렉터
-	{
-		function MenuSelector() {};
-		MenuSelector.prototype = {
-			selectedValue : '',
-			changeValue : function(menu, hiddenTarget, value) {
-				this.selectedValue = value;
-				$(menu).first().text(value);
-				$(hiddenTarget).val(value);
-				this.toString();
-	    	},
-	
-	    	toString : function(){
-	    		console.log(this.selectedValue);
-	    	}
-		};
-		// 생성자 명시????????
-		// BsgNumertic.prototype.construnctor = BsgNumertic;
-	}
-	
-	// 달력 
-	{
-		function BsgCalendar() {};
-		
-		BsgCalendar.prototype = {
-			
-			calendar : '',
-			
-				
-			call : function(target) {
-				calendar = $(target).datepicker({
-					autoclose: true,
-					 format : 'yyyy-mm-dd'
-				});
-				return this;
-	    	},
-	    	
-	    	checkStartEndDate : function(strDateName, ednDateName){
-	    		
-	    		var strDate, endDate;
-	    		calendar.on('changeDate', function(ev){
-	    			// 시작일 
-	    			if( strDateName === $(this).attr("name") ) {
-	    				strDate = ev.date.valueOf();
-	    			}
-	    			// 종료일
-	    			if( ednDateName === $(this).attr("name") ) {
-	    				endDate = ev.date.valueOf();
-	    			}
-	    			
-	    			if( strDate > endDate ) {
-    					bootbox.alert( "계약종료일 재설정" );
-    					$( this ).val( "" );
-    				}
-	    		});
-	    	}	
-		};
-	}
-	
-	
+	var seletedTotlaPrice = 0;
 
-
-var seletedTotlaPrice = 0;
-$(function(){
-	
 	var bsgNumeric = new BsgNumeric();
 	var menuSelector = new MenuSelector();
 	var bsgCalendar = new BsgCalendar();
+	var bsgReq = new BsgRequest();
 	
-	// 분납 방식 달력
-	$("body").delegate('input[type=text].installments-date', 'focus', function(event){
-		 $(this).datepicker({
-			 autoclose: true,
-			 format : 'yyyy-mm-dd'
-		 });
-	});
+	$(function(){
+		
+		
+		// 분납 방식 달력
+		$("body").delegate('input[type=text].installments-date', 'focus', function(event){
+			bsgCalendar.eventListen($(this));
+		});
+		
+		// 분납 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].installments_price', 'focus', function(event){
+			bsgNumeric.autoNumeric($(this));
+		});
+		bsgNumeric.autoNumeric('#sale_price');
+		bsgNumeric.autoNumeric('#payments');
+		
+		// 지급대금 통화 메뉴
+		$("#currency-menu").find("a").click(function(){
+			menuSelector.changeValue('#currency-toggle span', '#currency', $(this).text());
+		});
+		
+		// 계약기간
+		bsgCalendar.eventListen("input.contract-date").checkStartEndDate("str_date", "end_date");
+		
+		// 분납 방식 추가 
+		$("#addInstallments").click(function(){
+			var $insertPlace = $("div.installments-group");
+			$("#installment-add-html").clone().show().appendTo($insertPlace);
+		});
+		
+		// 판매 형태 등록
+		$("#addDeviceType").click(function(){
+			$insertPlace = $("div.sale-device");
+			$("#device-list").clone().show().appendTo( $insertPlace );
+			minusIcontooltip();
+		});
+		
+		// 시리즈 등록 버튼 이벤트
+		$("#btn-series-create").click(function(){
+			checkMulti();
+			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
+			bsgReq.json(searchUrl, null, searchSeriesCallBack, searchSeriesError);
+					
+		});
+		
+		// 개별상품등록 버튼 이벤트
+		$("#btn-each-create").click(function(){
+			checkMulti();
+			
+			// 1. 카테고리 조회
+			// 2. 시리즈 조회
+			// 3. 상품 조회
+			/* var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>';
+			bsgReq.json(searchUrl, null, searchCateCall, searchSeriesError); */
+			
+			$("#contentQuery").val("");	
+			$.ajax({
+				dataType: "json",
+				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>',
+				success: function(data){
+					
+					var $target = $("#product-modal").find("select[name='category']");
+
+					//init
+					$target.html(""); //성공시 리스트 초기화
+					
+					if(data.resultCnt > 0) {
+						
+						var $json = data.result;
+						$.each($json, function(){
+							console.info(this.cate_id);
+							$target.append( '<option value="' + this.cate_id + '">' + this.cate_name + '</option>' );
+						});
+						$("#hasContents").val("has");
+					}
+					
+					categoryChange();
+				}
+			});
+			$("#product-modal").modal('toggle');
+			
+			
+		});
+		
+		// 개별상품 등록하기 버튼 이벤트
+		$("#btn-series-select").click(function(){
+			registeSeries();
+		});
+		// 개별상품 등록하기 버튼 이벤트
+		$("#btn-each-select").click(function(){
+			registeProduct();
+		});
+		
+		
+		
+	}); //init function
 	
-	// 분납 가격의 경우 추가 될수 있으면로 delegate 로 
-	// 가격 구분 콤마 표시
-	$("body").delegate('input[type=text].installments_price', 'focus', function(event){
-		 bsgNumertic.autoNumeric($(this));
-	});
-	bsgNumeric.autoNumeric('#sale_price');
-	bsgNumeric.autoNumeric('#payments');
+	function plusIcontooltip(){
+		$("i.icon-plus-sign").tooltip({"title":"추가", "placement":"top" });
+	}
 	
-	// 지급대금 통화 메뉴
-	$("#currency-menu").find("a").click(function(){
-		menuSelector.changeValue('#currency-toggle span', '#currency', $(this).text());
-	});
+	function minusIcontooltip(){
+		$("i.icon-remove-sign").tooltip( { "title":"삭제", "placement":"right" } );
+	}
 	
-	// 계약기간
-	bsgCalendar.call("input.contract-date").checkStartEndDate("str_date", "end_date");
+	function categoryChange(){
+		$( "select[name='category']" ).change(function () {
+			var select_id = $(this).find("option").filter(":selected").val();
+			if( null != select_id ){
+			 
+				var $target = $( "select[name='series']" );
+				$target.find( "option" ).remove();
+			 
+				$.getJSON('<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>',
+					{ cate_id : select_id },
+					function(data) {
+						console.info( data );
+						if( data.resultCnt > 0 ){
+							console.info( data.result );
+							$.each( data.result, function(){
+								$html = '<option value="' + this.series_mgmtno + '">' + this.series_name + '</option>';
+								$target.append( $html );
+							} );
+						}//if
+						
+						seriesChange();
+					});
+			} 
+			
+		}).trigger('change');
+	}
 	
-});
+	function seriesChange(){
+		$( "select[name='series']" ).change(function () {
+			var series_id = $(this).find("option").filter(":selected").val();
+			if( null != series_id ){
+			 
+				$.getJSON('<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
+					{ series_id : series_id },
+					function(data) {
+						console.info( data );
+						var $target = $("#findEachBody");
+						
+						//init
+						$target.html(""); //성공시 리스트 초기화
+						
+						if(data.resultCnt > 0) {
+							
+							var $json = data.result;
+							$.each($json, function(){
+								$html = 	'<tr>';
+								$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' 
+											+ this.content_price + '" data-content_name="' 
+											+ this.content_name + '" value="' + this.content_cd + '"></td>';
+								$html += 	'<td>' + this.content_name + '</td>';
+								$html += 	'<td>' + this.content_price + '</td>';
+								$html += 	'</tr>';
+								$target.append( $html );
+							});
+							
+							//개별판매일때 멀티체크 방지
+							checkMulti();
+														
+						}
+					});
+			} 
+		}).trigger('change');
+	}
+	
+	
+	function checkMulti() {
+		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
+		
+		//개별판매인가(체크박스 갯수를 세야하는가?)
+		if( saleType == 'CT001001' ){
+			$( "input[name=checkbox_all]" ).hide();
+			$("#findSeriesBody, #findEachBody").find("input[type='checkbox']").on("click",function(){
+				var checkedSize = $(this).parent().parent().parent().find("input[type='checkbox']").filter(":checked").size();
+				if( checkedSize > 1 ){
+					$(this).prop("checked", false);
+					bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
+				}
+			});
+		} else {
+			$( "input[name=checkbox_all]" )
+				.click( function(){
+					var $checkboxArray = $( "input[name='check_list']" );
+					
+					if( $( this ).val() == "true" ) {
+						$( this ).val( "false" );
+						$.each( $checkboxArray, function(){
+							$checkboxArray.prop("checked", false);
+						});
+					} else {
+						$( this ).val( "true" );
+						$.each( $checkboxArray, function(idx){
+							$checkboxArray.prop("checked", true);
+						});
+					}
+				})
+				.tooltip({
+					"title":"전체선택",
+					"placement":"top"
+				})
+				.show();
+		}
+		
+	}
+	
+	function registeSeries(){
+		var $productTable = $("table.product-table");
+		$productTable.find("thead,tbody").empty();
+
+		var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
+		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
+		
+		if( $selectedItem.size() == 0 ){
+			bootbox.alert("1개 이상 선택해 주세요!");				
+			return false;		
+		
+		} else {
+			var arrParam = [];
+			$selectedItem.each(function( index ){
+				//arrParam.push( { series_mgmtno : $( this ).val() } );
+				arrParam.push($( this ).val());
+			});
+			var json = { 'contentList' : arrParam };
+			
+			// 상품 목록 저장
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
+				type : "POST",
+				data : json,
+				dataType : "json",
+				success : function(result) {
+					if( result.code === 200 ){
+						productTable($selectedItem);
+					} else {
+						alert("에러 발생! 관리자에게 문의하여 주십시오.");
+					}
+				},
+				error : function() {
+					alert("에러 발생! 관리자에게 문의하여 주십시오.");
+				}
+			});
+		}
+		
+		
+		//close modal
+		$("#series-modal").modal('toggle');
+	}
+	
+	function productTable($selectedItem){
+		var $target = $("table.product-table");
+		var seletedTotlaPrice = 0;
+		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
+		$selectedItem.each(function(){
+			var $this = $(this);
+			var productHtml;
+			if($selectedItemCount > 5){
+				productHtml += '<tbody  style="display:block; overflow:auto; height:230px;">';
+			}else{
+				productHtml += '<tbody  style="display:block; overflow:auto; ">';
+			}
+			var $this = $(this);
+			var productHtml;
+			productHtml +='<tr>';
+			productHtml +='<td>'+$this.data("content_cd")+'</td>';
+			productHtml +='<td> | '+$this.data("content_name")+'</td>';
+			productHtml +='<td> | ybm 시사</td>';
+			productHtml +='<td>';
+			productHtml +='<input type="hidden" name="contents_cd" />';
+			productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+			productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
+			productHtml +='</td>';
+			productHtml +='</tr>';
+			$target.find("tbody").append(productHtml);
+			seletedTotlaPrice += $this.data("content_price");
+			
+			$("#product-content-tb").append(productHtml);
+			//$productTable.find("tbody").append("<tr><td>" + $this.data("series_name") + "</td><td>" + $this.data("series_price") + "</td></tr>");
+			seletedTotlaPrice += $this.data("series_price");
+		});
+		$("#sale_price").val(seletedTotlaPrice);
+	}
+	
+	function registeProduct(){
+		var $target = $("table.product-table");
+		$target.find("thead,tbody").empty();
+
+		var $selectedItem = $("#product-modal").find("input[name='content_checkbox']").filter(":checked");
+		
+		if( $selectedItem.size() == 0 ){
+			bootbox.alert("1개 이상 선택해 주세요!");				
+			return false;				
+		} else {
+			var arr = [];
+			$selectedItem.each(function( index ){
+				arr.push(  $( this ).val() );
+			});
+			
+			var json = { 'contentList' : arr };
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
+				type : "POST",
+				//contentType : "text/html; charset=utf-8" ,
+				data : json,
+				dataType : "json",
+				success : function( response ) {
+					if( response.code === 200 ){
+						
+						$selectedItem.each(function(){
+							var $this = $(this);
+							var productHtml;
+							productHtml +='<tr>';
+							productHtml +='<td>'+$this.data("content_cd")+'</td>';
+							productHtml +='<td> | '+$this.data("content_name")+'</td>';
+							productHtml +='<td> | ybm 시사</td>';
+							productHtml +='<td>';
+							productHtml +='<input type="hidden" name="contents_cd" />';
+							productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+							productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
+							productHtml +='</td>';
+							productHtml +='</tr>';
+							$target.find("tbody").append(productHtml);
+							seletedTotlaPrice += $this.data("content_price");
+						});
+						$("#sale_price").val(seletedTotlaPrice);
+					} else {
+						alert("에러 발생! 관리자에게 문의하여 주십시오.");
+					}
+				},
+				error : function() {
+					alert("에러 발생! 관리자에게 문의하여 주십시오.");
+				}
+			});
+		}
+		
+		//close modal
+		$("#product-modal").modal('toggle');
+	}
+	
+	function searchSeriesCallBack(response, param){
+		var $seriesModal = $("#series-modal");
+		var $insertPlace = $("#findSeriesBody");
+		
+		$insertPlace.empty(); //성공시 리스트 초기화
+		
+		if(response.resultCnt > 0) {
+			var $json = response.result;
+			$.each($json, function(){
+				$html = 	'<tr>';
+				$html += 	'<td><input name="check_list" type="checkbox" data-content_name="' + this.series_name 
+								+ '" data-content_cd="'+this.series_mgmtno
+								+ '" data-content_price="'+this.series_price
+								+ '" value="' + this.series_mgmtno 
+								+ '"></td>';
+				$html += 	'<td>' + this.series_name + '</td>';
+				$html += 	'<td>' + this.series_price + '</td>';
+				$html += 	'</tr>';
+				$insertPlace.append( $html );
+				
+			});
+
+			$("#series-modal").modal('toggle');
+			//$("#hasContents").val("has");
+			//개별판매일때 멀티체크 방지
+			//checkMulti();
+		}
+		$seriesModal.show();
+	}
+	function searchSeriesError(response, param){
+		console.info(data);
+	}
+	
+
 </script>
