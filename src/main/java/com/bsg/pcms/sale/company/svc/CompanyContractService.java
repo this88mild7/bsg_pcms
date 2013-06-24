@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bsg.pcms.dto.ContentDTO;
 import com.bsg.pcms.dto.ContractDTO;
 import com.bsg.pcms.dto.DeviceDTO;
+import com.bsg.pcms.dto.InstallmentsDTO;
 import com.bsg.pcms.sale.company.CompanyController;
 import com.bsg.pcms.sale.company.dao.CompanyContractDao;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
@@ -52,9 +53,12 @@ public class CompanyContractService {
 		List<CompanyContentsDTOEx> contentsList = _saleContractDao.contractContentsList(saleCompany.getContract_mgmtno());
 		List<String> contractedDeviceList = _saleContractDao.contractedDeviceList(saleCompany.getContract_mgmtno());
 		List<String> deviceList = _saleContractDao.deviceList();
+		List<InstallmentsDTO> installmentList = _saleContractDao.installmentList(saleCompany.getContract_mgmtno());
 		companyContractDTOEx.setDevice_cd_list(deviceList);
 		companyContractDTOEx.setContractedDeviceList(contractedDeviceList);
 		companyContractDTOEx.setContentsList(contentsList);
+		companyContractDTOEx.setInstallmentList(installmentList);
+		
 		return companyContractDTOEx;
 	}
 	
@@ -93,11 +97,13 @@ public class CompanyContractService {
 	public List<CompanyContractDTOEx> create(
 			CompanyContractDTOEx paramContractDTOEx) {
 		try {
+			
 			// 계약 마스터 insert
 			_saleContractDao.create(paramContractDTOEx);
 			
-			
+			// 계약 상세
 			createContractDetail(paramContractDTOEx);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,6 +112,7 @@ public class CompanyContractService {
 		
 		return null;
 	}
+
 
 	/** 
 	 * 1. 판매 Contents Group insert
@@ -140,6 +147,15 @@ public class CompanyContractService {
 			tmpContractDto.setSale_type(saleType);
 			_saleContractDao.createContractDetail(tmpContractDto);
 		}
+		
+		for(int x=0;x<paramContractDTOEx.getInstallments_dt().size();x++){
+			InstallmentsDTO installnetsDTO = new InstallmentsDTO();
+			installnetsDTO.setContract_mgmtno(paramContractDTOEx.getContract_mgmtno());
+			installnetsDTO.setInstallments_dt(paramContractDTOEx.getInstallments_dt().get(x));
+			installnetsDTO.setInstallments_price(paramContractDTOEx.getInstallments_price().get(x));
+			_saleContractDao.createContractInstallments(installnetsDTO);
+		}
+
 	}
 	
 	private void modifyContract(CompanyContractDTOEx companyDTO) {

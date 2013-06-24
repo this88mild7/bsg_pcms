@@ -6,7 +6,7 @@ public class InstallmentsDTO extends CommonDTO{
 	
 	private int installments_seq;
 	
-	private double installments_price;
+	private String installments_price;
 	
 	private String installments_detail;
 	
@@ -28,13 +28,6 @@ public class InstallmentsDTO extends CommonDTO{
 		this.installments_seq = installments_seq;
 	}
 
-	public double getInstallments_price() {
-		return installments_price;
-	}
-
-	public void setInstallments_price(double installments_price) {
-		this.installments_price = installments_price;
-	}
 
 	public String getInstallments_detail() {
 		return installments_detail;
@@ -60,6 +53,15 @@ public class InstallmentsDTO extends CommonDTO{
 				+ ", installments_detail=" + installments_detail
 				+ ", installments_dt=" + installments_dt + "]";
 	}
+
+	public String getInstallments_price() {
+		return installments_price;
+	}
+
+	public void setInstallments_price(String installments_price) {
+		this.installments_price = installments_price;
+	}
+
 	
 
 }

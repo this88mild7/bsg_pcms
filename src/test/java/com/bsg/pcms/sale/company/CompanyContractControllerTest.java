@@ -77,7 +77,7 @@ public class CompanyContractControllerTest {
 	public void testSaleContractDetail() {
 		try {
 			_companyContractDTOEx.setContract_mgmtno(1);
-			ModelAndView resView = _saleCompanyController.contractDetail(_companyContractDTOEx, request);
+			ModelAndView resView = _saleCompanyController.detail(_companyContractDTOEx, request);
 			CompanyContractDTOEx  resultcode = (CompanyContractDTOEx)resView.getModel().get("saleContractDetail");
 			assertNotNull(resultcode);
 			logger.info("{}", resultcode);

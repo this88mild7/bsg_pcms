@@ -63,7 +63,7 @@
 					<input type="text" id="customer_master_email" name="master_phoneno" placeholder="전화번호" value="${ saleCompany.master_phoneno }" >
 				</div>
 			</div>
-			
+			<!-- 
 			<div class="control-group">
 				<label class="control-label" for="customer_bankname">입금은행</label>
 				<div class="controls">
@@ -93,6 +93,7 @@
 					<input type="text" id="account_holder" name="account_holder" placeholder="예금주" value="${saleCompany.account_holder }">
 				</div>
 			</div>
+			 -->
 			
 		</form>
 			
