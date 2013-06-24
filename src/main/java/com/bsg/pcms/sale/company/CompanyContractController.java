@@ -70,10 +70,9 @@ public class CompanyContractController {
 	}
 	
 	@RequestMapping( value = "detail.do", method = RequestMethod.GET )
-	public ModelAndView contractDetail(CompanyContractDTOEx saleCompany, HttpServletRequest request) {
+	public ModelAndView detail(CompanyContractDTOEx saleCompany, HttpServletRequest request) {
 		CompanyContractDTOEx saleContractDetail = _saleContractService.detail(saleCompany);
 		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
-		
 		request.getSession().setAttribute("selectedContentsList", saleContractDetail.getContentsList());
 		
 		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, contractTypeList);

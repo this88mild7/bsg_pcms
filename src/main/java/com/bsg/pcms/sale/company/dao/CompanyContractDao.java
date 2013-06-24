@@ -3,11 +3,15 @@ package com.bsg.pcms.sale.company.dao;
 import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.bsg.pcms.dto.ContentDTO;
 import com.bsg.pcms.dto.ContractDTO;
 import com.bsg.pcms.dto.DeviceDTO;
+import com.bsg.pcms.dto.InstallmentsDTO;
+import com.bsg.pcms.sale.company.CompanyContractController;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
@@ -15,7 +19,10 @@ import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
 @Component
 public class CompanyContractDao extends SqlSessionDaoSupport {
 	
+	private Logger _logger = LoggerFactory.getLogger(getClass());
+	
 	public List<CompanyContractDTOEx> contractList(CompanyContractDTOEx contractDTO) {
+		_logger.info("contractList dao");
 		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.contractList", contractDTO);
 	}
 
@@ -38,6 +45,10 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 
 	public void createContractDetail(CompanyContractDTOEx paramContractDTOEx) {
 		getSqlSession().insert( "saleCompanyQuery.createContractDetail", paramContractDTOEx );
+	}
+	public void createContractInstallments(InstallmentsDTO installnetsDTO) {
+		getSqlSession().insert( "saleCompanyQuery.createContractInstallments", installnetsDTO );
+		
 	}
 
 	public List<String> deviceList() {
@@ -70,6 +81,12 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 		getSqlSession().delete( "saleCompanyQuery.modifyContract", companyDTO);
 		
 	}
+
+	public List<InstallmentsDTO> installmentList(int contract_mgmtno) {
+		return (List<InstallmentsDTO>)getSqlSession().selectList( "saleCompanyQuery.installment", contract_mgmtno);
+	}
+
+
 
 
 //	public int updateContract(ContractDTO contract) {
