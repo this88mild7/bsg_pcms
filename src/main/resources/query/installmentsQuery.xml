@@ -32,7 +32,7 @@
             *
         FROM INSTALLMENTS
         WHERE contract_mgmtno = #{ contract_mgmtno }
-        ORDER BY installments_dt DESC
+        ORDER BY installments_dt ASC
     </select>
 
     <!-- UPDATE -->

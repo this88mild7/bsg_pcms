@@ -3,8 +3,6 @@ package com.bsg.pcms.provision.contract;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +15,20 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.bsg.pcms.dto.ContractContentsGroupDTO;
 import com.bsg.pcms.dto.ContractDetailDTO;
 import com.bsg.pcms.dto.SeriesDTO;
+import com.bsg.pcms.installments.svc.InstallmentsService;
 import com.bsg.pcms.provision.content.svc.ContentService;
 import com.bsg.pcms.provision.contract.svc.ContractService;
 import com.bsg.pcms.provision.cp.CpService;
 import com.bsg.pcms.provision.series.svc.SeriesService;
 import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
-import com.bsg.pcms.utility.BigstarProperties;
 import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping(value = "contract")
 public class ContractController {
-
-	private Logger logger = LoggerFactory.getLogger(ContractController.class);
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private CpService cpService;
@@ -46,15 +44,15 @@ public class ContractController {
 	
 	@Autowired
 	private ContentService contentService;
+	
+	@Autowired
+	private InstallmentsService installmentsService;
 
 	@Autowired
 	private BankListMaker bankListMaker;
 	
 	@Autowired
 	private PageUtil pageUtil;
-
-	@Resource
-	private BigstarProperties bigstarProperties;
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(ContractDTOEx contractDTOEx) {
@@ -95,7 +93,12 @@ public class ContractController {
 
 		mav.addObject("series", seriesService.getSeries(sd));
 		mav.addObject("seriesCnt", contentService.getContentCountBySeriesMgmtno(ccg.getSeries_mgmtno()));
-		mav.addObject("contract", contractService.getContract(cde));
+		ContractDTOEx resultDTO = contractService.getContract(cde);
+		mav.addObject("contract", resultDTO);
+		//분납이라면
+		if(null != resultDTO.getPayments_type() && resultDTO.getPayments_type().equalsIgnoreCase("installments")) {
+			mav.addObject("installmentsList", installmentsService.getInstallmentsList(resultDTO.getContract_mgmtno()));
+		}
 		
 		mav.addObject("publishing_type", getPublishingTypeStr(cde));
 		mav.addObject("cpList", cpService.getCpListAll());
@@ -144,21 +147,16 @@ public class ContractController {
 	public ModelAndView createAction(ContractDTOEx cde) throws SQLException{
 
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
-
 		mav.addObject("result", contractService.createContract(cde));
-
 		return mav;
 
 	}
 
 	@RequestMapping(value = "updateAction")
 	public ModelAndView updateAction(ContractDTOEx cde) throws SQLException {
+		
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
-
-		int result = contractService.updateContract(cde);
-		mav.addObject("result", result);
-		mav.addObject("contract_mgmtno", cde.getContract_mgmtno());
-
+		mav.addObject("result", contractService.updateContract(cde));
 		return mav;
 	}
 	

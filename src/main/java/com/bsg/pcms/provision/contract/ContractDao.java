@@ -57,8 +57,8 @@ public class ContractDao extends SqlSessionDaoSupport {
 		return getSqlSession().update("contractQuery.deleteContract", contract);
 	}
 
-	public int updateContract(ContractDTO contract) {
-		return getSqlSession().update("contractQuery.updateContract", contract);
+	public int updateContract(ContractDTOEx contractDTOEx) {
+		return getSqlSession().update("contractQuery.updateContract", contractDTOEx);
 	}
 
 

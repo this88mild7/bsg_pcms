@@ -24,9 +24,12 @@
             etc,
             contract_type,
             contract_type_detail,
-            payment,
-            payment_type,
-            currency
+            payments_type,
+            sale_price_detail,
+            currency,
+            deposit_bank,
+            account_no,
+            account_holder
         )
         VALUES (
             #{ company_mgmtno },
@@ -46,9 +49,12 @@
             #{ etc },
             #{ contract_type },
             #{ contract_type_detail },
-            #{ payment },
-            #{ payment_type },
-            #{ currency }
+            #{ payments_type },
+            #{ sale_price_detail },
+            #{ currency },
+            #{ deposit_bank },
+            #{ account_no },
+            #{ account_holder }
         )
     </insert>
 
@@ -93,15 +99,10 @@
     <!-- SELECT -->
     <select id="getContract" resultType="com.bsg.pcms.provision.contract.ContractDTOEx" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
-            CONTRACT.*,
-            COMPANY.deposit_bank,
-            COMPANY.account_no,
-            COMPANY.account_holder
-        FROM CONTRACT, COMPANY
+            CONTRACT.*
+        FROM CONTRACT
         WHERE CONTRACT.contract_mgmtno = #{ contract_mgmtno }
-        AND COMPANY.del_yn = 'N'
         AND CONTRACT.del_yn = 'N'
-        AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno
     </select>
 
     <select id="getContractDetailList" resultType="com.bsg.pcms.dto.ContractDetailDTO" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
@@ -198,7 +199,7 @@
     </select>
 
     <!-- UPDATE -->
-    <update id="updateContract" parameterType="com.bsg.pcms.dto.ContractDTO">
+    <update id="updateContract" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         UPDATE CONTRACT SET
             company_mgmtno = #{ company_mgmtno },
             user_mgmtseq = #{ user_mgmtseq },
@@ -215,9 +216,13 @@
             etc = #{ etc },
             contract_type = #{ contract_type },
             contract_type_detail = #{ contract_type_detail },
-            balance_type = #{ balance_type },
-            balance_detail = #{ balance_type_detail },
-            mod_dt = NOW()
+            payments_type = #{ payments_type },
+            sale_price_detail = #{ sale_price_detail },
+            currency = #{ currency },
+            mod_dt = NOW(),
+            deposit_bank = #{ deposit_bank },
+            account_no = #{ account_no },
+            account_holder = #{ account_holder }
         WHERE contract_mgmtno = #{ contract_mgmtno }
     </update>
     

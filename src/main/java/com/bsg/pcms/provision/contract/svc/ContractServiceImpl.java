@@ -13,14 +13,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.dto.ContractContentsGroupDTO;
 import com.bsg.pcms.dto.ContractDetailDTO;
 import com.bsg.pcms.dto.InstallmentsDTO;
 import com.bsg.pcms.installments.dao.InstallmentsDao;
 import com.bsg.pcms.provision.contract.ContractDTOEx;
 import com.bsg.pcms.provision.contract.ContractDao;
-import com.bsg.pcms.provision.cp.CpService;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -34,9 +32,6 @@ public class ContractServiceImpl implements ContractService {
 	@Autowired
 	private InstallmentsDao installmentsDao;
 	
-	@Autowired
-	private CpService cpService;
-
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, readOnly = false, rollbackFor = { SQLException.class })
 	public int createContract(ContractDTOEx cde) throws SQLException {
 
@@ -47,16 +42,6 @@ public class ContractServiceImpl implements ContractService {
 		}
 		//계약 생성 후 계약관리번호 생김.
 		int contractMgmtno = cde.getContract_mgmtno();
-		
-		{ //CP은행정보 업데이트
-			CompanyDTO bankDTO = new CompanyDTO();
-			bankDTO.setCompany_mgmtno(cde.getCompany_mgmtno());
-			bankDTO.setDeposit_bank(cde.getDeposit_bank());
-			bankDTO.setAccount_no(cde.getAccount_no());
-			bankDTO.setAccount_holder(cde.getAccount_holder());
-			int bankUpdateResult = cpService.updateBank(bankDTO);
-			logger.debug("bankUpdateResult " + bankUpdateResult);
-		}
 		
 		{ //CONTRACT_CONTENTS_GROUP
 			logger.info("ctd.getContract_mgmtno() {}", contractMgmtno);
@@ -86,8 +71,8 @@ public class ContractServiceImpl implements ContractService {
 
 		{
 			//분납일시 INSTALLMENTS 테이블 작업	
-			String paymentType = cde.getPayment_type();
-			if(paymentType.equalsIgnoreCase("installment")) {
+			String paymentsType = cde.getPayments_type();
+			if(paymentsType.equalsIgnoreCase("installments")) {
 				List<String> insDtList = cde.getInstallments_dt();
 				List<String> insPriceList = cde.getInstallments_price();
 				int insCnt = insDtList.size();
@@ -156,16 +141,6 @@ public class ContractServiceImpl implements ContractService {
 			result = contractDao.updateContract(cde);
 		}
 		
-		{ //CP은행정보 업데이트
-			CompanyDTO bankDTO = new CompanyDTO();
-			bankDTO.setCompany_mgmtno(cde.getCompany_mgmtno());
-			bankDTO.setDeposit_bank(cde.getDeposit_bank());
-			bankDTO.setAccount_no(cde.getAccount_no());
-			bankDTO.setAccount_holder(cde.getAccount_holder());
-			int bankUpdateResult = cpService.updateBank(bankDTO);
-			logger.debug("bankUpdateResult " + bankUpdateResult);
-		}
-
 		{ //CONTRACT_CONTENTS_GROUP
 			List<ContractContentsGroupDTO> contentList = new ArrayList<ContractContentsGroupDTO>();
 			ContractContentsGroupDTO param = new ContractContentsGroupDTO();
@@ -194,6 +169,33 @@ public class ContractServiceImpl implements ContractService {
 			int detailCreatedCnt = contractDao.createContractDetail(detailList);
 			logger.debug("detailDeletedCnt " + detailDeletedCnt);
 			logger.debug("detailCreatedCnt " + detailCreatedCnt);
+		}
+		
+		{
+			//분납일시 INSTALLMENTS 테이블 작업	
+			String paymentsType = cde.getPayments_type();
+			if(paymentsType.equalsIgnoreCase("installments")) {
+				List<String> insDtList = cde.getInstallments_dt();
+				List<String> insPriceList = cde.getInstallments_price();
+				int insCnt = insDtList.size();
+				List<InstallmentsDTO> dtoList = new ArrayList<InstallmentsDTO>();
+				//삭제후
+				int insDeletedCnt = installmentsDao.deleteInstallmentsAll(contractMgmtno);
+				logger.debug("insDeletedCnt " + insDeletedCnt);
+				//재생성
+				for( int insSeq = 0; insSeq < insCnt; insSeq++ ) {
+					
+					InstallmentsDTO insParamDTO = new InstallmentsDTO();
+					insParamDTO.setContract_mgmtno(contractMgmtno);
+					insParamDTO.setInstallments_dt(insDtList.get(insSeq));
+					insParamDTO.setInstallments_price(Double.valueOf(insPriceList.get(insSeq)));
+					
+					dtoList.add(insParamDTO);
+				}
+				int installmentsResultCnt = installmentsDao.createInstallments(dtoList);
+				logger.debug("installmentsResultCnt " + installmentsResultCnt);
+			}
+			
 		}
 		
 		return result;

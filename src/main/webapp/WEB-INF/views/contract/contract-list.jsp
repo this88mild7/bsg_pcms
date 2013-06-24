@@ -48,8 +48,8 @@
 			<td>${ contract.company_name }</td>
 			<td>${ contract.series_name }</td>
 			<td>${ contract.str_date } ~ ${ contract.end_date }</td>
-			<td>라이센싱</td>
-			<td>10,000,0000</td>
+			<td>${ contract.contract_type }</td>
+			<td>${ contract.sale_price }</td>
 			<td>${ contract.sale_profit_rate }</td>
 			<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contractDetail']"/>?contract_mgmtno=${ contract.contract_mgmtno }">상세보기</button></td>
 		</tr>
