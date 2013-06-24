@@ -23,7 +23,7 @@ public class BalanceCpController {
 	public ModelAndView list() {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-cp-list");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		
 		return mav;
@@ -35,7 +35,7 @@ public class BalanceCpController {
 	public ModelAndView create() {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-cp-info");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		
 		return mav;
