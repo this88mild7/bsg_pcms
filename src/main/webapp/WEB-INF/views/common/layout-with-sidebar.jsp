@@ -18,7 +18,8 @@
 	
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="/pcms/js/bootstrap.min.js"></script>
-	
+	<script src="/pcms/js/bsg_ajax.js"></script>
+	<script src="/pcms/js/bsg_pcms_sale.js"></script>
 	<script>
 	$(function(){
 		
