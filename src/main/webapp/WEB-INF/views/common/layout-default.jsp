@@ -36,9 +36,13 @@
 	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/flotr2.js"></script>
 	<script src="/pcms/js/locales/datepicker-kr.js"></script>
+	<script src="/pcms/js/bsg_ajax.js"></script>
+	<script src="/pcms/js/bsg_pcms_sale.js"></script>
 	
 </body>
 </html>
 	
 	
+    
+
     
