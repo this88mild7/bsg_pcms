@@ -3,6 +3,7 @@ package com.bsg.pcms.sale.company.dto;
 import java.util.List;
 
 import com.bsg.pcms.dto.ContractDTO;
+import com.bsg.pcms.dto.InstallmentsDTO;
 
 
 public class CompanyContractDTOEx extends ContractDTO{
@@ -38,6 +39,13 @@ public class CompanyContractDTOEx extends ContractDTO{
 	private String currency;
 	
 	private String payments_type;
+	
+	private List<String> installments_dt;
+	
+	private List<String> installments_price;
+	
+	private List<InstallmentsDTO> installmentList;
+	
 	
 	public double getPayments() {
 		return payments;
@@ -147,7 +155,18 @@ public class CompanyContractDTOEx extends ContractDTO{
 	public void setContractedDeviceList(List<String> contractedDeviceList) {
 		this.contractedDeviceList = contractedDeviceList;
 	}
-	
+	public String getSale_profit_type_detail() {
+		return sale_profit_type_detail;
+	}
+	public void setSale_profit_type_detail(String sale_profit_type_detail) {
+		this.sale_profit_type_detail = sale_profit_type_detail;
+	}
+	public List<InstallmentsDTO> getInstallmentList() {
+		return installmentList;
+	}
+	public void setInstallmentList(List<InstallmentsDTO> installmentList) {
+		this.installmentList = installmentList;
+	}
 	
 	@Override
 	public String toString() {
@@ -155,16 +174,26 @@ public class CompanyContractDTOEx extends ContractDTO{
 				+ ", company_name=" + company_name + ", contents_cd="
 				+ contents_cd + ", device_cd=" + device_cd + ", device_detail="
 				+ device_detail + ", sale_price_type=" + sale_price_type
+				+ ", sale_profit_type_detail=" + sale_profit_type_detail
 				+ ", series_mgmtno=" + series_mgmtno + ", cate_id=" + cate_id
 				+ ", contentsList=" + contentsList + ", saleTypeList="
 				+ saleTypeList + ", seriesList=" + seriesList
 				+ ", device_cd_list=" + device_cd_list
-				+ ", contractedDeviceList=" + contractedDeviceList + "]";
+				+ ", contractedDeviceList=" + contractedDeviceList
+				+ ", searchType=" + searchType + ", searchQuery=" + searchQuery
+				+ ", payments=" + payments + ", currency=" + currency
+				+ ", payments_type=" + payments_type + "]";
 	}
-	public String getSale_profit_type_detail() {
-		return sale_profit_type_detail;
+	public List<String> getInstallments_dt() {
+		return installments_dt;
 	}
-	public void setSale_profit_type_detail(String sale_profit_type_detail) {
-		this.sale_profit_type_detail = sale_profit_type_detail;
+	public void setInstallments_dt(List<String> installments_dt) {
+		this.installments_dt = installments_dt;
+	}
+	public List<String> getInstallments_price() {
+		return installments_price;
+	}
+	public void setInstallments_price(List<String> installments_price) {
+		this.installments_price = installments_price;
 	}
 }

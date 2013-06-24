@@ -71,9 +71,6 @@
             MASTER_EMAIL, 
             MASTER_PHONENO,
             COMPANY_NO,
-            DEPOSIT_BANK,
-            ACCOUNT_NO,
-            ACCOUNT_HOLDER,
             DEL_YN,
             COMPANY_TYPE,
             REG_DT,
@@ -87,9 +84,6 @@
             #{master_email}, 
             #{master_phoneno}, 
             #{company_no},
-            #{deposit_bank},
-            #{account_no},
-            #{account_holder},
             'N',
             'SC', 
             now(), 
@@ -148,6 +142,26 @@
             #{sale_type},
             now(), 
             now() 
+        )
+   </insert>
+   <insert id="createContractInstallments" 
+   parameterType="com.bsg.pcms.dto.InstallmentsDTO">
+       INSERT /* saleCompanyQuery.createContractInstallments 2013.06.03 최지순 */   
+       INTO INSTALLMENTS ( 
+            CONTRACT_MGMTNO,
+            INSTALLMENTS_DT, 
+            INSTALLMENTS_PRICE, 
+            INSTALLMENTS_DETAIL,
+            REG_DT,
+            MOD_DT
+       )
+	   VALUES ( 
+            #{contract_mgmtno},
+            #{installments_dt},
+            #{installments_price},
+            #{installments_detail},
+            NOW(),
+            NOW()
         )
    </insert>
 
@@ -274,9 +288,6 @@
           COM.MASTER,
           COM.MASTER_EMAIL,
           COM.ADDR,
-          COM.DEPOSIT_BANK,
-          COM.ACCOUNT_NO,
-          COM.ACCOUNT_HOLDER,
           CA.PD_NAME
        FROM  
        COMPANY_ADMIN CA LEFT OUTER JOIN COMPANY COM  ON COM.COMPANY_MGMTNO = CA.COMPANY_MGMTNO
@@ -330,6 +341,18 @@
        AND DEPTH_1 = 'CT'
        AND DEPTH_2 = '001' 
        ORDER BY CD
+   </select>
+   
+   <select id="installment" resultType="com.bsg.pcms.dto.InstallmentsDTO" >
+       SELECT /* SaleCompany.installment 2013.06.03 최지순 */
+			INS.INSTALLMENTS_SEQ,
+			INS.INSTALLMENTS_DT,
+			INS.INSTALLMENTS_PRICE,
+			INS.INSTALLMENTS_DETAIL
+       FROM  CONTRACT CON, INSTALLMENTS INS
+       WHERE 1=1
+       AND CON.CONTRACT_MGMTNO = INS.CONTRACT_MGMTNO
+       AND CON.CONTRACT_MGMTNO = #{contract_mgmtno}
    </select>
    
 	<update id="modifyCompany" 

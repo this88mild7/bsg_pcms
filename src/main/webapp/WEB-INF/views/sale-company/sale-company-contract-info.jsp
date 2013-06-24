@@ -63,7 +63,7 @@
 					</div>
 					<div class="input-append">
 						<input type="hidden" id="currency" name="currency" value="KRW">
-						<input class="inputError" type="text" id="payments" name="payments" class="input-medium" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+						<input class="inputError input-medium" type="text" id="payments" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
 					</div>
 					<span class="help-inline"><a id="tip4" href="#" data-toggle="tooltip" >tip</a></span>
 					<script>
@@ -87,12 +87,24 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 분납방식</label>
+				<label class="control-label" for="">분납방식</label>
 				<div class="controls installments-group">
-					<div class="installments-date input-append date" >
-					  <input class="span2" size="160px" type="text" value="" placeholder="분납일">
-					  <span class="add-on"><i class="icon-calendar"></i></span>
-					  <img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>					  					 
+					<div >
+					<c:choose>
+						<c:when test="${saleContractDetail == null || fn:length(saleContractDetail.installmentList) == 0}">
+						 	<input class="installments-date" type="text"  name="installments_dt"  placeholder="분납입">
+							<input type="text" class="installments_price" name="installments_price" placeholder="금액">
+							<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+						</c:when>
+						<c:otherwise>
+							<c:forEach items="${saleContractDetail.installmentList }" var="installment">
+							 	<input class="installments-date" type="text"  name="installments_dt"  value="${saleContractDetail.str_date }" placeholder="분납입">
+								<input type="text" class="installments_price" name="installments_price" placeholder="금액" value="${installment.installments_price}">
+								<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+							</c:forEach>
+						
+						</c:otherwise>
+					</c:choose>
 					</div>
 				</div>
 			</div>
@@ -304,7 +316,6 @@
 								기본 판매가격
 							</label>
 							<input type="text" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
-							<p class="help-block"></p>
 						</c:otherwise>
 					</c:choose>					
 				</div>
@@ -401,571 +412,110 @@
 
 <script>
 
+	// 가격표시 객체
+	{
+		function BsgNumeric() {};
+		BsgNumeric.prototype = {
+			autoNumeric: function(target) {
+				$(target).autoNumeric('init',{aPad: false });
+	    	},
+		};
+		// 생성자 명시????????
+		// BsgNumertic.prototype.construnctor = BsgNumertic;
+	}
+	
+	// 메뉴 셀렉터
+	{
+		function MenuSelector() {};
+		MenuSelector.prototype = {
+			selectedValue : '',
+			changeValue : function(menu, hiddenTarget, value) {
+				this.selectedValue = value;
+				$(menu).first().text(value);
+				$(hiddenTarget).val(value);
+				this.toString();
+	    	},
+	
+	    	toString : function(){
+	    		console.log(this.selectedValue);
+	    	}
+		};
+		// 생성자 명시????????
+		// BsgNumertic.prototype.construnctor = BsgNumertic;
+	}
+	
+	// 달력 
+	{
+		function BsgCalendar() {};
+		
+		BsgCalendar.prototype = {
+			
+			calendar : '',
+			
+				
+			call : function(target) {
+				calendar = $(target).datepicker({
+					autoclose: true,
+					 format : 'yyyy-mm-dd'
+				});
+				return this;
+	    	},
+	    	
+	    	checkStartEndDate : function(strDateName, ednDateName){
+	    		
+	    		var strDate, endDate;
+	    		calendar.on('changeDate', function(ev){
+	    			// 시작일 
+	    			if( strDateName === $(this).attr("name") ) {
+	    				strDate = ev.date.valueOf();
+	    			}
+	    			// 종료일
+	    			if( ednDateName === $(this).attr("name") ) {
+	    				endDate = ev.date.valueOf();
+	    			}
+	    			
+	    			if( strDate > endDate ) {
+    					bootbox.alert( "계약종료일 재설정" );
+    					$( this ).val( "" );
+    				}
+	    		});
+	    	}	
+		};
+	}
+	
+	
+
 
 var seletedTotlaPrice = 0;
 $(function(){
 	
-	
+	var bsgNumeric = new BsgNumeric();
+	var menuSelector = new MenuSelector();
+	var bsgCalendar = new BsgCalendar();
 	
 	// 분납 방식 달력
-	 $( ".installments-date" ).datepicker({
-		 autoclose: true,
-		 format : 'yyyy-mm-dd'
-	 });
-	
-	// 분납 방식 추가 버튼
-	$("#addInstallments")
-		.hover(function(){
-			$(this).css("cursor", "pointer");
-		})
-		.click(function(){
-			//최대 5명 까지 가능
-			if( 5 == $("input[name='installments']").size() ) {
-				bootbox.alert("최대 5명까지 입력 하실 수 있습니다.");
-				return false;
-			}
-			//추가될 공간
-			var $target = $("div.installments-group");
-			//추가될 HTML
-			var html =  '<div class="installments-date input-append date"  data-date-format="yyyy-mm-dd">';
-				html += '<input class="span2" size="160px" type="text" value="" placeholder="분납일"> ';	
-				html += '<span class="add-on"><i class="icon-calendar"></i></span>';	
-				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x"/>';	
-				html += '</div>';
-			
-			$target.append(html);
-			$( ".installments-date" ).datepicker({
-				 autoclose: true,
-				 format : 'yyyy-mm-dd'
-			 });
-		});
-	
-	// 분납 방식 X 아이콘 이벤트
-	$("div.installments-group").on("click", ".removePd", function(event){
-		  $(this).parent().remove();
+	$("body").delegate('input[type=text].installments-date', 'focus', function(event){
+		 $(this).datepicker({
+			 autoclose: true,
+			 format : 'yyyy-mm-dd'
+		 });
 	});
 	
+	// 분납 가격의 경우 추가 될수 있으면로 delegate 로 
+	// 가격 구분 콤마 표시
+	$("body").delegate('input[type=text].installments_price', 'focus', function(event){
+		 bsgNumertic.autoNumeric($(this));
+	});
+	bsgNumeric.autoNumeric('#sale_price');
+	bsgNumeric.autoNumeric('#payments');
 	
-	// 가격 구분바 표시
-	$('#sale_price').autoNumeric('init',{aPad: false });
-	$('#payments').autoNumeric('init',{aPad: false });
-	
-	// payments_type 이벤트
-	
+	// 지급대금 통화 메뉴
 	$("#currency-menu").find("a").click(function(){
-		$("#currency-toggle span" ).first().text( $(this).text() );
-		$("#currency").val($(this).text());
-		
+		menuSelector.changeValue('#currency-toggle span', '#currency', $(this).text());
 	});
 	
-	// submit validation
-	{
-	    $("input,textarea").not("[type=submit]").jqBootstrapValidation();
-	    
-	    $("#btn-modify").click(function(){
-	    	bootbox.confirm( "수정 하시겠습니까?", function(result) {
-				if( result ){
-					// 구분자 제거
-					$('#sale_price').val($('#sale_price').autoNumeric('get'));
-					$('#payments').val($('#payments').autoNumeric('get'));
-					$("#registeForm" ).submit();
-				}
-			}); 
-	    });
-	    
-	    $("#btn-registe").click(function(){
-	    	bootbox.confirm( "등록 하시겠습니까?", function(result) {
-				if( result ){
-					// 구분자 제거
-					$('#sale_price').val($('#sale_price').autoNumeric('get'));
-					$('#payments').val($('#payments').autoNumeric('get'));
-					$("#registeForm" ).submit();
-				}
-			}); 
-		});
-	}
-	
-	//목록으로 돌아가기
-	{
-		$("#btn-list").click(function(){
-			bootbox.confirm( "목록으로 돌아가시겠습니까?", function(result) {
-				if( result ) {
-					window.location.href = '/pcms/saleCompany/contract/list.do';
-				}
-			}); 			
-		});
-	}
-	
-	// 계약 시작일, 종료일 계산위해
-	var sdate, edate;
-
-	$( "input.contract-date" ).datepicker({
-		autoclose: true,
-		language : 'kr',
-		startView : 0,
-		format : 'yyyy-mm-dd'
-	})
-		.on('changeDate', function(ev){
-			if( "str_date" === $(this).attr("name") ) {
-				sdate = ev.date.valueOf();
-			} else {
-				edate = ev.date.valueOf();
-				if( sdate > edate ) {
-					bootbox.alert( "계약종료일 재설정" );
-					$( this ).val( "" );
-				}
-				$( "input[name=str_date]" ).datepicker( "hide" );
-			}
-		})
-		.on('show', function(ev){
-			// 2개의 달력을 동시에 안보이게 함.
-			if( "str_date" === $(this).attr("name") ) {
-				$( "input[name=end_date]" ).datepicker( "hide" );
-			} else {
-				$( "input[name=str_date]" ).datepicker( "hide" );
-			}
-		});
-	
-	//기타판매가 선택시 판매가격 빈값으로 변경 후 포커스
-	$("input[name='sale_price_type']").change(function(){
-		if( $(this).val() == 0 ) { 
-			$("#sale_price").val("").focus();
-		} else {
-			
-		}
-	});
-	
-	{// 계약 방식 체크 & 이벤트
-		$( "input[name='sale_profit_type']" ).each(function(){
-			var $this = $(this);
-			var $saleProfitDetail = $("#sale_profit_type_detail");
-			
-			$this.click(function(){
-				if( $this.val() == 0 ){
-					$saleProfitDetail.show();
-				} else {
-					$saleProfitDetail.hide().val("");
-				}
-			});
-		});
-	}
-	{// 라이센스 방식 체크 & 이벤트
-		$( "input[name='license_cd']" ).each(function(){
-			var $this = $(this);
-			var $licenseCdDetail = $("#license_cd_detail");
-			
-			$this.click(function(){
-				if( $this.val() == 0 ){
-					$licenseCdDetail.show();
-				} else {
-					$licenseCdDetail.hide().val("");
-				}
-			});
-		});
-	}
-	
-	{ // 판매 형태 등록
-		$form = $("#device-list");
-		$("div.product-box").on( "click", "i", function(){
-			
-			$this = $(this);
-			if( $this.hasClass("icon-plus-sign") ) {
-				$target = $("div.customer-device");
-				$form.clone()			
-				.find(".device-remove-icon").html("<i class='icon-remove-sign'></i>")
-				.end()
-				.appendTo( $target );
-				$("i.icon-remove-sign").tooltip( { "title":"삭제", "placement":"right" } )
-			}else{
-				$(this).parent().parent().remove();
-			}
-		});
-		
-		$("i.icon-plus-sign").tooltip({
-			"title":"추가",
-			"placement":"top"
-		});
-	}
-
-	
-	$("div.product-box, div.modal-body").find("button").click(function(){
-		
-	var $this = $(this);
-		
-		// 시리즈 등록 클릭
-		if( $this.is(".btn-series-create, .btn-series-search-form") ) {
-			if($this.is(".btn-series-create")){
-				$("#seriesQuery").val("");
-			}
-			var seriesQuery = $("#seriesQuery").val();
-			checkMulti();
-			$.ajax({
-				dataType: "json",
-				url: '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>',
-				data:{ search : seriesQuery },
-				success: function(data){
-					var $target = $("#findSeriesBody");
-					
-					//init
-					$target.html(""); //성공시 리스트 초기화
-					
-					if(data.resultCnt > 0) {
-						
-						var $json = data.result;
-						$.each($json, function(){
-							$html = 	'<tr>';
-							$html += 	'<td><input name="check_list" type="checkbox" data-series_price="' 
-											+ (this.series_price==null?'':this.series_price) 
-											+ '" data-content_name="' + this.series_name 
-											+ '" date-content_mgmtno='+this.series_mgmtno
-											+ '" date-content_price='+this.sale_price
-											+' value="' + this.series_mgmtno 
-											+ '"></td>';
-							$html += 	'<td>' + this.series_name + '</td>';
-							$html += 	'<td>' + (this.sale_price==null?'':this.sale_price) + '</td>';
-							$html += 	'</tr>';
-							$target.append( $html );
-							
-						});
-						$("#hasContents").val("has");
-						//개별판매일때 멀티체크 방지
-						checkMulti();
-					}
-				},
-				error: function(data){
-					console.info(data);
-				}
-			});
-			if ( $this.is(".btn-series-create") ) {
-				
-				//modal call
-				$("#findSeries").modal('toggle');
-			}
-		} 
-		//개별판매 
-		else if ( $this.is(".btn-each-create") ) {
-			$("#contentQuery").val("");	
-			$.ajax({
-				dataType: "json",
-				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>',
-				success: function(data){
-					
-					var $target = $("#findEach").find("select[name='category']");
-
-					//init
-					$target.html(""); //성공시 리스트 초기화
-					
-					if(data.resultCnt > 0) {
-						
-						var $json = data.result;
-						$.each($json, function(){
-							console.info(this.cate_id);
-							$target.append( '<option value="' + this.cate_id + '">' + this.cate_name + '</option>' );
-						});
-						$("#hasContents").val("has");
-					}
-					
-					categoryChange();
-				}
-			});
-			$("#findEach").modal('toggle');
-		}
-		else if ( $this.is(".btn-search-content-form") ) {
-			var contentQuery = $("#contentQuery").val();
-			$.ajax({
-				dataType: "json",
-				data : {search : contentQuery},
-				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
-				success: function(data){
-					
-					var $target = $("#findEachBody");
-					
-					//init
-					$target.html(""); //성공시 리스트 초기화
-					
-					if(data.resultCnt > 0) {
-						
-						var $json = data.result;
-						$.each($json, function(){
-							var productHtml; 
-							$html = 	'<tr>';
-							$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' + this.content_price + '" data-content_name="' + this.content_name + '" value="' + this.content_cd + '"></td>';
-							$html += 	'<td>' + this.content_name + '</td>';
-							$html += 	'<td>' + this.content_price + '</td>';
-							$html += 	'</tr>';
-							$target.append( $html );
-						});
-						
-						//개별판매일때 멀티체크 방지
-						checkMulti();
-												
-					}
-				}
-			});
-		}		 
-		
-		//form submit 막기위해
-		return false;	
-		
-	});
-	
-	$("button").click(function(){
-		var $this = $(this);
-		
-		//시리즈 등록
-		if( $this.is(".btn-series-select") ) {
-			var $productTable = $("table.product-table");
-			$productTable.find("thead,tbody").empty();
-
-			var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
-			var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
-			
-			if( $selectedItem.size() == 0 ){
-				bootbox.alert("1개 이상 선택해 주세요!");				
-				return false;		
-			
-			} else {
-				var arrParam = [];
-				$selectedItem.each(function( index ){
-					arrParam.push( { series_mgmtno : $( this ).val() } );
-					arrParam.push($( this ).val());
-				});
-				var json = { 'contentList' : arrParam };
-				
-				// 상품 목록 저장
-				jQuery.ajaxSettings.traditional = true;
-				$.ajax({
-					url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
-					type : "POST",
-					data : json,
-					dataType : "json",
-					success : function(result) {
-						if( result.code === 200 ){
-							seletedTotlaPrice = 0;	
-							// $target.find("thead").append("<tr><th>시리즈명</th><th>가격</th></tr>");
-							$selectedItem.each(function(){
-								var $this = $(this);
-								var productHtml;
-								if($selectedItemCount > 5){
-									productHtml += '<tbody  style="display:block; overflow:auto; height:230px;">';
-								}else{
-									productHtml += '<tbody  style="display:block; overflow:auto; ">';
-								}
-								productHtml +='<tr>';
-								productHtml +='<td>02P02_001</td>';
-								productHtml +='<td> | '+$this.data("content_name")+'</td>';
-								productHtml +='<td> | ybm 시사</td>';
-								productHtml +='<td>';
-								productHtml +='<input type="hidden" name="contents_cd" />';
-								productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
-								productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
-								productHtml +='</td>';
-								productHtml +='</tr>';
-								productHtml +='</tbody>';
-								
-								var $this = $(this);								
-								$("#product-content-tb").append(productHtml);
-								//$productTable.find("tbody").append("<tr><td>" + $this.data("series_name") + "</td><td>" + $this.data("series_price") + "</td></tr>");
-								seletedTotlaPrice += $this.data("series_price");
-							});
-							$("#sale_price").val(seletedTotlaPrice);
-							
-						} else {
-							alert("에러 발생! 관리자에게 문의하여 주십시오.");
-						}
-					},
-					error : function() {
-						alert("에러 발생! 관리자에게 문의하여 주십시오.");
-					}
-				});
-			}
-			
-			
-			//close modal
-			$("#findSeries").modal('toggle');
-			
-		} 
-		// 개별 등록 버튼 클릭
-		else if( $this.is(".btn-each-select") ) {
-			var $target = $("table.product-table");
-			$target.find("thead,tbody").empty();
-
-			var $selectedItem = $("#findEach").find("input[name='content_checkbox']").filter(":checked");
-			
-			if( $selectedItem.size() == 0 ){
-				bootbox.alert("1개 이상 선택해 주세요!");				
-				return false;				
-			} else {
-				var arr = [];
-				$selectedItem.each(function( index ){
-					arr.push(  $( this ).val() );
-				});
-				
-				var json = { 'contentList' : arr };
-				jQuery.ajaxSettings.traditional = true;
-				$.ajax({
-					url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
-					type : "POST",
-					//contentType : "text/html; charset=utf-8" ,
-					data : json,
-					dataType : "json",
-					success : function( data ) {
-						if( data.code === 200 ){
-							
-							$selectedItem.each(function(){
-								var $this = $(this);
-								var productHtml;
-								productHtml +='<tr>';
-								productHtml +='<td>02P02_001</td>';
-								productHtml +='<td> | '+$this.data("content_name")+'</td>';
-								productHtml +='<td> | ybm 시사</td>';
-								productHtml +='<td>';
-								productHtml +='<input type="hidden" name="contents_cd" />';
-								productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
-								productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
-								productHtml +='</td>';
-								productHtml +='</tr>';
-								$target.find("tbody").append(productHtml);
-								seletedTotlaPrice += $this.data("content_price");
-							});
-							/*
-							seletedTotlaPrice = 0;	
-							$target.find("thead").append("<tr><th>콘텐츠명</th><th>가격</th></tr>");
-							$selectedItem.each(function(){
-								var $this = $(this);
-								$target.find("tbody").append("<tr><td>" + $this.data("content_name") + "</td><td>" + $this.data("content_price") + "</td></tr>");
-								seletedTotlaPrice += $this.data("content_price");
-							});
-							*/
-							$("#sale_price").val(seletedTotlaPrice);
-						} else {
-							alert("에러 발생! 관리자에게 문의하여 주십시오.");
-						}
-					},
-					error : function() {
-						alert("에러 발생! 관리자에게 문의하여 주십시오.");
-					}
-				});
-			}
-			
-			//close modal
-			$("#findEach").modal('toggle');
-		}
-			
-			
-		
-	});
-	
-	function categoryChange(){
-		$( "select[name='category']" ).change(function () {
-			var select_id = $(this).find("option").filter(":selected").val();
-			if( null != select_id ){
-			 
-				var $target = $( "select[name='series']" );
-				$target.find( "option" ).remove();
-			 
-				$.getJSON('<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>',
-					{ cate_id : select_id },
-					function(data) {
-						console.info( data );
-						if( data.resultCnt > 0 ){
-							console.info( data.result );
-							$.each( data.result, function(){
-								$html = '<option value="' + this.series_mgmtno + '">' + this.series_name + '</option>';
-								$target.append( $html );
-							} );
-						}//if
-						
-						seriesChange();
-					});
-			} 
-			
-		}).trigger('change');
-	}
-	
-	function seriesChange(){
-		
-		$( "select[name='series']" ).change(function () {
-			var series_id = $(this).find("option").filter(":selected").val();
-			if( null != series_id ){
-			 
-				$.getJSON('<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
-					{ series_id : series_id },
-					function(data) {
-						console.info( data );
-						var $target = $("#findEachBody");
-						
-						//init
-						$target.html(""); //성공시 리스트 초기화
-						
-						if(data.resultCnt > 0) {
-							
-							var $json = data.result;
-							$.each($json, function(){
-								$html = 	'<tr>';
-								$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' 
-											+ this.content_price + '" data-content_name="' 
-											+ this.content_name + '" value="' + this.content_cd + '"></td>';
-								$html += 	'<td>' + this.content_name + '</td>';
-								$html += 	'<td>' + this.content_price + '</td>';
-								$html += 	'</tr>';
-								$target.append( $html );
-							});
-							
-							//개별판매일때 멀티체크 방지
-							checkMulti();
-														
-						}
-					});
-			} 
-			
-		}).trigger('change');
-	}
-	
-	//판매형태가 개별일때 중복 체크 함수
-	function checkMulti() {
-		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); //1이면 개별판매
-		
-		//개별판매인가(체크박스 갯수를 세야하는가?)
-		if( saleType == 'CT001001' ){
-			$( "input[name=checkbox_all]" ).hide();
-			$("#findSeriesBody, #findEachBody").find("input[type='checkbox']").on("click",function(){
-				var checkedSize = $(this).parent().parent().parent().find("input[type='checkbox']").filter(":checked").size();
-				if( checkedSize > 1 ){
-					$(this).prop("checked", false);
-					bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
-				}
-			});
-		} else {
-			$( "input[name=checkbox_all]" )
-				.click( function(){
-					var $checkboxArray = $( "input[name='check_list']" );
-					
-					if( $( this ).val() == "true" ) {
-						$( this ).val( "false" );
-						$.each( $checkboxArray, function(){
-							$checkboxArray.prop("checked", false);
-						});
-					} else {
-						$( this ).val( "true" );
-						$.each( $checkboxArray, function(idx){
-							$checkboxArray.prop("checked", true);
-						});
-					}
-				})
-				.tooltip({
-					"title":"전체선택",
-					"placement":"top"
-				})
-				.show();
-		}
-	}
-	
-	function closeModal(element_id){
-		if(element_id != null) {
-			$("#"+element_id).modal("hide");
-		}
-	}
+	// 계약기간
+	bsgCalendar.call("input.contract-date").checkStartEndDate("str_date", "end_date");
 	
 });
 </script>

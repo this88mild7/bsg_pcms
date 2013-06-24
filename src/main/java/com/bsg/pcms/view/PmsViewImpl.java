@@ -37,6 +37,7 @@ public class PmsViewImpl implements PmsView {
 	
 	private final String _VW_SALE_COMPANY_CONTRACT_INFO = 		"sale-company-contract-info";
 	private final String _OB_SALE_COMPANY_CONTRACT_DETAIL = 		"saleContractDetail";
+	private final String _OB_SALE_COMPANY_CONTRACT_INSTALLMENT = 		"installment";
 	
 	@Autowired
 	BigstarConstant bigstarConstant;
@@ -100,6 +101,7 @@ public class PmsViewImpl implements PmsView {
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DEVICE, contractDetail.getDevice_cd_list() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACTED_DEVICE, contractDetail.getContractedDeviceList() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_TYPE, contractTypeList );
+		mav.addObject( _OB_SALE_COMPANY_CONTRACT_INSTALLMENT, contractDetail.getInstallmentList() );
 		mav.addObject( "viewType", "2");
 		return mav;
 	}
