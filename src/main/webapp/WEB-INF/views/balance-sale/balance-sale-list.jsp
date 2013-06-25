@@ -4,8 +4,8 @@
 
 <div class="page-name">
 	<h3>
-		<img src='<spring:eval expression="@urlProp['star']"/>'> 업체 정산현황
-		<small>&gt;&gt; 업체 정산현황 리스트</small>
+		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매 정산현황
+		<small>&gt;&gt; 판매 정산현황 리스트</small>
 	</h3>
 </div>
 
@@ -38,16 +38,19 @@
 			</div>
 		</div>
 		
-
 		<table class="table table-striped table-hover">
 		<tr>
-			<th>정산일</th>
-			<th>업체명</th>
-			<th>계약조건</th>
+			<th>판매처</th>
+			<th>상품</th>
+			<th>판매방식</th>
+			<th>기기</th>
+			<th>판매횟수</th>
 			<th>총매출금액</th>
-			<th>수수료</th>
-			<th>등록일</th>
-			<th>상세보기</th>
+			<th>업체수수료</th>
+			<th>빅스타수익률</th>
+			<th>에듀앤조이수익률</th>
+			<th>업체수수료</th>
+			<th>수익</th>
 		</tr>
 		<c:forEach items="${ contentList }" var="content">
 		<tr>
@@ -57,14 +60,18 @@
 			<td>${ content.series_name }</td>
 			<td>${ content.name }</td>
 			<td>${ content.reg_dt }</td>
-			<td><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contentDetail']"/>?contents_cd=${ content.contents_cd }">상세보기</button></td>
+			<td>${ content.reg_dt }</td>
+			<td>${ content.reg_dt }</td>
+			<td>${ content.reg_dt }</td>
+			<td>${ content.reg_dt }</td>
+			<td>${ content.reg_dt }</td>
 		</tr>
 		</c:forEach>
 		</table>
 		
 		<div class="clearfix">
 			<p class="pull-right">
-				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['contentCreate']"/>">매출입력</button>
+				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['balanceSaleInfo']"/>">매출입력</button>
 			</p>
 		</div>
 		
@@ -85,10 +92,6 @@
 		</c:if>
 
 	</div>
-	
-	<form id="hiddenForm" action="<spring:eval expression="@urlProp['contentDeleteAction']"/>" method="POST">
-		<input type="hidden" name="strList" id="strList"/>
-	</form>
 	
 </div>
 <!--/row-->

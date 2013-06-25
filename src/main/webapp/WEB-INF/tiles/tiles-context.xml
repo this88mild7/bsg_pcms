@@ -97,14 +97,23 @@
         <put-attribute name="content" value="/WEB-INF/views/product/product-detail.jsp" />
     </definition>
     
-    <!-- BALANCE -->
+    <!-- BALANCE CP -->
     <definition name="balance-cp-list" extends=".layout-with-sidebar">
         <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-balance.jsp" />
-        <put-attribute name="content" value="/WEB-INF/views/balance/balance-list.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/balance-cp/balance-cp-list.jsp" />
     </definition>
     <definition name="balance-cp-info" extends=".layout-with-sidebar">
         <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-balance.jsp" />
-        <put-attribute name="content" value="/WEB-INF/views/balance/balance-info.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/balance-cp/balance-cp-info.jsp" />
+    </definition>
+    <!-- BALANCE SALE -->
+    <definition name="balance-sale-list" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-balance.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/balance-sale/balance-sale-list.jsp" />
+    </definition>
+    <definition name="balance-sale-info" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-balance.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/balance-sale/balance-sale-info.jsp" />
     </definition>
     
     <!-- STATISTICS -->

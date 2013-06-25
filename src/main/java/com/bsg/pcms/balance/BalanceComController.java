@@ -30,8 +30,9 @@ public class BalanceComController {
 	public ModelAndView list() {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-sale-list");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
 		
 		return mav;
 		
@@ -50,8 +51,9 @@ public class BalanceComController {
 	public ModelAndView creatView(BalanceDTOEx balanceDto) {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-sale-info");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
 		return mav;
 		
 	}

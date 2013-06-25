@@ -47,7 +47,6 @@
 			<th>총매출금액</th>
 			<th>수수료</th>
 			<th>등록일</th>
-			<th>상세보기</th>
 		</tr>
 		<c:forEach items="${ contentList }" var="content">
 		<tr>
@@ -57,7 +56,6 @@
 			<td>${ content.series_name }</td>
 			<td>${ content.name }</td>
 			<td>${ content.reg_dt }</td>
-			<td><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contentDetail']"/>?contents_cd=${ content.contents_cd }">상세보기</button></td>
 		</tr>
 		</c:forEach>
 		</table>

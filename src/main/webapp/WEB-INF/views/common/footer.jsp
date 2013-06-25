@@ -27,6 +27,9 @@
 			</div>
 			<div class="span2">
 				<h5>정산</h5>
+				<a href="<spring:eval expression="@urlProp['balanceSaleList']"/>">판매 정산현황</a>
+				<br />
+				<a href="<spring:eval expression="@urlProp['balanceCpList']"/>">업체 정산현황</a>
 			</div>
 			<div class="span2">
 				<h5>통계</h5>

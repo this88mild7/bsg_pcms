@@ -19,27 +19,28 @@ public class BalanceCpController {
 	@Autowired
 	BigstarConstant bigstarConstant; 
 	
-	@RequestMapping(value = "list", method = RequestMethod.GET)
+	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public ModelAndView list() {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-cp-list");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_CP());
 		
 		return mav;
 		//주석 테스트561616161
 		
 	}
 	
-	@RequestMapping(value = "create", method = RequestMethod.GET)
+	@RequestMapping(value = "create.do", method = RequestMethod.GET)
 	public ModelAndView create() {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-cp-info");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_CP());
 		
 		return mav;
-		//주석 테스트561616161
 		
 	}
 }

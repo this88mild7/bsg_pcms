@@ -55,15 +55,8 @@
 						<c:when test="${ fn:length(pdList) == 0 }">
 							<div>
 								<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" />
-								<img id="addPd" src="/pcms/img/plus.png" alt="+"/>
-								<a id="pdNameList_tip" href="#" data-toggle="tooltip" >tip</a>
-									<script>
-									$('#pdNameList_tip')
-										.tooltip({
-											"title":"최대 5명까지 입력 가능합니다.",
-											"placement":"bottom"
-										});
-									</script>
+								<img id="addPd" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+								<a id="pdNameListTip" href="#" data-toggle="tooltip" >tip</a>
 							</div>
 						</c:when>
 						<c:otherwise>
@@ -71,21 +64,14 @@
 								<c:if test="${status.first }">
 									<div>
 										<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" />
-										<img id="addPd" src="/pcms/img/plus.png" alt="+"/>
-										<a id="pdNameList_tip" href="#" data-toggle="tooltip" >tip</a>
-											<script>
-											$('#pdNameList_tip')
-												.tooltip({
-													"title":"최대 5명까지 입력 가능합니다.",
-													"placement":"bottom"
-												});
-											</script>
+										<img id="addPd" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+										<a id="pdNameListTip" href="#" data-toggle="tooltip" >tip</a>
 									</div>
 								</c:if>
 	    						<c:if test="${not status.first }">
-	    							<div class="mt5">
+	    							<div style="margin-top : 5px;">
 		    							<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" >
-		    							<img class="removePd" src="/pcms/img/remove.png" alt="x">
+		    							<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;">
 	    							</div>
 	    						</c:if>
 							</c:forEach>
@@ -138,15 +124,18 @@
 <!--/row-->
 <script>
 $(function(){
+	//팁박스
+	$('#pdNameListTip')
+		.tooltip({
+			"title":"최대 5명까지 입력 가능합니다.",
+			"placement":"bottom"
+		});
 	
 	//유효성 체크
 	$("#company_name,#phoneno").not("[type=submit]").jqBootstrapValidation();
 	
 	//담당PD 추가 버튼
 	$("#addPd")
-		.hover(function(){
-			$(this).css("cursor", "pointer");
-		})
 		.click(function(){
 			//최대 5명 까지 가능
 			if( 5 == $("input[name='pdNameList']").size() ) {
