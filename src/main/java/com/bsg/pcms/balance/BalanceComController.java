@@ -38,7 +38,7 @@ public class BalanceComController {
 		
 	}
 	
-	@RequestMapping(value = "creat.do", method = RequestMethod.GET)
+	@RequestMapping(value = "create.do", method = RequestMethod.GET)
 	public String create(BalanceDTOEx balanceDto) {
 		logger.info("balance/sale-company/create.do");
 		
@@ -47,13 +47,14 @@ public class BalanceComController {
 		return "redirect:/balance/sale-company/list.to";
 	}
 	
-	@RequestMapping(value = "creatView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "createView.do", method = RequestMethod.GET)
 	public ModelAndView creatView(BalanceDTOEx balanceDto) {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-info");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("isCreate", 1);
 		return mav;
 		
 	}

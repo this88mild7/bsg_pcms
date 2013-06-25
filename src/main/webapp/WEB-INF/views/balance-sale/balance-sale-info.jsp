@@ -6,21 +6,22 @@
 <div class="page-name">
 	<h4>
 		<c:choose>
-			<c:when test="${empty isNew}">
-				[${ content.name }] 상세정보
+			<c:when test="${not empty isCreate}">
+				매출 입력 <small>&gt;&gt; 매출을 입력해 주세요.</small>
 			</c:when>
 			<c:otherwise>
-				매출 입력 <small>&gt;&gt; 매출을 입력해 주세요.</small>
+				[${ content.name }] 상세정보
 			</c:otherwise>
 		</c:choose>
 	</h4>
 </div>
 
-<div class="row-fluid">
+<div class="row-fluid"
+	data-is_create="${isCreate}">
 
 	<div class="span12">
 		
-		<form id="contentForm" class="form-horizontal " method="POST" action="<spring:eval expression="@urlProp['contentCreateAction']"/>">
+		<form id="balanceForm" class="form-horizontal " method="POST" action="<spring:eval expression="@urlProp['balanceSaleCreateAction']"/>">
 			<c:if test="${empty isNew}">
 				<input type="hidden" name="contents_cd" value="${ content.contents_cd }" />
 			</c:if>
@@ -73,6 +74,7 @@
 			<div class="control-group">
 				매출계산
 			</div>
+		</form>
 			<div class="control-group">
 				<label class="control-label" ></label>
 				<div class="controls">
