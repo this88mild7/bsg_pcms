@@ -3,6 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="sidebar lnb">
-	<a href="<spring:eval expression="@urlProp['cpBalanceList']"/>">업체 정산현황</a>
 	<a href="<spring:eval expression="@urlProp['saleBalanceList']"/>">판매 정산현황</a>
+	<a href="<spring:eval expression="@urlProp['cpBalanceList']"/>">업체 정산현황</a>
 </div>
