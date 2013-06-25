@@ -34,12 +34,12 @@ public class BalanceDao extends SqlSessionDaoSupport{
 		return (List<String>)getSqlSession().selectList("balanceQuery.saleTypeList", balanceDtoEx);
 	}
 
-	public List<BalanceDTOEx> searchByDate(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchByDate", balanceDtoEx);
+	public List<BalanceDTOEx> searchSale(BalanceDTOEx balanceDtoEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchSale", balanceDtoEx);
 	}
-
-	public List<BalanceDTOEx> searchByWord(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchByWord", balanceDtoEx);
+	
+	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchCP", balanceDTOEx);
 	}
 
 	public void modify(BalanceDTOEx balanceDto) {
@@ -54,6 +54,7 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public void delete(BalanceDTOEx balanceDto) {
 		getSqlSession().update("balanceQuery.delete", balanceDto);
 	}
+	
 	
 
 	

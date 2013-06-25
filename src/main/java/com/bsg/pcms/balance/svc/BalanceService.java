@@ -2,9 +2,12 @@ package com.bsg.pcms.balance.svc;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bsg.pcms.balance.BalanceComController;
 import com.bsg.pcms.balance.dao.BalanceDao;
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.dto.BalanceDTO;
@@ -15,6 +18,8 @@ public class BalanceService {
 	
 	@Autowired
 	private BalanceDao balanceDao;
+	
+	private Logger logger = LoggerFactory.getLogger(BalanceComController.class);
 
 	public BalanceDTOEx create(BalanceDTOEx balanceDto) {
 		
@@ -49,20 +54,27 @@ public class BalanceService {
 	public BalanceDTOEx detail(BalanceDTOEx balanceDto) {
 		return balanceDao.detail(balanceDto);
 	}
-	public List<BalanceDTOEx> cpList() {
-		BalanceDTOEx balanceDto = new BalanceDTOEx();
+	public List<BalanceDTOEx> cpList(BalanceDTOEx balanceDto) {
 		return balanceDao.cpList(balanceDto);
 	}
 	public void delete(BalanceDTOEx balanceDto) {
 		balanceDao.delete(balanceDto);
 	}
-	public List<BalanceDTOEx> saleList() {
-		BalanceDTOEx balanceDto = new BalanceDTOEx();
+	public List<BalanceDTOEx> saleList(BalanceDTOEx balanceDTOEx) {
 		
-		// 정산 마스터 조회
-		List<BalanceDTOEx> saleList = balanceDao.saleList(balanceDto);
+		logger.info("{}", balanceDTOEx.getSorting_type());
 		
-		return saleList;
+		return  balanceDao.saleList(balanceDTOEx);
+	}
+	public List<BalanceDTOEx> searchSale(BalanceDTOEx balanceDTOEx) {
+		
+		balanceDTOEx.checkBlankSearchParam();
+		return balanceDao.searchSale(balanceDTOEx);
+	}
+	
+	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
+		balanceDTOEx.checkBlankSearchParam();
+		return balanceDao.searchCP(balanceDTOEx);
 	}
 
 }

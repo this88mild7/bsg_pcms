@@ -127,33 +127,6 @@ public class BalanceServiceTest {
 	}
 	
 	@Test
-	public void testCpList(){
-		
-		//세팅
-		BalanceDTOEx result = balanceService.create(balanceDtoEx);
-		
-		// 기능
-		List<BalanceDTOEx> testResult = balanceService.cpList();
-		
-		// 검증
-		assertThat(testResult, is(testResult) );
-		assertThat(testResult.size(), is(not(0)) );
-	}
-	
-	@Test
-	public void testSaleList(){
-		
-		//세팅
-		
-		// 기능
-		List<BalanceDTOEx> testResult = balanceService.saleList();
-		
-		// 검증
-		assertThat(testResult, is(testResult) );
-		assertThat(testResult.size(), is(not(0)) );
-	}
-	
-	@Test
 	public void testModyfi() {
 
 		// given 

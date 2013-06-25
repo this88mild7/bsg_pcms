@@ -116,6 +116,10 @@
         <put-attribute name="content" value="/WEB-INF/views/balance-sale/balance-sale-info.jsp" />
     </definition>
     
+    <definition name="balance-sale-table">
+        <put-attribute name="content" value="/WEB-INF/views/balance-sale/balance-sale-list-table.jsp" />
+    </definition>
+    
     <!-- STATISTICS -->
     <definition name="statistics" extends=".layout-default">
         <put-attribute name="content" value="/WEB-INF/views/statistics/statistics.jsp" />

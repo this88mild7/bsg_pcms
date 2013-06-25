@@ -2,6 +2,8 @@ package com.bsg.pcms.balance.dto;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.bsg.pcms.dto.BalanceDTO;
 
 public class BalanceDTOEx extends BalanceDTO{
@@ -17,13 +19,7 @@ public class BalanceDTOEx extends BalanceDTO{
 	private String sale_type;
 	
 	// 정렬 타입 변수들
-	private String dateSortingType;
-	
-	private String sortingStrDate;
-	
-	private String sortingEndDate;
-	
-	private String printType = "1";
+	private String sortingType;
 	
 	private String searchQuery;
 	
@@ -33,6 +29,37 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String contentsCount = "6";
 	
+	
+	public void checkBlankSearchParam() {
+		if(StringUtils.isBlank(this.searchQuery)){
+			this.searchQuery = null;
+		}
+		if(StringUtils.isBlank(this.searchStrDate)){
+			this.searchStrDate = null;
+		}
+		if(StringUtils.isBlank(this.searchEndDate)){
+			this.searchEndDate = null;
+		}
+	}
+	
+	
+	
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+
+	public String getSortingType() {
+		return sortingType;
+	}
+
+	public void setSortingType(String sortingType) {
+		this.sortingType = sortingType;
+	}
+
 	public List<String> getContentList() {
 		return contentList;
 	}
@@ -57,45 +84,6 @@ public class BalanceDTOEx extends BalanceDTO{
 		this.saleCount = saleCount;
 	}
 
-	public String getDateSortingType() {
-		return dateSortingType;
-	}
-
-	public void setDateSortingType(String dateSortingType) {
-		this.dateSortingType = dateSortingType;
-	}
-
-	public String getSortingStrDate() {
-		return sortingStrDate;
-	}
-
-	public void setSortingStrDate(String sortingStrDate) {
-		this.sortingStrDate = sortingStrDate;
-	}
-
-	public String getSortingEndDate() {
-		return sortingEndDate;
-	}
-
-	public void setSortingEndDate(String sortingEndDate) {
-		this.sortingEndDate = sortingEndDate;
-	}
-
-	public String getPrintType() {
-		return printType;
-	}
-
-	public void setPrintType(String printType) {
-		this.printType = printType;
-	}
-
-	public String getSearchQuery() {
-		return searchQuery;
-	}
-
-	public void setSearchQuery(String searchQuery) {
-		this.searchQuery = searchQuery;
-	}
 
 	public String getSearchStrDate() {
 		return searchStrDate;
@@ -113,16 +101,6 @@ public class BalanceDTOEx extends BalanceDTO{
 		this.searchEndDate = searchEndDate;
 	}
 
-	@Override
-	public String toString() {
-		return "BalanceDTOEx [contentList=" + contentList + ", salePrice="
-				+ salePrice + ", saleCount=" + saleCount + ", dateSortingType="
-				+ dateSortingType + ", sortingStrDate=" + sortingStrDate
-				+ ", sortingEndDate=" + sortingEndDate + ", printType="
-				+ printType + ", searchQuery=" + searchQuery
-				+ ", searchStrDate=" + searchStrDate + ", searchEndDate="
-				+ searchEndDate + "]";
-	}
 
 	public String getContract_type() {
 		return contract_type;
@@ -147,5 +125,7 @@ public class BalanceDTOEx extends BalanceDTO{
 	public void setSale_type(String sale_type) {
 		this.sale_type = sale_type;
 	}
+
+	
 	
 }
