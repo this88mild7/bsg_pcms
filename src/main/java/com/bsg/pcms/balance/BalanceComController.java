@@ -1,5 +1,7 @@
 package com.bsg.pcms.balance;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,30 @@ public class BalanceComController {
 	private BalanceService balanceService;
 	
 	
-	@RequestMapping(value = "list.do", method = RequestMethod.GET)
+	@RequestMapping(value = "list.do")
 	public ModelAndView list() {
+		
+		List<BalanceDTOEx> balanceList = balanceService.saleList();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-list");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("balanceList", balanceList);
+		return mav;
+		
+	}
+	
+	@RequestMapping(value = "search.do")
+	public ModelAndView search() {
+		
+		List<BalanceDTOEx> balanceList = balanceService.saleList();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("balance-sale-list");
+		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("balanceList", balanceList);
 		
 		return mav;
 		

@@ -92,7 +92,7 @@ public class BalanceDaoTest {
 	
 	@Test
 	public void testList(){
-		_balanceList = balanceDao.list(balanceDtoEx);
+		_balanceList = balanceDao.cpList(balanceDtoEx);
 		assertRegDtOrderBy(_balanceList);
 	}
 
@@ -100,7 +100,7 @@ public class BalanceDaoTest {
 	@Test
 	public void testListOrderByTotalSalePrice(){
 		balanceDtoEx.setPrintType("2");
-		_balanceList = balanceDao.list(balanceDtoEx);
+		_balanceList = balanceDao.cpList(balanceDtoEx);
 		assertThat(_balanceList, is(notNullValue()) );
 		assertTotalSalePriceOderby(_balanceList);
 		
@@ -110,7 +110,7 @@ public class BalanceDaoTest {
 	@Test
 	public void testListOrderByOwnerProfit(){
 		balanceDtoEx.setPrintType("3");
-		_balanceList = balanceDao.list(balanceDtoEx);
+		_balanceList = balanceDao.cpList(balanceDtoEx);
 		assertOwnerProfitOderby(_balanceList);
 		
 	}
@@ -119,7 +119,7 @@ public class BalanceDaoTest {
 	@Test
 	public void testListOrderByTotalSaleCount(){
 		balanceDtoEx.setPrintType("4");
-		_balanceList = balanceDao.list(balanceDtoEx);
+		_balanceList = balanceDao.cpList(balanceDtoEx);
 		assertTotalSaleCountOderby(_balanceList);
 		
 	}

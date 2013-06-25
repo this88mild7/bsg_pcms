@@ -46,25 +46,25 @@
 			<th>기기</th>
 			<th>판매횟수</th>
 			<th>총매출금액</th>
-			<th>업체수수료</th>
+			<th>판매업체수수료</th>
 			<th>빅스타수익률</th>
 			<th>에듀앤조이수익률</th>
 			<th>업체수수료</th>
 			<th>수익</th>
 		</tr>
-		<c:forEach items="${ contentList }" var="content">
+		<c:forEach items="${ balanceList }" var="balance">
 		<tr>
-			<td>${ content.contents_cd }</td>
-			<td>${ content.company_name }</td>
-			<td>${ content.cate_name }</td>
-			<td>${ content.series_name }</td>
-			<td>${ content.name }</td>
-			<td>${ content.reg_dt }</td>
-			<td>${ content.reg_dt }</td>
-			<td>${ content.reg_dt }</td>
-			<td>${ content.reg_dt }</td>
-			<td>${ content.reg_dt }</td>
-			<td>${ content.reg_dt }</td>
+			<td>${ balance.company_name }</td>
+			<td>${ balance.contents_name }</td>
+			<td>${ balance.contract_type }</td>
+			<td>${ balance.sale_type }</td>
+			<td>${ balance.total_sale_count } </td>
+			<td>${ balance.total_sale_price }</td>
+			<td>${ balance.sale_commission }</td>
+			<td>${ balance.cp_commission }</td>
+			<td>${ balance.cp_commission }</td>
+			<td>${ balance.cp_commission }</td>
+			<td>${ balance.owner_profit }</td>
 		</tr>
 		</c:forEach>
 		</table>

@@ -38,10 +38,15 @@ public class BalanceServiceTest {
 
 	private Random rand;
 	
+	private List<String> contentList;
+	private List<Integer> salePriceList;
+	
 	@Before
 	public void setUp() throws Exception {
 		
 		rand = new Random(System.currentTimeMillis());
+		contentList = new ArrayList<String>();
+		salePriceList = new ArrayList<Integer>();
 		
 		companyMgmtList = new ArrayList<Integer>();
 		companyMgmtList.add(3);
@@ -59,6 +64,7 @@ public class BalanceServiceTest {
 		
 		
 		balanceDtoEx = new BalanceDTOEx();
+		balanceDtoEx.setContract_mgmtno(rand.nextInt(80));
 		balanceDtoEx.setCompany_mgmtno(companyMgmtList.get(Math.abs(rand.nextInt(11))));
 		balanceDtoEx.setCp_commission(Math.abs(rand.nextInt(900000000)));
 		balanceDtoEx.setSale_commission(Math.abs(rand.nextInt(900000000)));
@@ -67,6 +73,36 @@ public class BalanceServiceTest {
 		balanceDtoEx.setSale_end_date(BsgDateUtils.getCurrentYyyymmdd());
 		balanceDtoEx.setTotal_sale_count(Math.abs(rand.nextInt(900000000)));
 		balanceDtoEx.setTotal_sale_price(Math.abs(rand.nextInt(900000000)));
+		
+		
+		// 판매상품 리스트
+		contentList.add("CP15_SE81P0031_PB");
+		contentList.add("CP15_SE81P0032_PB");
+		contentList.add("CP15_SE81P0033_PB");
+		contentList.add("CP15_SE81P0034_PB");
+		contentList.add("CP15_SE81P0035_PB");
+		contentList.add("CP15_SE81P0036_PB");
+		contentList.add("CP15_SE81P0037_PB");
+		contentList.add("CP15_SE81P0038_PB");
+		contentList.add("CP15_SE81P0039_PB");
+		contentList.add("CP15_SE81P0040_PB");
+		contentList.add("CP15_SE81P0041_PB");
+		
+		balanceDtoEx.setContentList(contentList);
+		//
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		salePriceList.add(Math.abs(rand.nextInt(9999)));
+		
+		balanceDtoEx.setSaleCount(salePriceList);
 		
 	}
 
@@ -91,19 +127,30 @@ public class BalanceServiceTest {
 	}
 	
 	@Test
-	public void testList(){
+	public void testCpList(){
 		
 		//세팅
 		BalanceDTOEx result = balanceService.create(balanceDtoEx);
 		
 		// 기능
-		List<BalanceDTOEx> testResult = balanceService.list();
+		List<BalanceDTOEx> testResult = balanceService.cpList();
 		
 		// 검증
 		assertThat(testResult, is(testResult) );
 		assertThat(testResult.size(), is(not(0)) );
-		assertThat(result.getBalance_mgmtno(), 
-				is(equalTo(testResult.get(testResult.size()-1).getBalance_mgmtno())));
+	}
+	
+	@Test
+	public void testSaleList(){
+		
+		//세팅
+		
+		// 기능
+		List<BalanceDTOEx> testResult = balanceService.saleList();
+		
+		// 검증
+		assertThat(testResult, is(testResult) );
+		assertThat(testResult.size(), is(not(0)) );
 	}
 	
 	@Test

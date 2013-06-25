@@ -48,14 +48,14 @@
 			<th>수수료</th>
 			<th>등록일</th>
 		</tr>
-		<c:forEach items="${ contentList }" var="content">
+		<c:forEach items="${ balanceList }" var="balance">
 		<tr>
-			<td>${ content.contents_cd }</td>
-			<td>${ content.company_name }</td>
-			<td>${ content.cate_name }</td>
-			<td>${ content.series_name }</td>
-			<td>${ content.name }</td>
-			<td>${ content.reg_dt }</td>
+			<td>${ balance.reg_dt }</td>
+			<td>${ balance.company_name }</td>
+			<td>${ balance.contract_type }</td>
+			<td>${ balance.total_sale_price }</td>
+			<td>${ balance.cp_commission }</td>
+			<td>${ balance.reg_dt }</td>
 		</tr>
 		</c:forEach>
 		</table>

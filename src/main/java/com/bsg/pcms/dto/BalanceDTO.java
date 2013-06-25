@@ -9,6 +9,8 @@ public class BalanceDTO extends CommonDTO{
 	
 	private int company_mgmtno;
 	
+	private int contract_mgmtno;
+	
 	private String company_name;
 	
 	private String user_mgmtseq;
@@ -28,7 +30,14 @@ public class BalanceDTO extends CommonDTO{
 	private double cp_commission;
 	
 	private double owner_profit;
+	
+	private String contents_name;
+	
+	
+	// 테스트 데이터
+	private String temp="tesㄴㅇㄹㄴ마ㅓㅠㅁㄴ-0ㅁㄴㄹㅇ098!!#109ㅣㅏ누ㅠaskalue1232!!#$!!!";
 
+	
 	public int getBalance_mgmtno() {
 		return balance_mgmtno;
 	}
@@ -138,6 +147,30 @@ public class BalanceDTO extends CommonDTO{
 				+ ", total_sale_price=" + total_sale_price
 				+ ", sale_commission=" + sale_commission + ", cp_commission="
 				+ cp_commission + ", owner_profit=" + owner_profit + "]";
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public int getContract_mgmtno() {
+		return contract_mgmtno;
+	}
+
+	public void setContract_mgmtno(int contract_mgmtno) {
+		this.contract_mgmtno = contract_mgmtno;
+	}
+
+	public String getContents_name() {
+		return contents_name;
+	}
+
+	public void setContents_name(String contents_name) {
+		this.contents_name = contents_name;
 	}
 
 }

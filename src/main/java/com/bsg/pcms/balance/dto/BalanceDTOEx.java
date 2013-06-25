@@ -12,6 +12,10 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private List<Integer> saleCount;
 	
+	private String contract_type;
+	
+	private String sale_type;
+	
 	// 정렬 타입 변수들
 	private String dateSortingType;
 	
@@ -27,7 +31,8 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String searchEndDate;
 	
-
+	private String contentsCount = "6";
+	
 	public List<String> getContentList() {
 		return contentList;
 	}
@@ -119,5 +124,28 @@ public class BalanceDTOEx extends BalanceDTO{
 				+ searchEndDate + "]";
 	}
 
+	public String getContract_type() {
+		return contract_type;
+	}
+
+	public void setContract_type(String contract_type) {
+		this.contract_type = contract_type;
+	}
+
+	public String getContentsCount() {
+		return contentsCount;
+	}
+
+	public void setContentsCount(String contentsCount) {
+		this.contentsCount = contentsCount;
+	}
+
+	public String getSale_type() {
+		return sale_type;
+	}
+
+	public void setSale_type(String sale_type) {
+		this.sale_type = sale_type;
+	}
 	
 }
