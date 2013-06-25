@@ -132,27 +132,27 @@
 					<c:choose>
 						<c:when test="${viewType eq 1 }">
 							<label class="radio inline">
-								<input type="radio" name="license_cd" value="1" checked>
+								<input class="btn-license" type="radio" name="license_cd" value="1" checked>
 								빅스타 소유
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="license_cd" value="2">
+								<input class="btn-license" type="radio" name="license_cd" value="2">
 								에듀엔조이 소유
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="license_cd" value="3">
+								<input class="btn-license" type="radio" name="license_cd" value="3">
 								플레이북스 소유
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="license_cd" value="4">
+								<input class="btn-license" type="radio" name="license_cd" value="4">
 								공동 소유
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="license_cd" value="0">
+								<input class="btn-license" id="btn-license-etc" type="radio" name="license_cd" value="0">
 								기타
 							</label>
 							<div>
-								<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력" style="display:none;"></textarea>
+								<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력"  style="display:none;"></textarea>
 							</div>
 						</c:when>
 						<c:otherwise>
@@ -288,7 +288,7 @@
 			<div class="control-group">
 				<label class="control-label" for=""></label>
 				<div class="controls" >
-					<table id="product-content-tb" style="width:650px" class="table table-hover product-table">
+					<table id="product-content-tb" style="width:650px" class="table table-striped table-bordered">
 					</table>				
 				</div>
 			</div>
@@ -429,7 +429,7 @@
 		</select>
 	</div>
 	<div class="span2 device-remove-icon">
-		<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
+		<img class="remove-device" src="/pcms/img/remove.png" alt="x"/>
 	</div>
 	<!-- 아래로만 추가 하기 위한 empty -->
 	<div class="span7">
@@ -537,13 +537,37 @@
 		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
-			registeSeries();
-		});
-		// 개별상품 등록하기 버튼 이벤트
-		$("#btn-each-select").click(function(){
-			registeProduct();
+			saveSeriesInSession();
 		});
 		
+		// 개별상품 등록하기 버튼 이벤트
+		$("#btn-each-select").click(function(){
+			saveSeriesInSession();
+			//registeProduct();
+		});
+		
+		// 분납 방식 삭제 아이콘
+		$("body").delegate('img.removePd', 'click', function(event){
+			  $(this).parent().remove();
+		});
+		// 선택 디바이스 삭제 아이콘
+		$("body").delegate('img.remove-device', 'click', function(event){
+			$(this).parent().parent().remove();
+		});
+		// 선택 삭제 아이콘
+		$("body").delegate('img.remove-product', 'click', function(event){
+			$(this).parent().parent().remove();
+		});
+		
+		// 라이센스 버튼 이벤트
+		$(".btn-license").click(function(){
+			// 기타 체크 이벤트라면
+			if($(this).val() == 0){
+				$("#license_cd_detail").show();
+			}else{
+				$("#license_cd_detail").hide().val("");
+			}
+		}); 
 		
 		
 	}); //init function
@@ -621,19 +645,176 @@
 	}
 	
 	
+	function saveSeriesInSession(){
+		
+		var $selectedItem = $(".check-product").filter(":checked");
+		
+		if( $selectedItem.size() == 0 ){
+			bootbox.alert("1개 이상 선택해 주세요!");				
+			return false;		
+		
+		}
+		
+		var arrParam = [];
+		$selectedItem.each(function( index ){
+			arrParam.push($( this ).val());
+		});
+		var json = { 'contentList' : arrParam };
+		
+		// 선택한 상품 목록 세션 저장
+		jQuery.ajaxSettings.traditional = true;
+		var url = "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>";
+		bsgReq.json(url, json, function(response){
+			if( response.code === 200 ){
+				productTable($selectedItem);
+			} else {
+				alert("에러 발생! 관리자에게 문의하여 주십시오.");
+			}
+		}, function(xhr,status,error){
+			console.log(error);
+			alert("에러 발생! 관리자에게 문의하여 주십시오.");
+		});
+		
+		//close modal
+		$("#series-modal").modal('toggle');
+	}
+	
+	// 개별상품 등록 function
+	function registeProduct(){
+		var $selectedItem = $(".check-product").filter(":checked");
+		
+		if( $selectedItem.size() == 0 ){
+			bootbox.alert("1개 이상 선택해 주세요!");				
+			return false;				
+		} 
+		var paramArr = [];
+		$selectedItem.each(function( index ){
+			paramArr.push(  $( this ).val() );
+		});
+		var json = { 'contentList' : paramArr };
+		
+		// 선택한 상품 목록 세션 저장
+		jQuery.ajaxSettings.traditional = true;
+		var url = "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>";
+		
+		bsgReq.json(url, json, function(response){
+			if( response.code === 200 ){
+				productTable($selectedItem);
+			} else {
+				alert("에러 발생! 관리자에게 문의하여 주십시오.");
+			}
+		}, function(xhr,status,error){
+			alert("에러 발생! 관리자에게 문의하여 주십시오.");
+		});
+		
+		//close modal
+		$("#product-modal").modal('toggle');
+	}
+	
+	function productTable($selectedItem){
+		var $insertPlace = $("#product-content-tb");
+		
+		$insertPlace.empty();
+		
+		var productHtml;
+		
+		productHtml += '<thead>';
+		productHtml += '<tr>';
+		productHtml += '<th>상품코드</th>';
+		productHtml += '<th>상품명</th>';
+		productHtml += '<th>CP 업체</th>';
+		productHtml += '<th>판매금액</th>';
+		productHtml += '</tr>';
+		productHtml += '</thead>';
+		
+		if($selectedItem.size() > 5){
+			productHtml += '<tbody style="display:block; overflow:auto; height:230px;">';
+		}else{
+			productHtml += '<tbody>';
+		} 
+		
+		
+		$selectedItem.each(function(){
+			
+			var $this = $(this);
+			productHtml +='<tr>';
+			productHtml +='<td>'+$this.data("content_cd")+'</td>';
+			productHtml +='<td> '+$this.data("content_name")+'</td>';
+			productHtml +='<td> ybm 시사</td>';
+			productHtml +='<td>';
+			productHtml +='<input type="hidden" name="contents_cd" />';
+			productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+			productHtml +='&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/>';
+			productHtml +='</td>';
+			productHtml +='</tr>';
+					
+			
+			seletedTotlaPrice += $this.data("content_price");
+		});
+		productHtml += '</tbody>';
+		
+		$insertPlace.append(productHtml);
+		$("#sale_price").val(seletedTotlaPrice);
+	};
+	
+	
+	
+	function searchSeriesCallBack(response, param){
+		var $seriesModal = $("#series-modal");
+		var $insertPlace = $("#findSeriesBody");
+		
+		$insertPlace.empty(); //성공시 리스트 초기화
+		
+		if(response.resultCnt > 0) {
+			var $json = response.result;
+			$.each($json, function(){
+				$html = 	'<tr>';
+				$html += 	'<td><input class="check-product" name="check_list" type="checkbox" data-content_name="' + this.series_name 
+								+ '" data-content_cd="'+this.series_mgmtno
+								+ '" data-content_price="'+this.series_price
+								+ '" value="' + this.series_mgmtno 
+								+ '"></td>';
+				$html += 	'<td>' + this.series_name + '</td>';
+				$html += 	'<td>' + this.series_price + '</td>';
+				$html += 	'</tr>';
+				$insertPlace.append( $html );
+				
+			});
+
+			$("#series-modal").modal('toggle');
+		}
+		$seriesModal.show();
+	}
+	function searchSeriesError(response, param){
+		console.info(data);
+	}
+	
+	
+	$(".$selectedItem")
+	
 	function checkMulti() {
 		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
 		
 		//개별판매인가(체크박스 갯수를 세야하는가?)
 		if( saleType == 'CT001001' ){
+			
+			var $selectedItem = $(".check-product").filter(":checked");
+			
 			$( "input[name=checkbox_all]" ).hide();
-			$("#findSeriesBody, #findEachBody").find("input[type='checkbox']").on("click",function(){
+		
+			if($selectedItem.size() > 1){
+				$(this).prop("checked", false);
+				bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
+				
+			}
+			
+			/* $("..check-product").find("input[type='checkbox']").on("click",function(){
 				var checkedSize = $(this).parent().parent().parent().find("input[type='checkbox']").filter(":checked").size();
 				if( checkedSize > 1 ){
 					$(this).prop("checked", false);
 					bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
 				}
-			});
+			}); */
 		} else {
 			$( "input[name=checkbox_all]" )
 				.click( function(){
@@ -658,174 +839,6 @@
 				.show();
 		}
 		
-	}
-	
-	function registeSeries(){
-		var $productTable = $("table.product-table");
-		$productTable.find("thead,tbody").empty();
-
-		var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
-		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
-		
-		if( $selectedItem.size() == 0 ){
-			bootbox.alert("1개 이상 선택해 주세요!");				
-			return false;		
-		
-		} else {
-			var arrParam = [];
-			$selectedItem.each(function( index ){
-				//arrParam.push( { series_mgmtno : $( this ).val() } );
-				arrParam.push($( this ).val());
-			});
-			var json = { 'contentList' : arrParam };
-			
-			// 상품 목록 저장
-			jQuery.ajaxSettings.traditional = true;
-			$.ajax({
-				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
-				type : "POST",
-				data : json,
-				dataType : "json",
-				success : function(result) {
-					if( result.code === 200 ){
-						productTable($selectedItem);
-					} else {
-						alert("에러 발생! 관리자에게 문의하여 주십시오.");
-					}
-				},
-				error : function() {
-					alert("에러 발생! 관리자에게 문의하여 주십시오.");
-				}
-			});
-		}
-		
-		
-		//close modal
-		$("#series-modal").modal('toggle');
-	}
-	
-	function productTable($selectedItem){
-		var $target = $("table.product-table");
-		var seletedTotlaPrice = 0;
-		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
-		$selectedItem.each(function(){
-			var $this = $(this);
-			var productHtml;
-			if($selectedItemCount > 5){
-				productHtml += '<tbody  style="display:block; overflow:auto; height:230px;">';
-			}else{
-				productHtml += '<tbody  style="display:block; overflow:auto; ">';
-			}
-			var $this = $(this);
-			var productHtml;
-			productHtml +='<tr>';
-			productHtml +='<td>'+$this.data("content_cd")+'</td>';
-			productHtml +='<td> | '+$this.data("content_name")+'</td>';
-			productHtml +='<td> | ybm 시사</td>';
-			productHtml +='<td>';
-			productHtml +='<input type="hidden" name="contents_cd" />';
-			productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
-			productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
-			productHtml +='</td>';
-			productHtml +='</tr>';
-			$target.find("tbody").append(productHtml);
-			seletedTotlaPrice += $this.data("content_price");
-			
-			$("#product-content-tb").append(productHtml);
-			//$productTable.find("tbody").append("<tr><td>" + $this.data("series_name") + "</td><td>" + $this.data("series_price") + "</td></tr>");
-			seletedTotlaPrice += $this.data("series_price");
-		});
-		$("#sale_price").val(seletedTotlaPrice);
-	}
-	
-	function registeProduct(){
-		var $target = $("table.product-table");
-		$target.find("thead,tbody").empty();
-
-		var $selectedItem = $("#product-modal").find("input[name='content_checkbox']").filter(":checked");
-		
-		if( $selectedItem.size() == 0 ){
-			bootbox.alert("1개 이상 선택해 주세요!");				
-			return false;				
-		} else {
-			var arr = [];
-			$selectedItem.each(function( index ){
-				arr.push(  $( this ).val() );
-			});
-			
-			var json = { 'contentList' : arr };
-			jQuery.ajaxSettings.traditional = true;
-			$.ajax({
-				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
-				type : "POST",
-				//contentType : "text/html; charset=utf-8" ,
-				data : json,
-				dataType : "json",
-				success : function( response ) {
-					if( response.code === 200 ){
-						
-						$selectedItem.each(function(){
-							var $this = $(this);
-							var productHtml;
-							productHtml +='<tr>';
-							productHtml +='<td>'+$this.data("content_cd")+'</td>';
-							productHtml +='<td> | '+$this.data("content_name")+'</td>';
-							productHtml +='<td> | ybm 시사</td>';
-							productHtml +='<td>';
-							productHtml +='<input type="hidden" name="contents_cd" />';
-							productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
-							productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
-							productHtml +='</td>';
-							productHtml +='</tr>';
-							$target.find("tbody").append(productHtml);
-							seletedTotlaPrice += $this.data("content_price");
-						});
-						$("#sale_price").val(seletedTotlaPrice);
-					} else {
-						alert("에러 발생! 관리자에게 문의하여 주십시오.");
-					}
-				},
-				error : function() {
-					alert("에러 발생! 관리자에게 문의하여 주십시오.");
-				}
-			});
-		}
-		
-		//close modal
-		$("#product-modal").modal('toggle');
-	}
-	
-	function searchSeriesCallBack(response, param){
-		var $seriesModal = $("#series-modal");
-		var $insertPlace = $("#findSeriesBody");
-		
-		$insertPlace.empty(); //성공시 리스트 초기화
-		
-		if(response.resultCnt > 0) {
-			var $json = response.result;
-			$.each($json, function(){
-				$html = 	'<tr>';
-				$html += 	'<td><input name="check_list" type="checkbox" data-content_name="' + this.series_name 
-								+ '" data-content_cd="'+this.series_mgmtno
-								+ '" data-content_price="'+this.series_price
-								+ '" value="' + this.series_mgmtno 
-								+ '"></td>';
-				$html += 	'<td>' + this.series_name + '</td>';
-				$html += 	'<td>' + this.series_price + '</td>';
-				$html += 	'</tr>';
-				$insertPlace.append( $html );
-				
-			});
-
-			$("#series-modal").modal('toggle');
-			//$("#hasContents").val("has");
-			//개별판매일때 멀티체크 방지
-			//checkMulti();
-		}
-		$seriesModal.show();
-	}
-	function searchSeriesError(response, param){
-		console.info(data);
 	}
 	
 
