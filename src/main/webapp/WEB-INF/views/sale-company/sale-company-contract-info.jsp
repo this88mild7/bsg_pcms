@@ -65,7 +65,7 @@
 					</div>
 					<div class="input-append">
 						<input type="hidden" id="currency" name="currency" value="KRW">
-						<input class="inputError input-medium" type="text" id="payments" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+						<input class="inputError input-medium payments" type="text" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
 					</div>
 					<span class="help-inline"><a id="tip4" href="#" data-toggle="tooltip" >tip</a></span>
 					<script>
@@ -453,6 +453,34 @@
 	var bsgReq = new BsgRequest();
 	
 	$(function(){
+		
+		
+		
+		$("#btn-registe").click(function(){
+			//금액 콤마 제거	(숫자만 가져옴)		
+			$('#sale_price').val($('#sale_price').autoNumeric('get'));
+			
+			//입금|지불 방식이 분납방식일 때에만 금액 콤마 제거(숫자만 가져옴)
+			$("input[name='installments_price']").each(function(){
+				$(this).val( $(this).autoNumeric('get') );
+			});
+			$(".payments").each(function(){
+				$(this).val( $(this).autoNumeric('get') );
+			});
+			$("#registeForm").submit();
+		})
+		
+		/* // submit 전 체크 사항
+		$("#registeForm").submit(function(){
+			//금액 콤마 제거	(숫자만 가져옴)		
+			$('#sale_price').val($('#sale_price').autoNumeric('get'));
+			
+			//입금|지불 방식이 분납방식일 때에만 금액 콤마 제거(숫자만 가져옴)
+			$("input[name='installments_price']").each(function(){
+				$(this).val( $(this).autoNumeric('get') );
+			});
+			
+		}); */
 		
 		
 		// 분납 방식 달력
