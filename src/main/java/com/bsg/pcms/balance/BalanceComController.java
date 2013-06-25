@@ -1,5 +1,8 @@
 package com.bsg.pcms.balance;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +29,37 @@ public class BalanceComController {
 	private BalanceService balanceService;
 	
 	
-	@RequestMapping(value = "list.do", method = RequestMethod.GET)
-	public ModelAndView list() {
+	@RequestMapping(value = "list.do")
+	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
+		
+		List<BalanceDTOEx> balanceList = balanceService.saleList(balanceDTOEx);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-sale-list");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("balanceList", balanceList);
+		mav.addObject("sorting_type", balanceDTOEx.getSorting_type());
+		return mav;
+		
+	}
+	
+	@RequestMapping(value = "search.do")
+	public ModelAndView search(BalanceDTOEx balanceDTOEx) {
+		
+		List<BalanceDTOEx> balanceList = balanceService.searchSale(balanceDTOEx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("balance-sale-list");
+		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("balanceList", balanceList);
 		
 		return mav;
 		
 	}
 	
-	@RequestMapping(value = "creat.do", method = RequestMethod.GET)
+	@RequestMapping(value = "create.do", method = RequestMethod.GET)
 	public String create(BalanceDTOEx balanceDto) {
 		logger.info("balance/sale-company/create.do");
 		
@@ -46,12 +68,14 @@ public class BalanceComController {
 		return "redirect:/balance/sale-company/list.to";
 	}
 	
-	@RequestMapping(value = "creatView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "createView.do", method = RequestMethod.GET)
 	public ModelAndView creatView(BalanceDTOEx balanceDto) {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance");
+		mav.setViewName("balance-sale-info");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
+		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("isCreate", 1);
 		return mav;
 		
 	}

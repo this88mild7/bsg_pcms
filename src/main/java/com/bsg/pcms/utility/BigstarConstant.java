@@ -26,6 +26,9 @@ public class BigstarConstant {
 	// 좌측메뉴 > 판매업체관리
 	private final int LEFT_SALE_COMPANY = 0;		// 판매업체 관리
 	private final int LEFT_SALE_COMPANY_CONTRACT = 1;		// 판매상품 관리
+	// 좌측메뉴 > 정산관리
+	private final int LEFT_BALANCE_SALE = 0;		// 판매관리
+	private final int LEFT_BALANCE_CP = 1;		// 업체관리
 	// 좌측메뉴 > 사이트 관리
 	private final int LEFT_MEMBER = 0;		// 회원관리
 	private final int LEFT_UNKNOWN = 1;		// 메뉴미정
@@ -40,7 +43,6 @@ public class BigstarConstant {
 	public int getHEADER_CP() {
 		return HEADER_CP;
 	}
-	
 	public int getHEADER_STATS() {
 		return HEADER_STATS;
 	}
@@ -56,11 +58,15 @@ public class BigstarConstant {
 	public int getLEFT_CONTRACTS() {
 		return LEFT_CONTRACTS;
 	}
-	
 	public int getLEFT_SALE_COMPANY() {
 		return LEFT_SALE_COMPANY;
 	}
-	
+	public int getLEFT_BALANCE_SALE() {
+		return LEFT_BALANCE_SALE;
+	}
+	public int getLEFT_BALANCE_CP() {
+		return LEFT_BALANCE_CP;
+	}
 	public int getLEFT_SALE_COMPANY_CONTRACT() {
 		return LEFT_SALE_COMPANY_CONTRACT;
 	}

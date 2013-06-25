@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.dto.BalanceDTO;
+import com.bsg.pcms.dto.BalanceDetailDTO;
 
 @Component
 public class BalanceDao extends SqlSessionDaoSupport{
@@ -15,17 +16,30 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public void create(BalanceDTOEx balanceDto) {
 		getSqlSession().insert( "balanceQuery.createSaleCompany", balanceDto);
 	}
-
-	public List<BalanceDTOEx> list(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.list", balanceDtoEx);
+	public void createDetail(BalanceDetailDTO balanceDto) {
+		getSqlSession().insert( "balanceQuery.createDetail", balanceDto);
 	}
 
-	public List<BalanceDTOEx> searchByDate(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchByDate", balanceDtoEx);
+	public List<BalanceDTOEx> cpList(BalanceDTOEx balanceDtoEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.cpList", balanceDtoEx);
+	}
+	
+	public List<BalanceDTOEx> saleList(BalanceDTOEx balanceDtoEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.saleList", balanceDtoEx);
+	}
+	public List<String> contentsList(BalanceDTOEx balanceDtoEx) {
+		return (List<String>)getSqlSession().selectList("balanceQuery.contentsList", balanceDtoEx);
+	}
+	public List<String> saleTypeList(BalanceDTOEx balanceDtoEx) {
+		return (List<String>)getSqlSession().selectList("balanceQuery.saleTypeList", balanceDtoEx);
 	}
 
-	public List<BalanceDTOEx> searchByWord(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchByWord", balanceDtoEx);
+	public List<BalanceDTOEx> searchSale(BalanceDTOEx balanceDtoEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchSale", balanceDtoEx);
+	}
+	
+	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
+		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchCP", balanceDTOEx);
 	}
 
 	public void modify(BalanceDTOEx balanceDto) {
@@ -40,5 +54,11 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public void delete(BalanceDTOEx balanceDto) {
 		getSqlSession().update("balanceQuery.delete", balanceDto);
 	}
+	
+	
+
+	
+
+	
 
 }

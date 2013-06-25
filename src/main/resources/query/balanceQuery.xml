@@ -5,9 +5,7 @@
 <mapper namespace="balanceQuery">
    
    <!-- INSERT -->
-   <insert id="createSaleCompany" 
-   	useGeneratedKeys="true" 
-   	keyProperty="balance_mgmtno">
+   <insert id="createSaleCompany" useGeneratedKeys="true" keyProperty="balance_mgmtno">
 		INSERT INTO BALANCE
 			( 
 				COMPANY_MGMTNO,
@@ -19,6 +17,7 @@
 				OWNER_PROFIT, 
 				TOTAL_SALE_COUNT, 
 				TOTAL_SALE_PRICE, 
+				CONTRACT_MGMTNO,
 				MOD_DT, 
 				REG_DT )
 		VALUES
@@ -32,88 +31,176 @@
 				#{owner_profit}, 
 				#{total_sale_count}, 
 				#{total_sale_price}, 
+				#{contract_mgmtno}, 
+				NOW(), 
+				NOW() 
+			)
+   </insert>
+   
+   <insert id="createDetail" parameterType="com.bsg.pcms.dto.BalanceDetailDTO">
+		INSERT INTO BALANCE_DETAIL
+			( 
+				BALANCE_MGMTNO,
+				CONTENTS_CD, 
+				SALE_COUNT, 
+				MOD_DT, 
+				REG_DT )
+		VALUES
+			( 
+				#{balance_mgmtno}, 
+				#{contents_cd}, 
+				#{sale_count}, 
 				NOW(), 
 				NOW() 
 			)
    </insert>
 
    <!-- SELECT -->
-	<select id="list" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+   <!-- CP 정산 리스트 -->
+	<select id="cpList" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE
+			FROM BALANCE BAL, COMPANY COM, CONTRACT CON 
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
 		AND BAL.DEL_YN = 'N'
+		AND COM.COMPANY_TYPE = 'CP'
 		AND BAL.REG_DT
 			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
 			AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
 		<!-- 등록순 -->
-		<if test="printType == 1">
+		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
 		</if>
 		<!-- 매출순 -->
-		<if test="printType == 2">
+		<if test="sortingType == 2">
 			ORDER BY BAL.TOTAL_SALE_PRICE DESC
 		</if>
 		<!-- 수익순 -->
-		<if test="printType == 3">
+		<if test="sortingType == 3">
 			ORDER BY BAL.OWNER_PROFIT DESC
 		</if>
 		<!-- 판매순 -->
-		<if test="printType == 4">
+		<if test="sortingType == 4">
 			ORDER BY BAL.TOTAL_SALE_COUNT DESC
 		</if>
 	</select>
-	
-	
-	<select id="searchByDate" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
+   <!-- CP 정산 리스트 -->
+	<select id="searchCP" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE
+			FROM BALANCE BAL, COMPANY COM, CONTRACT CON 
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
 		AND BAL.DEL_YN = 'N'
-		AND BAL.REG_DT 
-			BETWEEN #{searchStrDate}  
-			AND #{searchEndDate}
-		<!-- 등록순 -->
-		<if test="printType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO 
-		</if>
-		<!-- 매출순 -->
-		<if test="printType == 2">
-			ORDER BY BAL.TOTAL_SALE_PRICE DESC
-		</if>
-		<!-- 수익순 -->
-		<if test="printType == 3">
-			ORDER BY BAL.OWNER_PROFIT DESC
-		</if>
-		<!-- 판매순 -->
-		<if test="printType == 4">
-			ORDER BY BAL.TOTAL_SALE_COUNT DESC
-		</if>
-	</select>
-	
-	<select id="searchByWord" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT 
-			BAL.*, 
-			COM.COMPANY_NAME 
-		FROM BALANCE BAL, COMPANY COM
-		WHERE 1=1
-		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
-		AND BAL.DEL_YN = 'N'
+		AND COM.COMPANY_TYPE = 'CP'
+		<if test="searchQuery != null">
 		AND COM.COMPANY_NAME like '%${searchQuery}%'
+		</if>
+		<if test="searchStrDate != null">
+			<if test="searchEndDate != null">
+			AND BAL.REG_DT 
+				BETWEEN #{searchStrDate}  
+				AND #{searchEndDate}
+			</if>
+		</if>
 		<!-- 등록순 -->
-		<if test="printType == 1">
+		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
 		</if>
 		<!-- 매출순 -->
-		<if test="printType == 2">
+		<if test="sortingType == 2">
 			ORDER BY BAL.TOTAL_SALE_PRICE DESC
 		</if>
 		<!-- 수익순 -->
-		<if test="printType == 3">
+		<if test="sortingType == 3">
 			ORDER BY BAL.OWNER_PROFIT DESC
 		</if>
 		<!-- 판매순 -->
-		<if test="printType == 4">
+		<if test="sortingType == 4">
+			ORDER BY BAL.TOTAL_SALE_COUNT DESC
+		</if>
+	</select>
+	
+	<!-- 판매 정산 리스트 -->
+	<select id="saleList" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" 
+						resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT /* Balance.saleList */ 
+			BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE,
+			CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name,				
+			CDT.SALE_TYPE
+			FROM BALANCE BAL, COMPANY COM, CONTRACT CON, CONTRACT_DETAIL CDT, BALANCE_DETAIL BD,
+			CONTENTS CONT
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
+		AND BAL.BALANCE_MGMTNO = BD.BALANCE_MGMTNO 
+		AND CON.CONTRACT_MGMTNO = CDT.CONTRACT_MGMTNO 
+		AND CONT.CONTENTS_CD = BD.CONTENTS_CD
+		AND BAL.DEL_YN = 'N'
+		AND COM.COMPANY_TYPE = 'SC'
+		AND BAL.REG_DT
+			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
+		AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
+		GROUP BY BAL.CONTRACT_MGMTNO
+		<!-- 등록순 -->
+		<if test="sortingType == 1">
+			ORDER BY BAL.BALANCE_MGMTNO 
+		</if>
+		<!-- 매출순 -->
+		<if test="sortingType == 2">
+			ORDER BY BAL.TOTAL_SALE_PRICE DESC
+		</if>
+		<!-- 수익순 -->
+		<if test="sortingType == 3">
+			ORDER BY BAL.OWNER_PROFIT DESC
+		</if>
+		<!-- 판매순 -->
+		<if test="sortingType == 4">
+			ORDER BY BAL.TOTAL_SALE_COUNT DESC
+		</if>
+			
+	</select>
+	
+	<select id="searchSale" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+		SELECT /* Balance.searchByDate */ 
+			BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE,
+			CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name,				
+			CDT.SALE_TYPE
+			FROM BALANCE BAL, COMPANY COM, CONTRACT CON, CONTRACT_DETAIL CDT, BALANCE_DETAIL BD,
+			CONTENTS CONT
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
+		AND BAL.BALANCE_MGMTNO = BD.BALANCE_MGMTNO 
+		AND CON.CONTRACT_MGMTNO = CDT.CONTRACT_MGMTNO 
+		AND CONT.CONTENTS_CD = BD.CONTENTS_CD
+		AND BAL.DEL_YN = 'N'
+		AND COM.COMPANY_TYPE = 'SC'
+		<if test="searchQuery != null">
+		AND COM.COMPANY_NAME like '%${searchQuery}%'
+		</if>
+		<if test="searchStrDate != null">
+			<if test="searchEndDate != null">
+			AND BAL.REG_DT 
+				BETWEEN #{searchStrDate}  
+				AND #{searchEndDate}
+			</if>
+		</if>
+		<!-- 등록순 -->
+		<if test="sortingType == 1">
+			ORDER BY BAL.BALANCE_MGMTNO 
+		</if>
+		<!-- 매출순 -->
+		<if test="sortingType == 2">
+			ORDER BY BAL.TOTAL_SALE_PRICE DESC
+		</if>
+		<!-- 수익순 -->
+		<if test="sortingType == 3">
+			ORDER BY BAL.OWNER_PROFIT DESC
+		</if>
+		<!-- 판매순 -->
+		<if test="sortingType == 4">
 			ORDER BY BAL.TOTAL_SALE_COUNT DESC
 		</if>
 	</select>

@@ -15,11 +15,11 @@
 		
 		<div>
 			출력순
-			<select class="span2">
-				<option>등록순</option>
-				<option>매출순</option>
-				<option>수익수</option>
-				<option>판매량</option>
+			<select id="sorting_type" class="span2">
+				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
+				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+				<option value="3" <c:if test="${sortingType eq '3' }">selected="selected"</c:if> >수익수</option>
+				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
 			<select class="span2">
@@ -30,15 +30,16 @@
 			</select>
 			<input type="text" class="span2" /> - <input type="text" class="span2" />
 			<div class="input-append">
-				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['contentList']"/>">
-					<input type="hidden" id="type" name="type" >
-					<input type="text" id="query" name="query" class="input-medium"  value="${ search.query }">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">
+					<input type="hidden" id="sortingType" name="sortingType" >
+					<input type="hidden" id="searchStrDate" name="searchStrDate" >
+					<input type="hidden" id="searchEndDate" name="searchEndDate" >
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
 		</div>
 		
-
 		<table class="table table-striped table-hover">
 		<tr>
 			<th>정산일</th>
@@ -47,24 +48,22 @@
 			<th>총매출금액</th>
 			<th>수수료</th>
 			<th>등록일</th>
-			<th>상세보기</th>
 		</tr>
-		<c:forEach items="${ contentList }" var="content">
+		<c:forEach items="${ balanceList }" var="balance">
 		<tr>
-			<td>${ content.contents_cd }</td>
-			<td>${ content.company_name }</td>
-			<td>${ content.cate_name }</td>
-			<td>${ content.series_name }</td>
-			<td>${ content.name }</td>
-			<td>${ content.reg_dt }</td>
-			<td><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contentDetail']"/>?contents_cd=${ content.contents_cd }">상세보기</button></td>
+			<td>${ balance.reg_dt }</td>
+			<td>${ balance.company_name }</td>
+			<td>${ balance.contract_type }</td>
+			<td>${ balance.total_sale_price }</td>
+			<td>${ balance.cp_commission }</td>
+			<td>${ balance.reg_dt }</td>
 		</tr>
 		</c:forEach>
 		</table>
 		
 		<div class="clearfix">
 			<p class="pull-right">
-				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['contentCreate']"/>">매출입력</button>
+				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['balanceCpInfo']"/>">매출입력</button>
 			</p>
 		</div>
 		
@@ -93,6 +92,13 @@
 </div>
 <!--/row-->
 <script>
+
+$("#btn-content-search-form").click(function(){
+	$("#sorting_type").val($("#sorting-type-select").val());
+	$("#searchStrDate").val($("#search-str-date").val());
+	$("#searchEndDate").val($("#search-end-date").val());
+	$("#contentSearchForm").submit();
+});
 
 //검색종류 클릭한 글자로 변경.
 $("ul.dropdown-menu").find("a").click(function(){
