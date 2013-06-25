@@ -82,7 +82,7 @@ public class ContractServiceImpl implements ContractService {
 					InstallmentsDTO insParamDTO = new InstallmentsDTO();
 					insParamDTO.setContract_mgmtno(contractMgmtno);
 					insParamDTO.setInstallments_dt(insDtList.get(insSeq));
-					insParamDTO.setInstallments_price(Double.valueOf(insPriceList.get(insSeq)));
+					insParamDTO.setInstallments_price(insPriceList.get(insSeq));
 					
 					dtoList.add(insParamDTO);
 				}
@@ -188,7 +188,7 @@ public class ContractServiceImpl implements ContractService {
 					InstallmentsDTO insParamDTO = new InstallmentsDTO();
 					insParamDTO.setContract_mgmtno(contractMgmtno);
 					insParamDTO.setInstallments_dt(insDtList.get(insSeq));
-					insParamDTO.setInstallments_price(Double.valueOf(insPriceList.get(insSeq)));
+					insParamDTO.setInstallments_price(insPriceList.get(insSeq));
 					
 					dtoList.add(insParamDTO);
 				}
