@@ -52,9 +52,7 @@ public class CompanyContractService {
 		CompanyContractDTOEx companyContractDTOEx = _saleContractDao.contractDetail(saleCompany);
 		List<CompanyContentsDTOEx> contentsList = _saleContractDao.contractContentsList(saleCompany.getContract_mgmtno());
 		List<String> contractedDeviceList = _saleContractDao.contractedDeviceList(saleCompany.getContract_mgmtno());
-		List<String> deviceList = _saleContractDao.deviceList();
 		List<InstallmentsDTO> installmentList = _saleContractDao.installmentList(saleCompany.getContract_mgmtno());
-		companyContractDTOEx.setDevice_cd_list(deviceList);
 		companyContractDTOEx.setContractedDeviceList(contractedDeviceList);
 		companyContractDTOEx.setContentsList(contentsList);
 		companyContractDTOEx.setInstallmentList(installmentList);
@@ -124,7 +122,7 @@ public class CompanyContractService {
 	 */
 	
 
-	public List<String> deviceList() {
+	public List<CompanyContractDTOEx> deviceList() {
 		return _saleContractDao.deviceList();
 	}
 
@@ -179,6 +177,10 @@ public class CompanyContractService {
 
 	public List<CompanyContractDTOEx> search(CompanyContractDTOEx companyDTO) {
 		return list(companyDTO); 
+	}
+
+	public List<CompanyContractDTOEx> licenseList() {
+		return _saleContractDao.licenseList();
 	}
 	
 }

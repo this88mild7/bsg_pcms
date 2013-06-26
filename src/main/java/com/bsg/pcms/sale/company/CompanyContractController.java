@@ -64,18 +64,22 @@ public class CompanyContractController {
 	@RequestMapping( value = "createView.do", method = RequestMethod.GET )
 	public ModelAndView contractView() {
 		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list();
-		List<String> deviceList = _saleContractService.deviceList();
+		List<CompanyContractDTOEx> deviceList = _saleContractService.deviceList();
 		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
-		return _pmsView.getSaleCompanyCreateContractView(saleCompanyList, deviceList, contractTypeList);
+		List<CompanyContractDTOEx> licenseList = _saleContractService.licenseList();
+		return _pmsView.getSaleCompanyCreateContractView(saleCompanyList, deviceList, contractTypeList, licenseList);
 	}
 	
 	@RequestMapping( value = "detail.do", method = RequestMethod.GET )
 	public ModelAndView detail(CompanyContractDTOEx saleCompany, HttpServletRequest request) {
 		CompanyContractDTOEx saleContractDetail = _saleContractService.detail(saleCompany);
+		List<CompanyContractDTOEx> deviceList = _saleContractService.deviceList();
 		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
+		List<CompanyContractDTOEx> licenseList = _saleContractService.licenseList();
 		request.getSession().setAttribute("selectedContentsList", saleContractDetail.getContentsList());
 		
-		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, contractTypeList);
+		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, 
+				deviceList, contractTypeList, licenseList);
 	}
 	
 	@RequestMapping( value = "create.do", method = RequestMethod.POST )

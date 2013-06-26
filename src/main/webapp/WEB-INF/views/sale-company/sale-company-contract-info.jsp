@@ -131,51 +131,25 @@
 				<div class="controls">
 					<c:choose>
 						<c:when test="${viewType eq 1 }">
-							<label class="radio inline">
-								<input class="btn-license" type="radio" name="license_cd" value="1" checked>
-								빅스타 소유
-							</label>
-							<label class="radio inline">
-								<input class="btn-license" type="radio" name="license_cd" value="2">
-								에듀엔조이 소유
-							</label>
-							<label class="radio inline">
-								<input class="btn-license" type="radio" name="license_cd" value="3">
-								플레이북스 소유
-							</label>
-							<label class="radio inline">
-								<input class="btn-license" type="radio" name="license_cd" value="4">
-								공동 소유
-							</label>
-							<label class="radio inline">
-								<input class="btn-license" id="btn-license-etc" type="radio" name="license_cd" value="0">
-								기타
-							</label>
+							<c:forEach items="${licenseList}" varStatus="index" var="license">
+								<label class="radio inline">
+									<input class="btn-license" type="radio" name="license_cd" value="${license.license_cd }" 
+									<c:if test="${index.count == 1 }"> checked </c:if>>
+									${license.license_cd_name }
+								</label>
+							</c:forEach>
 							<div>
 								<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력"  style="display:none;"></textarea>
 							</div>
 						</c:when>
 						<c:otherwise>
-							<label class="radio inline">
-								<input type="radio" name="license_cd" value="1" <c:if test="${saleContractDetail.license_cd == 1}">checked</c:if>>
-								빅스타 소유
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="license_cd" value="2" <c:if test="${saleContractDetail.license_cd == 2}">checked</c:if>>
-								에듀엔조이 소유
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="license_cd" value="3" <c:if test="${saleContractDetail.license_cd == 3}">checked</c:if>>
-								플레이북스 소유
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="license_cd" value="4" <c:if test="${saleContractDetail.license_cd == 4}">checked</c:if>>
-								공동 소유
-							</label>
-							<label class="radio inline">
-								<input type="radio" name="license_cd" value="0" <c:if test="${saleContractDetail.license_cd == 0}">checked</c:if>>
-								기타
-							</label>
+							<c:forEach items="${licenseList}" varStatus="index" var="license">
+								<label class="radio inline">
+									<input class="btn-license" type="radio" name="license_cd" value="${license.license_cd }" 
+									<c:if test="${saleContractDetail.license_cd == license.license_cd}">checked</c:if>>
+									${license.license_cd_name }
+								</label>
+							</c:forEach>
 							<div>
 								<c:if test="${not empty saleContractDetail.license_cd_detail}">
 									<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력">${saleContractDetail.license_cd_detail}</textarea>
@@ -212,7 +186,7 @@
 									<div class="span3">
 										<select size="1" name="device_cd_list">
 											<c:forEach items="${ deviceList }" var="device">
-												<option value="${device}" >${device}</option>
+												<option value="${device.device_cd}" >${device.device_name}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -240,7 +214,7 @@
 										<div class="span3">							
 											<select size="1" name="device_cd_list">
 												<c:forEach items="${ deviceList }" var="device">
-													<option value="${device}" <c:if test="${contractedDeviceList eq device}">selected="selected"</c:if>>${device}</option>
+													<option value="${device.device_cd}" <c:if test="${contractedDeviceList eq device.device_cd}">selected="selected"</c:if> >${device.device_name}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -270,8 +244,8 @@
 				<div class="controls">
 					<select size="1" name="contract_type" id="product_sale_type">
 						<c:forEach items="${ contractTypeList }" var="contractType">
-							<option <c:if test="${contractType.contract_type == saleContractDetail.contract_type}"> selected="selected"</c:if> value="${ contractType.contract_type }" >
-								${ contractType.contract_type_detail }
+							<option <c:if test="${contractType.contract_type_cd == saleContractDetail.contract_type}"> selected="selected"</c:if> value="${ contractType.contract_type_cd }" >
+								${ contractType.contract_type_cd_name }
 							</option>
 						</c:forEach>
 					</select>
@@ -419,12 +393,12 @@
 	<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
 </div>
 
-<!--판매형태 추가 HTML -->
+<!--판매형태(device) 추가 HTML -->
 <div id="device-list" hidden="true">
 	<div class="span3">
 		<select size="1" name="device_cd_list">
 			<c:forEach items="${ deviceList }" var="device">
-				<option value="${device}" >${device}</option>
+				<option value="${device.device_cd}" >${device.device_name}</option>
 			</c:forEach>
 		</select>
 	</div>
@@ -563,7 +537,6 @@
 			if (checkMulti()) {
 				saveSeriesInSession();
 			}
-			registeProduct();
 		});
 		
 		// 개별상품 등록하기 버튼 이벤트
@@ -589,7 +562,7 @@
 		// 라이센스 버튼 이벤트
 		$(".btn-license").click(function(){
 			// 기타 체크 이벤트라면
-			if($(this).val() == 0){
+			if($(this).val() == 'LS001999'){
 				$("#license_cd_detail").show();
 			}else{
 				$("#license_cd_detail").hide().val("");
@@ -716,11 +689,9 @@
 		$("#series-modal").modal('toggle');
 	}
 	
+	// 개별상품 등록 function
 	function registeProduct(){
-		var $productTable = $("table.product-table");
-		$productTable.find("thead,tbody").empty();
-
-		var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
+		var $selectedItem = $(".check-product").filter(":checked");
 		
 		if( $selectedItem.size() == 0 ){
 			bootbox.alert("1개 이상 선택해 주세요!");				
@@ -750,10 +721,30 @@
 		$("#product-modal").modal('toggle');
 	}
 	
-	 function productTable($selectedItem){
-		var $target = $("table.product-table");
-		var seletedTotlaPrice = 0;
-		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
+	function productTable($selectedItem){
+		var $insertPlace = $("#product-content-tb");
+		
+		$insertPlace.empty();
+		
+		var productHtml;
+		
+		productHtml += '<thead>';
+		productHtml += '<tr>';
+		productHtml += '<th>상품코드</th>';
+		productHtml += '<th>상품명</th>';
+		productHtml += '<th>CP 업체</th>';
+		productHtml += '<th>판매금액</th>';
+		productHtml += '</tr>';
+		productHtml += '</thead>';
+		
+		/*
+		if($selectedItem.size() > 5){
+			productHtml += '<tbody style="display:block; overflow:auto; height:230px;">';
+		}else{
+		} */
+		
+		productHtml += '<tbody>';
+		var seletedTotlaPrice=0;
 		$selectedItem.each(function(){
 			
 			var $this = $(this);
@@ -774,66 +765,8 @@
 		$("#sale_price").val(seletedTotlaPrice);
 	};
 	
-	} 
-	/* 
-	function registeProduct(){
-		var $target = $("table.product-table");
-		$target.find("thead,tbody").empty();
-
-		var $selectedItem = $("#product-modal").find("input[name='content_checkbox']").filter(":checked");
-		
-		if( $selectedItem.size() == 0 ){
-			bootbox.alert("1개 이상 선택해 주세요!");				
-			return false;				
-		} else {
-			var arr = [];
-			$selectedItem.each(function( index ){
-				arr.push(  $( this ).val() );
-			});
-			
-			var json = { 'contentList' : arr };
-			jQuery.ajaxSettings.traditional = true;
-			$.ajax({
-				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
-				type : "POST",
-				//contentType : "text/html; charset=utf-8" ,
-				data : json,
-				dataType : "json",
-				success : function( response ) {
-					if( response.code === 200 ){
-						
-						$selectedItem.each(function(){
-							var $this = $(this);
-							var productHtml;
-							productHtml +='<tr>';
-							productHtml +='<td>'+$this.data("content_cd")+'</td>';
-							productHtml +='<td> | '+$this.data("content_name")+'</td>';
-							productHtml +='<td> | ybm 시사</td>';
-							productHtml +='<td>';
-							productHtml +='<input type="hidden" name="contents_cd" />';
-							productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
-							productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
-							productHtml +='</td>';
-							productHtml +='</tr>';
-							$target.find("tbody").append(productHtml);
-							seletedTotlaPrice += $this.data("content_price");
-						});
-						$("#sale_price").val(seletedTotlaPrice);
-					} else {
-						alert("에러 발생! 관리자에게 문의하여 주십시오.");
-					}
-				},
-				error : function() {
-					alert("에러 발생! 관리자에게 문의하여 주십시오.");
-				}
-			});
-		}
-		
-		//close modal
-		$("#product-modal").modal('toggle');
-	}
-	 */
->>>>>>> master
+	
+	
 	function searchSeriesCallBack(response, param){
 		var $seriesModal = $("#series-modal");
 		var $insertPlace = $("#findSeriesBody");
@@ -868,7 +801,7 @@
 		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
 		
 		//개별판매인가(체크박스 갯수를 세야하는가?)
-		if( saleType == 'CT001001' ){
+		if( saleType == 'CT002001' ){
 			
 			var $selectedItem = $(".check-product").filter(":checked");
 			
@@ -882,32 +815,9 @@
 			else{
 				return true;
 			}
+		}else{
+			return true;
 		} 
-		
-		/* else {
-			$( "input[name=checkbox_all]" )
-				.click( function(){
-					var $checkboxArray = $( "input[name='check_list']" );
-					
-					if( $( this ).val() == "true" ) {
-						$( this ).val( "false" );
-						$.each( $checkboxArray, function(){
-							$checkboxArray.prop("checked", false);
-						});
-					} else {
-						$( this ).val( "true" );
-						$.each( $checkboxArray, function(idx){
-							$checkboxArray.prop("checked", true);
-						});
-					}
-				})
-				.tooltip({
-					"title":"전체선택",
-					"placement":"top"
-				})
-				.show();
-		} */
-		
 	}
 	
 

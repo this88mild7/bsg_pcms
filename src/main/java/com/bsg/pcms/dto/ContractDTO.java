@@ -19,6 +19,7 @@ public class ContractDTO extends CommonDTO {
 	
 	private String license_cd;
 	private String license_cd_detail;
+	private String license_cd_name;
 	private String license_country;
 	private String license_country_detail;
 	private String type;
@@ -34,6 +35,13 @@ public class ContractDTO extends CommonDTO {
 	private String account_holder;
 	private Date str_date; // 계약일
 	private Date end_date; // 계약종료일
+	
+	public String getLicense_cd_name() {
+		return license_cd_name;
+	}
+	public void setLicense_cd_name(String license_cd_name) {
+		this.license_cd_name = license_cd_name;
+	}
 	public int getContract_mgmtno() {
 		return contract_mgmtno;
 	}

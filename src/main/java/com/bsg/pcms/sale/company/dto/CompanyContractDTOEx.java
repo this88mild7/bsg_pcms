@@ -12,9 +12,12 @@ public class CompanyContractDTOEx extends ContractDTO{
 	private String company_name;
 	private String contents_cd;
 	private String device_cd;
+	private String device_name;
 	private String device_detail;
 	private String sale_price_type;
 	private String sale_profit_type_detail;
+	private String contract_type_cd;
+	private String contract_type_cd_name;
 	
 	private String series_mgmtno;
 	
@@ -47,6 +50,24 @@ public class CompanyContractDTOEx extends ContractDTO{
 	private List<InstallmentsDTO> installmentList;
 	
 	
+	public String getContract_type_cd() {
+		return contract_type_cd;
+	}
+	public void setContract_type_cd(String contract_type_cd) {
+		this.contract_type_cd = contract_type_cd;
+	}
+	public String getContract_type_cd_name() {
+		return contract_type_cd_name;
+	}
+	public void setContract_type_cd_name(String contract_type_cd_name) {
+		this.contract_type_cd_name = contract_type_cd_name;
+	}
+	public String getDevice_name() {
+		return device_name;
+	}
+	public void setDevice_name(String device_name) {
+		this.device_name = device_name;
+	}
 	public double getPayments() {
 		return payments;
 	}

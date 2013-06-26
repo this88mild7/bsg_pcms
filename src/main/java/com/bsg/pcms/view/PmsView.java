@@ -28,12 +28,16 @@ public interface PmsView {
 	
 	public ModelAndView getSaleCompanyContractDetailView(
 			CompanyContractDTOEx customerList,
-			List<CompanyContractDTOEx> contractTypeList
+			List<CompanyContractDTOEx> deviceList,
+			List<CompanyContractDTOEx> saleTypeList,
+			List<CompanyContractDTOEx> licenseList
 			);
 	
 	public ModelAndView getSaleCompanyCreateContractView(
 			List<CompanyDTOEx> saleCompanyList,
-			List<String> deviceList,
-			List<CompanyContractDTOEx> saleTypeList);
+			List<CompanyContractDTOEx> deviceList,
+			List<CompanyContractDTOEx> saleTypeList,
+			List<CompanyContractDTOEx> licenseList
+			);
 
 }
