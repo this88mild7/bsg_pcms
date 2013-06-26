@@ -407,7 +407,7 @@
 		</table>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">목록가기</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">등록취소</button>
 		<button id="btn-each-select" class="btn btn-primary">등록하기</button>
 	</div>
 </div>
@@ -454,6 +454,16 @@
 	
 	$(function(){
 		
+		// 금액에 콤마표시
+		bsgNumeric.autoNumeric('#sale_price');
+		bsgNumeric.autoNumeric('#payments');
+		bsgNumeric.autoNumeric('.installments_price');
+		
+		// 상품선택시 판매 총합 콤마 표시
+		$("#sale_price").on("change", function(){
+			bsgNumeric.autoNumeric('#sale_price');
+		});
+		
 		
 		
 		$("#btn-registe").click(function(){
@@ -470,19 +480,6 @@
 			$("#registeForm").submit();
 		})
 		
-		/* // submit 전 체크 사항
-		$("#registeForm").submit(function(){
-			//금액 콤마 제거	(숫자만 가져옴)		
-			$('#sale_price').val($('#sale_price').autoNumeric('get'));
-			
-			//입금|지불 방식이 분납방식일 때에만 금액 콤마 제거(숫자만 가져옴)
-			$("input[name='installments_price']").each(function(){
-				$(this).val( $(this).autoNumeric('get') );
-			});
-			
-		}); */
-		
-		
 		// 분납 방식 달력
 		$("body").delegate('input[type=text].installments-date', 'focus', function(event){
 			bsgCalendar.eventListen($(this));
@@ -492,8 +489,8 @@
 		$("body").delegate('input[type=text].installments_price', 'focus', function(event){
 			bsgNumeric.autoNumeric($(this));
 		});
-		bsgNumeric.autoNumeric('#sale_price');
-		bsgNumeric.autoNumeric('#payments');
+		
+		
 		
 		// 지급대금 통화 메뉴
 		$("#currency-menu").find("a").click(function(){
@@ -518,7 +515,6 @@
 		
 		// 시리즈 등록 버튼 이벤트
 		$("#btn-series-create").click(function(){
-			checkMulti();
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			bsgReq.json(searchUrl, null, searchSeriesCallBack, searchSeriesError);
 					
@@ -526,7 +522,6 @@
 		
 		// 개별상품등록 버튼 이벤트
 		$("#btn-each-create").click(function(){
-			checkMulti();
 			
 			// 1. 카테고리 조회
 			// 2. 시리즈 조회
@@ -565,13 +560,16 @@
 		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
-			saveSeriesInSession();
+			if (checkMulti()) {
+				saveSeriesInSession();
+			}
 		});
 		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-each-select").click(function(){
-			saveSeriesInSession();
-			//registeProduct();
+			if (checkMulti()) {
+				registeProduct();
+			}
 		});
 		
 		// 분납 방식 삭제 아이콘
@@ -596,6 +594,21 @@
 				$("#license_cd_detail").hide().val("");
 			}
 		}); 
+		
+		//기타판매가 선택시 판매가격 빈값으로 변경 후 포커스
+		$("input[name='sale_price_type']").change(function(){
+			if( $(this).val() == 0 ) { 
+				$("#sale_price").val("").focus();
+			} else {
+				
+			}
+		});
+		
+		// 상품 모달에서 체크시 판매방식 검증
+		
+		$("body").delegate('.check-product', 'click', function(event){
+			checkMulti();
+		});
 		
 		
 	}); //init function
@@ -643,7 +656,6 @@
 				$.getJSON('<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
 					{ series_id : series_id },
 					function(data) {
-						console.info( data );
 						var $target = $("#findEachBody");
 						
 						//init
@@ -654,18 +666,16 @@
 							var $json = data.result;
 							$.each($json, function(){
 								$html = 	'<tr>';
-								$html += 	'<td><input name="content_checkbox" type="checkbox" data-content_price="' 
-											+ this.content_price + '" data-content_name="' 
-											+ this.content_name + '" value="' + this.content_cd + '"></td>';
+								$html += 	'<td><input class="check-product" name="content_checkbox" type="checkbox"'
+											+ ' data-content_price="' + this.content_price + '"' 
+											+ ' data-content_name="'+ this.content_name + '"'
+											+ ' data-content_cd="'+ this.content_cd + '"'
+											+ ' value="' + this.content_cd + '"></td>';
 								$html += 	'<td>' + this.content_name + '</td>';
 								$html += 	'<td>' + this.content_price + '</td>';
 								$html += 	'</tr>';
 								$target.append( $html );
 							});
-							
-							//개별판매일때 멀티체크 방지
-							checkMulti();
-														
 						}
 					});
 			} 
@@ -680,7 +690,6 @@
 		if( $selectedItem.size() == 0 ){
 			bootbox.alert("1개 이상 선택해 주세요!");				
 			return false;		
-		
 		}
 		
 		var arrParam = [];
@@ -699,7 +708,6 @@
 				alert("에러 발생! 관리자에게 문의하여 주십시오.");
 			}
 		}, function(xhr,status,error){
-			console.log(error);
 			alert("에러 발생! 관리자에게 문의하여 주십시오.");
 		});
 		
@@ -755,27 +763,25 @@
 		productHtml += '</tr>';
 		productHtml += '</thead>';
 		
+		/*
 		if($selectedItem.size() > 5){
 			productHtml += '<tbody style="display:block; overflow:auto; height:230px;">';
 		}else{
-			productHtml += '<tbody>';
-		} 
+		} */
 		
-		
+		productHtml += '<tbody>';
+		var seletedTotlaPrice=0;
 		$selectedItem.each(function(){
 			
 			var $this = $(this);
 			productHtml +='<tr>';
 			productHtml +='<td>'+$this.data("content_cd")+'</td>';
 			productHtml +='<td> '+$this.data("content_name")+'</td>';
-			productHtml +='<td> ybm 시사</td>';
-			productHtml +='<td>';
-			productHtml +='<input type="hidden" name="contents_cd" />';
-			productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+			productHtml +='<td> '+$this.data("cp_name")+'</td>';
+			productHtml +='<td>'+$this.data("content_price")+'</td>';
 			productHtml +='&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/>';
 			productHtml +='</td>';
 			productHtml +='</tr>';
-					
 			
 			seletedTotlaPrice += $this.data("content_price");
 		});
@@ -817,9 +823,6 @@
 		console.info(data);
 	}
 	
-	
-	$(".$selectedItem")
-	
 	function checkMulti() {
 		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
 		
@@ -833,17 +836,14 @@
 			if($selectedItem.size() > 1){
 				$(this).prop("checked", false);
 				bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
-				
+				return false;
 			}
-			
-			/* $("..check-product").find("input[type='checkbox']").on("click",function(){
-				var checkedSize = $(this).parent().parent().parent().find("input[type='checkbox']").filter(":checked").size();
-				if( checkedSize > 1 ){
-					$(this).prop("checked", false);
-					bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
-				}
-			}); */
-		} else {
+			else{
+				return true;
+			}
+		} 
+		
+		/* else {
 			$( "input[name=checkbox_all]" )
 				.click( function(){
 					var $checkboxArray = $( "input[name='check_list']" );
@@ -865,7 +865,7 @@
 					"placement":"top"
 				})
 				.show();
-		}
+		} */
 		
 	}
 	
