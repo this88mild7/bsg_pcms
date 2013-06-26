@@ -3,10 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-name">
-	<h3>
+	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매상품 리스트
 		<small>&gt;&gt; 판매처에서 판매되는 상품의 관리화면입니다.</small>
-	</h3>
+	</h4>
 </div>
 <div class="row-fluid product-box" data-json='${ jsonStr }'>
 

@@ -3,10 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-name">
-	<h3>
+	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매 정산현황
 		<small>&gt;&gt; 판매 정산현황 리스트</small>
-	</h3>
+	</h4>
 </div>
 
 <div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">

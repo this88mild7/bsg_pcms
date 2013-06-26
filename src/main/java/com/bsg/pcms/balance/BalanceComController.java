@@ -14,7 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
 import com.bsg.pcms.dto.BalanceDTO;
+import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
+import com.bsg.pcms.sale.company.svc.CompanyService;
+import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.view.PmsView;
 
 @Controller
 @RequestMapping( value = "balance/sale-company" )
@@ -28,6 +32,8 @@ public class BalanceComController {
 	@Autowired
 	private BalanceService balanceService;
 	
+	@Autowired
+	private CompanyService _saleCompanyService; 
 	
 	@RequestMapping(value = "list.do")
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
@@ -40,6 +46,7 @@ public class BalanceComController {
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
 		mav.addObject("balanceList", balanceList);
 		mav.addObject("sorting_type", balanceDTOEx.getSorting_type());
+		
 		return mav;
 		
 	}
@@ -76,6 +83,10 @@ public class BalanceComController {
 		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
 		mav.addObject("isCreate", 1);
+		
+		//판매처 리스트
+		mav.addObject("saleCompanyList", _saleCompanyService.list());
+		
 		return mav;
 		
 	}

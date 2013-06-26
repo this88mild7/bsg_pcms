@@ -3,10 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-name">
-	<h3>
+	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 계약 리스트 ( ${ pageLink.totalCnt } )
 		<small>&gt;&gt; 출판사 계약 상세내용을 관리하는 화면입니다.</small>
-	</h3>
+	</h4>
 </div>
 
 <div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
