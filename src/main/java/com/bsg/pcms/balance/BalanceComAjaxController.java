@@ -59,70 +59,76 @@ public class BalanceComAjaxController {
 	@RequestMapping(value = "list.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody 
 	String list() {
-		
 		List<Map> companyList = balanceService.saleCompanyList();
-		
-		
-		String jsonString = _jsonResponseMaker.generateMapList(companyList);
-		
-		
+		String jsonString = _jsonResponseMaker.generateMapList("companyList", companyList);
+		logger.info(jsonString);
 		return jsonString;
-		
 	}
 	
 	/**
 	 * @param company_mgmtno
 	 * RESULT SAMPLE
 	 * {
-			"contractTypeList": [{
-				"contract_type": "개별판매"
-			}],
-			"deviceList": [{
-				"sale_type": "android"
-			},
+		"contractTypeList": [{
+			"contract_type": "CT002001",
+			"contract_type_name": "개별"
+				},
 			{
-				"sale_type": "ios"
+				"contract_type": "CT002002",
+				"contract_type_name": "패키지"
+			}],
+		"code": 200,
+		"msg": "OK"
+		}
+	 * @return
+	 */
+	@RequestMapping(value = "contractType.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody 
+	String contractType(int company_mgmtno) {
+		List<Map> saleTypeleList = balanceService.saleType(company_mgmtno);
+		String jsonString = _jsonResponseMaker.generateMapList("contractTypeList", saleTypeleList);
+		logger.info(jsonString);
+		return jsonString;
+		
+	}
+	/**
+	 * @param company_mgmtno, contract_type
+	 * RESULT SAMPLE
+	 * {
+			"deviceTypeList": [{
+				"sale_type_name": "ios",
+				"sale_type": "DV001001"
 			}],
 			"code": 200,
 			"msg": "OK"
 		}
 	 * @return
 	 */
-	@RequestMapping(value = "info.ajax", produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "deviceType.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody 
-	String info(int company_mgmtno) {
-		
-		List<Map> saleDeviceList = balanceService.device(company_mgmtno);
-		
-		List<Map> saleTypeleList = balanceService.saleType(company_mgmtno);
-		
-		
-		String jsonString = _jsonResponseMaker.generateBalanceSaleCompanyInfo(saleDeviceList, saleTypeleList);
-		
+	String deviceType(int company_mgmtno, String contract_type) {
+		List<Map> saleDeviceList = balanceService.device(company_mgmtno, contract_type);
+		String jsonString = _jsonResponseMaker.generateMapList("deviceTypeList", saleDeviceList);
+		logger.info(jsonString);
 		return jsonString;
-		
 	}
 	
 	/**
 	 * @param company_mgmtno, sale_type, contract_type
 	 * {
-			"companyList": [{
-				"NAME": "Alphabet book",
-				"SALE_COMPANY_RATE": 10,
-				"CONTENTS_CD": "CP04_SE33P0001_PB",
-				"CP_RATE": 30
+			"contentList": [{
+				"sale_price": 1000.0,
+				"sale_company_rate": 0,
+				"cp_rate": 0,
+				"name": "ABC픽쳐북",
+				"contents_cd": "2"
 			},
 			{
-				"NAME": "I wash",
-				"SALE_COMPANY_RATE": 0,
-				"CONTENTS_CD": "CP04_SE33P0002_PB",
-				"CP_RATE": 30
-			},
-			{
-				"NAME": "철학동화",
-				"SALE_COMPANY_RATE": 0,
-				"CONTENTS_CD": "35",
-				"CP_RATE": 0
+				"sale_price": 1000.0,
+				"sale_company_rate": 0,
+				"cp_rate": 0,
+				"name": "노부영",
+				"contents_cd": "3"
 			}],
 			"code": 200,
 			"msg": "OK"
@@ -132,13 +138,10 @@ public class BalanceComAjaxController {
 	@RequestMapping(value = "contents.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody 
 	String contents(CompanyContractDTOEx companyContractDTOEx) {
-		
 		List<Map> contentsList = balanceService.contents(companyContractDTOEx);
-		
-		String jsonString = _jsonResponseMaker.generateMapList(contentsList);
-		
+		String jsonString = _jsonResponseMaker.generateMapList("contentList", contentsList);
+		logger.info(jsonString);
 		return jsonString;
-		
 	}
 	
 }

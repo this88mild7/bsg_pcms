@@ -1,5 +1,6 @@
 package com.bsg.pcms.balance.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +60,11 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public List<Map> saleCompanyList() {
 		return (List<Map>)getSqlSession().selectList("balanceQuery.saleCompanyList");
 	}
-	public List<Map> device(int company_mgmtno) {
-		return (List<Map>)getSqlSession().selectList("balanceQuery.device", company_mgmtno);
+	public List<Map> device(int company_mgmtno, String contract_type) {
+		Map<String, Object> daoParam = new HashMap<String, Object>();
+		daoParam.put("company_mgmtno", company_mgmtno);
+		daoParam.put("contract_type", contract_type);
+		return (List<Map>)getSqlSession().selectList("balanceQuery.device", daoParam);
 	}
 	public List<Map> saleType(int company_mgmtno) {
 		return (List<Map>)getSqlSession().selectList("balanceQuery.saleType", company_mgmtno);

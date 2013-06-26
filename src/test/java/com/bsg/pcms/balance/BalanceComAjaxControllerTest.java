@@ -53,12 +53,24 @@ public class BalanceComAjaxControllerTest {
 		
 	}
 	@Test
-	public void testSaleCompanyInfo() {
+	public void testSaleCompanyContractType() {
 		
 		// given 
 		
 		// when
-		String jsonResult = balanceComAjaxController.info(28); 
+		String jsonResult = balanceComAjaxController.contractType(32); 
+		
+		// then
+		assertThat(jsonResult, is(notNullValue()));
+		
+	}
+	@Test
+	public void testSaleCompanyDeviceType() {
+		
+		// given 
+		
+		// when
+		String jsonResult = balanceComAjaxController.deviceType(32, "CT002001"); 
 		
 		// then
 		assertThat(jsonResult, is(notNullValue()));
@@ -71,9 +83,9 @@ public class BalanceComAjaxControllerTest {
 		// given 
 		CompanyContractDTOEx companyContractDTOEx = new CompanyContractDTOEx();
 		
-		companyContractDTOEx.setContract_type("개별판매");
-		companyContractDTOEx.setSale_type("ios");
-		companyContractDTOEx.setCompany_mgmtno(28);
+		companyContractDTOEx.setContract_type("CT002002");
+		companyContractDTOEx.setSale_type("DV001002");
+		companyContractDTOEx.setCompany_mgmtno(32);
 		
 		
 		// when

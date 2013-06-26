@@ -96,7 +96,7 @@ public class JsonResponseMaker {
 		return json.toJSONString();
 	}
 	
-	public String generateMapList(List<Map> map){
+	public String generateMapList(String jsonParentName, List<Map> map){
 		JSONObject json = new JSONObject();
 		
 		if (map != null) {
@@ -105,7 +105,7 @@ public class JsonResponseMaker {
 			for(Map parameter : map){
 				result.add(parameter);
 			}
-			json.put(COMPANY_LIST, result);
+			json.put(jsonParentName, result);
 		}else{
 			setFailCode(json);
 		}
@@ -190,12 +190,6 @@ public class JsonResponseMaker {
 	private void setFailCode(JSONObject result) {
 		result.put(CODE, bigstarProperties.getFailedCode());
 		result.put(MSG, bigstarProperties.getFailedMsg());
-	}
-
-	public String generateMapList(List<Map> saleDeviceList,
-			List<Map> saleTypeleList) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

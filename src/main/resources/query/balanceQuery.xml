@@ -221,20 +221,23 @@
 	<!-- 판매업체 판매 디바이스 -->
 	<select id="device" resultType="java.util.Map">
 		SELECT /* Balance.device */ 
-			CTD.SALE_TYPE as sale_type
+			CTD.SALE_TYPE as sale_type,
+			(SELECT CD_DETAIL FROM CD WHERE CD = CTD.SALE_TYPE) AS sale_type_name
 		FROM COMPANY COM, CONTRACT CONT, CONTRACT_DETAIL CTD
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = CONT.COMPANY_MGMTNO
 		AND CONT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
 		AND COM.COMPANY_TYPE = 'SC'
 		AND COM.COMPANY_MGMTNO = #{company_mgmtno}
+		AND CONT.CONTRACT_TYPE = #{contract_type}
 		GROUP BY CTD.SALE_TYPE
 	</select>
 	
 	<!-- 판매방식 -->
 	<select id="saleType" resultType="java.util.Map">
 		SELECT /* Balance.saleType */ 
-			CONT.CONTRACT_TYPE as contract_type
+			CONT.CONTRACT_TYPE as contract_type,
+			(SELECT CD_DETAIL FROM CD WHERE CD = CONT.CONTRACT_TYPE) AS contract_type_name
 		FROM COMPANY COM, CONTRACT CONT
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = CONT.COMPANY_MGMTNO
@@ -246,15 +249,15 @@
 	<!-- 정산 대상 컨텐츠 리스트 -->
 	<select id="contents" resultType="Map">
 		SELECT 
-			CCGR.CONTENTS_CD, 
-			CON.NAME, 
-			CCGR.SALE_PRICE, 
+			CCGR.CONTENTS_CD as contents_cd, 
+			CON.NAME as name, 
+			CCGR.SALE_PRICE as sale_price, 
 			(
 				SELECT SALE_PROFIT_RATE FROM CONTRACT
 				WHERE COMPANY_MGMTNO=CON.COMPANY_MGMTNO
 				LIMIT 1
-			) AS CP_RATE,
-			CNTR.SALE_PROFIT_RATE AS SALE_COMPANY_RATE	
+			) AS cp_rate,
+			CNTR.SALE_PROFIT_RATE AS sale_company_rate	
 		
 		FROM 
 					COMPANY COM, CONTRACT CNTR, CONTENTS CON, CONTRACT_DETAIL CNTRD,

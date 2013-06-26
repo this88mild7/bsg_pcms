@@ -81,8 +81,8 @@ public class BalanceService {
 	public List<Map> saleCompanyList() {
 		return balanceDao.saleCompanyList();
 	}
-	public List<Map> device(int company_mgmtno) {
-		return balanceDao.device(company_mgmtno);
+	public List<Map> device(int company_mgmtno, String contract_type) {
+		return balanceDao.device(company_mgmtno, contract_type);
 	}
 	public List<Map> saleType(int company_mgmtno) {
 		return balanceDao.saleType(company_mgmtno);
