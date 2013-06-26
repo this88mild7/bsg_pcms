@@ -3,6 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style>
+div#sale-content-list {
+	height : 200px;
+	overflow-y : scroll; 
+}
+</style>
 <div class="page-name">
 	<h4>
 		<c:choose>
@@ -75,6 +81,11 @@
 				<div class="controls">
 					<button id="btn-sale-content-list" class="btn">매출 상품등록</button>
 					<a id="contentListTip" href="#" data-toggle="tooltip" >tip</a>
+					<div id="sale-content-list">
+						<!-- 
+						ajax sale-content here
+						 -->
+					</div>
 					<script>
 					$('#contentListTip')
 						.tooltip({
@@ -113,6 +124,5 @@
 
 <script>
 $(function(){
-
 });
 </script>
