@@ -1,6 +1,7 @@
 package com.bsg.pcms.balance.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.dto.BalanceDTO;
 import com.bsg.pcms.dto.BalanceDetailDTO;
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 
 @Component
 public class BalanceDao extends SqlSessionDaoSupport{
@@ -53,6 +55,18 @@ public class BalanceDao extends SqlSessionDaoSupport{
 
 	public void delete(BalanceDTOEx balanceDto) {
 		getSqlSession().update("balanceQuery.delete", balanceDto);
+	}
+	public List<Map> saleCompanyList() {
+		return (List<Map>)getSqlSession().selectList("balanceQuery.saleCompanyList");
+	}
+	public List<Map> device(int company_mgmtno) {
+		return (List<Map>)getSqlSession().selectList("balanceQuery.device", company_mgmtno);
+	}
+	public List<Map> saleType(int company_mgmtno) {
+		return (List<Map>)getSqlSession().selectList("balanceQuery.saleType", company_mgmtno);
+	}
+	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {
+		return (List<Map>)getSqlSession().selectList("balanceQuery.contents", companyContractDTOEx);
 	}
 	
 	
