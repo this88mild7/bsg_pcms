@@ -3,9 +3,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-name">
-	<h3>
+	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> CP 업체 ( ${ pageLink.totalCnt } ) <small>&gt;&gt; 출판사 등록 및 관리를 위한 화면입니다.</small>
-	</h3>
+	</h4>
 </div>
 
 <div class="row-fluid box cp-box" data-query="${ search.query }" data-type="${ search.type }">
