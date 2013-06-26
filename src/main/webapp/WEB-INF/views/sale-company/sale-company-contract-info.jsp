@@ -537,7 +537,7 @@
 		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
-			registeSeries();
+			registeProduct();
 		});
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-each-select").click(function(){
@@ -660,12 +660,11 @@
 		
 	}
 	
-	function registeSeries(){
+	function registeProduct(){
 		var $productTable = $("table.product-table");
 		$productTable.find("thead,tbody").empty();
 
 		var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
-		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
 		
 		if( $selectedItem.size() == 0 ){
 			bootbox.alert("1개 이상 선택해 주세요!");				
@@ -704,7 +703,8 @@
 		$("#series-modal").modal('toggle');
 	}
 	
-	function productTable($selectedItem){
+	
+	 function productTable($selectedItem){
 		var $target = $("table.product-table");
 		var seletedTotlaPrice = 0;
 		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
@@ -736,8 +736,8 @@
 			seletedTotlaPrice += $this.data("series_price");
 		});
 		$("#sale_price").val(seletedTotlaPrice);
-	}
-	
+	} 
+	/* 
 	function registeProduct(){
 		var $target = $("table.product-table");
 		$target.find("thead,tbody").empty();
@@ -794,7 +794,7 @@
 		//close modal
 		$("#product-modal").modal('toggle');
 	}
-	
+	 */
 	function searchSeriesCallBack(response, param){
 		var $seriesModal = $("#series-modal");
 		var $insertPlace = $("#findSeriesBody");
