@@ -29,6 +29,11 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String contentsCount = "6";
 	
+	private String sale_company_rate;
+	
+	private String cp_rate;
+	
+	
 	
 	public void checkBlankSearchParam() {
 		if(StringUtils.isBlank(this.searchQuery)){
@@ -124,6 +129,30 @@ public class BalanceDTOEx extends BalanceDTO{
 
 	public void setSale_type(String sale_type) {
 		this.sale_type = sale_type;
+	}
+
+
+
+	public String getSale_company_rate() {
+		return sale_company_rate;
+	}
+
+
+
+	public void setSale_company_rate(String sale_company_rate) {
+		this.sale_company_rate = sale_company_rate;
+	}
+
+
+
+	public String getCp_rate() {
+		return cp_rate;
+	}
+
+
+
+	public void setCp_rate(String cp_rate) {
+		this.cp_rate = cp_rate;
 	}
 
 	

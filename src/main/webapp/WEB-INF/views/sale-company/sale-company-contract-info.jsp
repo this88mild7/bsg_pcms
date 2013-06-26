@@ -563,6 +563,7 @@
 			if (checkMulti()) {
 				saveSeriesInSession();
 			}
+			registeProduct();
 		});
 		
 		// 개별상품 등록하기 버튼 이벤트
@@ -715,9 +716,11 @@
 		$("#series-modal").modal('toggle');
 	}
 	
-	// 개별상품 등록 function
 	function registeProduct(){
-		var $selectedItem = $(".check-product").filter(":checked");
+		var $productTable = $("table.product-table");
+		$productTable.find("thead,tbody").empty();
+
+		var $selectedItem = $("#findSeriesBody").find("input[name='check_list']").filter(":checked");
 		
 		if( $selectedItem.size() == 0 ){
 			bootbox.alert("1개 이상 선택해 주세요!");				
@@ -747,30 +750,10 @@
 		$("#product-modal").modal('toggle');
 	}
 	
-	function productTable($selectedItem){
-		var $insertPlace = $("#product-content-tb");
-		
-		$insertPlace.empty();
-		
-		var productHtml;
-		
-		productHtml += '<thead>';
-		productHtml += '<tr>';
-		productHtml += '<th>상품코드</th>';
-		productHtml += '<th>상품명</th>';
-		productHtml += '<th>CP 업체</th>';
-		productHtml += '<th>판매금액</th>';
-		productHtml += '</tr>';
-		productHtml += '</thead>';
-		
-		/*
-		if($selectedItem.size() > 5){
-			productHtml += '<tbody style="display:block; overflow:auto; height:230px;">';
-		}else{
-		} */
-		
-		productHtml += '<tbody>';
-		var seletedTotlaPrice=0;
+	 function productTable($selectedItem){
+		var $target = $("table.product-table");
+		var seletedTotlaPrice = 0;
+		var $selectedItemCount = $("#findSeriesBody").find("input[name='check_list']").filter(":checked").length;
 		$selectedItem.each(function(){
 			
 			var $this = $(this);
@@ -791,8 +774,66 @@
 		$("#sale_price").val(seletedTotlaPrice);
 	};
 	
-	
-	
+	} 
+	/* 
+	function registeProduct(){
+		var $target = $("table.product-table");
+		$target.find("thead,tbody").empty();
+
+		var $selectedItem = $("#product-modal").find("input[name='content_checkbox']").filter(":checked");
+		
+		if( $selectedItem.size() == 0 ){
+			bootbox.alert("1개 이상 선택해 주세요!");				
+			return false;				
+		} else {
+			var arr = [];
+			$selectedItem.each(function( index ){
+				arr.push(  $( this ).val() );
+			});
+			
+			var json = { 'contentList' : arr };
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax({
+				url : "<spring:eval expression="@urlProp['ajaxSaleCompanySaveContents']"/>",
+				type : "POST",
+				//contentType : "text/html; charset=utf-8" ,
+				data : json,
+				dataType : "json",
+				success : function( response ) {
+					if( response.code === 200 ){
+						
+						$selectedItem.each(function(){
+							var $this = $(this);
+							var productHtml;
+							productHtml +='<tr>';
+							productHtml +='<td>'+$this.data("content_cd")+'</td>';
+							productHtml +='<td> | '+$this.data("content_name")+'</td>';
+							productHtml +='<td> | ybm 시사</td>';
+							productHtml +='<td>';
+							productHtml +='<input type="hidden" name="contents_cd" />';
+							productHtml +='<input class="product_price" type="text" placeholder="가격정보" value="'+$this.data("content_price")+'"/>';
+							productHtml +='<button class="btn btn-inverse product-delete">삭제</button>';
+							productHtml +='</td>';
+							productHtml +='</tr>';
+							$target.find("tbody").append(productHtml);
+							seletedTotlaPrice += $this.data("content_price");
+						});
+						$("#sale_price").val(seletedTotlaPrice);
+					} else {
+						alert("에러 발생! 관리자에게 문의하여 주십시오.");
+					}
+				},
+				error : function() {
+					alert("에러 발생! 관리자에게 문의하여 주십시오.");
+				}
+			});
+		}
+		
+		//close modal
+		$("#product-modal").modal('toggle');
+	}
+	 */
+>>>>>>> master
 	function searchSeriesCallBack(response, param){
 		var $seriesModal = $("#series-modal");
 		var $insertPlace = $("#findSeriesBody");

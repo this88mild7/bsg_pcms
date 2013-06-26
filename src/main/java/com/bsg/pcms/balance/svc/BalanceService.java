@@ -1,6 +1,7 @@
 package com.bsg.pcms.balance.svc;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import com.bsg.pcms.balance.dao.BalanceDao;
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.dto.BalanceDTO;
 import com.bsg.pcms.dto.BalanceDetailDTO;
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 
 @Service
 public class BalanceService {
@@ -75,6 +77,18 @@ public class BalanceService {
 	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
 		balanceDTOEx.checkBlankSearchParam();
 		return balanceDao.searchCP(balanceDTOEx);
+	}
+	public List<Map> saleCompanyList() {
+		return balanceDao.saleCompanyList();
+	}
+	public List<Map> device(int company_mgmtno) {
+		return balanceDao.device(company_mgmtno);
+	}
+	public List<Map> saleType(int company_mgmtno) {
+		return balanceDao.saleType(company_mgmtno);
+	}
+	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {
+		return balanceDao.contents(companyContractDTOEx);
 	}
 
 }

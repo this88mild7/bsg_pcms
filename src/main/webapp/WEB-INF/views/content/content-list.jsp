@@ -3,10 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="page-name">
-	<h3>
+	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 콘텐츠 ( ${ pageLink.totalCnt } ) 
 		<small>&gt;&gt; 출판사의 콘텐츠를 관리할 수 있습니다.</small>
-	</h3>
+	</h4>
 </div>
 
 <div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">

@@ -1,6 +1,9 @@
 package com.bsg.pcms.utility;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bsg.pcms.dto.CateDTO;
-import com.bsg.pcms.dto.CompanyDTO;
-import com.bsg.pcms.dto.ProductDTO;
 import com.bsg.pcms.dto.SeriesDTO;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 
@@ -23,6 +24,9 @@ public class JsonResponseMaker {
 	private final String CATE_ID = "cate_id";
 	private final String CATE_NAME = "cate_name";
 	private final String PARENT_ID = "parent_id";
+	private final String COMPANY_LIST = "companyList";
+	private final String DEVICE_LIST = "deviceList";
+	private final String CONTRACT_TYPE_LIST = "contractTypeList";
 	
 	
 	@Autowired
@@ -92,6 +96,47 @@ public class JsonResponseMaker {
 		return json.toJSONString();
 	}
 	
+	public String generateMapList(List<Map> map){
+		JSONObject json = new JSONObject();
+		
+		if (map != null) {
+			setSucessCode(json);
+			JSONArray result = new JSONArray();
+			for(Map parameter : map){
+				result.add(parameter);
+			}
+			json.put(COMPANY_LIST, result);
+		}else{
+			setFailCode(json);
+		}
+		
+		return json.toJSONString();
+	}
+	
+	public String generateBalanceSaleCompanyInfo(List<Map> saleDeviceList,
+			List<Map> saleTypeleList) {
+		JSONObject json = new JSONObject();
+		
+		if (saleDeviceList != null) {
+			setSucessCode(json);
+			JSONArray device = new JSONArray();
+			for(Map parameter : saleDeviceList){
+				device.add(parameter);
+			}
+			json.put(DEVICE_LIST, device);
+			
+			JSONArray contractType = new JSONArray();
+			for(Map parameter : saleTypeleList){
+				contractType.add(parameter);
+			}
+			json.put(CONTRACT_TYPE_LIST, contractType);
+		}else{
+			setFailCode(json);
+		}
+		
+		return json.toJSONString();
+	}
+	
 	public String generateContentsList(List<ContentDTOEx> contentsList) {
 		JSONObject json = new JSONObject();
 		
@@ -145,6 +190,12 @@ public class JsonResponseMaker {
 	private void setFailCode(JSONObject result) {
 		result.put(CODE, bigstarProperties.getFailedCode());
 		result.put(MSG, bigstarProperties.getFailedMsg());
+	}
+
+	public String generateMapList(List<Map> saleDeviceList,
+			List<Map> saleTypeleList) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

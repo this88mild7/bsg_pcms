@@ -162,6 +162,7 @@
 			
 	</select>
 	
+	<!-- 판매정산 조회 -->
 	<select id="searchSale" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
 		SELECT /* Balance.searchByDate */ 
 			BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE,
@@ -205,13 +206,79 @@
 		</if>
 	</select>
 	
-	<select id="detail" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
+	
+	<!-- 판매업체 리스티 -->
+	<select id="saleCompanyList" resultType="java.util.Map">
+		SELECT /* Balance.saleCompanyList */ 
+			COM.COMPANY_NAME as company_name,
+			COM.COMPANY_MGMTNO as company_mgmtno
+		FROM COMPANY COM, CONTRACT CONT
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = CONT.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE = 'SC'
+	</select>
+	
+	<!-- 판매업체 판매 디바이스 -->
+	<select id="device" resultType="java.util.Map">
+		SELECT /* Balance.device */ 
+			CTD.SALE_TYPE as sale_type
+		FROM COMPANY COM, CONTRACT CONT, CONTRACT_DETAIL CTD
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = CONT.COMPANY_MGMTNO
+		AND CONT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
+		AND COM.COMPANY_TYPE = 'SC'
+		AND COM.COMPANY_MGMTNO = #{company_mgmtno}
+		GROUP BY CTD.SALE_TYPE
+	</select>
+	
+	<!-- 판매방식 -->
+	<select id="saleType" resultType="java.util.Map">
+		SELECT /* Balance.saleType */ 
+			CONT.CONTRACT_TYPE as contract_type
+		FROM COMPANY COM, CONTRACT CONT
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = CONT.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE = 'SC'
+		AND COM.COMPANY_MGMTNO = #{company_mgmtno}
+		GROUP BY CONT.CONTRACT_TYPE
+	</select>
+	
+	<!-- 정산 대상 컨텐츠 리스트 -->
+	<select id="contents" resultType="Map">
+		SELECT 
+			CCGR.CONTENTS_CD, 
+			CON.NAME, 
+			CCGR.SALE_PRICE, 
+			(
+				SELECT SALE_PROFIT_RATE FROM CONTRACT
+				WHERE COMPANY_MGMTNO=CON.COMPANY_MGMTNO
+				LIMIT 1
+			) AS CP_RATE,
+			CNTR.SALE_PROFIT_RATE AS SALE_COMPANY_RATE	
+		
+		FROM 
+					COMPANY COM, CONTRACT CNTR, CONTENTS CON, CONTRACT_DETAIL CNTRD,
+				 	CONTRACT_CONTENTS_GROUP CCGR
+		WHERE 1=1 
+		AND COM.COMPANY_MGMTNO = CNTR.COMPANY_MGMTNO 
+		AND CNTRD.CONTRACT_MGMTNO = CNTR.CONTRACT_MGMTNO 
+		AND CCGR.CONTRACT_MGMTNO = CNTRD.CONTRACT_MGMTNO 
+		AND CON.CONTENTS_CD =CCGR.CONTENTS_CD 
+		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}
+		AND CNTRD.SALE_TYPE = #{sale_type}
+		AND CNTR.CONTRACT_TYPE = #{contract_type}
+		
+	</select>
+	
+	<!-- 
+	<select id="detail" resultType="java.lanMap">
 		SELECT BAL.*, COM.COMPANY_NAME FROM BALANCE BAL, COMPANY COM
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
 		AND BAL.BALANCE_MGMTNO =  #{balance_mgmtno} 
 		AND BAL.DEL_YN = 'N'
 	</select>
+	 -->
    <!-- UPDATE -->
    
    <update id="modify">
