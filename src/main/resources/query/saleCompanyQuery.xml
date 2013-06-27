@@ -115,6 +115,7 @@
             CATE_ID, 
             SERIES_MGMTNO, 
             CONTENTS_CD, 
+            SALE_PRICE,
             REG_DT, 
             MOD_DT
        )
@@ -123,6 +124,7 @@
             (SELECT CATE_ID FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
             (SELECT SERIES_MGMTNO FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
             #{contents_cd},
+            #{sale_price},
             now(), 
             now() 
         )
@@ -372,6 +374,18 @@
        AND CON.CONTRACT_MGMTNO = INS.CONTRACT_MGMTNO
        AND CON.CONTRACT_MGMTNO = #{contract_mgmtno}
    </select>
+   <select id="contents" resultType="com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx" >
+        SELECT /* SaleCompany.contents 2013.06.03 최지순 */
+			CCG.SALE_PRICE,
+			CON.NAME,
+			CON.CONTENTS_CD,
+			(SELECT COMPANY_NAME FROM COMPANY WHERE COMPANY_MGMTNO = CON.COMPANY_MGMTNO) as COMPANY_NAME
+       FROM  CONTRACT CTR, CONTRACT_CONTENTS_GROUP CCG, CONTENTS CON
+       WHERE 1=1
+       AND CTR.CONTRACT_MGMTNO = CCG.CONTRACT_MGMTNO
+       AND CCG.CONTENTS_CD = CON.CONTENTS_CD
+       AND CTR.CONTRACT_MGMTNO = #{contract_mgmtno}
+   </select>
    
 	<update id="modifyCompany" 
 			parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
@@ -456,6 +470,12 @@
 	<delete id="deleteContractContentsGroup" parameterType="Integer">
 		DELETE /* saleCompanyQuery.deleteContractContentsGroup 2013.06.03 최지순 */  
 		FROM CONTRACT_CONTENTS_GROUP
+		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
+	</delete>
+	
+	<delete id="deleteInstallment" parameterType="Integer">
+		DELETE /* saleCompanyQuery.deleteInstallment 2013.06.03 최지순 */  
+		FROM INSTALLMENTS
 		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
 	</delete>
    

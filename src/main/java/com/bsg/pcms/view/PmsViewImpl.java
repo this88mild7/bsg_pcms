@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.dto.BankDTO;
 import com.bsg.pcms.dto.CompanyDTO;
+import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
@@ -39,6 +40,7 @@ public class PmsViewImpl implements PmsView {
 	private final String _VW_SALE_COMPANY_CONTRACT_INFO = 		"sale-company-contract-info";
 	private final String _OB_SALE_COMPANY_CONTRACT_DETAIL = 		"saleContractDetail";
 	private final String _OB_SALE_COMPANY_CONTRACT_INSTALLMENT = 		"installment";
+	private final String _OB_SALE_COMPANY_CONTRACT_CONTENTS = 		"contentList";
 	
 	@Autowired
 	BigstarConstant bigstarConstant;
@@ -93,6 +95,7 @@ public class PmsViewImpl implements PmsView {
 	@Override
 	public ModelAndView getSaleCompanyContractDetailView(
 			CompanyContractDTOEx contractDetail,
+			List<ContentDTOEx> contentsList,
 			List<CompanyContractDTOEx> deviceList,
 			List<CompanyContractDTOEx> contractTypeList,
 			List<CompanyContractDTOEx> licenseList) {
@@ -101,6 +104,7 @@ public class PmsViewImpl implements PmsView {
 		mav.addObject( _OB_LEFT_MENU_SEQ, bigstarConstant.getLEFT_SALE_COMPANY_CONTRACT() );
 		mav.addObject( _OB_NAV_SEQ, bigstarConstant.getHEADER_SALE_COMPANY() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DETAIL, contractDetail);
+		mav.addObject( _OB_SALE_COMPANY_CONTRACT_CONTENTS, contentsList);
 		mav.addObject( _OB_SALE_COMPANY_CONTRACTED_DEVICE, contractDetail.getContractedDeviceList() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_INSTALLMENT, contractDetail.getInstallmentList() );
 		mav.addObject( _OB_SALE_COMPANY_CONTRACT_DEVICE, deviceList );

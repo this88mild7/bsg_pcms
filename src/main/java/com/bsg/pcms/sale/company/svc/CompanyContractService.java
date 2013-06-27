@@ -2,9 +2,10 @@ package com.bsg.pcms.sale.company.svc;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bsg.pcms.dto.ContentDTO;
-import com.bsg.pcms.dto.ContractDTO;
-import com.bsg.pcms.dto.DeviceDTO;
 import com.bsg.pcms.dto.InstallmentsDTO;
+import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.CompanyController;
 import com.bsg.pcms.sale.company.dao.CompanyContractDao;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
-import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
 
 @Service
 public class CompanyContractService {
@@ -131,13 +129,17 @@ public class CompanyContractService {
 	}
 	
 	private void createContractDetail(CompanyContractDTOEx paramContractDTOEx) {
-		for(CompanyContentsDTOEx tmpContents : paramContractDTOEx.getContentsList()  ){
-			CompanyContractDTOEx tmpContractDto = new CompanyContractDTOEx();
-			tmpContractDto.setContract_mgmtno(paramContractDTOEx.getContract_mgmtno());
-			tmpContractDto.setContents_cd(tmpContents.getContents_cd());
-			_saleContractDao.createContentsGroup(tmpContractDto);
-		}
 		
+		// Map list insert호 개선 필요
+		List<String> selectedContentsCd = paramContractDTOEx.getSelectedContentsCd();
+		List<String> selectedContentsPrice = paramContractDTOEx.getSelectedContentsPrice();
+		for(int x=0;x<selectedContentsCd.size();x++){
+			Map<String, Object> contentGroupParam = new HashMap<String, Object>();
+			contentGroupParam.put("contract_mgmtno", paramContractDTOEx.getContract_mgmtno());
+			contentGroupParam.put("contents_cd", selectedContentsCd.get(x));
+			contentGroupParam.put("sale_price", selectedContentsPrice.get(x));
+			_saleContractDao.createContentsGroup(contentGroupParam);
+		}
 		
 		for(String saleType : paramContractDTOEx.getDevice_cd_list()){
 			CompanyContractDTOEx tmpContractDto = new CompanyContractDTOEx();
@@ -159,6 +161,7 @@ public class CompanyContractService {
 	private void modifyContract(CompanyContractDTOEx companyDTO) {
 		_saleContractDao.deleteContractDetail(companyDTO.getContract_mgmtno());
 		_saleContractDao.deleteContractContentsGroup(companyDTO.getContract_mgmtno());
+		_saleContractDao.deleteInstallment(companyDTO.getContract_mgmtno());
 		_saleContractDao.modify(companyDTO);
 		createContractDetail(companyDTO);
 	}
@@ -181,6 +184,10 @@ public class CompanyContractService {
 
 	public List<CompanyContractDTOEx> licenseList() {
 		return _saleContractDao.licenseList();
+	}
+
+	public List<ContentDTOEx> contents(CompanyContractDTOEx saleCompany) {
+		return _saleContractDao.contents(saleCompany);
 	}
 	
 }
