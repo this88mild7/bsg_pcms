@@ -190,6 +190,10 @@ $(function(){
 			"placement":"bottom"
 		});
 	
+	//var ajaxBalanceSaleContents = '<spring:eval expression="@urlProp['ajaxBalanceSaleContents']"/>';
+	//var ajaxBalanceSaleDeviceType = '<spring:eval expression="@urlProp['ajaxBalanceSaleDeviceType']"/>';
+	//var ajaxBalanceSaleContractType = '<spring:eval expression="@urlProp['ajaxBalanceSaleContractType']"/>';
+	
 	//엘리먼트 이벤트
 	{
 		$("#saleCompanyList").change(function(){
@@ -198,8 +202,21 @@ $(function(){
 				return false;
 			}
 			
-			console.info("A");
 			//판매처 아이디로 판매기종,판매방식 가져오기
+			var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleList']"/>';
+			
+			$.getJSON(url, function(data) {
+				  var items = [];
+				 
+				  $.each(data, function(key, val) {
+				    items.push('<li id="' + key + '">' + val + '</li>');
+				  });
+				 
+				  $('<ul/>', {
+				    'class': 'my-new-list',
+				    html: items.join('')
+				  }).appendTo('body');
+				});
 		});
 		
 		//계약 시작일, 종료일 계산위해

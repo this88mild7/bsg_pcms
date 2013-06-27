@@ -12,7 +12,7 @@
     </appender>
    
     <logger name="org.springframework">
-        <level value="ERROR" />
+        <level value="DEBUG" />
     </logger>
     
     <logger name="com.bsg.pcms">
