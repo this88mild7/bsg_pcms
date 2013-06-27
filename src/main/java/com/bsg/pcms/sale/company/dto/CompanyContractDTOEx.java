@@ -49,6 +49,10 @@ public class CompanyContractDTOEx extends ContractDTO{
 	
 	private List<InstallmentsDTO> installmentList;
 	
+	private List<String> selectedContentsCd;
+	
+	private List<String> selectedContentsPrice;
+	
 	
 	public String getContract_type_cd() {
 		return contract_type_cd;
@@ -216,5 +220,17 @@ public class CompanyContractDTOEx extends ContractDTO{
 	}
 	public void setInstallments_price(List<String> installments_price) {
 		this.installments_price = installments_price;
+	}
+	public List<String> getSelectedContentsCd() {
+		return selectedContentsCd;
+	}
+	public void setSelectedContentsCd(List<String> selectedContentsCd) {
+		this.selectedContentsCd = selectedContentsCd;
+	}
+	public List<String> getSelectedContentsPrice() {
+		return selectedContentsPrice;
+	}
+	public void setSelectedContentsPrice(List<String> selectedContentsPrice) {
+		this.selectedContentsPrice = selectedContentsPrice;
 	}
 }
