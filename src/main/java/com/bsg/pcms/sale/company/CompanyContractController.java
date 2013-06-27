@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
@@ -73,21 +74,20 @@ public class CompanyContractController {
 	@RequestMapping( value = "detail.do", method = RequestMethod.GET )
 	public ModelAndView detail(CompanyContractDTOEx saleCompany, HttpServletRequest request) {
 		CompanyContractDTOEx saleContractDetail = _saleContractService.detail(saleCompany);
+		
+		List<ContentDTOEx> contentsList = _saleContractService.contents(saleCompany);
+		
 		List<CompanyContractDTOEx> deviceList = _saleContractService.deviceList();
 		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
 		List<CompanyContractDTOEx> licenseList = _saleContractService.licenseList();
-		request.getSession().setAttribute("selectedContentsList", saleContractDetail.getContentsList());
 		
-		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, 
+		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, contentsList,
 				deviceList, contractTypeList, licenseList);
 	}
 	
 	@RequestMapping( value = "create.do", method = RequestMethod.POST )
 	public String create(CompanyContractDTOEx companyDTO, HttpServletRequest request) {
-		
-		List<String> sessionContentsList = getSessionContentList(request);
-		
-		_saleContractService.create(companyDTO, sessionContentsList);
+		_saleContractService.create(companyDTO);
 		
 		return "redirect:/saleCompany/contract/list.do";
 	}
@@ -104,116 +104,11 @@ public class CompanyContractController {
 	
 	@RequestMapping( value = "modify.do", method = RequestMethod.POST )
 	public String modify(CompanyContractDTOEx companyDTO, HttpServletRequest request){
-		List<String> sessionContentsStringList = getSessionContentList(request);
-		_logger.info("{}", companyDTO.getContract_type());
-		if(sessionContentsStringList.size() > 0){
-			_logger.info("{}", sessionContentsStringList);
-			_saleContractService.modify(companyDTO, sessionContentsStringList);
-		}else{
-			List<CompanyContentsDTOEx> sessionContentsList = (List<CompanyContentsDTOEx>)request.getSession().getAttribute("selectedContentsList");
-			companyDTO.setContentsList(sessionContentsList);
-			_saleContractService.modify(companyDTO);
-		}
+		List<CompanyContentsDTOEx> sessionContentsList = (List<CompanyContentsDTOEx>)request.getSession().getAttribute("selectedContentsList");
+		companyDTO.setContentsList(sessionContentsList);
+		_saleContractService.modify(companyDTO);
 		
 		return "redirect:/saleCompany/contract/list.do";
 	}
-
-	private List<String> getSessionContentList(HttpServletRequest request) {
-		
-		List<String> sessionContentsList = (List<String>)request.getSession().getAttribute("contentsList");
-		
-		if(sessionContentsList == null){
-			sessionContentsList = new ArrayList<String>();
-		}
-		request.getSession().removeAttribute("contentsList");
-		
-		return sessionContentsList;
-	}
-//	
-//	
-	
-	/**
-	 * group/createAction.do 먼저 호출 된 후에 아래 메소드가 실행 되야
-	 * 패키지 판매 상품을 등록 할 수 있다.
-	 * 
-	 * @param companyDTO
-	 * @return
-	 */
-	
-	
-
-	
-	
-	/**
-	 * @param customer
-	 * @return
-	 * @throws SQLException
-	 */
-//	@RequestMapping( value = "createAction.do", method = RequestMethod.POST )
-//	public ModelAndView contractSaleCompany(CompanyDTOEx customer) throws SQLException {
-//		
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName( "customer-list" );
-//		mav.addObject( "leftMenuSeq", _bigstarConstant.getLEFT_CUSTOMER() );
-//		mav.addObject( "navSeq", _bigstarConstant.getHEADER_PRODUCT() );
-//		
-//		//판매형태 그룹작업 JSON -> LIST -> GROUP
-//		int group_id = groupService.createGroup(customer);
-//		
-//		int result = _saleCompanyService.createSaleCompany(customer);
-//		
-//		List<CompanyDTO> customerList = _saleCompanyService.getSaleCompany(null);
-//		mav.addObject( "customerList", customerList );
-//		
-//		return mav;
-//	}
-	
-	
-	
-//	@RequestMapping( value = "detail.do", method = RequestMethod.GET )
-//	public ModelAndView detail(CompanyDTOEx customer) {
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName( "customer-detail" );
-//		mav.addObject( "leftMenuSeq", bigstarConstant.getLEFT_CUSTOMER() );
-//		mav.addObject( "navSeq", bigstarConstant.getHEADER_PRODUCT() );
-//		
-//		CompanyDTO _customer = saleCompanyService.getCustomerDetail(customer);
-//		mav.addObject( "customer", _customer );
-//		
-//		// 은행 목록
-//		List<BankDTO> bankList = bankListMaker.getBankList();
-//		mav.addObject( "bankList", bankList);
-//		
-//		return mav;
-//	}
-	
-//	@RequestMapping( value = "deleteAction.do" )
-//	public  ModelAndView deleteAction(CompanyDTOExtend customer) {
-//		
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName( "customer-list" );
-//		mav.addObject( "leftMenuSeq", bigstarConstant.getLEFT_CUSTOMER() );
-//		mav.addObject( "navSeq", bigstarConstant.getHEADER_PRODUCT() );
-//		
-//		String resultMsg = "판매처 삭제에 성공하였습니다.";
-//		int rst = 0;
-//		try {
-//			rst = saleCompanyService.deleteCustomer(customer);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		if( rst == 0 ) {
-//			resultMsg = "판매처 삭제에 실패하였습니다.";
-//		}
-//		mav.addObject( "resultMsg", resultMsg );
-//		
-//		List<CompanyDTOExtend> customerList = saleCompanyService.getSaleCompany(null);
-//		mav.addObject( "customerList", customerList );
-//		
-//		return mav;
-//		
-//	}
-	
 	
 }

@@ -1,6 +1,7 @@
 package com.bsg.pcms.sale.company.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import com.bsg.pcms.dto.ContentDTO;
 import com.bsg.pcms.dto.ContractDTO;
 import com.bsg.pcms.dto.DeviceDTO;
 import com.bsg.pcms.dto.InstallmentsDTO;
+import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.CompanyContractController;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
@@ -39,7 +41,7 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 		return getSqlSession().insert( "saleCompanyQuery.createContract", contractDTOEx );
 	}
 
-	public void createContentsGroup(CompanyContractDTOEx paramContractDTOEx) {
+	public void createContentsGroup(Map paramContractDTOEx) {
 		getSqlSession().insert( "saleCompanyQuery.createContentsGroup", paramContractDTOEx );
 	}
 
@@ -78,7 +80,7 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 	}
 
 	public void modify(CompanyContractDTOEx companyDTO) {
-		getSqlSession().delete( "saleCompanyQuery.modifyContract", companyDTO);
+		getSqlSession().update( "saleCompanyQuery.modifyContract", companyDTO);
 		
 	}
 
@@ -88,6 +90,14 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 
 	public List<CompanyContractDTOEx> licenseList() {
 		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.licenseList");
+	}
+
+	public List<ContentDTOEx> contents(CompanyContractDTOEx saleCompany) {
+		return (List<ContentDTOEx>)getSqlSession().selectList( "saleCompanyQuery.contents", saleCompany);
+	}
+
+	public void deleteInstallment(int contract_mgmtno) {
+		getSqlSession().delete( "saleCompanyQuery.deleteInstallment", contract_mgmtno);
 	}
 
 

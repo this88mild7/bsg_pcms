@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.dto.BankDTO;
 import com.bsg.pcms.dto.CompanyDTO;
+import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
@@ -27,7 +28,8 @@ public interface PmsView {
 	
 	
 	public ModelAndView getSaleCompanyContractDetailView(
-			CompanyContractDTOEx customerList,
+			CompanyContractDTOEx saleContractDetail,
+			List<ContentDTOEx> contentsList,
 			List<CompanyContractDTOEx> deviceList,
 			List<CompanyContractDTOEx> saleTypeList,
 			List<CompanyContractDTOEx> licenseList
