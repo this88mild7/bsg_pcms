@@ -60,14 +60,14 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public List<Map> saleCompanyList() {
 		return (List<Map>)getSqlSession().selectList("balanceQuery.saleCompanyList");
 	}
-	public List<Map> device(int company_mgmtno, String contract_type) {
+	public List<Map> device(int company_mgmtno) {
+		return (List<Map>)getSqlSession().selectList("balanceQuery.device", company_mgmtno);
+	}
+	public List<Map> saleType(int company_mgmtno, String sale_type) {
 		Map<String, Object> daoParam = new HashMap<String, Object>();
 		daoParam.put("company_mgmtno", company_mgmtno);
-		daoParam.put("contract_type", contract_type);
-		return (List<Map>)getSqlSession().selectList("balanceQuery.device", daoParam);
-	}
-	public List<Map> saleType(int company_mgmtno) {
-		return (List<Map>)getSqlSession().selectList("balanceQuery.saleType", company_mgmtno);
+		daoParam.put("sale_type", sale_type);
+		return (List<Map>)getSqlSession().selectList("balanceQuery.saleType", daoParam);
 	}
 	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {
 		return (List<Map>)getSqlSession().selectList("balanceQuery.contents", companyContractDTOEx);

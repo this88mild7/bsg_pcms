@@ -58,7 +58,7 @@ public class BalanceComAjaxControllerTest {
 		// given 
 		
 		// when
-		String jsonResult = balanceComAjaxController.contractType(32); 
+		String jsonResult = balanceComAjaxController.contractType(32, "DV001002"); 
 		
 		// then
 		assertThat(jsonResult, is(notNullValue()));
@@ -70,7 +70,7 @@ public class BalanceComAjaxControllerTest {
 		// given 
 		
 		// when
-		String jsonResult = balanceComAjaxController.deviceType(32, "CT002001"); 
+		String jsonResult = balanceComAjaxController.deviceType(32); 
 		
 		// then
 		assertThat(jsonResult, is(notNullValue()));

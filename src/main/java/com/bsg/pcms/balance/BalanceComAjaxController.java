@@ -66,38 +66,42 @@ public class BalanceComAjaxController {
 	}
 	
 	/**
-	 * @param company_mgmtno
+	 * @param company_mgmtno, sale_type
 	 * RESULT SAMPLE
 	 * {
-		"contractTypeList": [{
-			"contract_type": "CT002001",
-			"contract_type_name": "개별"
-				},
-			{
-				"contract_type": "CT002002",
-				"contract_type_name": "패키지"
+			"contractTypeList": [{
+				"contract_type": "CT002001",
+				"contract_type_name": "개별"
 			}],
-		"code": 200,
-		"msg": "OK"
+			"code": 200,
+			"msg": "OK"
 		}
 	 * @return
 	 */
 	@RequestMapping(value = "contractType.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody 
-	String contractType(int company_mgmtno) {
-		List<Map> saleTypeleList = balanceService.saleType(company_mgmtno);
+	String contractType(int company_mgmtno, String sale_type) {
+		List<Map> saleTypeleList = balanceService.saleType(company_mgmtno, sale_type);
 		String jsonString = _jsonResponseMaker.generateMapList("contractTypeList", saleTypeleList);
 		logger.info(jsonString);
 		return jsonString;
 		
 	}
 	/**
-	 * @param company_mgmtno, contract_type
+	 * @param company_mgmtno
 	 * RESULT SAMPLE
 	 * {
 			"deviceTypeList": [{
 				"sale_type_name": "ios",
 				"sale_type": "DV001001"
+			},
+			{
+				"sale_type_name": "android",
+				"sale_type": "DV001002"
+			},
+			{
+				"sale_type_name": "web",
+				"sale_type": "DV001003"
 			}],
 			"code": 200,
 			"msg": "OK"
@@ -106,8 +110,8 @@ public class BalanceComAjaxController {
 	 */
 	@RequestMapping(value = "deviceType.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody 
-	String deviceType(int company_mgmtno, String contract_type) {
-		List<Map> saleDeviceList = balanceService.device(company_mgmtno, contract_type);
+	String deviceType(int company_mgmtno) {
+		List<Map> saleDeviceList = balanceService.device(company_mgmtno);
 		String jsonString = _jsonResponseMaker.generateMapList("deviceTypeList", saleDeviceList);
 		logger.info(jsonString);
 		return jsonString;
