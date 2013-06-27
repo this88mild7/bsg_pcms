@@ -83,7 +83,6 @@ div#sale-content-list {
 						<!-- 
 						ajax sale-content here
 						 -->
-						붐붐 잉글리쉬1 : YBMsisa 1000 원 <input type="text" id="a" name="" placeholder="판매수량"/> 삭제
 					</div>
 					<div class="rowspan">
 						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric" id="totalSaleCnt"></span> 건</h4></div>
@@ -135,6 +134,7 @@ div#sale-content-list {
 		<table class="table table-striped table-hover">
 			<thead>
 			<tr>
+				<th></th>
 				<th>상품명</th>
 			</tr>
 			</thead>
@@ -185,24 +185,44 @@ $("#btn-sale-product-list").click(function(event){
 					salePrice = ele.sale_price,
 					saleCompanyRate = ele.sale_company_rate,
 					cpRate = ele.cp_rate,
-					contentCd = ele.contents_cd;
-			
-				$html = String.format('<tr><td><input type="checkbox" name="check_list" value="{}">{} {} 원</td></tr>');
+					contentsCd = ele.contents_cd;
+				
+				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" value="{5}"></td><td>{0} {1} 원</td></tr>',
+						name, salePrice, saleCompanyRate, cpRate, contentsCd);
 			
 				$target.find("table").append( $html );
 		});
 		
-		$target.find("table").append( $html );
-			  
 		$target.modal('toggle');
 	});
 	
 });
 	
-	
 { //MODAL EVENT
-	$("#btn-selet-product").click(function(){
+	
+	//상품 선택하고 선택하면 상품리스트에 집어넣기
+	$("#btn-select-product").click(function(){
 		
+		var $target = $("#sale-content-list");
+		var $selectedProduct = $("#findProduct").find("input[name='check_list']").filter(":checked")
+		
+		$selectedProduct.each(function(index){
+			var $this = $(this),
+				name = $this.data("name"),
+				companyName = '업체명',//$this.data("company_name"),
+				salePrice = $this.data("sale_price"),
+				saleCompanyRate = $this.data("sale_company_rate"),
+				cpRate = $this.data("cp_rate"),
+				contentsCd = $this.data("contents_cd");
+			
+			var $html = String.format('<p>{0} : {1} {2} 원 <input type="text" class="autoNumeric product-list pl{3}" name="{0}" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" data-contents_cd="{6}"/> 삭제</p>', 
+					name, companyName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
+			
+			$target.append( $html );
+		});
+		
+		$('.autoNumeric').autoNumeric('init',{aPad: false });
+		$("#findProduct").modal('toggle');
 	});
 }
 
@@ -214,9 +234,12 @@ $("#contractForm").submit(function(){
 });
 
 //판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
-$("#a").keyup(function(event){
-	var $this = $(this);
-	setTotalCnt( $this.autoNumeric('get') );
+$("input.product-list").keyup(function(event){
+	
+});
+
+$("body").on("keyup", $("input.product-list"), function(event){
+	var $this = $(event.target);
 	calculate();
 });
 
@@ -228,24 +251,32 @@ $("#a").keyup(function(event){
 				saleCompanyFee = 0,
 				cpFee = 0;
 			
-			/* 
-				for() {
-					var $this = $(this);
-					var 상품가격 = ;
-					var 판매수량 = ;
-					var 판매수수료 = ;
-					var CP수수료 = ;
-					
-					//상품가격 * 판매수량 
-					$this.카운터 * $this.상품가격 = 매출액
-
-					totalSaleCnt += ;
-					totalSalePrice += ;
-					saleCompanyFee += ;
-					cpFee += ;
-				}
-			
-			*/
+			$("#sale-content-list").find("input").each(function(){
+				
+				
+				var $this = $(this),
+					name = $this.data("name"),
+					companyName = '업체명',//$this.data("company_name"),
+					salePrice = $this.data("sale_price"),
+					saleCompanyRate = $this.data("sale_company_rate"),
+					cpRate = $this.data("cp_rate"),
+					contentsCd = $this.data("contents_cd");
+				
+				console.info($this.data());
+				
+				//상품가격 * 판매수량 
+				var cnt = $this.autoNumeric('get');
+				var earning = cnt * salePrice;
+				var saleFee = earning * (saleCompanyRate/100);
+				var cpFee = earning * (cpRate/100);
+				console.info("earning : " + earning);
+				console.info("saleFee : " + saleFee);
+				console.info("cpFee : " + cpFee);
+				totalSaleCnt += cnt;
+				totalSalePrice += earning;
+				saleCompanyFee += saleFee;
+				cpFee += cpFee;
+			});
 			
 			$(".totalSalePrice").text(totalSalePrice); // <- 혼자 class임 element가 2개임
 			$("#totalSaleCnt").text(totalSaleCnt);
@@ -253,7 +284,7 @@ $("#a").keyup(function(event){
 			$("#cpFee").text(cpFee);
 			
 			//숫자 표시 업데이트 000,000
-			$('.totalPrice').autoNumeric('update',{aPad: false });
+			$('.autoNumeric').autoNumeric('update',{aPad: false });
 		}
 
 		
