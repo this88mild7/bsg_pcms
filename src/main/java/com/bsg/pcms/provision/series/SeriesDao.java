@@ -26,6 +26,10 @@ public class SeriesDao extends SqlSessionDaoSupport{
 	public SeriesDTO getSeries(SeriesDTO seriesDTO) {
 		return (SeriesDTO)getSqlSession().selectOne("seriesQuery.getSeries", seriesDTO); 
 	}
+	
+	public List<SeriesDTO> getSeriesListAll(SeriesDTO seriesDTO) {
+		return getSqlSession().selectList("seriesQuery.getSeriesListAll", seriesDTO); 
+	}
 
 	//cp_mgmt에 해당하는 시리즈 목록만 호출
 	public List<SeriesDTO> getSeriesListByCpMgmtno(CompanyDTO companyDTO) {
@@ -38,5 +42,9 @@ public class SeriesDao extends SqlSessionDaoSupport{
 	
 	public int getSeriesCount(SeriesDTO seriesDTO) {
 		return (Integer) getSqlSession().selectOne("seriesQuery.getSeriesCount", seriesDTO);
+	}
+	
+	public List<SeriesDTO> getSeriesListForSale(int cateMgmtno) {
+		return getSqlSession().selectList("seriesQuery.getSeriesListForSale", cateMgmtno);
 	}
 }

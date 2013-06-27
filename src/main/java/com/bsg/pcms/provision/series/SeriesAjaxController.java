@@ -39,7 +39,7 @@ public class SeriesAjaxController {
 	@RequestMapping(value = "list.ajax", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
 	public  @ResponseBody String list(SeriesDTO seriesDTO) {
 		
-		List<SeriesDTO> seriesList = seriesService.getSeriesList(seriesDTO);
+		List<SeriesDTO> seriesList = seriesService.getSeriesListAll(seriesDTO);
 		
 		JSONObject json = new JSONObject();
 		json.put( "code", bigstarProperties.getSuccessCode() );
@@ -99,7 +99,6 @@ public class SeriesAjaxController {
 
 	}
 	
-
 	@RequestMapping(value ="deleteAction.ajax", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public @ResponseBody
 	String categoryDeleteAction(SeriesDTO seriesDTO) throws SQLException {

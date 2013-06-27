@@ -27,5 +27,12 @@ public interface SeriesService {
 	 */
 	public List<SeriesDTO> getSeriesList(SeriesDTO seriesDTO);
 
+	/** 업체 여부와 관계없이 시리즈 목록 조회함
+	 * @param seriesDTO 에 cate_id 셋팅
+	 * @return List<SeriesDTO>
+	 */
+	public List<SeriesDTO> getSeriesListAll(SeriesDTO seriesDTO);
+	
 	public List<SeriesDTO> getSeriesListByCpMgmtno(CompanyDTO companyDTO);
+	
 }

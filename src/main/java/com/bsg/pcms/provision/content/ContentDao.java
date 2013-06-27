@@ -1,5 +1,6 @@
 package com.bsg.pcms.provision.content;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -46,6 +47,14 @@ public class ContentDao extends SqlSessionDaoSupport {
 
 	public int updateContent(ContentDTOEx contentDTOEx) {
 		return getSqlSession().update("contentQuery.updateContent", contentDTOEx);
+	}
+	
+	/** 컨텐츠 생성시 시리즈에 company_mgmtno 업데이트
+	 * @param cde[company_mgmtno, series_mgmtno, series_name에다가 series_mgmtno 넣어주기 mybatis type error나기 때문]
+	 * @return
+	 */
+	public int updateContentForSeries(ContentDTOEx contentDTOEx) {
+		return getSqlSession().update("contentQuery.updateContentForSeries", contentDTOEx);
 	}
 
 }

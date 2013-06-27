@@ -83,8 +83,12 @@ public class SeriesServiceImpl implements SeriesService {
 		return seriesDao.getSeriesList(seriesDTO);
 	}
 	
+	public List<SeriesDTO> getSeriesListAll(SeriesDTO seriesDTO) {
+		return seriesDao.getSeriesListAll(seriesDTO);
+	}
+	
 	public List<SeriesDTO> getSeriesListByCpMgmtno(CompanyDTO companyDTO) {
 		return seriesDao.getSeriesListByCpMgmtno(companyDTO);
 	}
-
+	
 }

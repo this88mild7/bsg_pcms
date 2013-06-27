@@ -12,9 +12,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bsg.pcms.dto.SeriesDTO;
 import com.bsg.pcms.provision.category.svc.CategoryService;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.provision.content.ContentDao;
+import com.bsg.pcms.provision.series.SeriesDao;
 
 @Service
 public class ContentServiceImpl implements ContentService {
@@ -23,6 +25,9 @@ public class ContentServiceImpl implements ContentService {
 
 	@Autowired
 	private ContentDao contentDao;
+
+	@Autowired
+	private SeriesDao seriesDao;
 
 	public ContentDTOEx getContent(ContentDTOEx content) {
 		return contentDao.getContent(content);
@@ -48,18 +53,28 @@ public class ContentServiceImpl implements ContentService {
 		return contentDao.getContentCodeListByCateId(cde);
 	}
 
-	public int createContent(ContentDTOEx content) {
-		content.setContents_cd(this.makeContentCode(content));
-		return contentDao.createContent(content);
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, readOnly = false, rollbackFor = { SQLException.class })
+	public int createContent(ContentDTOEx cde) throws SQLException {
+		
+		int seriesUpdateResult = this.updateContentForSeries(cde);
+		logger.debug("seriesUpdateResult : {}", seriesUpdateResult);
+		
+		//컨텐츠 코드 생성
+		cde.setContents_cd(this.makeContentCode(cde));
+		return contentDao.createContent(cde);
 	}
 	
 	public int createContentBySeries(ContentDTOEx content) {
 		return contentDao.createContent(content);
 	}
 
-
-	public int updateContent(ContentDTOEx content) {
-		return contentDao.updateContent(content);
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, readOnly = false, rollbackFor = { SQLException.class })
+	public int updateContent(ContentDTOEx cde) throws SQLException {
+		
+		int seriesUpdateResult = this.updateContentForSeries(cde);
+		logger.debug("seriesUpdateResult : {}", seriesUpdateResult);
+		
+		return contentDao.updateContent(cde);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, readOnly = false, rollbackFor = { SQLException.class })
@@ -106,5 +121,19 @@ public class ContentServiceImpl implements ContentService {
 		String contentCode = String.format("CP%02d_SE%02dP%04d_%s", contentDTO.getCompany_mgmtno(), contentDTO.getSeries_mgmtno(), seq, suffix);
 		return contentCode.toString();
 	}
+	
+	/** 컨텐츠 생성시 company_mgmtno가 없는 series들 update
+	 * @param cde
+	 * @return
+	 */
+	private int updateContentForSeries(ContentDTOEx cde) {
+		ContentDTOEx seriesParam = new ContentDTOEx();
+		seriesParam.setCompany_mgmtno(cde.getCompany_mgmtno());
+		seriesParam.setSeries_mgmtno(cde.getSeries_mgmtno());
+		seriesParam.setSeries_name(String.valueOf(cde.getSeries_mgmtno()));
+		int seriesUpdateResult = contentDao.updateContentForSeries(seriesParam);
+		return seriesUpdateResult;
+	}
+
 
 }

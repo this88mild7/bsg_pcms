@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.bsg.pcms.provision.content.ContentDTOEx;
-import com.bsg.pcms.provision.content.ContentDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:servlet-contextForTest.xml"})
@@ -151,6 +149,19 @@ public class ContentDaoTest {
 		logger.info(contentDTOEx.toString());
 		
 		int result = contentDao.updateContent(contentDTOEx);
+		assertThat( result, is(1) );
+	}
+	
+	@Test
+	public void testUpdateContentForSeries() {
+		
+		ContentDTOEx contentDTOEx = new ContentDTOEx();
+		contentDTOEx.setCompany_mgmtno(3);
+		contentDTOEx.setSeries_mgmtno(84);
+		contentDTOEx.setSeries_name(84+"");
+		logger.info(contentDTOEx.toString());
+		
+		int result = contentDao.updateContentForSeries(contentDTOEx);
 		assertThat( result, is(1) );
 	}
 	

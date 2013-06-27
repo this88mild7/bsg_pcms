@@ -30,7 +30,7 @@ public interface ContentService {
 	 */
 	public List<ContentDTOEx> getContentCodeListByCateId(ContentDTOEx cde);
 
-	public int createContent(ContentDTOEx cde);
+	public int createContent(ContentDTOEx cde) throws SQLException ;
 
 	/** 시리즈 관리번호로 컨텐츠를 생성
 	 * @param cde
@@ -38,8 +38,8 @@ public interface ContentService {
 	 */
 	public int createContentBySeries(ContentDTOEx cde);
 
-	public int updateContent(ContentDTOEx cde);
-
+	public int updateContent(ContentDTOEx cde) throws SQLException ;
+	
 	public int deleteContent(ContentDTOEx cde) throws SQLException;
 
 }

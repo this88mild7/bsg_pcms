@@ -204,6 +204,13 @@
         </set>
         WHERE contents_cd = #{ contents_cd }
     </update>
+    
+    <update id="updateContentForSeries" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
+        UPDATE CONTENTS SET 
+            company_mgmtno = #{ company_mgmtno }, mod_dt = NOW() 
+        WHERE series_mgmtno = #{ series_mgmtno }
+        AND contents_cd = #{series_name}
+    </update>
 
     <!-- DELETE -->
     <delete id="deleteContent" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">

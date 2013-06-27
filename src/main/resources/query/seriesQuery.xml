@@ -11,23 +11,29 @@
             cate_id,
             reg_dt,
             mod_dt 
-        ) VALUES (
+        ) 
+        VALUES 
+        (
             #{ series_name },
             #{ cate_id },
             NOW(), 
             NOW() 
-                )
+        )
     </insert>
 
     <!-- SELECT -->
     <select id="getSeriesList" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
-        SELECT
-            CON.NAME AS SERIES_NAME, CON.SALE_PRICE,
-            CON.SERIES_MGMTNO
-        FROM CONTENTS CON
+        SELECT /* seriesQuery.getSeriesList 2013.06.27 정대원 */ 
+            CONTENTS.name AS SERIES_NAME, 
+            CONTENTS.sale_price, 
+            CONTENTS.series_mgmtno,
+            CONTENTS.company_mgmtno,
+            COMPANY.company_name
+        FROM CONTENTS, COMPANY
         <where>
-        	CON.SERIES_MGMTNO = CON.CONTENTS_CD
-        	AND CON.SERIES_MGMTNO > 0
+        	CONTENTS.series_mgmtno = CONTENTS.contents_cd
+            AND CONTENTS.series_mgmtno > 0
+            AND CONTENTS.company_mgmtno = COMPANY.company_mgmtno  
             <if test="type != null">
             /* type이 null 이 아니면 검색 */
                 <choose>
@@ -47,13 +53,20 @@
                 </choose>
             </if>
             <if test="cate_id > 0">
-                AND CON.cate_id = #{ cate_id }
+                AND CONTENTS.cate_id = #{ cate_id }
             </if>
         </where>
     </select>
     
+    <select id="getSeriesListAll" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
+        SELECT /* seriesQuery.getSeriesListAll 2013.06.27 정대원 */ 
+            *
+        FROM SERIES
+        WHERE cate_id = #{ cate_id }
+    </select>
+    
     <select id="getSeriesListByCpMgmtno" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.CompanyDTO">
-        SELECT
+        SELECT /* seriesQuery.getSeriesListByCpMgmtno 2013.06.27 정대원 */
             SERIES.*,
             COUNT(SERIES.series_name) as totCnt
         FROM COMPANY, CONTENTS, SERIES
@@ -62,7 +75,7 @@
         AND COMPANY.company_mgmtno = #{ company_mgmtno }
         GROUP BY SERIES.series_name
     </select>
-
+    
     <select id="getSeriesCount" resultType="int" parameterType="com.bsg.pcms.dto.SeriesDTO">
         SELECT
             count(*)
@@ -93,7 +106,7 @@
     </select>
 
     <select id="getSeries" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
-        SELECT
+        SELECT /* seriesQuery.getSeries 2013.06.27 정대원 */
             *
         FROM SERIES
         WHERE series_mgmtno = #{ series_mgmtno }
@@ -103,6 +116,7 @@
     <update id="updateSeries" parameterType="com.bsg.pcms.dto.SeriesDTO">
         UPDATE SERIES
         <set>
+            <if test="company_mgmtno > 0">company_mgmtno = #{ company_mgmtno },</if>
             <if test="series_name != null">series_name = #{ series_name },</if>
             <if test="cate_id > 0">cate_id = #{ cate_id },</if>
             mod_dt = NOW(),

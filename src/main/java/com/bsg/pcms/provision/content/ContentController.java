@@ -1,13 +1,8 @@
 package com.bsg.pcms.provision.content;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,21 +11,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.bsg.pcms.dto.CateDTO;
-import com.bsg.pcms.dto.CommonDTO;
 import com.bsg.pcms.dto.CompanyDTO;
-import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.provision.category.svc.CategoryService;
 import com.bsg.pcms.provision.content.svc.ContentService;
 import com.bsg.pcms.provision.cp.CpService;
 import com.bsg.pcms.utility.BigstarConstant;
-import com.bsg.pcms.utility.BigstarProperties;
 import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping(value = "content")
 public class ContentController {
-
-	private Logger logger = LoggerFactory.getLogger(ContentController.class);
 
 	@Autowired
 	private CpService cpService;
@@ -46,9 +36,6 @@ public class ContentController {
 
 	@Autowired
 	private PageUtil pageUtil;
-
-	@Resource
-	private BigstarProperties bigstarProperties;
 
 	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public ModelAndView list(ContentDTOEx content) {
@@ -118,7 +105,7 @@ public class ContentController {
 	}
 
 	@RequestMapping(value = "updateAction.do")
-	public ModelAndView updateAction(ContentDTOEx cde) {
+	public ModelAndView updateAction(ContentDTOEx cde) throws SQLException  {
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
 
 		// cp_id로 삭제
@@ -152,7 +139,7 @@ public class ContentController {
 	}
 
 	@RequestMapping(value = "createAction.do", method = RequestMethod.POST)
-	public ModelAndView createAction(ContentDTOEx cde) {
+	public ModelAndView createAction(ContentDTOEx cde) throws SQLException {
 
 		ModelAndView mav = new ModelAndView(new RedirectView("list.do"));
 
