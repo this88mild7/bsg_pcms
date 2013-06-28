@@ -39,7 +39,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "index", method = RequestMethod.GET)
+	@RequestMapping(value = "index.do", method = RequestMethod.GET)
 	public String index() {
 
 		return "index";
@@ -50,7 +50,7 @@ public class UserController {
 	public String login(UserDTO member, HttpServletRequest request) {
 
 		if (userSevice.hasNoUser(member)) {
-			return "redirect:/index";
+			return "redirect:/index.do";
 		}
 
 		UserDTO resultDTO = userSevice.getUser(member);
@@ -68,7 +68,7 @@ public class UserController {
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout() {
 
-		return "redirect:/index.html";
+		return "redirect:/index.do";
 
 	}
 

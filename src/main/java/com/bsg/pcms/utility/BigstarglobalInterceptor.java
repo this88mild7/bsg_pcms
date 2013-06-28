@@ -20,7 +20,7 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger logger = LoggerFactory.getLogger(BigstarglobalInterceptor.class);
 	
-	private final String PMS_LOGIN_PAGE_URL = "/cms/index.do";
+	private final String PMS_LOGIN_PAGE_URL = "/pcms/index.do";
 	
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) {
