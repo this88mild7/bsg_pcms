@@ -206,6 +206,7 @@ $("#btn-sale-product-list").click(function(event){
 		var $target = $("#sale-content-list");
 		var $selectedProduct = $("#findProduct").find("input[name='check_list']").filter(":checked")
 		
+		var tableHtml = '<table class="tbl" style="width:100%;">';
 		$selectedProduct.each(function(index){
 			var $this = $(this),
 				name = $this.data("name"),
@@ -215,11 +216,27 @@ $("#btn-sale-product-list").click(function(event){
 				cpRate = $this.data("cp_rate"),
 				contentsCd = $this.data("contents_cd");
 			
-			var $html = String.format('<p>{0} : {1} {2} 원 <input type="text" class="autoNumeric product-list pl{3}" name="{0}" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" data-contents_cd="{6}"/> 삭제</p>', 
-					name, companyName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
+			var wrapHtml  = '<tr>';
+				wrapHtml += '<td span="4">{0}</td>'; 	//상품명
+				wrapHtml += '<td span="2">{1}</td>';		//업체명
+				wrapHtml += '<td span="2">{2} 원</td>';		//가격
+				wrapHtml += '<td span="3"><input class="autoNumeric product-list pl{3}" type="text" name="{0}" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" data-contents_cd="{6}"/></td>';
+				wrapHtml += '<td span="1"><button class="btn btn-remove-product">삭제</button></td>';
+				wrapHtml += '</tr>';
+				
+			tableHtml += String.format(wrapHtml, name, companyName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
 			
-			$target.append( $html );
 		});
+		tableHtml += '</table>';
+		console.info(tableHtml);
+		$target.append( tableHtml );
+		
+		//상품 삭제버튼이 눌러지면 해당 엘리먼트 제거
+		$("button.btn-remove-product").click(function(){
+			var $this = $(this);
+			$this.parent().parent().remove();
+		});
+
 		
 		$('.autoNumeric').autoNumeric('init',{aPad: false });
 		$("#findProduct").modal('toggle');
@@ -233,15 +250,12 @@ $("#contractForm").submit(function(){
 	//$('#sale_price').val($('#sale_price').autoNumeric('get'));
 });
 
-//판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
-$("input.product-list").keyup(function(event){
-	
-});
-
-$("body").on("keyup", $("input.product-list"), function(event){
-	var $this = $(event.target);
-	calculate();
-});
+$("body")
+	.on("keyup", $("input.product-list"), function(event){
+		//판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
+		var $this = $(event.target);
+		calculate();
+	});
 
 		//판매수량이 입력되면 계산 시작
 		function calculate(){
