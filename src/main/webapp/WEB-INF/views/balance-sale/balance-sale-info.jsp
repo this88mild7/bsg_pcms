@@ -16,7 +16,7 @@ div#sale-content-list {
 				매출 입력 <small>&gt;&gt; 매출을 입력해 주세요.</small>
 			</c:when>
 			<c:otherwise>
-				[${ content.name }] 상세정보
+				매출 입력 <small>&gt;&gt; 매출을 입력해 주세요.</small>
 			</c:otherwise>
 		</c:choose>
 	</h4>
@@ -45,7 +45,7 @@ div#sale-content-list {
 			<div class="control-group">
 				<label class="control-label" for="deviceTypeList"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매기종</label>
 				<div class="controls">
-					<select size="1" id="deviceTypeList" name="device_type">
+					<select size="1" id="deviceTypeList" name="sale_type">
 						<option value="0">판매기종을 선택해 주세요.</option>
 						<!-- 
 							ajax
@@ -67,8 +67,8 @@ div#sale-content-list {
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매기간</label>
 				<div class="controls">
-					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${ contract.str_date }"> - 
-					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${ contract.end_date }">
+					<input class="datepicker" type="text" name="sale_str_date" data-date-format="yyyy-mm-dd" value="${ contract.sale_str_date }"> - 
+					<input class="datepicker" type="text" name="sale_end_date" data-date-format="yyyy-mm-dd" value="${ contract.sale_end_date }">
 					<a id="salePeriodTip" href="#" data-toggle="tooltip" >tip</a>
 				</div>
 			</div>
@@ -85,7 +85,7 @@ div#sale-content-list {
 						 -->
 					</div>
 					<div class="rowspan">
-						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric" id="totalSaleCnt"></span> 건</h4></div>
+						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric totalSaleCnt"></span> 건</h4></div>
 						<div class="span6"><h4>총 매출금액 : <span class="autoNumeric totalSalePrice"></span> 원</h4></div>
 					</div>
 				</div>
@@ -96,13 +96,19 @@ div#sale-content-list {
 					<h3>
 						매출계산: 
 						<span class="autoNumeric totalSalePrice"></span>(총 매출금액) - 
-						<span class="autoNumeric" id="totalSaleCompanyCommission"></span>(판매처 수수료) - 
-						<span class="autoNumeric" id="totalCpCommission"></span>(업체 수수료)
+						<span class="autoNumeric totalSaleCompanyCommission"></span>(판매처 수수료) - 
+						<span class="autoNumeric totalCpCommission"></span>(업체 수수료)
 					</h3>
 					<br />
-					<h3>최종 자사 수익 : <span class="autoNumeric" id="totalProfit"></span> 원</h3>
+					<h3>최종 자사 수익 : <span class="autoNumeric totalProfit"></span> 원</h3>
 				</div>
 			</div>
+			
+			<input type="hidden" id="totalSalePrice" name="total_sale_price"/>
+			<input type="hidden" id="totalSaleCnt" name="total_sale_cnt"/>
+			<input type="hidden" id="totalSaleCompanyCommission" name="total_sale_company_commission"/>
+			<input type="hidden" id="totalCpCommission" name="total_cp_commission"/>
+			<input type="hidden" id="totalProfit" name="total_profit"/>
 		</form>
 		
 		<div class="control-group">
@@ -184,11 +190,12 @@ $("#btn-sale-product-list").click(function(event){
 				var name = ele.name,
 					salePrice = ele.sale_price,
 					saleCompanyRate = ele.sale_company_rate,
+					cpName = ele.cp_name,
 					cpRate = ele.cp_rate,
 					contentsCd = ele.contents_cd;
 				
-				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" value="{5}"></td><td>{0} {1} 원</td></tr>',
-						name, salePrice, saleCompanyRate, cpRate, contentsCd);
+				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" data-cp_name="{5}" value="{4}"></td><td>{0} {1} 원</td></tr>',
+						name, salePrice, saleCompanyRate, cpRate, contentsCd, cpName );
 			
 				$target.find("table").append( $html );
 		});
@@ -204,39 +211,40 @@ $("#btn-sale-product-list").click(function(event){
 	$("#btn-select-product").click(function(){
 		
 		var $target = $("#sale-content-list");
-		var $selectedProduct = $("#findProduct").find("input[name='check_list']").filter(":checked")
+		var $selectedProduct = $("#findProduct").find("input[name='check_list']").filter(":checked");
 		
 		var tableHtml = '<table class="tbl" style="width:100%;">';
 		$selectedProduct.each(function(index){
 			var $this = $(this),
 				name = $this.data("name"),
-				companyName = '업체명',//$this.data("company_name"),
+				cpName = $this.data("cp_name"),
 				salePrice = $this.data("sale_price"),
 				saleCompanyRate = $this.data("sale_company_rate"),
 				cpRate = $this.data("cp_rate"),
 				contentsCd = $this.data("contents_cd");
 			
 			var wrapHtml  = '<tr>';
-				wrapHtml += '<td span="4">{0}</td>'; 	//상품명
+				wrapHtml += '<td span="4">{0}</td>'; 		//상품명
 				wrapHtml += '<td span="2">{1}</td>';		//업체명
 				wrapHtml += '<td span="2">{2} 원</td>';		//가격
-				wrapHtml += '<td span="3"><input class="autoNumeric product-list pl{3}" type="text" name="{0}" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" data-contents_cd="{6}"/></td>';
+				wrapHtml += '<td span="3"><input class="autoNumeric product-list pl{3}" type="text" name="saleCount" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" /></td>';
 				wrapHtml += '<td span="1"><button class="btn btn-remove-product">삭제</button></td>';
+				wrapHtml += '<input type="hidden" name="contentList" value="{6}" />';
 				wrapHtml += '</tr>';
 				
-			tableHtml += String.format(wrapHtml, name, companyName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
+			tableHtml += String.format(wrapHtml, name, cpName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
 			
 		});
 		tableHtml += '</table>';
-		console.info(tableHtml);
 		$target.append( tableHtml );
 		
 		//상품 삭제버튼이 눌러지면 해당 엘리먼트 제거
 		$("button.btn-remove-product").click(function(){
 			var $this = $(this);
 			$this.parent().parent().remove();
+			//재계산
+			calculate();
 		});
-
 		
 		$('.autoNumeric').autoNumeric('init',{aPad: false });
 		$("#findProduct").modal('toggle');
@@ -250,12 +258,10 @@ $("#contractForm").submit(function(){
 	//$('#sale_price').val($('#sale_price').autoNumeric('get'));
 });
 
-$("body")
-	.on("keyup", $("input.product-list"), function(event){
-		//판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
-		var $this = $(event.target);
-		calculate();
-	});
+//판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
+$("body").on("keyup", $("input.product-list"), function(event){
+	calculate();
+});
 
 		//판매수량이 입력되면 계산 시작
 		function calculate(){
@@ -267,14 +273,15 @@ $("body")
 				totalProfit = 0;
 			
 			console.debug(String.format("price * cnt = salePrice, ( earning - saleCompanyFee ) - cpFee = profit"));
-			$("#sale-content-list").find("input").each(function(){
+			$("#sale-content-list").find("input.autoNumeric").each(function(){
 				
 				var $this = $(this),
 					productData = $this.data();
 				
 				//계산
-				var cnt = $this.autoNumeric('get'),
-					salePrice = productData.sale_price * cnt,
+				var cnt = $this.autoNumeric('get');
+				
+				var salePrice = productData.sale_price * cnt,
 					saleFee = salePrice * ( productData.sale_company_rate / 100 ),
 					earning = salePrice - saleFee,
 					cpFee = earning * ( productData.cp_rate / 100 ),
@@ -295,11 +302,19 @@ $("body")
 				totalProfit += profit;
 			});
 			
-			$(".totalSalePrice").text(totalSalePrice); // <- 혼자 class임 element가 2개임
-			$("#totalSaleCnt").text(totalSaleCnt);
-			$("#totalSaleCompanyCommission").text(totalSaleCompanyFee);
-			$("#totalCpCommission").text(totalCpFee);
-			$("#totalProfit").text(totalProfit);
+			//보여지는 값 넣어주기
+			$("span.totalSalePrice").text(totalSalePrice); 
+			$("span.totalSaleCnt").text(totalSaleCnt);
+			$("span.totalSaleCompanyCommission").text(totalSaleCompanyFee);
+			$("span.totalCpCommission").text(totalCpFee);
+			$("span.totalProfit").text(totalProfit);
+			
+			//FORM input 히든값 넣어주기
+			$("#totalSalePrice").val(totalSalePrice); 
+			$("#totalSaleCnt").val(totalSaleCnt);
+			$("#totalSaleCompanyCommission").val(totalSaleCompanyFee);
+			$("#totalCpCommission").val(totalCpFee);
+			$("#totalProfit").val(totalProfit);
 			
 			//숫자 표시 업데이트 000,000
 			$('.autoNumeric').autoNumeric('update',{aPad: false });
@@ -406,7 +421,7 @@ $('#salePeriodTip')
 		edate;
 	$( "input.datepicker" ).datepicker({autoclose:true})
 		.on('changeDate', function(ev){
-			if( "str_date" === $(this).attr("name") ) {
+			if( "sale_str_date" === $(this).attr("name") ) {
 				sdate = ev.date.valueOf();
 			} else {
 				edate = ev.date.valueOf();
@@ -414,7 +429,7 @@ $('#salePeriodTip')
 					bootbox.alert( "시작일 이전으로 설정할 수 없습니다." );
 					$( this ).val( "" );
 				}
-				$( "input[name=str_date]" ).datepicker( "hide" );
+				$( "input[name=sale_str_date]" ).datepicker( "hide" );
 			}
 		});
 	
