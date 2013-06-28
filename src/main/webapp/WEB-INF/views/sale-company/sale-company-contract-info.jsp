@@ -22,11 +22,7 @@
 
 	<div class="span12">
 		<form id="registeForm" class="form-horizontal" method="POST" action='<spring:eval expression="@urlProp['saleCompanyContractCreateAction']"/>'>
-			<c:choose>
-					<c:when test="${viewType eq 2}">
-						<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
-					</c:when>
-			</c:choose>
+			<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처</label>
 				<div class="controls">
@@ -47,19 +43,21 @@
 			<div class="control-group">
 				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급대금</label>
 				<div class="controls">
-					<div class="btn-group">
-						<a  id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>KRW</span><span class="caret"></span></a>
-						<ul id="currency-menu" class="dropdown-menu">
-							<li><a href="#">KRW</a></li>
-							<li><a href="#">USD</a></li>
-							<li><a href="#">JPY</a></li>
-							<li><a href="#">CNY</a></li>
-							<li><a href="#">EUR</a></li>
-						</ul>
-					</div>
-					<div class="input-append">
+					<div class="input-prepend">
+						<div class="btn-group no-padding">
+							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">
+									<span id="currency-view">KRW</span><span class="caret"></span>
+							</button>
+							<ul id="currency-menu" class="dropdown-menu">
+								<li><a href="#">KRW</a></li>
+								<li><a href="#">USD</a></li>
+								<li><a href="#">JPY</a></li>
+								<li><a href="#">CNY</a></li>
+								<li><a href="#">EUR</a></li>
+							</ul>
+						</div>
 						<input type="hidden" id="currency" name="currency" value="KRW">
-						<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="지급대금은 필수이고 숫자여야 합니다." required>
+						<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="지급대금을 입력해 주세요." required />
 					</div>
 				</div>
 			</div>
@@ -333,19 +331,24 @@
 			<div class="control-group">
 				<label class="control-label" ></label>
 				<div class="controls">
-					<button id="btn-list" class="btn btn-product-list">목록가기</button>
+					<button id="btn-list" type="button" class="btn btn-product-list">목록가기</button>
 					<c:choose>
 						<c:when test="${viewType eq 1 }">
-							<button type="submit" id="btn-registe" class="btn btn-primary">등록하기</button>
+							<button type="button" id="btn-registe" class="btn btn-primary">등록하기</button>
 						</c:when>
 						<c:otherwise>
-							<button type="submit" id="btn-modify" class="btn btn-primary">수정하기</button>
+							<button type="button" id="btn-delete" class="btn">삭제</button>
+							<button type="button" id="btn-modify" class="btn btn-primary">수정하기</button>
 						</c:otherwise>
 					</c:choose>
 					
 				</div>
 			</div>
 			
+		</form>
+		
+		<form id="deleteForm" action="<spring:eval expression="@urlProp['saleCompanyContractDeleteAction']"/>" method="post">
+			<input type="hidden" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
 		</form>
 
 	</div>
@@ -455,6 +458,7 @@
 	</div>
 	 -->
 </div>
+
 <script>
 	$(function(){
 		
@@ -473,26 +477,26 @@
 		
 		// 등록 버튼 클릭
 		$("#btn-registe").click(function(){
-					$("#registeForm").submit();
-			/* bootbox.confirm( "등록 하시겠습니까?", function(result) {
+					/* $("#registeForm").submit(); */
+			 bootbox.confirm( "등록 하시겠습니까?", function(result) {
 				if( result ) {
 					$("#registeForm").submit();
 				}
-			}); */
+			}); 
 		});
 		
 		// 수정 하기 버튼 클릭
 		$("#btn-modify").click(function(){
-			$( "#registeForm" )
+			/* $( "#registeForm" )
 			.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
-			.submit();
-			/* bootbox.confirm( "수정 하시겠습니까?", function(result) {
+			.submit(); */
+			 bootbox.confirm( "수정 하시겠습니까?", function(result) {
 				if( result ) {
 					$( "#registeForm" )
 					.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
 					.submit();
 				}
-			});  */
+			});  
 	    });
 		
 		// 분납 방식 달력
@@ -703,7 +707,21 @@
 			$("#default_price_type").attr("checked", false);
 		});
 		
+		$("#btn-list").click(function(){
+			bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {
+				if( result ) {
+					window.location.href = "<spring:eval expression="@urlProp['saleCompanyContractList']"/>";
+				}
+			});
+		});
 		
+		$("#btn-delete").click(function(){
+			bootbox.confirm( "삭제하시겠습니까?", function(result) {
+				if( result ){
+					$("#deleteForm").submit();
+				};
+			})
+		});
 		
 		
 	}); //init function
