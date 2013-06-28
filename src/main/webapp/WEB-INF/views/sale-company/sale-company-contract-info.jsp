@@ -75,37 +75,36 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="">분납방식</label> 
-				<div class="controls installments-group">
-					<div >
+				<label class="control-label" for="payments">분납방식</label> 
+				<div id="installments-group" class="controls">
 					<c:choose>
 						<c:when test="${saleContractDetail == null || fn:length(saleContractDetail.installmentList) == 0}">
-						 	<input class="installments-date" type="text"  name="installments_dt"  placeholder="분납입">
-							<input type="text" class="installments_price price" name="installments_price" placeholder="금액">
-							<img id="addInstallments" src="/pcms/img/plus.png" alt="+"/>
+							<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+							 	<input type="text"  name="installments_dt"  placeholder="분납입">
+							 	<span class="add-on"><i class="icon-calendar"></i></span>
+							 </div>
+						 	<input type="text" class="price" name="installments_price" placeholder="금액" >
+							<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${saleContractDetail.installmentList }" var="installment" varStatus="index">
-							<div>
 								<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
-								 	<input class="installments-date " type="text"  name="installments_dt"  value="${installment.installments_dt }" placeholder="분납입">
+								 	<input type="text"  name="installments_dt"  value="${installment.installments_dt }" placeholder="분납입">
 								 	<span class="add-on"><i class="icon-calendar"></i></span>
 								 </div>
 							 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
 								<c:choose>
-									<c:when test="${index.count == 1 }">
-										<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+									<c:when test="${not index.first }">
+										<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>
 									</c:when>
 									<c:otherwise>
-										<img class="remove-device" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>
+										<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
 									</c:otherwise>
 								</c:choose>
-							</div>
 							</c:forEach>
 						
 						</c:otherwise>
 					</c:choose>
-					</div>
 				</div>
 			</div>
 			<div class="control-group">
@@ -206,7 +205,7 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<c:forEach items="${ saleContractDetail.contractedDeviceList }" var="contractedDeviceList">
+							<c:forEach items="${ saleContractDetail.contractedDeviceList }" var="contractedDeviceList" varStatus="index">
 								<div class="row-fluid">
 									<div>
 										<div class="span3">							
@@ -216,9 +215,18 @@
 												</c:forEach>
 											</select>
 										</div>
-										<div class="span2 device-remove-icon">
-											<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
-										</div>
+										<c:choose>
+											<c:when test="${not index.first }">
+												<div class="span2 device-remove-icon">
+													<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<div class="span2 device-add-icon">
+													<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
+												</div>
+											</c:otherwise>
+										</c:choose>
 										<!-- 아래로만 추가 하기 위한 empty -->
 										<div class="span7">
 											<!--  empty -->
@@ -252,8 +260,8 @@
 			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 콘텐츠</label>
 				<div class="controls">
-					<button id="btn-series-create" class="btn">시리즈등록</button>
-					<button id="btn-each-create" class="btn ">개별상품등록</button>
+					<button id="btn-series-create" type="button" class="btn">시리즈등록</button>
+					<button id="btn-each-create" type="button" class="btn ">개별상품등록</button>
 				</div>
 			</div>
 
@@ -282,7 +290,7 @@
 										<td>${content.contents_cd }<input type="hidden" name="selectedContentsCd" value="${content.contents_cd }"></td>
 										<td>${content.name}</td>
 										<td>${content.company_name}</td>
-										<td>${content.sale_price} <input type="hidden" name="selectedContentsPrice" value="${content.sale_price}"> 
+										<td><input class="price product_price" type="text" name="selectedContentsPrice" value="${content.sale_price}"> 
 											&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/></td>
 									</tr>
 									</c:forEach>
@@ -299,11 +307,11 @@
 					<c:choose>
 						<c:when test="${viewType eq 1}">
 							<label class="radio inline">
-								<input type="radio" id="sale_price_type" name="sale_price_type" value="0">
+								<input type="radio" id="etc_price_type" name="sale_price_type" value="0">
 								기타 판매가격
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="sale_price_type" value="1" checked>
+								<input type="radio" id="default_price_type" name="sale_price_type" value="1" checked>
 								기본 판매가격
 							</label>
 							<input type="text" class="price" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
@@ -328,10 +336,10 @@
 					<button id="btn-list" class="btn btn-product-list">목록가기</button>
 					<c:choose>
 						<c:when test="${viewType eq 1 }">
-							<button id="btn-registe" class="btn btn-primary">등록하기</button>
+							<button type="submit" id="btn-registe" class="btn btn-primary">등록하기</button>
 						</c:when>
 						<c:otherwise>
-							<button id="btn-modify" class="btn btn-primary">수정하기</button>
+							<button type="submit" id="btn-modify" class="btn btn-primary">수정하기</button>
 						</c:otherwise>
 					</c:choose>
 					
@@ -413,9 +421,13 @@
 </div>
 
 <!-- 분납방식 추가 HTML -->
-<div id="installment-add-html" hidden="true">
-	<input class="installments-date" type="text"  name="installments_dt"  placeholder="분납입">
-	<input type="text" class="installments_price price" name="installments_price" placeholder="금액">	
+
+<div id="installment-add-html" hidden=true>
+	<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+	 	<input type="text"  name="installments_dt"  placeholder="분납입">
+	 	<span class="add-on"><i class="icon-calendar"></i></span>
+	 </div>
+ 	<input type="text" class="price" name="installments_price" placeholder="금액" >
 	<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
 </div>
 
@@ -484,15 +496,19 @@
 	    });
 		
 		// 분납 방식 달력
-		$("body").delegate('input[type=text].installments-date', 'focus', function(event){
-			$(this).datepicker({
-				autoclose: true,
-				 format : 'yyyy-mm-dd'
-			});
-		});
+		$(".installments-date").datepicker({autoclose: true});
 		
-		// 분납 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
 		$("body").delegate('input[type=text].price', 'change', function(event){
+			$(this).autoNumeric('init',{aPad: false });
+		});
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].price', 'focus', function(event){
+			$(this).autoNumeric('init',{aPad: false });
+		});
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].price', 'click', function(event){
 			$(this).autoNumeric('init',{aPad: false });
 		});
 		
@@ -500,9 +516,9 @@
 		
 		// 지급대금 통화 메뉴
 		$("#currency-menu").find("a").click(function(){
-			this.selectedValue = value;
-			$("#currency-toggle span").first().text(value);
-			$('#currency').val(value);
+			var selectedValue = $(this).text();
+			$("#currency-toggle span").first().text(selectedValue);
+			$('#currency').val(selectedValue);
 		});
 		
 		// 계약기간
@@ -528,8 +544,9 @@
 		
 		// 분납 방식 추가 
 		$("#addInstallments").click(function(){
-			var $insertPlace = $("div.installments-group");
+			var $insertPlace = $("#installments-group");
 			$("#installment-add-html").clone().show().appendTo($insertPlace);
+			$(".installments-date").datepicker({autoclose: true});
 		});
 		
 		// 판매 형태 등록
@@ -541,6 +558,7 @@
 		
 		// 시리즈 등록 버튼 이벤트
 		$("#btn-series-create").click(function(){
+			
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			$.ajax({
 				dataType: "json",
@@ -558,18 +576,19 @@
 							$html += 	'<td><input class="check-product" name="check_list" type="checkbox" data-content_name="' + this.series_name 
 											+ '" data-content_cd="'+this.series_mgmtno
 											+ '" data-content_price="'+this.series_price
+											+ '" data-cp_name="'+this.cp_name
 											+ '" value="' + this.series_mgmtno 
 											+ '"></td>';
-							$html += 	'<td>' + this.series_name + '</td>';
+							$html += 	'<td>' + this.series_name + '</td>';	
 							$html += 	'<td>' + this.series_price + '</td>';
 							$html += 	'</tr>';
 							$insertPlace.append( $html );
 							
 						});
-
 						$("#series-modal").modal('toggle');
 					}
 					$seriesModal.show();
+					$(".check-product").attr('checked', false);
 				}
 			});
 		});
@@ -577,16 +596,13 @@
 		// 개별상품등록 버튼 이벤트
 		$("#btn-each-create").click(function(){
 			
-			// 1. 카테고리 조회
-			// 2. 시리즈 조회
-			// 3. 상품 조회
-			/* var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>';
-			*/
-			
 			$("#contentQuery").val("");	
+			
+			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>';
+			
 			$.ajax({
 				dataType: "json",
-				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyCateList']"/>',
+				url: searchUrl,
 				success: function(data){
 					
 					var $target = $("#product-modal").find("select[name='category']");
@@ -598,21 +614,21 @@
 						
 						var $json = data.result;
 						$.each($json, function(){
-							console.info(this.cate_id);
 							$target.append( '<option value="' + this.cate_id + '">' + this.cate_name + '</option>' );
 						});
-						$("#hasContents").val("has");
 					}
 					
 					categoryChange();
 				}
 			});
 			$("#product-modal").modal('toggle');
+			// 상품 선택 초기화
+			$(".check-product").attr('checked', false);
 			
 			
 		});
 		
-		// 개별상품 등록하기 버튼 이벤트
+		// 시리즈 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
 			if (checkMulti()) {
 				var $selectedItem = $(".check-product").filter(":checked");
@@ -651,6 +667,8 @@
 		// 선택 삭제 아이콘
 		$("body").delegate('img.remove-product', 'click', function(event){
 			$(this).parent().parent().remove();
+			totalPriceCalc();
+			
 		});
 		
 		// 라이센스 버튼 이벤트
@@ -678,8 +696,25 @@
 			checkMulti();
 		});
 		
+		$("body").delegate('.product_price', 'change', function(event){
+			
+			totalPriceCalc();
+			$("#etc_price_type").attr("checked", true);
+			$("#default_price_type").attr("checked", false);
+		});
+		
+		
+		
 		
 	}); //init function
+	
+	function totalPriceCalc(){
+		var seletedTotlaPrice=0;
+		$.each($(".product_price"), function(){
+			seletedTotlaPrice = parseInt(seletedTotlaPrice)+parseInt($(this).val().replace(/,/gi, ''));
+		});
+		$("#sale_price").val(seletedTotlaPrice);
+	}
 	
 	function plusIcontooltip(){
 		$("i.icon-plus-sign").tooltip({"title":"추가", "placement":"top" });
@@ -735,6 +770,7 @@
 											+ ' data-content_price="' + this.content_price + '"' 
 											+ ' data-content_name="'+ this.content_name + '"'
 											+ ' data-content_cd="'+ this.content_cd + '"'
+											+ ' data-cp_name="'+ this.cp_name + '"'
 											+ ' value="' + this.content_cd + '"></td>';
 								$html += 	'<td>' + this.content_name + '</td>';
 								$html += 	'<td>' + this.content_price + '</td>';
@@ -774,8 +810,8 @@
 			productHtml +='<td>'+$this.data("content_cd")+'<input type="hidden" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
 			productHtml +='<td> '+$this.data("content_name")+'</td>';
 			productHtml +='<td> '+$this.data("cp_name")+'</td>';
-			productHtml +='<td>'+$this.data("content_price")+'<input type="hidden" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
-			productHtml +='&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/>';
+			productHtml +='<td> <input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
+			productHtml +='&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/>';			
 			productHtml +='</td>';
 			productHtml +='</tr>';
 			
