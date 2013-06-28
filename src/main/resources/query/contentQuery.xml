@@ -109,11 +109,12 @@
     </select>
 
    <select id="getContentCodeListBySeriesMgmtno" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
-        SELECT /* contentQuery."getContentCodeListBySeriesMgmtno" 2013.06.04 정대원 */
-            *
-        FROM CONTENTS
-        WHERE series_mgmtno = #{ series_mgmtno }
-        AND company_mgmtno IS NOT NULL
+        SELECT /* contentQuery."getContentCodeListBySeriesMgmtno" 2013.06.28 정대원 */
+            CONTENTS.*,
+            COMPANY.company_name
+        FROM CONTENTS, COMPANY
+        WHERE CONTENTS.series_mgmtno = #{ series_mgmtno }
+        AND CONTENTS.company_mgmtno = COMPANY.company_mgmtno
         ORDER BY reg_dt DESC
     </select>
 

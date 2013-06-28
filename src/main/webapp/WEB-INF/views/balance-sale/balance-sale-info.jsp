@@ -79,7 +79,7 @@ div#sale-content-list {
 					<a id="contentListTip" href="#" data-toggle="tooltip" >tip</a>
 					<br />
 					<br />
-					<div id="sale-content-list">
+					<div class="well" id="sale-content-list">
 						<!-- 
 						ajax sale-content here
 						 -->
@@ -100,7 +100,7 @@ div#sale-content-list {
 						<span class="autoNumeric" id="totalCpCommission"></span>(업체 수수료)
 					</h3>
 					<br />
-					<h3>최종 자사 수익 : <span id="totalProfit"></span> 원</h3>
+					<h3>최종 자사 수익 : <span class="autoNumeric" id="totalProfit"></span> 원</h3>
 				</div>
 			</div>
 		</form>
@@ -266,12 +266,15 @@ $("body").on("keyup", $("input.product-list"), function(event){
 					cpFee = earning * ( productData.cp_rate / 100 ),
 					profit = earning - cpFee;
 				
-				
 				console.debug(String.format("{0} * {1} = {2}, ( {3} - {4} ) - {5} = {6}", 
 						productData.sale_price, cnt, salePrice, earning, saleFee, cpFee, profit ));
 				
+				//판매 수량이 입력 안되었을때 
+				if( isNaN(cnt) || cnt.length == 0 ) {
+					cnt = 0;
+			   	}
 				//누적 데이터 쌓기
-				totalSaleCnt += cnt;
+				totalSaleCnt += parseInt(cnt);
 				totalSalePrice += salePrice;
 				totalSaleCompanyFee += saleFee;
 				totalCpFee += cpFee;
