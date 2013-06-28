@@ -46,19 +46,23 @@
 			</c:if>
 		</div>
 		<p class="loginfo user">
-			${ sessionScope["user"].id } 님 <button class="btn btn-small btn-logout" type="button" onclick="logout()">logout</button>
+			${ sessionScope["user"].id } 님 <button id="btn-logout" type="button" class="btn btn-small">logout</button>
 		</p>
 	</div>
 </div>
 <script>
 $(function(){
-	//로그아웃
-	var logout = function(){
-		window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
-	};
-	//GNB 하이라이트 표시
-	var nav_seq = $("body").data("nav_seq");
-	$("div.gnb")
-		.find("a").eq( nav_seq ).addClass( "active" );
+	
+//로그아웃
+$("#btn-logout").click(function(){
+	window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
+});
+
+//GNB 하이라이트 표시
+var nav_seq = $("body").data("nav_seq");
+$("div.gnb")
+	.find("a").eq( nav_seq ).addClass( "active" );
+
+
 });
 </script>
