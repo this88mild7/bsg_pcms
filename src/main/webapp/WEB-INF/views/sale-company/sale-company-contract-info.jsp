@@ -22,7 +22,6 @@
 
 	<div class="span12">
 		<form id="registeForm" class="form-horizontal" method="POST" action='<spring:eval expression="@urlProp['saleCompanyContractCreateAction']"/>'>
-			<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처</label>
 				<div class="controls">
@@ -35,6 +34,7 @@
 						</select>
 					</c:when>
 					<c:otherwise>
+						<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
 						${saleContractDetail.company_name}
 					</c:otherwise>
 				</c:choose>
@@ -72,37 +72,44 @@
 					</select>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="payments">분납방식</label> 
-				<div id="installments-group" class="controls">
-					<c:choose>
-						<c:when test="${saleContractDetail == null || fn:length(saleContractDetail.installmentList) == 0}">
-							<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
-							 	<input type="text"  name="installments_dt"  placeholder="분납입">
-							 	<span class="add-on"><i class="icon-calendar"></i></span>
-							 </div>
-						 	<input type="text" class="price" name="installments_price" placeholder="금액" >
-							<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
-						</c:when>
-						<c:otherwise>
-							<c:forEach items="${saleContractDetail.installmentList }" var="installment" varStatus="index">
+			<div class="control-group" id="installments-group" >
+				<label class="control-label" for="payments">분납방식</label>
+				<div class="controls">
+						<c:choose>
+							<c:when test="${saleContractDetail == null || fn:length(saleContractDetail.installmentList) == 0}">
 								<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
-								 	<input type="text"  name="installments_dt"  value="${installment.installments_dt }" placeholder="분납입">
+								 	<input type="text"  name="installments_dt"  placeholder="분납입">
 								 	<span class="add-on"><i class="icon-calendar"></i></span>
-								 </div>
-							 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
-								<c:choose>
-									<c:when test="${not index.first }">
-										<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>
-									</c:when>
-									<c:otherwise>
-										<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-						
-						</c:otherwise>
-					</c:choose>
+								</div>
+							 	<input type="text" class="price" name="installments_price" placeholder="금액" >
+								<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+							</c:when>
+							<c:otherwise>
+								<c:forEach items="${saleContractDetail.installmentList }" var="installment" varStatus="index">
+									<c:choose>
+										<c:when test="${not index.first }">
+										<div style="margin-top : 5px;">
+											<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+											 	<input type="text"  name="installments_dt"  value="${installment.installments_dt }" placeholder="분납입">
+											 	<span class="add-on"><i class="icon-calendar"></i></span>
+											</div>
+										 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
+											<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>
+										</div>
+										</c:when>
+										<c:otherwise>
+											<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
+											 	<input type="text"  name="installments_dt"  value="${installment.installments_dt }" placeholder="분납입">
+											 	<span class="add-on"><i class="icon-calendar"></i></span>
+											</div>
+										 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
+											<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							
+							</c:otherwise>
+						</c:choose>
 				</div>
 			</div>
 			<div class="control-group">
@@ -423,17 +430,6 @@
 	</div>
 </div>
 
-<!-- 분납방식 추가 HTML -->
-
-<div id="installment-add-html" hidden=true>
-	<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
-	 	<input type="text"  name="installments_dt"  placeholder="분납입">
-	 	<span class="add-on"><i class="icon-calendar"></i></span>
-	 </div>
- 	<input type="text" class="price" name="installments_price" placeholder="금액" >
-	<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
-</div>
-
 <!--판매형태(device) 추가 HTML -->
 <div id="device-list" hidden="true">
 	<div class="span3">
@@ -462,61 +458,8 @@
 <script>
 	$(function(){
 		
-		$("input,textarea").not("[type=submit]").jqBootstrapValidation();		
-
 		// 금액에 콤마표시
-		$(".price").autoNumeric('init',{aPad: false });
-		
-		//$("#company_name,#phoneno").not("[type=submit]").jqBootstrapValidation();
-		
-		$("#registeForm").submit(function(){
-			$("input[type=text].price").each(function(){
-				$(this).val( $(this).autoNumeric('get') );
-			});
-		});
-		
-		// 등록 버튼 클릭
-		$("#btn-registe").click(function(){
-					/* $("#registeForm").submit(); */
-			 bootbox.confirm( "등록 하시겠습니까?", function(result) {
-				if( result ) {
-					$("#registeForm").submit();
-				}
-			}); 
-		});
-		
-		// 수정 하기 버튼 클릭
-		$("#btn-modify").click(function(){
-			/* $( "#registeForm" )
-			.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
-			.submit(); */
-			 bootbox.confirm( "수정 하시겠습니까?", function(result) {
-				if( result ) {
-					$( "#registeForm" )
-					.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
-					.submit();
-				}
-			});  
-	    });
-		
-		// 분납 방식 달력
-		$(".installments-date").datepicker({autoclose: true});
-		
-		
-		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
-		$("body").delegate('input[type=text].price', 'change', function(event){
-			$(this).autoNumeric('init',{aPad: false });
-		});
-		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
-		$("body").delegate('input[type=text].price', 'focus', function(event){
-			$(this).autoNumeric('init',{aPad: false });
-		});
-		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
-		$("body").delegate('input[type=text].price', 'click', function(event){
-			$(this).autoNumeric('init',{aPad: false });
-		});
-		
-		
+		$("input.price").autoNumeric('init',{aPad: false });
 		
 		// 지급대금 통화 메뉴
 		$("#currency-menu").find("a").click(function(){
@@ -526,11 +469,10 @@
 		});
 		
 		// 계약기간
-		var strDate;
-		var endDate;
+		var strDate, endDate;
 		$("input.contract-date").datepicker({
 				autoclose: true,
-				 format : 'yyyy-mm-dd'
+				format : 'yyyy-mm-dd'
 			}).on('changeDate', function(ev){
 				// 시작일 
 				if( $(this).attr("name") === 'str_date') {
@@ -548,9 +490,30 @@
 		
 		// 분납 방식 추가 
 		$("#addInstallments").click(function(){
-			var $insertPlace = $("#installments-group");
-			$("#installment-add-html").clone().show().appendTo($insertPlace);
-			$(".installments-date").datepicker({autoclose: true});
+			
+			//최대 4개 까지 가능
+			if( 4 == $("input[name='installments_dt']").size() ) {
+				bootbox.alert("분납은 4번까지 입력 하실 수 있습니다.");
+				return false;
+			}
+			//추가될 HTML
+			var html  = '<div style="margin-top : 5px;">';
+				html += '<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">';
+				html += '<input type="text" name="installments_dt" placeholder="분납일">';
+				html += '<span class="add-on"><i class="icon-calendar"></i></span>';
+				html += '</div>';
+				html += '&nbsp;';
+				html += '<input type="text" class="price" name="installments_price" placeholder="금액">';
+				html += '&nbsp;';
+				html += '<img class="removePd" src="/pcms/img/remove.png" alt="+" style="cursor: pointer;">';
+				html += '</div>';
+			
+			$("#installments-group")
+				.find(".controls")
+					.append(html);
+			
+			$("input[name='installments_price']").autoNumeric('init',{aPad: false });
+			
 		});
 		
 		// 판매 형태 등록
@@ -568,6 +531,7 @@
 				dataType: "json",
 				url: searchUrl,
 				success: function(response){
+					
 					var $seriesModal = $("#series-modal");
 					var $insertPlace = $("#findSeriesBody");
 					
@@ -591,7 +555,9 @@
 						});
 						$("#series-modal").modal('toggle');
 					}
+					
 					$seriesModal.show();
+					
 					$(".check-product").attr('checked', false);
 				}
 			});
@@ -672,7 +638,20 @@
 		$("body").delegate('img.remove-product', 'click', function(event){
 			$(this).parent().parent().remove();
 			totalPriceCalc();
-			
+		});
+		// 상품 선택 체크
+		$("body").delegate('.check-product', 'click', function(event){
+			checkMulti();
+		});
+		// 상품 가격 변동시 총 판매 가격 변경
+		$("body").delegate('.product_price', 'change', function(event){
+			totalPriceCalc();
+			$("#etc_price_type").attr("checked", true);
+			$("#default_price_type").attr("checked", false);
+		});
+		// 분납 방식 달력
+		$("body").delegate("div.installments-date", 'focus', function(event){
+			$(this).datepicker({autoclose: true});
 		});
 		
 		// 라이센스 버튼 이벤트
@@ -694,18 +673,35 @@
 			}
 		});
 		
-		// 상품 모달에서 체크시 판매방식 검증
-		
-		$("body").delegate('.check-product', 'click', function(event){
-			checkMulti();
+		// 판매계약 등록시 가격에 , 표시 제거
+		$("#registeForm").submit(function(){
+			$("input.price").each(function(){
+				$(this).val( $(this).autoNumeric('get') );
+			});
 		});
 		
-		$("body").delegate('.product_price', 'change', function(event){
-			
-			totalPriceCalc();
-			$("#etc_price_type").attr("checked", true);
-			$("#default_price_type").attr("checked", false);
+		// 등록 버튼 클릭
+		$("#btn-registe").click(function(){
+			$("input,textarea").not("[type=submit]").jqBootstrapValidation();
+			 bootbox.confirm( "등록 하시겠습니까?", function(result) {
+				if( result ) {
+					$("#registeForm").submit();
+				}
+			}); 
 		});
+		
+		// 수정 하기 버튼 클릭
+		$("#btn-modify").click(function(){
+			$("input,textarea").not("[type=submit]").jqBootstrapValidation();
+			 bootbox.confirm( "수정 하시겠습니까?", function(result) {
+				if( result ) {
+					$( "#registeForm" )
+					.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
+					.submit();
+				}
+			});  
+	    });
+		
 		
 		$("#btn-list").click(function(){
 			bootbox.confirm( "화면에서 빠져 나가시겠습니까?", function(result) {
@@ -732,15 +728,17 @@
 			seletedTotlaPrice = parseInt(seletedTotlaPrice)+parseInt($(this).val().replace(/,/gi, ''));
 		});
 		$("#sale_price").val(seletedTotlaPrice);
+		$('#sale_price').autoNumeric('init',{aPad: false });
+		$('#sale_price').autoNumeric('update',{aPad: false });
 	}
 	
-	function plusIcontooltip(){
+	/* function plusIcontooltip(){
 		$("i.icon-plus-sign").tooltip({"title":"추가", "placement":"top" });
 	}
 	
 	function minusIcontooltip(){
 		$("i.icon-remove-sign").tooltip( { "title":"삭제", "placement":"right" } );
-	}
+	} */
 	
 	function categoryChange(){
 		$( "select[name='category']" ).change(function () {
@@ -839,6 +837,10 @@
 		
 		$insertPlace.append(productHtml);
 		$("#sale_price").val(seletedTotlaPrice);
+		$('.product_price').autoNumeric('init',{aPad: false });
+		$('.product_price').autoNumeric('update',{aPad: false });
+		$('#sale_price').autoNumeric('init',{aPad: false });
+		$('#sale_price').autoNumeric('update',{aPad: false });
 	};
 	
 	function checkMulti() {
