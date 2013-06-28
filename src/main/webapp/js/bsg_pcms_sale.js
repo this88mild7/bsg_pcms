@@ -36,7 +36,8 @@ MenuSelector.prototype = {
 function BsgCalendar() {};
 BsgCalendar.prototype = {
 	calendar : '',
-	
+	strDate : '',
+	endDate : '',
 		
 	eventListen : function(target) {
 		calendar = $(target).datepicker({
@@ -46,8 +47,6 @@ BsgCalendar.prototype = {
 		return this;
 	},
 	checkStartEndDate : function(strDateName, ednDateName){
-		var strDate;
-		var endDate;
 		calendar.on('changeDate', function(ev){
 			// 시작일 
 			if( strDateName === $(this).attr("name") ) {
