@@ -2,7 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions"  prefix="fn"%>
-	
+
+<style>
+div#sale-content-list {
+	height : 200px;
+	overflow-y : scroll; 
+}
+</style>	
 <div class="page-name">
 <c:choose>
 			<c:when test="${viewType eq 1 }">
@@ -272,34 +278,24 @@
 
 			<div class="control-group">
 				<label class="control-label" for=""></label>
-				<div class="controls" >
-				
+				<div class="controls" id="sale-content-list" >
+					
 					<c:choose>
 						<c:when test="${viewType eq 1}">
-							<table id="product-content-tb" style="width:650px" class="table table-striped table-bordered">
+							<table id="product-content-tb" class="tbl" style="width:100%;" data-validation-required-message="판매상품은 필수 값입니다." required>
 							</table>				
 						</c:when>
 						<c:otherwise>
-							<table id="product-content-tb" style="width:650px" class="table table-striped table-bordered">
-								<thead>
-									<tr>
-										<th>상품코드</th>
-										<th>상품명</th>
-										<th>CP 업체</th>
-										<th>판매금액</th>
-									</tr>
-								</thead>
-								<tbody>
+							<table id="product-content-tb" class="tbl" style="width:100%;" data-validation-required-message="판매상품은 필수 값입니다." required>
 									<c:forEach items="${contentList }" var="content">
 									<tr>
-										<td>${content.contents_cd }<input type="hidden" name="selectedContentsCd" value="${content.contents_cd }"></td>
-										<td>${content.name}</td>
-										<td>${content.company_name}</td>
-										<td><input class="price product_price" type="text" name="selectedContentsPrice" value="${content.sale_price}"> 
-											&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/></td>
+										<td class="span3">${content.contents_cd }<input type="hidden" name="selectedContentsCd" value="${content.contents_cd }"></td>
+										<td class="span4">${content.name}</td>
+										<td class="span3">${content.company_name}</td>
+										<td class="span1"><input class="price product_price" type="text" name="selectedContentsPrice" value="${content.sale_price}"></td>
+										<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>	
 									</tr>
 									</c:forEach>
-								</tbody>
 							</table>				
 						</c:otherwise>
 					</c:choose>
@@ -654,6 +650,15 @@
 			$(this).datepicker({autoclose: true});
 		});
 		
+		
+		// 판매 상품 삭제 버튼 이벤트
+		$("body").delegate("button.btn-remove-product", "click", function(){
+			var $this = $(this);
+			$this.parent().parent().remove();
+			//재계산
+			 totalPriceCalc();
+		});
+		
 		// 라이센스 버튼 이벤트
 		$(".btn-license").click(function(){
 			// 기타 체크 이벤트라면
@@ -672,6 +677,8 @@
 				
 			}
 		});
+		
+		
 		
 		// 판매계약 등록시 가격에 , 표시 제거
 		$("#registeForm").submit(function(){
@@ -801,46 +808,36 @@
 	
 	
 	function productTable($selectedItem){
-		
 		var $insertPlace = $("#product-content-tb");
 		var productHtml;
 		var seletedTotlaPrice=0;
 		
 		$insertPlace.empty();
 		
-		productHtml += '<thead>';
-		productHtml += '<tr>';
-		productHtml += '<th>상품코드</th>';
-		productHtml += '<th>상품명</th>';
-		productHtml += '<th>CP 업체</th>';
-		productHtml += '<th>판매금액</th>';
-		productHtml += '</tr>';
-		productHtml += '</thead>';
-		
-		productHtml += '<tbody>';
 		
 		$selectedItem.each(function(){
 			
 			var $this = $(this);
 			productHtml +='<tr>';
-			productHtml +='<td>'+$this.data("content_cd")+'<input type="hidden" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
-			productHtml +='<td> '+$this.data("content_name")+'</td>';
-			productHtml +='<td> '+$this.data("cp_name")+'</td>';
-			productHtml +='<td> <input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
-			productHtml +='&nbsp;<img class="remove-product" src="/pcms/img/remove.png" alt="x"/>';			
+			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
+			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
+			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
+			productHtml +='<td class="span1"><input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
+			productHtml +='<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>';			
 			productHtml +='</td>';
 			productHtml +='</tr>';
 			
 			seletedTotlaPrice += $this.data("content_price");
 		});
-		productHtml += '</tbody>';
 		
 		$insertPlace.append(productHtml);
-		$("#sale_price").val(seletedTotlaPrice);
 		$('.product_price').autoNumeric('init',{aPad: false });
 		$('.product_price').autoNumeric('update',{aPad: false });
+		
+		totalPriceCalc();
+		/* $("#sale_price").val(seletedTotlaPrice);
 		$('#sale_price').autoNumeric('init',{aPad: false });
-		$('#sale_price').autoNumeric('update',{aPad: false });
+		$('#sale_price').autoNumeric('update',{aPad: false }); */
 	};
 	
 	function checkMulti() {
