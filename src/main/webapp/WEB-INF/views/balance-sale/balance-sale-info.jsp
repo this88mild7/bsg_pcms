@@ -96,11 +96,11 @@ div#sale-content-list {
 					<h3>
 						매출계산: 
 						<span class="autoNumeric totalSalePrice"></span>(총 매출금액) - 
-						<span class="autoNumeric" id="saleCompanyFee"></span>(판매처 수수료) - 
-						<span class="autoNumeric" id="cpFee"></span>(업체 수수료)
+						<span class="autoNumeric" id="totalSaleCompanyCommission"></span>(판매처 수수료) - 
+						<span class="autoNumeric" id="totalCpCommission"></span>(업체 수수료)
 					</h3>
 					<br />
-					<h3>최종 자사 수익 : <span id="totalEarnings"></span> 원</h3>
+					<h3>최종 자사 수익 : <span id="totalProfit"></span> 원</h3>
 				</div>
 			</div>
 		</form>
@@ -246,42 +246,43 @@ $("body").on("keyup", $("input.product-list"), function(event){
 		//판매수량이 입력되면 계산 시작
 		function calculate(){
 			
-			var totalSaleCnt = 0,
-				totalSalePrice = 0,
-				saleCompanyFee = 0,
-				cpFee = 0;
+			var totalSaleCnt = 0, 			//총 판매수
+				totalSalePrice = 0,			//총 매출금액
+				totalSaleCompanyFee = 0,	//총 판매 수수료
+				totalCpFee = 0,				//총 업체 수수료
+				totalProfit = 0;
 			
+			console.debug(String.format("price * cnt = salePrice, ( earning - saleCompanyFee ) - cpFee = profit"));
 			$("#sale-content-list").find("input").each(function(){
 				
-				
 				var $this = $(this),
-					name = $this.data("name"),
-					companyName = '업체명',//$this.data("company_name"),
-					salePrice = $this.data("sale_price"),
-					saleCompanyRate = $this.data("sale_company_rate"),
-					cpRate = $this.data("cp_rate"),
-					contentsCd = $this.data("contents_cd");
+					productData = $this.data();
 				
-				console.info($this.data());
+				//계산
+				var cnt = $this.autoNumeric('get'),
+					salePrice = productData.sale_price * cnt,
+					saleFee = salePrice * ( productData.sale_company_rate / 100 ),
+					earning = salePrice - saleFee,
+					cpFee = earning * ( productData.cp_rate / 100 ),
+					profit = earning - cpFee;
 				
-				//상품가격 * 판매수량 
-				var cnt = $this.autoNumeric('get');
-				var earning = cnt * salePrice;
-				var saleFee = earning * (saleCompanyRate/100);
-				var cpFee = earning * (cpRate/100);
-				console.info("earning : " + earning);
-				console.info("saleFee : " + saleFee);
-				console.info("cpFee : " + cpFee);
+				
+				console.debug(String.format("{0} * {1} = {2}, ( {3} - {4} ) - {5} = {6}", 
+						productData.sale_price, cnt, salePrice, earning, saleFee, cpFee, profit ));
+				
+				//누적 데이터 쌓기
 				totalSaleCnt += cnt;
-				totalSalePrice += earning;
-				saleCompanyFee += saleFee;
-				cpFee += cpFee;
+				totalSalePrice += salePrice;
+				totalSaleCompanyFee += saleFee;
+				totalCpFee += cpFee;
+				totalProfit += profit;
 			});
 			
 			$(".totalSalePrice").text(totalSalePrice); // <- 혼자 class임 element가 2개임
 			$("#totalSaleCnt").text(totalSaleCnt);
-			$("#saleCompanyFee").text(saleCompanyFee);
-			$("#cpFee").text(cpFee);
+			$("#totalSaleCompanyCommission").text(totalSaleCompanyFee);
+			$("#totalCpCommission").text(totalCpFee);
+			$("#totalProfit").text(totalProfit);
 			
 			//숫자 표시 업데이트 000,000
 			$('.autoNumeric').autoNumeric('update',{aPad: false });
