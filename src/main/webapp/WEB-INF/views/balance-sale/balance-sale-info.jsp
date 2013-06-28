@@ -85,8 +85,8 @@ div#sale-content-list {
 						 -->
 					</div>
 					<div class="rowspan">
-						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric totalSaleCnt"></span> 건</h4></div>
-						<div class="span6"><h4>총 매출금액 : <span class="autoNumeric totalSalePrice"></span> 원</h4></div>
+						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric totalSaleCnt blue"></span> 건</h4></div>
+						<div class="span6"><h4>총 매출금액 : <span class="autoNumeric totalSalePrice blue"></span> 원</h4></div>
 					</div>
 				</div>
 			</div>
@@ -95,12 +95,12 @@ div#sale-content-list {
 				<div class="text-right" style="padding-right:80px;">
 					<h3>
 						매출계산: 
-						<span class="autoNumeric totalSalePrice"></span>(총 매출금액) - 
-						<span class="autoNumeric totalSaleCompanyCommission"></span>(판매처 수수료) - 
-						<span class="autoNumeric totalCpCommission"></span>(업체 수수료)
+						<span class="autoNumeric totalSalePrice blue"></span>(총 매출금액) - 
+						<span class="autoNumeric totalSaleCompanyCommission blue"></span>(판매처 수수료) - 
+						<span class="autoNumeric totalCpCommission blue"></span>(업체 수수료)
 					</h3>
 					<br />
-					<h3>최종 자사 수익 : <span class="autoNumeric totalProfit"></span> 원</h3>
+					<h3>최종 자사 수익 : <span class="autoNumeric totalProfit blue"></span> 원</h3>
 				</div>
 			</div>
 			
@@ -140,7 +140,7 @@ div#sale-content-list {
 		<table class="table table-striped table-hover">
 			<thead>
 			<tr>
-				<th></th>
+				<th><input class="check-all" type="checkbox" name="checkbox_all" value="false" data-toggle="tooltip"></th>
 				<th>상품명</th>
 			</tr>
 			</thead>
@@ -156,7 +156,8 @@ div#sale-content-list {
 
 <script>
 $(function(){
-	
+
+//매출 상품등록 버튼 이벤트
 $("#btn-sale-product-list").click(function(event){
 	event.preventDefault();
 	
@@ -179,7 +180,7 @@ $("#btn-sale-product-list").click(function(event){
 		}
 		
 		if(data.contentList.length == 0) {
-			bootbox.alert( "상품이 없습니다." );
+			bootbox.alert( "등록된 상품이 없습니다. 상품등록을 마친 후 정산 입력해 주세요." );
 			return false;
 		}
 		
@@ -224,11 +225,11 @@ $("#btn-sale-product-list").click(function(event){
 				contentsCd = $this.data("contents_cd");
 			
 			var wrapHtml  = '<tr>';
-				wrapHtml += '<td span="4">{0}</td>'; 		//상품명
-				wrapHtml += '<td span="2">{1}</td>';		//업체명
-				wrapHtml += '<td span="2">{2} 원</td>';		//가격
-				wrapHtml += '<td span="3"><input class="autoNumeric product-list pl{3}" type="text" name="saleCount" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" /></td>';
-				wrapHtml += '<td span="1"><button class="btn btn-remove-product">삭제</button></td>';
+				wrapHtml += '<td class="span4">{0}</td>'; 		//상품명
+				wrapHtml += '<td class="span2">{1}</td>';		//업체명
+				wrapHtml += '<td class="span2 blue">{2} 원</td>';		//가격
+				wrapHtml += '<td class="span2"><input class="autoNumeric product-list pl{3}" type="text" name="saleCount" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" /></td>';
+				wrapHtml += '<td class="span2"><button class="btn btn-remove-product">삭제</button></td>';
 				wrapHtml += '<input type="hidden" name="contentList" value="{6}" />';
 				wrapHtml += '</tr>';
 				
@@ -246,7 +247,8 @@ $("#btn-sale-product-list").click(function(event){
 			calculate();
 		});
 		
-		$('.autoNumeric').autoNumeric('init',{aPad: false });
+		$('.autoNumeric').autoNumeric("init",{aPad: false });
+		$(".blue").css("color", "blue");
 		$("#findProduct").modal('toggle');
 	});
 }
