@@ -22,7 +22,11 @@
 
 	<div class="span12">
 		<form id="registeForm" class="form-horizontal" method="POST" action='<spring:eval expression="@urlProp['saleCompanyContractCreateAction']"/>'>
-			<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
+		<c:choose>
+			<c:when test="${viewType eq 2 }">
+				<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
+			</c:when>
+		</c:choose>
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처</label>
 				<div class="controls">
@@ -170,6 +174,12 @@
 				</h4>
 						</c:otherwise>
 			</c:choose>
+			</div>
+			<div class="control-group" id="profit-group">
+				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처 수익률(%) </label>
+				<div class="controls">
+					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
+				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
@@ -462,16 +472,16 @@
 <script>
 	$(function(){
 		
-		$("input,textarea").not("[type=submit]").jqBootstrapValidation();		
-
-		// 금액에 콤마표시
+		
+		$("body").del
+		
 		$(".price").autoNumeric('init',{aPad: false });
 		
-		//$("#company_name,#phoneno").not("[type=submit]").jqBootstrapValidation();
-		
+		$("input,textarea").not("[type=submit]").jqBootstrapValidation();		
+
 		$("#registeForm").submit(function(){
 			$("input[type=text].price").each(function(){
-				$(this).val( $(this).autoNumeric('get') );
+				// $(this).val($(this).autoNumeric('get') );
 			});
 		});
 		
@@ -502,7 +512,7 @@
 		// 분납 방식 달력
 		$(".installments-date").datepicker({autoclose: true});
 		
-		
+		/* 
 		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
 		$("body").delegate('input[type=text].price', 'change', function(event){
 			$(this).autoNumeric('init',{aPad: false });
@@ -514,7 +524,7 @@
 		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
 		$("body").delegate('input[type=text].price', 'click', function(event){
 			$(this).autoNumeric('init',{aPad: false });
-		});
+		}); */
 		
 		
 		

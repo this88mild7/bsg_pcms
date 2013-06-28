@@ -1,5 +1,6 @@
 package com.bsg.pcms.sale.company.dto;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.bsg.pcms.dto.ContractDTO;
@@ -193,28 +194,6 @@ public class CompanyContractDTOEx extends ContractDTO{
 		this.installmentList = installmentList;
 	}
 	
-	@Override
-	public String toString() {
-		return "CompanyContractDTOEx [contents_count=" + contents_count
-				+ ", company_name=" + company_name + ", contents_cd="
-				+ contents_cd + ", device_cd=" + device_cd + ", device_detail="
-				+ device_detail + ", sale_price_type=" + sale_price_type
-				+ ", sale_profit_type_detail=" + sale_profit_type_detail
-				+ ", series_mgmtno=" + series_mgmtno + ", cate_id=" + cate_id
-				+ ", contentsList=" + contentsList + ", saleTypeList="
-				+ saleTypeList + ", seriesList=" + seriesList
-				+ ", device_cd_list=" + device_cd_list
-				+ ", contractedDeviceList=" + contractedDeviceList
-				+ ", searchType=" + searchType + ", searchQuery=" + searchQuery
-				+ ", payments=" + payments + ", currency=" + currency
-				+ ", payments_type=" + payments_type + "]";
-	}
-	public List<String> getInstallments_dt() {
-		return installments_dt;
-	}
-	public void setInstallments_dt(List<String> installments_dt) {
-		this.installments_dt = installments_dt;
-	}
 	public List<String> getInstallments_price() {
 		return installments_price;
 	}
@@ -233,4 +212,34 @@ public class CompanyContractDTOEx extends ContractDTO{
 	public void setSelectedContentsPrice(List<String> selectedContentsPrice) {
 		this.selectedContentsPrice = selectedContentsPrice;
 	}
+	public List<String> getInstallments_dt() {
+		return installments_dt;
+	}
+	public void setInstallments_dt(List<String> installments_dt) {
+		this.installments_dt = installments_dt;
+	}
+	@Override
+	public String toString() {
+		return "CompanyContractDTOEx [contents_count=" + contents_count
+				+ ", company_name=" + company_name + ", contents_cd="
+				+ contents_cd + ", device_cd=" + device_cd + ", device_name="
+				+ device_name + ", device_detail=" + device_detail
+				+ ", sale_price_type=" + sale_price_type
+				+ ", sale_profit_type_detail=" + sale_profit_type_detail
+				+ ", contract_type_cd=" + contract_type_cd
+				+ ", contract_type_cd_name=" + contract_type_cd_name
+				+ ", series_mgmtno=" + series_mgmtno + ", cate_id=" + cate_id
+				+ ", contentsList=" + contentsList + ", saleTypeList="
+				+ saleTypeList + ", seriesList=" + seriesList
+				+ ", device_cd_list=" + device_cd_list
+				+ ", contractedDeviceList=" + contractedDeviceList
+				+ ", searchType=" + searchType + ", searchQuery=" + searchQuery
+				+ ", payments=" + payments + ", currency=" + currency
+				+ ", payments_type=" + payments_type + ", installments_dt="
+				+ installments_dt + ", installments_price="
+				+ installments_price + ", installmentList=" + installmentList
+				+ ", selectedContentsCd=" + selectedContentsCd
+				+ ", selectedContentsPrice=" + selectedContentsPrice + "]";
+	}
+	
 }
