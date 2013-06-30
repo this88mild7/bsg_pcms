@@ -66,13 +66,13 @@ public class BalanceComController {
 		
 	}
 	
-	@RequestMapping(value = "create.do", method = RequestMethod.GET)
+	@RequestMapping(value = "create.do", method = RequestMethod.POST)
 	public String create(BalanceDTOEx balanceDto) {
 		logger.info("balance/sale-company/create.do");
 		
 		balanceService.create(balanceDto);
 		
-		return "redirect:/balance/sale-company/list.to";
+		return "redirect:/balance/sale-company/list.do";
 	}
 	
 	@RequestMapping(value = "createView.do", method = RequestMethod.GET)

@@ -103,12 +103,14 @@ div#sale-content-list {
 					<h3>최종 자사 수익 : <span class="autoNumeric totalProfit blue"></span> 원</h3>
 				</div>
 			</div>
-			
-			<input type="hidden" id="totalSalePrice" name="total_sale_price"/>
-			<input type="hidden" id="totalSaleCnt" name="total_sale_cnt"/>
-			<input type="hidden" id="totalSaleCompanyCommission" name="total_sale_company_commission"/>
-			<input type="hidden" id="totalCpCommission" name="total_cp_commission"/>
-			<input type="hidden" id="totalProfit" name="total_profit"/>
+				<input type="hidden" id="totalSalePrice" name="total_sale_price"/>
+				<input type="hidden" id="totalSaleCnt" name="total_sale_count"/>
+				<input type="hidden" id="totalSaleCompanyCommission" name="total_sale_company_commission"/>
+				<input type="hidden" id="totalCpCommission" name="total_cp_commission"/>
+				<input type="hidden" id="totalProfit" name="total_profit"/>
+			<div id="product-value">
+				
+			</div>
 		</form>
 		
 		<div class="control-group">
@@ -156,6 +158,12 @@ div#sale-content-list {
 
 <script>
 $(function(){
+	
+	
+//매출 등록하기 버튼 이벤트
+$("#btn-content-create-action").click(function(evnet){
+	$("#balanceForm").submit();
+});
 
 //매출 상품등록 버튼 이벤트
 $("#btn-sale-product-list").click(function(event){
@@ -274,6 +282,9 @@ $("body").on("keyup", $("input.product-list"), function(event){
 				totalCpFee = 0,				//총 업체 수수료
 				totalProfit = 0;
 			
+			// 상품별 판매처 및 CP 업체 수익 값 DIV
+			$("#product-value").empty();
+			
 			console.debug(String.format("price * cnt = salePrice, ( earning - saleCompanyFee ) - cpFee = profit"));
 			$("#sale-content-list").find("input.autoNumeric").each(function(){
 				
@@ -302,6 +313,16 @@ $("body").on("keyup", $("input.product-list"), function(event){
 				totalSaleCompanyFee += saleFee;
 				totalCpFee += cpFee;
 				totalProfit += profit;
+				
+				// 판매처 및 업체 수수료 추가
+				
+				var saleFreeHtml = '<input type="hidden" name="contentSaleProfit" value="'+saleFee+'" />';
+				var cpFreeHtml = '<input type="hidden" name="contentCpProfit" value="'+cpFee +'" />';
+				var contentPriceHtml = '<input type="hidden" name="contentSalePrice" value="'+productData.sale_price +'" />';
+				$("#product-value").append(saleFreeHtml);
+				$("#product-value").append(cpFreeHtml);
+				$("#product-value").append(contentPriceHtml);
+				
 			});
 			
 			//보여지는 값 넣어주기
@@ -317,6 +338,8 @@ $("body").on("keyup", $("input.product-list"), function(event){
 			$("#totalSaleCompanyCommission").val(totalSaleCompanyFee);
 			$("#totalCpCommission").val(totalCpFee);
 			$("#totalProfit").val(totalProfit);
+			
+			
 			
 			//숫자 표시 업데이트 000,000
 			$('.autoNumeric').autoNumeric('update',{aPad: false });

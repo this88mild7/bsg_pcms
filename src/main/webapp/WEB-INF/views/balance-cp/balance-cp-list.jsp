@@ -51,7 +51,9 @@
 		</tr>
 		<c:forEach items="${ balanceList }" var="balance">
 		<tr>
-			<td>${ balance.reg_dt }</td>
+			<td>${ balance.sale_str_date } ~ 
+				${ balance.sale_end_date } 
+			</td>
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contract_type }</td>
 			<td>${ balance.total_sale_price }</td>

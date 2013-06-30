@@ -14,6 +14,36 @@ public class BalanceDetailDTO extends CommonDTO{
 	private int sale_price;
 	
 	private int sale_count;
+	
+	private String contentsCpProfit;
+	
+	private String contentsSaleProfit;
+	
+	private String contentsSalePrice;
+	
+	public String getContentsSalePrice() {
+		return contentsSalePrice;
+	}
+
+	public void setContentsSalePrice(String contentsSalePrice) {
+		this.contentsSalePrice = contentsSalePrice;
+	}
+
+	public String getContentsCpProfit() {
+		return contentsCpProfit;
+	}
+
+	public void setContentsCpProfit(String contentsCpProfit) {
+		this.contentsCpProfit = contentsCpProfit;
+	}
+
+	public String getContentsSaleProfit() {
+		return contentsSaleProfit;
+	}
+
+	public void setContentsSaleProfit(String contentsSaleProfit) {
+		this.contentsSaleProfit = contentsSaleProfit;
+	}
 
 	public int getBalance_detail_seq() {
 		return balance_detail_seq;

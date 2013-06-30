@@ -34,6 +34,9 @@ public class BalanceService {
 			detail.setBalance_mgmtno(balanceDto.getBalance_mgmtno());
 			detail.setContents_cd(balanceDto.getContentList().get(x));
 			detail.setSale_count(balanceDto.getSaleCount().get(x));
+			detail.setContentsCpProfit(balanceDto.getContentCpProfit().get(x));
+			detail.setContentsSaleProfit(balanceDto.getContentSaleProfit().get(x));
+			detail.setContentsSalePrice(balanceDto.getContentSalePrice().get(x));
 			balanceDao.createDetail(detail);
 		}
 		

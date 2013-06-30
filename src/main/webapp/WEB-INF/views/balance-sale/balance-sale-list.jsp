@@ -49,8 +49,10 @@
 			<th>판매횟수</th>
 			<th>총매출금액</th>
 			<th>판매업체수수료</th>
+			<!-- 
 			<th>빅스타수익률</th>
 			<th>에듀앤조이수익률</th>
+			 -->
 			<th>업체수수료</th>
 			<th>수익</th>
 		</tr>
@@ -64,8 +66,10 @@
 			<td>${ balance.total_sale_price }</td>
 			<td>${ balance.sale_commission }</td>
 			<td>${ balance.cp_commission }</td>
+			<!-- 
 			<td>${ balance.cp_commission }</td>
 			<td>${ balance.cp_commission }</td>
+			 -->
 			<td>${ balance.owner_profit }</td>
 		</tr>
 		</c:forEach>

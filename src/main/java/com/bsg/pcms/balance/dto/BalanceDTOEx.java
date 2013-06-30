@@ -33,8 +33,86 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String cp_rate;
 	
+	private String total_cp_commission;
+	
+	private String total_sale_company_commission;
+	
+	private String total_profit;
+	
+	private List<String> contentCpProfit;
+	
+	private List<String> contentSaleProfit;
+	
+	private List<String> contentSalePrice;
 	
 	
+	public List<String> getContentSalePrice() {
+		return contentSalePrice;
+	}
+
+	public void setContentSalePrice(List<String> contentSalePrice) {
+		this.contentSalePrice = contentSalePrice;
+	}
+
+	public List<String> getContentCpProfit() {
+		return contentCpProfit;
+	}
+
+	public void setContentCpProfit(List<String> contentCpProfit) {
+		this.contentCpProfit = contentCpProfit;
+	}
+
+
+
+	public List<String> getContentSaleProfit() {
+		return contentSaleProfit;
+	}
+
+
+
+	public void setContentSaleProfit(List<String> contentSaleProfit) {
+		this.contentSaleProfit = contentSaleProfit;
+	}
+
+
+
+	public String getTotal_profit() {
+		return total_profit;
+	}
+
+
+
+	public void setTotal_profit(String total_profit) {
+		this.total_profit = total_profit;
+	}
+
+
+
+	public String getTotal_cp_commission() {
+		return total_cp_commission;
+	}
+
+
+
+	public void setTotal_cp_commission(String total_cp_commission) {
+		this.total_cp_commission = total_cp_commission;
+	}
+
+
+
+	public String getTotal_sale_company_commission() {
+		return total_sale_company_commission;
+	}
+
+
+
+	public void setTotal_sale_company_commission(
+			String total_sale_company_commission) {
+		this.total_sale_company_commission = total_sale_company_commission;
+	}
+
+
+
 	public void checkBlankSearchParam() {
 		if(StringUtils.isBlank(this.searchQuery)){
 			this.searchQuery = null;

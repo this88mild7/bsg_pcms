@@ -17,7 +17,8 @@
 				OWNER_PROFIT, 
 				TOTAL_SALE_COUNT, 
 				TOTAL_SALE_PRICE, 
-				CONTRACT_MGMTNO,
+				SALE_TYPE,
+				CONTRACT_TYPE,
 				MOD_DT, 
 				REG_DT )
 		VALUES
@@ -26,12 +27,13 @@
 				#{user_mgmtseq}, 
 				#{sale_str_date}, 
 				#{sale_end_date}, 
-				#{sale_commission}, 
-				#{cp_commission}, 
-				#{owner_profit}, 
+				#{total_sale_company_commission}, 
+				#{total_cp_commission}, 
+				#{total_profit}, 
 				#{total_sale_count}, 
 				#{total_sale_price}, 
-				#{contract_mgmtno}, 
+				#{sale_type}, 
+				#{contract_type}, 
 				NOW(), 
 				NOW() 
 			)
@@ -42,7 +44,10 @@
 			( 
 				BALANCE_MGMTNO,
 				CONTENTS_CD, 
-				SALE_COUNT, 
+				SALE_COUNT,
+				SALE_PRICE,
+				CP_PROFIT,
+				SALE_PROFIT, 
 				MOD_DT, 
 				REG_DT )
 		VALUES
@@ -50,6 +55,9 @@
 				#{balance_mgmtno}, 
 				#{contents_cd}, 
 				#{sale_count}, 
+				#{contentsSalePrice}, 
+				#{contentsCpProfit}, 
+				#{contentsSaleProfit}, 
 				NOW(), 
 				NOW() 
 			)
@@ -58,16 +66,21 @@
    <!-- SELECT -->
    <!-- CP 정산 리스트 -->
 	<select id="cpList" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE
-			FROM BALANCE BAL, COMPANY COM, CONTRACT CON 
+		SELECT 
+			  DATE_FORMAT(BAL.SALE_STR_DATE,'%Y-%m-%d') as SALE_STR_DATE 
+			, DATE_FORMAT(BAL.SALE_END_DATE,'%Y-%m-%d') as SALE_END_DATE
+			, COM.COMPANY_NAME
+			, SUM(BALD.SALE_PRICE * BALD.SALE_COUNT) AS TOTAL_SALE_PRICE
+			, SUM(BALD.CP_PROFIT) AS CP_COMMISSION
+			, BAL.REG_DT
+		FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BALD, CONTENTS CD
 		WHERE 1=1
-		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
-		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
-		AND BAL.DEL_YN = 'N'
+		AND BAL.BALANCE_MGMTNO = BALD.BALANCE_MGMTNO
+		AND BALD.CONTENTS_CD = CD.CONTENTS_CD
+		AND CD.COMPANY_MGMTNO =  COM.COMPANY_MGMTNO
 		AND COM.COMPANY_TYPE = 'CP'
-		AND BAL.REG_DT
-			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
-			AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
+		AND BAL.DEL_YN  = 'N'
+		GROUP BY BAL.BALANCE_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
@@ -85,15 +98,23 @@
 			ORDER BY BAL.TOTAL_SALE_COUNT DESC
 		</if>
 	</select>
-   <!-- CP 정산 리스트 -->
+   <!-- CP 정산 조회 리스트 -->
 	<select id="searchCP" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE
-			FROM BALANCE BAL, COMPANY COM, CONTRACT CON 
+		SELECT 
+			  DATE_FORMAT(BAL.SALE_STR_DATE,'%Y-%m-%d') as SALE_STR_DATE 
+			, DATE_FORMAT(BAL.SALE_END_DATE,'%Y-%m-%d') as SALE_END_DATE
+			, COM.COMPANY_NAME
+			, SUM(BALD.SALE_PRICE * BALD.SALE_COUNT) AS TOTAL_SALE_PRICE
+			, SUM(BALD.CP_PROFIT) AS CP_COMMISSION
+			, BAL.REG_DT
+		FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BALD, CONTENTS CD
 		WHERE 1=1
-		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
-		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
-		AND BAL.DEL_YN = 'N'
+		AND BAL.BALANCE_MGMTNO = BALD.BALANCE_MGMTNO
+		AND BALD.CONTENTS_CD = CD.CONTENTS_CD
+		AND CD.COMPANY_MGMTNO =  COM.COMPANY_MGMTNO
 		AND COM.COMPANY_TYPE = 'CP'
+		AND BAL.DEL_YN  = 'N'
+		GROUP BY BAL.BALANCE_MGMTNO
 		<if test="searchQuery != null">
 		AND COM.COMPANY_NAME like '%${searchQuery}%'
 		</if>
@@ -126,23 +147,25 @@
 	<select id="saleList" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx" 
 						resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
 		SELECT /* Balance.saleList */ 
-			BAL.*, COM.COMPANY_NAME, CON.CONTRACT_TYPE,
-			CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name,				
-			CDT.SALE_TYPE
-			FROM BALANCE BAL, COMPANY COM, CONTRACT CON, CONTRACT_DETAIL CDT, BALANCE_DETAIL BD,
-			CONTENTS CONT
+			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_TYPE, 
+			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.CONTRACT_TYPE) AS CONTRACT_TYPE, 
+			BAL.SALE_STR_DATE, 
+			BAL.SALE_END_DATE, 
+			BAL.SALE_COMMISSION, 
+			BAL.CP_COMMISSION, 
+			BAL.OWNER_PROFIT, 
+			BAL.TOTAL_SALE_COUNT, 
+			BAL.TOTAL_SALE_PRICE, 
+			COM.COMPANY_NAME, 
+			CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name				
+		FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BD, CONTENTS CONT			
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
-		AND BAL.CONTRACT_MGMTNO = CON.CONTRACT_MGMTNO
 		AND BAL.BALANCE_MGMTNO = BD.BALANCE_MGMTNO 
-		AND CON.CONTRACT_MGMTNO = CDT.CONTRACT_MGMTNO 
 		AND CONT.CONTENTS_CD = BD.CONTENTS_CD
 		AND BAL.DEL_YN = 'N'
 		AND COM.COMPANY_TYPE = 'SC'
-		AND BAL.REG_DT
-			BETWEEN TIMESTAMP(CONCAT( DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), '01'))  
-		AND TIMESTAMP(DATE_FORMAT(LAST_DAY((NOW())), '%Y-%m-%d 23:59:59'))
-		GROUP BY BAL.CONTRACT_MGMTNO
+		GROUP BY BAL.BALANCE_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
