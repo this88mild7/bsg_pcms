@@ -66,7 +66,7 @@
    <!-- SELECT -->
    <!-- CP 정산 리스트 -->
 	<select id="cpList" resultType="com.bsg.pcms.balance.dto.BalanceDTOEx">
-		SELECT 
+		SELECT /* cpList */
 			  DATE_FORMAT(BAL.SALE_STR_DATE,'%Y-%m-%d') as SALE_STR_DATE 
 			, DATE_FORMAT(BAL.SALE_END_DATE,'%Y-%m-%d') as SALE_END_DATE
 			, COM.COMPANY_NAME
