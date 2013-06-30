@@ -28,6 +28,11 @@ div#sale-content-list {
 
 	<div class="span12">
 		<form id="registeForm" class="form-horizontal" method="POST" action='<spring:eval expression="@urlProp['saleCompanyContractCreateAction']"/>'>
+		<c:choose>
+			<c:when test="${viewType eq 2 }">
+				<input type="hidden" id="contract_mgmtno" name="contract_mgmtno" value="${saleContractDetail.contract_mgmtno}">
+			</c:when>
+		</c:choose>
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처</label>
 				<div class="controls">
@@ -183,6 +188,12 @@ div#sale-content-list {
 				</h4>
 						</c:otherwise>
 			</c:choose>
+			</div>
+			<div class="control-group" id="profit-group">
+				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처 수익률(%) </label>
+				<div class="controls">
+					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
+				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
@@ -454,8 +465,66 @@ div#sale-content-list {
 <script>
 	$(function(){
 		
+<<<<<<< HEAD
 		// 금액에 콤마표시
 		$("input.price").autoNumeric('init',{aPad: false });
+=======
+		
+		$("body").del
+		
+		$(".price").autoNumeric('init',{aPad: false });
+		
+		$("input,textarea").not("[type=submit]").jqBootstrapValidation();		
+
+		$("#registeForm").submit(function(){
+			$("input[type=text].price").each(function(){
+				// $(this).val($(this).autoNumeric('get') );
+			});
+		});
+		
+		// 등록 버튼 클릭
+		$("#btn-registe").click(function(){
+					/* $("#registeForm").submit(); */
+			 bootbox.confirm( "등록 하시겠습니까?", function(result) {
+				if( result ) {
+					$("#registeForm").submit();
+				}
+			}); 
+		});
+		
+		// 수정 하기 버튼 클릭
+		$("#btn-modify").click(function(){
+			/* $( "#registeForm" )
+			.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
+			.submit(); */
+			 bootbox.confirm( "수정 하시겠습니까?", function(result) {
+				if( result ) {
+					$( "#registeForm" )
+					.attr("action", '<spring:eval expression="@urlProp['saleCompanyContractModifyAction']"/>')
+					.submit();
+				}
+			});  
+	    });
+		
+		// 분납 방식 달력
+		$(".installments-date").datepicker({autoclose: true});
+		
+		/* 
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].price', 'change', function(event){
+			$(this).autoNumeric('init',{aPad: false });
+		});
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].price', 'focus', function(event){
+			$(this).autoNumeric('init',{aPad: false });
+		});
+		// 가격의 경우 추가 될수 있으면로 delegate 로 가격 구분 콤마 표시
+		$("body").delegate('input[type=text].price', 'click', function(event){
+			$(this).autoNumeric('init',{aPad: false });
+		}); */
+		
+		
+>>>>>>> a4e84da92f357cde5860b9b1b0ac4c583e7323e5
 		
 		// 지급대금 통화 메뉴
 		$("#currency-menu").find("a").click(function(){

@@ -1,5 +1,7 @@
 package com.bsg.pcms.dto;
 
+import java.util.Date;
+
 public class InstallmentsDTO extends CommonDTO{
 	
 	private int contract_mgmtno;
@@ -37,22 +39,6 @@ public class InstallmentsDTO extends CommonDTO{
 		this.installments_detail = installments_detail;
 	}
 
-	public String getInstallments_dt() {
-		return installments_dt;
-	}
-
-	public void setInstallments_dt(String installments_dt) {
-		this.installments_dt = installments_dt;
-	}
-
-	@Override
-	public String toString() {
-		return "InstallmentsDTO [contract_mgmtno=" + contract_mgmtno
-				+ ", installments_seq=" + installments_seq
-				+ ", installments_price=" + installments_price
-				+ ", installments_detail=" + installments_detail
-				+ ", installments_dt=" + installments_dt + "]";
-	}
 
 	public String getInstallments_price() {
 		return installments_price;
@@ -62,6 +48,15 @@ public class InstallmentsDTO extends CommonDTO{
 		this.installments_price = installments_price;
 	}
 
+	public String getInstallments_dt() {
+		return installments_dt;
+	}
+
+	public void setInstallments_dt(String installments_dt) {
+		this.installments_dt = installments_dt;
+	}
+
+	
 	
 
 }

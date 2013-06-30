@@ -261,7 +261,7 @@ div[class="tooltip-inner"] {
 				</div>
 			</div>
 			<div class="control-group" id="profit-group">
-				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률 </label>
+				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률(%) </label>
 				<div class="controls">
 					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }">
 				</div>
