@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statisQuery">
+
+   <!-- INSERT -->
+   
+   <!-- SELECT -->
+	<select id="list" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.list */
+   			COM.COMPANY_NAME
+   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
+   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
+   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
+   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE
+   		FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE='SC'
+		GROUP BY BAL.COMPANY_MGMTNO
+	</select>
+	
+	<select id="search" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
+						resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.search */
+   			COM.COMPANY_NAME
+   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
+   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
+   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
+   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE   			
+   		FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE='SC'
+		<if test="query != null">
+			AND COM.COMPANY_NAME like '%${query}%' 
+		</if>
+		<if test="searchStrDate != null">
+		<![CDATA[
+			AND BAL.SALE_STR_DATE >= '${searchStrDate}'
+		]]>
+		</if>
+		<if test="searchEndDate != null">
+		<![CDATA[
+			AND BAL.SALE_END_DATE <= '${searchEndDate}' 
+		]]>
+		</if>
+		GROUP BY BAL.COMPANY_MGMTNO
+	</select>
+	
+	<select id="pieGraph" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+		SELECT * FROM (
+	   		SELECT /* statisQuery.pieGraph */
+	   			COM.COMPANY_NAME
+	   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+	   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
+	   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
+	   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
+	   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE   			
+	   		FROM BALANCE BAL, COMPANY COM
+			WHERE 1=1
+			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+			AND COM.COMPANY_TYPE='SC'
+			GROUP BY BAL.COMPANY_MGMTNO
+			ORDER BY BAL.TOTAL_SALE_COUNT
+			) A
+		ORDER BY A.TOTAL_SALE_COUNT DESC 
+	</select>
+	
+	<select id="lineGraphCompany" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.pieGraph */
+   			COM.COMPANY_NAME
+   		FROM BALANCE BAL, COMPANY COM
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE='SC'
+		GROUP BY BAL.COMPANY_MGMTNO
+	</select>
+   
+   
+   <!-- UPDATE -->
+   
+   <!-- DELETE -->
+   
+</mapper>

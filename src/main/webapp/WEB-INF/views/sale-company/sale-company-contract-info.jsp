@@ -184,6 +184,12 @@ div#sale-content-list {
 						</c:otherwise>
 			</c:choose>
 			</div>
+			<div class="control-group" id="profit-group">
+				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처 수익률(%) </label>
+				<div class="controls">
+					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
+				</div>
+			</div>
 			<div class="control-group">
 				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
 				<div class="controls sale-device" >
