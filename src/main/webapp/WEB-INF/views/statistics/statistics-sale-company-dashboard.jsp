@@ -13,11 +13,17 @@
         margin: 10px auto;
         padding: 10px;
       }
+.chart-title {
+	background-color: gray;
+	color: white;
+	height: 40px;
+	font-size: 20px;
+}
 </style>
 <div class="page-name">
 	<h4>
-		<img src='<spring:eval expression="@urlProp['star']"/>'> 업체 정산현황
-		<small>&gt;&gt; 업체 정산현황 리스트</small>
+		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매처 통계
+		<small>&gt;&gt; 판매처 통계 대쉬보드</small>
 	</h4>
 </div>
 
@@ -38,10 +44,10 @@
 				<option>이번주</option>
 				<option>지난주</option>
 			</select>
-			<input type="text" class="span2" /> - <input type="text" class="span2" />
+			<input type="text" class="span2" placeholder="시작일" /> - <input type="text" class="span2" placeholder="종료일" />
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
-					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<input type="hidden" id="sortingType" name="sortingType" >
 					<input type="hidden" id="searchStrDate" name="searchStrDate" >
 					<input type="hidden" id="searchEndDate" name="searchEndDate" >
@@ -73,9 +79,23 @@
 		
 		<div class="row-fluid">
 			<div class="span4">
+				<div class="chart-title">
+					<span>판매처별 판매그래프</span>
+				</div>
 				<div id="chart1"></div>
 			</div>
 			<div class="span8">
+				<div class="chart-title">
+					<span>기간별 판매그래프</span>
+					<span>
+						<select class="span2">
+							<option>2013년</option>
+							<option>2012년</option>
+							<option>2011년</option>
+							<option>2010년</option>
+						</select>
+					</span>
+				</div>
 				<div id="chart2"></div>
 			</div>
 		</div>
@@ -83,40 +103,31 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
-      // Load the Visualization API and the piechart package.
       google.load('visualization', '1.0', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart1);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart1() {
-
-        // Create the data table.
+      //파이차트 그리기
+      google.setOnLoadCallback(drawPieChart);
+      //라인차트 그리기
+      google.setOnLoadCallback(drawLineChart);
+      
+      function drawPieChart() {
+    	  
         var data = new google.visualization.DataTable();
         data.addColumn('string', '스트링');
         data.addColumn('number', '넘버');
         data.addRows([
-          ['LG전자', 3],
-          ['olleh', 1],
-          ['기타', 1]
+	        ['LG전자', 3],
+	        ['olleh', 1],
+	        ['기타', 1]
         ]);
 
-        // Set chart options
-        var options = {'title':'판매처별 판매그래프',
-                       'width':400,
-                       'height':300};
+        var options = {'width':'100%'};
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart1'));
-        chart.draw(data, options);
+        var pieChart = new google.visualization.PieChart(document.getElementById('chart1'));
+        pieChart.draw(data, options);
+    	  
       }
       
-   // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart2);
-      function drawChart2() {
+      function drawLineChart() {
           var data = google.visualization.arrayToDataTable([
             ['월', 'LG전자', 'olleh', '기타'],
             ['1월', 1, 3, 1],
@@ -133,15 +144,12 @@
             ['12월',  5,10,2]
           ]);
 
-		var options = {'title':'기간별 판매그래프',
-		               'width':700,
-		               'height':300};
+		var options = {'width':'100%', 'height':300};
 
-          var chart = new google.visualization.LineChart(document.getElementById('chart2'));
-          chart.draw(data, options);
-        }
+        var lineChart = new google.visualization.LineChart(document.getElementById('chart2'));
+        lineChart.draw(data, options);
+       }
     </script>
-	
 </div>
 <!--/row-->
 <script>
@@ -149,7 +157,7 @@ $(function(){
 	
 	$("#tbl-wrapper").css({
 		"overflow":"auto",
-		"height":"200px"
+		"height":"300px"
 	});
 	
 });

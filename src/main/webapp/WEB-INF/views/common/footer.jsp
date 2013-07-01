@@ -33,6 +33,9 @@
 			</div>
 			<div class="span2">
 				<h5>통계</h5>
+				<a href="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">판매처통계</a>
+				<br />
+				<a href="<spring:eval expression="@urlProp['statsProductDashboard']"/>">상품통계</a>
 			</div>
 		</div>
 	</div>

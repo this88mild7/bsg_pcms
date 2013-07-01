@@ -30,15 +30,9 @@ public class StatisticsController {
 	public ModelAndView saleCompanyDashboard() {
 		
 		ModelAndView mav = new ModelAndView();
-<<<<<<< HEAD
-		mav.setViewName("statistics");
+		mav.setViewName("statistics-sale-company-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-=======
-		mav.setViewName("statistics-sale-company-dashboard");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_SALE_COMPANY());
->>>>>>> soulmatt
 
 		//dummy work
 		Integer[] dummyArr = new Integer[37];
@@ -55,15 +49,14 @@ public class StatisticsController {
 	public ModelAndView productDashboard() {
 		
 		ModelAndView mav = new ModelAndView();
-<<<<<<< HEAD
-		mav.setViewName("statistics");
+		mav.setViewName("statistics-product-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_PRODUCT);
-=======
-		mav.setViewName("statistics-product-dashboard");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_PRODUCT());
->>>>>>> soulmatt
+		
+		//dummy work
+		Integer[] dummyArr = new Integer[37];
+		List<Integer> dummyList = Arrays.asList(dummyArr);
+		mav.addObject("dummyList", dummyList);
 		
 		return mav;
 	}
