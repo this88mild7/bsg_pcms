@@ -28,6 +28,7 @@
 	<tiles:insertAttribute name="footer"/>
 	
 	<script src="/pcms/js/jquery.blockUI.js"></script>
+	<script src="/pcms/js/jquery.placeholder.min.js"></script>
 	<script src="/pcms/js/json2.js"></script>
 	<script src="/pcms/js/bootstrap.min.js"></script>
 	<script src="/pcms/js/bootstrap-datepicker.js"></script>

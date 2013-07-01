@@ -39,8 +39,8 @@
 			<a class="dashboard" href="/pcms/dashboard.do">메인</a>
 			<a class="cp" href="/pcms/cp/list.do">업체관리</a>
 			<a class="customer" href="/pcms/saleCompany/list.do">판매관리</a>
-			<a class="statistics" href="/pcms/balance/sale-company/list.do">정산</a>						
-			<a class="statistics" href="/pcms/statistics.do">통계</a>						
+			<a class="balance" href="/pcms/balance/sale-company/list.do">정산</a>						
+			<a class="statistics" href="/pcms/statistics/sale-company/dashboard.do">통계</a>						
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
 				<a class="site" href="/pcms/site/manage.do">사이트관리</a>
 			</c:if>

@@ -1,5 +1,9 @@
 package com.bsg.pcms.stats;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +30,14 @@ public class StatisticsController {
 	public ModelAndView saleCompanyDashboard() {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("statistics");
+		mav.setViewName("statistics-sale-company-dashboard");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_SALE_COMPANY());
+
+		//dummy work
+		Integer[] dummyArr = new Integer[37];
+		List<Integer> dummyList = Arrays.asList(dummyArr);
+		mav.addObject("dummyList", dummyList);
 
 		return mav;
 	}
@@ -40,7 +49,7 @@ public class StatisticsController {
 	public ModelAndView productDashboard() {
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("statistics");
+		mav.setViewName("statistics-product-dashboard");
 		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
 		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_PRODUCT());
 		
