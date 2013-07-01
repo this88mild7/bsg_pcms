@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class ContentServiceTest {
 	}
 	
 	@Test
-	public void testCreateAction(){
+	public void testCreateAction() throws SQLException{
 		ContentDTOEx contentDTOEx = new ContentDTOEx();
 		contentDTOEx.setName("상남2인조");
 		contentDTOEx.setCompany_mgmtno(13);
