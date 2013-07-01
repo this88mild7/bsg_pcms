@@ -1,6 +1,8 @@
 package com.bsg.pcms.stats.dto;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.bsg.pcms.dto.CompanyDTO;
 
@@ -22,7 +24,15 @@ public class StatisticsDTO extends CompanyDTO{
 	
 	private String sale_end_date;
 	
+	private List<Map> monthSaleCount;
 	
+	public List<Map> getMonthSaleCount() {
+		return monthSaleCount;
+	}
+
+	public void setMonthSaleCount(List<Map> monthSaleCount) {
+		this.monthSaleCount = monthSaleCount;
+	}
 
 	public int getTotal_sale_count() {
 		return total_sale_count;

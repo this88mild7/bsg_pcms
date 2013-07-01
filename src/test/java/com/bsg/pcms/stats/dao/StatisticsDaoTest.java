@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -79,8 +80,6 @@ public class StatisticsDaoTest {
 
 		// then
 		List<StatisticsDTO> listResult = statisDao.list();
-		
-		
 		if(listResult.size() == 0){
 			assertThat(searchResult.size(), is(0));
 		}else{
@@ -134,10 +133,28 @@ public class StatisticsDaoTest {
 	public void testPieGraphList() {
 
 		// given 
-
+		
 		// when
-		List<StatisticsDTO> pieGraphList = statisDao.pieGraph();
+		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(null);
 
+		// then
+		List<StatisticsDTO> listResult = statisDao.list();
+		
+		if(listResult.size() > 0){
+			assertThat(pieGraphList.size(), is(not(0)));
+		}
+		
+	}
+	
+	@Test
+	public void testPieGraphListInTargetDate() {
+		
+		// given
+		param.setSearchEndDate("2013-06");
+		
+		// when
+		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(param);
+		
 		// then
 		List<StatisticsDTO> listResult = statisDao.list();
 		
@@ -153,7 +170,7 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<StatisticsDTO> lineGraphList = statisDao.lineGraphCompany();
+		List<String> lineGraphList = statisDao.lineGraphCompany();
 		
 		// then
 		List<StatisticsDTO> listResult = statisDao.list();
@@ -167,17 +184,21 @@ public class StatisticsDaoTest {
 	@Test
 	public void testLineGraphMonthCount() {
 		
-		// given 
-		
-		// when
-		List<StatisticsDTO> lineGraphList = statisDao.lineGraphMonthCount();
-		
-		// then
+		// given
+		String company_mgmtno = "39";
+		String year = "2013";
+		String month = "01";
 		List<StatisticsDTO> listResult = statisDao.list();
 		
-		if(listResult.size() > 0){
-			assertThat(lineGraphList.size(), is(not(0)));
-		}
+		// when
+		int monthTotalCount = statisDao.lineGraphMonthCount(company_mgmtno, year, month);
+		
+		
+		// then
+		
+//		if(listResult.size() > 0){
+//			assertThat(lineGraphList.size(), is(not(0)));
+//		}
 		
 	}
 	
