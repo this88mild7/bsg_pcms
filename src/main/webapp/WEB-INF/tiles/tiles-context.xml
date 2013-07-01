@@ -121,8 +121,13 @@
     </definition>
     
     <!-- STATISTICS -->
-    <definition name="statistics" extends=".layout-default">
-        <put-attribute name="content" value="/WEB-INF/views/statistics/statistics.jsp" />
+    <definition name="statistics-sale-company-dashboard" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-statistics.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/statistics/statistics-sale-company-dashboard.jsp" />
+    </definition>
+    <definition name="statistics-product-dashboard" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/sidebar-statistics.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/statistics/statistics-product-dashboard.jsp" />
     </definition>
     
     <!-- SITE -->

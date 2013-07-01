@@ -264,8 +264,8 @@ div[class="tooltip-inner"] {
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 계약기간 </label>
 				<div class="controls">
-					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${ contract.str_date }"> - 
-					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${ contract.end_date }">
+					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${ contract.str_date }" placeholder="시작일"> - 
+					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${ contract.end_date }" placeholder="종료일">
 					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
 					<script>
 					$('#tip3')
