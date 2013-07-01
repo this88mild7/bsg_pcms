@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bsg.pcms.code.dto.CodeDTO;
+import com.bsg.pcms.code.svc.CodeService;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
@@ -24,12 +26,11 @@ import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyContractService;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BigstarConstant;
-import com.bsg.pcms.view.PmsView;
 
 @Controller
 @RequestMapping( value = "saleCompany/contract" )
 public class CompanyContractController {
-
+	
 	private Logger _logger = LoggerFactory.getLogger(CompanyContractController.class);
 	
 	@Autowired
@@ -41,34 +42,39 @@ public class CompanyContractController {
 	@Autowired
 	CompanyContractService _saleContractService;
 	
-	
 	@Autowired
-	PmsView _pmsView;
+	CodeService _codeService;
+	
 	
 	@RequestMapping( value = "list.do", method = RequestMethod.GET )
 	public ModelAndView list() {
 		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.list();
-		return _pmsView.getSaleCompanyContractListView(saleCompanyContractList);
+		return saleContractListMAV(saleCompanyContractList);
 	}
+
+	
 	
 	@RequestMapping( value = "search.do", method = RequestMethod.GET )
 	public ModelAndView search(CompanyContractDTOEx companyDTO) {
-		_logger.info(companyDTO.getSearchQuery());
 		if(StringUtils.isBlank(companyDTO.getSearchQuery())){
 			companyDTO.setSearchType(null);
 		}
 		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.search(companyDTO);
-		return _pmsView.getSaleCompanyContractListView(saleCompanyContractList);
+		return saleContractListMAV(saleCompanyContractList);
 	}
 	
 	
 	@RequestMapping( value = "createView.do", method = RequestMethod.GET )
-	public ModelAndView contractView() {
+	public ModelAndView createView() {
 		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list();
-		List<CompanyContractDTOEx> deviceList = _saleContractService.deviceList();
-		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
-		List<CompanyContractDTOEx> licenseList = _saleContractService.licenseList();
-		return _pmsView.getSaleCompanyCreateContractView(saleCompanyList, deviceList, contractTypeList, licenseList);
+		List<CodeDTO> deviceList = _codeService.deviceList();
+		List<CodeDTO> contractTypeList = _codeService.saleTypeList();
+		List<CodeDTO> licenseList = _codeService.licenseList();
+		
+		ModelAndView mav = saleContractInfoMAV(deviceList, contractTypeList,licenseList);
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_LIST, saleCompanyList );
+		mav.addObject( "viewType", "1");
+		return mav;
 	}
 	
 	@RequestMapping( value = "detail.do", method = RequestMethod.GET )
@@ -77,13 +83,23 @@ public class CompanyContractController {
 		
 		List<ContentDTOEx> contentsList = _saleContractService.contents(saleCompany);
 		
-		List<CompanyContractDTOEx> deviceList = _saleContractService.deviceList();
-		List<CompanyContractDTOEx> contractTypeList = _saleContractService.saleTypeList();
-		List<CompanyContractDTOEx> licenseList = _saleContractService.licenseList();
+		List<CodeDTO> deviceList = _codeService.deviceList();
+		List<CodeDTO> contractTypeList = _codeService.saleTypeList();
+		List<CodeDTO> licenseList = _codeService.licenseList();
 		
-		return _pmsView.getSaleCompanyContractDetailView(saleContractDetail, contentsList,
-				deviceList, contractTypeList, licenseList);
+		
+		ModelAndView mav = saleContractInfoMAV(deviceList, contractTypeList, licenseList);
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACT_DETAIL, saleContractDetail);
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACT_CONTENTS, contentsList);
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACTED_DEVICE, saleContractDetail.getContractedDeviceList() );
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACT_INSTALLMENT, saleContractDetail.getInstallmentList() );
+		mav.addObject( "viewType", "2");
+		return mav;
 	}
+
+
+
+	
 	
 	@RequestMapping( value = "create.do", method = RequestMethod.POST )
 	public String create(CompanyContractDTOEx companyDTO, HttpServletRequest request) {
@@ -109,6 +125,28 @@ public class CompanyContractController {
 		_saleContractService.modify(companyDTO);
 		
 		return "redirect:/saleCompany/contract/list.do";
+	}
+	
+	private ModelAndView saleContractListMAV(
+			List<CompanyContractDTOEx> saleCompanyContractList) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName( _bigstarConstant.VW_SALE_COMPANY_CONTRACT_LIST );
+		mav.addObject( _bigstarConstant.OB_LEFT_MENU_SEQ, _bigstarConstant.LEFT_SALE_COMPANY_CONTRACT);
+		mav.addObject( _bigstarConstant.OB_NAV_SEQ, _bigstarConstant.HEADER_SALE_COMPANY );
+		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACT_LIST, saleCompanyContractList );
+		return mav;
+	}
+	
+	private ModelAndView saleContractInfoMAV(List<CodeDTO> deviceList,
+			List<CodeDTO> contractTypeList, List<CodeDTO> licenseList) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(_bigstarConstant.VW_SALE_COMPANY_CONTRACT_INFO);
+		mav.addObject( _bigstarConstant.OB_LEFT_MENU_SEQ, _bigstarConstant.LEFT_SALE_COMPANY_CONTRACT);
+		mav.addObject( _bigstarConstant.OB_NAV_SEQ, _bigstarConstant.HEADER_SALE_COMPANY);
+		mav.addObject( _bigstarConstant.OB_DEVICE_LIST, deviceList );
+		mav.addObject( _bigstarConstant.OB_CONTRACT_TYPE_LIST, contractTypeList );
+		mav.addObject( _bigstarConstant.OB_LICENSE_LIST, licenseList );
+		return mav;
 	}
 	
 }

@@ -23,7 +23,7 @@ public class StatisticsController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName( "statistics" );
-		mav.addObject( "navSeq", bigstarConstant.getHEADER_STATS() );
+		mav.addObject( "navSeq", bigstarConstant.HEADER_STATS);
 		
 		return mav;
 		

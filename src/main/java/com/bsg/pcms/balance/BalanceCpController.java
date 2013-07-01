@@ -36,8 +36,8 @@ public class BalanceCpController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-cp-list");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_CP());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_CP);
 		mav.addObject("balanceList", balanceList);
 		return mav;
 		//주석 테스트561616161
@@ -51,8 +51,8 @@ public class BalanceCpController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-cp-list");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_CP());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_CP);
 		mav.addObject("balanceList", balanceList);
 		
 		return mav;
@@ -73,8 +73,8 @@ public class BalanceCpController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-cp-info");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_CP());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_CP);
 		
 		return mav;
 		

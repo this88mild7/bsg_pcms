@@ -75,24 +75,13 @@ data-currency="${ content.currency }"
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 콘텐츠 유형</label>
 				<div class="controls">
-					<label class="radio inline">
-						<input type="radio" name="contents_type" value="pb" checked="checked"> 그림책
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contents_type" value="ebook"> E-BOOK
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contents_type" value="2d"> 2D 애니
-					</label>
-					<label class="radio inline" >
-						<input type="radio" name="contents_type" value="3d"> 3D 애니
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contents_type" value="game"> 게임
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contents_type" value="etc"> 기타
-					</label>
+						<c:forEach items="${ contentTypeList }" var="contentType" >
+							<label class="radio inline">
+								<input type="radio" name="contents_type" value="${contentType.cd }" 
+								<c:if test="${content.contents_type eq contentType.cd }">checked="checked"</c:if> >
+								 ${contentType.cd_detail }
+							</label>
+						</c:forEach>
 				</div>
 			</div>
 			<div class="control-group">

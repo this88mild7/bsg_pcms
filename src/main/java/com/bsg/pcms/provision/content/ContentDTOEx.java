@@ -10,6 +10,10 @@ public class ContentDTOEx extends ContentDTO{
 	private String currency;
 	private String file_path;
 	
+	private String contents_type_name;
+	
+	
+	
 	public String getFile_path() {
 		return file_path;
 	}
@@ -44,6 +48,12 @@ public class ContentDTOEx extends ContentDTO{
 	@Override
 	public String toString() {
 		return "\nContentDTOEx [cate_name=" + cate_name + ", series_name=" + series_name + ", company_name=" + company_name + ", currency=" + currency + ", file_path=" + file_path + "]\n";
+	}
+	public String getContents_type_name() {
+		return contents_type_name;
+	}
+	public void setContents_type_name(String contents_type_name) {
+		this.contents_type_name = contents_type_name;
 	}
 
 	

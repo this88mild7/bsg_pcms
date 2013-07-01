@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.bsg.pcms.code.dto.CodeDTO;
+import com.bsg.pcms.code.svc.CodeService;
 import com.bsg.pcms.dto.ContractContentsGroupDTO;
 import com.bsg.pcms.dto.ContractDetailDTO;
 import com.bsg.pcms.dto.SeriesDTO;
@@ -53,14 +55,17 @@ public class ContractController {
 	
 	@Autowired
 	private PageUtil pageUtil;
+	
+	@Autowired
+	private CodeService _codeService;
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public ModelAndView list(ContractDTOEx contractDTOEx) {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("contract-list");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTRACTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTRACTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 
 		contractDTOEx.setStartRownum((contractDTOEx.getPageNum() - 1) * pageUtil.getPerPage());
 		mav.addObject("contractList", contractService.getContractList(contractDTOEx));
@@ -83,8 +88,8 @@ public class ContractController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("contract-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTRACTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTRACTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 		
 		//시리즈 이름 얻기 위하여
 		ContractContentsGroupDTO ccg = contractService.getContractContentsGroupList(cde).get(0);
@@ -103,6 +108,12 @@ public class ContractController {
 		mav.addObject("publishing_type", getPublishingTypeStr(cde));
 		mav.addObject("cpList", cpService.getCpListAll());
 		mav.addObject("bankList", bankListMaker.getBankList());
+		
+		
+		List<CodeDTO> contractTypeList = _codeService.contractTypeList();
+		List<CodeDTO> licenseList = _codeService.licenseList();
+		mav.addObject( bigstarConstant.OB_CONTRACT_TYPE_LIST, contractTypeList );
+		mav.addObject( bigstarConstant.OB_LICENSE_LIST, licenseList );
 
 		return mav;
 
@@ -132,12 +143,17 @@ public class ContractController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("contract-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTRACTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTRACTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 		mav.addObject("isCreate", 1);
 
 		mav.addObject("cpList", cpService.getCpListAll());
 		mav.addObject("bankList", bankListMaker.getBankList());
+		
+		List<CodeDTO> contractTypeList = _codeService.contractTypeList();
+		List<CodeDTO> licenseList = _codeService.licenseList();
+		mav.addObject( bigstarConstant.OB_CONTRACT_TYPE_LIST, contractTypeList );
+		mav.addObject( bigstarConstant.OB_LICENSE_LIST, licenseList );
 
 		return mav;
 

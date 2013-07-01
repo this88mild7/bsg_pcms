@@ -35,7 +35,7 @@ public class DashboardController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName( "dashboard" );
-		mav.addObject( "navSeq", bigstarConstant.getHEADER_MAIN() );
+		mav.addObject( "navSeq", bigstarConstant.HEADER_MAIN);
 		
 		//CP업체 리스트
 		List<CompanyDTO> cpList = cpService.getCpList(new CompanyDTO());

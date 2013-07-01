@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,7 @@ public class ContractServiceImpl implements ContractService {
 		{
 			//분납일시 INSTALLMENTS 테이블 작업	
 			String paymentsType = cde.getPayments_type();
-			if(paymentsType.equalsIgnoreCase("installments")) {
+			if(StringUtils.isNotBlank(paymentsType) && paymentsType.equalsIgnoreCase("installments")) {
 				List<String> insDtList = cde.getInstallments_dt();
 				List<String> insPriceList = cde.getInstallments_price();
 				int insCnt = insDtList.size();

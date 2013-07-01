@@ -53,13 +53,7 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 		
 	}
 
-	public List<CompanyContractDTOEx> deviceList() {
-		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.deviceList");
-	}
 
-	public List<CompanyContractDTOEx> saleTypeList() {
-		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.saleTypeList");
-	}
 
 	public void delete(String deleteContractList) {
 		getSqlSession().update( "saleCompanyQuery.deleteContract", deleteContractList);
@@ -88,9 +82,6 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 		return (List<InstallmentsDTO>)getSqlSession().selectList( "saleCompanyQuery.installment", contract_mgmtno);
 	}
 
-	public List<CompanyContractDTOEx> licenseList() {
-		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.licenseList");
-	}
 
 	public List<ContentDTOEx> contents(CompanyContractDTOEx saleCompany) {
 		return (List<ContentDTOEx>)getSqlSession().selectList( "saleCompanyQuery.contents", saleCompany);

@@ -31,8 +31,8 @@ public class SiteController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName( "site-manage" );
-		mav.addObject( "leftMenuSeq", bigstarConstant.getLEFT_MEMBER() );
-		mav.addObject( "navSeq", bigstarConstant.getHEADER_SITE() );
+		mav.addObject( "leftMenuSeq", bigstarConstant.LEFT_MEMBER);
+		mav.addObject( "navSeq", bigstarConstant.HEADER_SITE);
 		
 		mav.addObject( "memberList", userService.getUserList() );
 
