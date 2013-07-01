@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="codeQuery">
+
+  <select id="deviceList" 
+		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
+		   >
+       SELECT /* codeQuery.deviceList 2013.06.03 최지순 */
+          CD, CD_DETAIL 
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'DV'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+       
+   </select>
+   
+  <select id="saleTypeList" 
+		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
+		   >
+       SELECT /* codeQuery.saleTypeList 2013.06.03 최지순 */
+          CD, CD_DETAIL
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'CT'
+       AND DEPTH_2 = '002' 
+       ORDER BY CD
+   </select>
+   
+   <select id="licenseList" 
+		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
+		   >
+       SELECT /* codeQuery.licenseList 2013.06.03 최지순 */
+          CD, CD_DETAIL
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'LS'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+   </select>
+   
+   <select id="contentTypeList" 
+		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
+		   >
+       SELECT /* codeQuery.contentTypeList 2013.06.03 최지순 */
+          CD, CD_DETAIL
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'PD'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+   </select>
+   <select id="contractTypeList" 
+		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
+		   >
+       SELECT /* codeQuery.contractTypeList 2013.06.03 최지순 */
+          CD, CD_DETAIL
+       FROM  CD
+       WHERE 1=1
+       AND DEPTH_1 = 'CT'
+       AND DEPTH_2 = '001' 
+       ORDER BY CD
+   </select>
+   
+</mapper>

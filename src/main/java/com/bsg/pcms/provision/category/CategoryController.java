@@ -37,8 +37,8 @@ public class CategoryController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName( "category-list" );
-		mav.addObject( "leftMenuSeq", bigstarConstant.getLEFT_CATEGORY() );
-		mav.addObject( "navSeq", bigstarConstant.getHEADER_CP() );
+		mav.addObject( "leftMenuSeq", bigstarConstant.LEFT_CATEGORY );
+		mav.addObject( "navSeq", bigstarConstant.HEADER_CP );
 		
 		List<CateDTO> categoryList = categoryService.getCategoryList( null );
 		mav.addObject( "categoryList", categoryList );

@@ -18,7 +18,6 @@ import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
-import com.bsg.pcms.view.PmsView;
 
 @Controller
 @RequestMapping( value = "balance/sale-company" )
@@ -42,8 +41,8 @@ public class BalanceComController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-list");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_SALE);
 		mav.addObject("balanceList", balanceList);
 		mav.addObject("sorting_type", balanceDTOEx.getSorting_type());
 		
@@ -58,8 +57,8 @@ public class BalanceComController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-list");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_SALE);
 		mav.addObject("balanceList", balanceList);
 		
 		return mav;
@@ -80,8 +79,8 @@ public class BalanceComController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-info");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_BALANCE());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_BALANCE_SALE());
+		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_SALE);
 		mav.addObject("isCreate", 1);
 		
 		//판매처 리스트

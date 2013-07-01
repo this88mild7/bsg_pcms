@@ -42,8 +42,8 @@ public class CpController {
 	public ModelAndView list(CompanyDTO companyDTO) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("cp-list");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CP());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CP);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 
 		companyDTO.setStartRownum((companyDTO.getPageNum() - 1) * pageUtil.getPerPage());
 		List<CompanyDTO> cpList = cpService.getCpList(companyDTO);
@@ -69,8 +69,8 @@ public class CpController {
 	public ModelAndView detail(CompanyDTO companyDTO) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("cp-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CP());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CP);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 
 		mav.addObject("cp", cpService.getCp(companyDTO));
 		mav.addObject("pdList", cpService.getPdList(companyDTO.getCompany_mgmtno()));
@@ -101,8 +101,8 @@ public class CpController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("cp-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CP());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CP);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 		mav.addObject("isNew", true);
 		return mav;
 

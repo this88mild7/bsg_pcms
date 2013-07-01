@@ -110,23 +110,7 @@ public class CompanyContractService {
 	}
 
 
-	/** 
-	 * 1. 판매 Contents Group insert
-	 * 2. 계약 상세 - 판매형태 insert
-	 * 여러가지 판매 형태가 있을 수 있어서
-	 * 테이블을 분리 했고 루프를 이용해서 insert 한다.
-	 * 판매처에서 판매형태는 디바이스를 말한다.
-	 * @param paramContractDTOEx
-	 */
 	
-
-	public List<CompanyContractDTOEx> deviceList() {
-		return _saleContractDao.deviceList();
-	}
-
-	public List<CompanyContractDTOEx> saleTypeList() {
-		return _saleContractDao.saleTypeList();
-	}
 	
 	private void createContractDetail(CompanyContractDTOEx paramContractDTOEx) {
 		
@@ -180,10 +164,6 @@ public class CompanyContractService {
 
 	public List<CompanyContractDTOEx> search(CompanyContractDTOEx companyDTO) {
 		return list(companyDTO); 
-	}
-
-	public List<CompanyContractDTOEx> licenseList() {
-		return _saleContractDao.licenseList();
 	}
 
 	public List<ContentDTOEx> contents(CompanyContractDTOEx saleCompany) {

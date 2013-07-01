@@ -27,8 +27,8 @@ public class StatisticsController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_SALE_COMPANY());
+		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
 
 		return mav;
 	}
@@ -41,8 +41,8 @@ public class StatisticsController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics");
-		mav.addObject("navSeq", bigstarConstant.getHEADER_STATS());
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_STATISTICS_PRODUCT());
+		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_PRODUCT);
 		
 		return mav;
 	}

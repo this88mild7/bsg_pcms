@@ -323,45 +323,7 @@
       </where>
    </select>
    
-   <select id="deviceList" 
-		   resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" 
-		   >
-       SELECT /* SaleCompany.deviceList 2013.06.03 최지순 */
-          CD AS device_cd,
-          CD_DETAIL AS device_name
-       FROM  CD
-       WHERE 1=1
-       AND DEPTH_1 = 'DV'
-       AND DEPTH_2 = '001' 
-       ORDER BY CD
-       
-   </select>
-  
-   
-   <select id="saleTypeList" 
-		   resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" 
-		   >
-       SELECT /* SaleCompany.saleTypeList 2013.06.03 최지순 */
-          CD AS contract_type_cd,
-          CD_DETAIL AS contract_type_cd_name
-       FROM  CD
-       WHERE 1=1
-       AND DEPTH_1 = 'CT'
-       AND DEPTH_2 = '002' 
-       ORDER BY CD
-   </select>
-   <select id="licenseList" 
-		   resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" 
-		   >
-       SELECT /* SaleCompany.licenseList 2013.06.03 최지순 */
-          CD AS license_cd,
-          CD_DETAIL AS license_cd_name
-       FROM  CD
-       WHERE 1=1
-       AND DEPTH_1 = 'LS'
-       AND DEPTH_2 = '001' 
-       ORDER BY CD
-   </select>
+ 
    
    <select id="installment" resultType="com.bsg.pcms.dto.InstallmentsDTO" >
        SELECT /* SaleCompany.installment 2013.06.03 최지순 */

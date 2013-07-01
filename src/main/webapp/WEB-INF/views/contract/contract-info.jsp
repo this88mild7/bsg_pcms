@@ -121,21 +121,20 @@ div[class="tooltip-inner"] {
 			<div class="control-group">
 				<label class="control-label" for="contract_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
 				<div class="controls">
-					<label class="radio inline">
-						<input type="radio" name="contract_type" value="si" checked="checked">개발대행
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contract_type" value="license">라이센싱
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contract_type" value="collaboration">상품판매납품(협력)
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="contract_type" value="outsider">외주의뢰
-					</label>
-					<label class="radio inline">
-						<a id="contract_type_tip" href="#" data-toggle="tooltip" >tip</a>
-					</label>
+					<c:forEach items="${contractTypeList}" var="contractType" varStatus="index">
+						<c:choose>
+							<c:when test="${index.first }">
+								<label class="radio inline">
+									<input type="radio" name="contract_type" value="${contractType.cd }" checked="checked">${contractType.cd_detail}
+								</label>
+							</c:when>
+							<c:otherwise>
+								<label class="radio inline">
+									<input type="radio" name="contract_type" value="${contractType.cd }">${contractType.cd_detail}
+								</label>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 					<script>
 						titleStr  = "1. 개발대행 : 콘텐츠의 개발대행 업무<br/>";
 						titleStr += "2. 라이센싱 : 저작물의 라이선스 협력 계약(빅스타가 구매하는 경우)<br/>";
@@ -160,24 +159,20 @@ div[class="tooltip-inner"] {
 			<div class="control-group">
 				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 라이선스</label>
 				<div class="controls">
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="1" checked="checked">빅스타 소유
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="2">에듀엔조이 소유
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="3">플레이북스 소유
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="4">공동 소유
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="5">업체 소유
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="license_cd" value="0">기타
-					</label>
+					<c:forEach items="${licenseList}" var="license" varStatus="index">
+						<c:choose>
+							<c:when test="${index.first }">
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="${license.cd }" checked="checked">${license.cd_detail}
+							</label>
+							</c:when>
+							<c:otherwise>
+							<label class="radio inline">
+								<input type="radio" name="license_cd" value="${license.cd }">${license.cd_detail}
+							</label>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 					<textarea class="clearfix span10" rows="4" id="license_cd_detail" name="license_cd_detail" placeholder="라이선스 상세정보 입력" style="display:none;">${ contract.license_cd_detail }</textarea>
 				</div>
 			</div>
@@ -413,7 +408,7 @@ $(function(){
 		
 		$("input[name='license_cd']").change(function(){
 			var $licenseCdDetail = $("#license_cd_detail");
-			if( $(this).val() == 0 ){
+			if( $(this).val() == "LS001999" ){
 				$licenseCdDetail.show();
 			} else {
 				$licenseCdDetail.hide().val("");
@@ -571,7 +566,7 @@ $(function(){
 	$("input[name='contract_type']").change(function(){
 		var contractType = $(this).val();
 		console.info("계약방식 : " + contractType);
-		if(contractType == "si") {
+		if(contractType == "CT001001") {
 			//si 셀렉트 셋팅
 			$("#price_text").text("계약대금");
 			$("#payments_type_text").text("입금방식");
@@ -579,7 +574,7 @@ $(function(){
 			$("#profit-group").show();
 			
 			setSiSelect();
-		} else if(contractType == "license") {
+		} else if(contractType == "CT001002") {
 			//license 셀렉트 셋팅
 			$("#price_text").text("지급대금");
 			$("#payments_type_text").text("지급방식");
@@ -587,7 +582,7 @@ $(function(){
 			$("#profit-group").show();
 			
 			setLicenseSelect();
-		} else if(contractType == "collaboration"){
+		} else if(contractType == "CT001003"){
 			//협력 셀렉트 셋팅
 			$("#price_text").text("계약대금");
 			$("#payments_type_text").text("수익쉐어");
@@ -595,7 +590,7 @@ $(function(){
 			$("#profit-group").hide();
 			
 			setCollboSelect();
-		} else {
+		} else if(contractType == "CT001004"){
 			$("#price_text").text("계약대금");
 			$("#payments_type_text").text("외주");
 			//외주 코드 생성 예정 
@@ -780,7 +775,7 @@ $(function(){
 				if(boxData.contract_type == $this.val() ){
 					$this.prop("checked", true).trigger("change");
 					
-					if(boxData.contract_type == "si" || boxData.contract_type == "license") {
+					if(boxData.contract_type == "CT001001" || boxData.contract_type == "CT001002") {
 						
 						$("#payments_type")
 							.find("option").filter(function(index){
@@ -800,7 +795,7 @@ $(function(){
 							$("#sale_profit_rate").val(boxData.sale_price_detail);
 						}
 						
-					} else if(boxData.contract_type == "collaboration"){
+					} else if(boxData.contract_type == "CT001003"){
 						//페이먼트 타입에 따라 퍼센트 비율 바꾸고 값 채우기]
 						$("#payments_type_list").find("a").each(function(){
 							if( $(this).data("type") == boxData.payments_type ) {

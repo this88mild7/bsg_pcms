@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.bsg.pcms.code.dto.CodeDTO;
+import com.bsg.pcms.code.svc.CodeService;
 import com.bsg.pcms.dto.CateDTO;
 import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.provision.category.svc.CategoryService;
@@ -33,6 +35,9 @@ public class ContentController {
 
 	@Autowired
 	private ContentService contentService;
+	
+	@Autowired
+	private CodeService codeSerivce;
 
 	@Autowired
 	private PageUtil pageUtil;
@@ -41,8 +46,8 @@ public class ContentController {
 	public ModelAndView list(ContentDTOEx content) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("content-list");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTENTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTENTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 
 		// 컨텐츠 가져오기
 		content.setStartRownum((content.getPageNum() - 1) * pageUtil.getPerPage());
@@ -67,8 +72,8 @@ public class ContentController {
 	public ModelAndView detail(ContentDTOEx content) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("content-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTENTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTENTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 
 		ContentDTOEx _content = contentService.getContent(content);
 		mav.addObject("content", _content);
@@ -82,6 +87,9 @@ public class ContentController {
 		// 최상위 카테고리
 		List<CateDTO> categoryList = categoryService.getCategoryList();
 		mav.addObject("categoryList", categoryList);
+		
+		List<CodeDTO> contentTypeList = codeSerivce.contentTypeList();
+		mav.addObject(bigstarConstant.OB_CONTENT_TYPE_LIST, contentTypeList);
 
 		return mav;
 	}
@@ -120,8 +128,8 @@ public class ContentController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("content-info");
-		mav.addObject("leftMenuSeq", bigstarConstant.getLEFT_CONTENTS());
-		mav.addObject("navSeq", bigstarConstant.getHEADER_CP());
+		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_CONTENTS);
+		mav.addObject("navSeq", bigstarConstant.HEADER_CP);
 		mav.addObject("isNew", true);
 
 		// CP 리스트
@@ -133,6 +141,9 @@ public class ContentController {
 		// 카테고리
 		List<CateDTO> categoryList = categoryService.getCategoryList(new CateDTO());
 		mav.addObject("categoryList", categoryList);
+		
+		List<CodeDTO> contentTypeList = codeSerivce.contentTypeList();
+		mav.addObject(bigstarConstant.OB_CONTENT_TYPE_LIST, contentTypeList);
 
 		return mav;
 

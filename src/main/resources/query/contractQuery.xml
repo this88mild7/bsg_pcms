@@ -122,9 +122,17 @@
 
     <select id="getContractList" resultType="com.bsg.pcms.provision.contract.ContractDTOEx" parameterType="com.bsg.pcms.provision.contract.ContractDTOEx">
         SELECT
-            COMPANY.company_name,
-            SERIES.series_name,
-            CONTRACT.*
+            COMPANY.company_name
+            ,SERIES.series_name
+            ,CONTRACT.COMPANY_MGMTNO
+            ,CONTRACT.CONTRACT_MGMTNO
+            ,CONTRACT.SALE_PROFIT_RATE
+            ,CONTRACT.REG_DT
+            ,CONTRACT.STR_DATE
+            ,CONTRACT.END_DATE
+            ,CONTRACT.PAYMENTS
+            ,CONTRACT.sale_price
+            ,(SELECT CD_DETAIL FROM CD WHERE CD = CONTRACT.CONTRACT_TYPE) AS CONTRACT_TYPE
         FROM CONTRACT, CONTRACT_CONTENTS_GROUP, COMPANY, SERIES
         <where>
             <if test="type != null">

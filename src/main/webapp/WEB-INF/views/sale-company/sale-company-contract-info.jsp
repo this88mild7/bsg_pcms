@@ -141,9 +141,9 @@ div#sale-content-list {
 						<c:when test="${viewType eq 1 }">
 							<c:forEach items="${licenseList}" varStatus="index" var="license">
 								<label class="radio inline">
-									<input class="btn-license" type="radio" name="license_cd" value="${license.license_cd }" 
+									<input class="btn-license" type="radio" name="license_cd" value="${license.cd }" 
 									<c:if test="${index.count == 1 }"> checked </c:if>>
-									${license.license_cd_name }
+									${license.cd_detail }
 								</label>
 							</c:forEach>
 							<div>
@@ -153,9 +153,9 @@ div#sale-content-list {
 						<c:otherwise>
 							<c:forEach items="${licenseList}" varStatus="index" var="license">
 								<label class="radio inline">
-									<input class="btn-license" type="radio" name="license_cd" value="${license.license_cd }" 
-									<c:if test="${saleContractDetail.license_cd == license.license_cd}">checked</c:if>>
-									${license.license_cd_name }
+									<input class="btn-license" type="radio" name="license_cd" value="${license.cd }" 
+									<c:if test="${saleContractDetail.license_cd == license.cd}">checked</c:if>>
+									${license.cd_detail }
 								</label>
 							</c:forEach>
 							<div>
@@ -194,7 +194,7 @@ div#sale-content-list {
 									<div class="span3">
 										<select size="1" name="device_cd_list">
 											<c:forEach items="${ deviceList }" var="device">
-												<option value="${device.device_cd}" >${device.device_name}</option>
+												<option value="${device.cd}" >${device.cd_detail}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -222,7 +222,7 @@ div#sale-content-list {
 										<div class="span3">							
 											<select size="1" name="device_cd_list">
 												<c:forEach items="${ deviceList }" var="device">
-													<option value="${device.device_cd}" <c:if test="${contractedDeviceList eq device.device_cd}">selected="selected"</c:if> >${device.device_name}</option>
+													<option value="${device.cd}" <c:if test="${contractedDeviceList eq device.cd}">selected="selected"</c:if> >${device.cd_detail}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -261,8 +261,8 @@ div#sale-content-list {
 				<div class="controls">
 					<select size="1" name="contract_type" id="product_sale_type">
 						<c:forEach items="${ contractTypeList }" var="contractType">
-							<option <c:if test="${contractType.contract_type_cd == saleContractDetail.contract_type}"> selected="selected"</c:if> value="${ contractType.contract_type_cd }" >
-								${ contractType.contract_type_cd_name }
+							<option <c:if test="${contractType.cd == saleContractDetail.contract_type}"> selected="selected"</c:if> value="${ contractType.cd }" >
+								${ contractType.cd_detail }
 							</option>
 						</c:forEach>
 					</select>
@@ -431,7 +431,7 @@ div#sale-content-list {
 	<div class="span3">
 		<select size="1" name="device_cd_list">
 			<c:forEach items="${ deviceList }" var="device">
-				<option value="${device.device_cd}" >${device.device_name}</option>
+				<option value="${device.cd}" >${device.cd_detail}</option>
 			</c:forEach>
 		</select>
 	</div>
