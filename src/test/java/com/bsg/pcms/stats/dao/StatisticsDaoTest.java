@@ -71,7 +71,68 @@ public class StatisticsDaoTest {
 	public void testSaleCompanyListOrderbyRegDt() {
 		
 		// given 
-		param.setOrderByType("regDt");
+		param.setSortingType("1");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	@Test
+	public void testSaleCompanyListOrderbySaleCount() {
+		
+		// given 
+		param.setSortingType("2");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	
+	@Test
+	public void testSaleCompanyListByQuery() {
+		
+		// given 
+		param.setSearchQuery("지순");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	@Test
+	public void testSaleCompanyListBySearchDate() {
+		
+		// given 
+		param.setSearchQuery("솔맷");
+		param.setSortingType("1");
+		param.setSearchStrDate("2013-06");
+		param.setSearchEndDate("2013-07");
 		
 		// when
 		List<StatisticsDTO> statDTO = statisDao.list(param);
@@ -204,6 +265,41 @@ public class StatisticsDaoTest {
 	}
 	
 	@Test
+	public void testProductPieGraphList() {
+
+		// given 
+		
+		// when
+		List<StatisticsDTO> pieGraphList = statisDao.productPieGraph(null);
+
+		// then
+		List<StatisticsDTO> listResult = statisDao.productList(null);
+		
+		if(listResult.size() > 0){
+			assertThat(pieGraphList.size(), is(not(0)));
+		}
+		
+	}
+	
+	@Test
+	public void testProductPieGraphListInTargetDate() {
+		
+		// given
+		param.setSearchEndDate("2013-06");
+		
+		// when
+		List<StatisticsDTO> pieGraphList = statisDao.productPieGraph(param);
+		
+		// then
+		List<StatisticsDTO> listResult = statisDao.productList(null);
+		
+		if(listResult.size() > 0){
+			assertThat(pieGraphList.size(), is(not(0)));
+		}
+		
+	}
+	
+	@Test
 	public void testLineGraphCompanyList() {
 		
 		// given 
@@ -231,19 +327,20 @@ public class StatisticsDaoTest {
 		for(StatisticsDTO statDTO : listResult){
 			statDTO.setSearchEndDate("2013");
 			statDTO.setMonthSaleCount(statisDao.lineGraphMonthCount(statDTO));
-			
 		}
 		
 		logger.info("lineGraph Count : {}", listResult);
 		logger.info("lineGraph Count : {}", listResult.get(0).getMonthSaleCount());
+	}
+	
+	@Test
+	public void testProductList() {
 		
+		// given
 		
-		// then
+		List<StatisticsDTO> listResult = statisDao.productList(null);
 		
-//		if(listResult.size() > 0){
-//			assertThat(lineGraphList.size(), is(not(0)));
-//		}
-		
+		logger.info("lineGraph Count : {}", listResult);
 	}
 	
 	

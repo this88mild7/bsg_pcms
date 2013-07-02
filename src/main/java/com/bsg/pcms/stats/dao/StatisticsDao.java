@@ -24,6 +24,9 @@ public class StatisticsDao extends SqlSessionDaoSupport{
 	public List<StatisticsDTO> pieGraph(StatisticsDTO param) {
 		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.pieGraph", param);
 	}
+	public List<StatisticsDTO> productPieGraph(StatisticsDTO param) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productPieGraph", param);
+	}
 
 	public List<StatisticsDTO> lineGraphCompany() {
 		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.lineGraphCompany");
@@ -33,9 +36,17 @@ public class StatisticsDao extends SqlSessionDaoSupport{
 		return (Map<String, String>)getSqlSession().selectOne("statisQuery.lineGraphMonthCount", param);
 	}
 
-	public List<StatisticsDTO> productLineGraphCompany() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public List<StatisticsDTO> productList(StatisticsDTO requestParam) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productList", requestParam);
+	}
+
+	public List<StatisticsDTO> productLineGraphContent() {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productLineGraphContent");
+	}
+
+	public Map productLineGraphMonthCount(StatisticsDTO param) {
+		return (Map<String, String>)getSqlSession().selectOne("statisQuery.productLineGraphMonthCount", param);
 	}
 
 }

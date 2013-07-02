@@ -50,9 +50,9 @@ public class StatisticsService {
 
 	
 	public List<StatisticsDTO> lineGraph(String searchYear){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		
 		if(StringUtils.isBlank(searchYear)){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 			searchYear = sdf.format(System.currentTimeMillis());
 		}
 		
@@ -79,9 +79,8 @@ public class StatisticsService {
 		return pieGraphGForMap;
 	}
 	
-	public List<StatisticsDTO> productList() {
-//		return statDao.list();
-		return null;
+	public List<StatisticsDTO> productList(StatisticsDTO param) {
+		return statDao.productList(param);
 	}
 	
 	public List<StatisticsDTO> productSearch(StatisticsDTO param) {
@@ -90,33 +89,53 @@ public class StatisticsService {
 	
 	
 	public List<StatisticsDTO> productLineGraph(String searchYear){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		
 		if(StringUtils.isBlank(searchYear)){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 			searchYear = sdf.format(System.currentTimeMillis());
 		}
 		
-		List<StatisticsDTO> companyList = statDao.productLineGraphCompany();
+		List<StatisticsDTO> companyList = statDao.productLineGraphContent();
 		for(StatisticsDTO companyMgmtno : companyList){
 			companyMgmtno.setSearchEndDate(searchYear);
-			companyMgmtno.setMonthSaleCount(statDao.lineGraphMonthCount(companyMgmtno));
+			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
 			
 		}
-		return companyList;
+ 		return companyList;
 	}
 	
 	public List<Map> productPieGraphForMap(StatisticsDTO param) {
 		
-		List<StatisticsDTO> pieGraphResult = statDao.pieGraph(param);
+		List<StatisticsDTO> pieGraphResult = statDao.productPieGraph(param);
 		
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
 		for(StatisticsDTO temp : pieGraphResult){
 			Map<String, Object> pieMap = new HashMap<String, Object>();
-			pieMap.put("saleCompany", temp.getCompany_name());
+			pieMap.put("contentName", temp.getContents_name());
 			pieMap.put("saleCount", temp.getTotal_sale_count());
 			pieGraphGForMap.add(pieMap);
 		}
 		return pieGraphGForMap;
+	}
+
+	public List<Map> productListForMap(StatisticsDTO param) {
+		
+		List<StatisticsDTO> saleCompanyTable = statDao.productList(param);
+		
+		List<Map> tableListMap = new ArrayList<Map>();
+		
+		for(StatisticsDTO staDTO : saleCompanyTable){
+			Map<String, Object> tableMap = new HashMap<String, Object>();
+			tableMap.put("contens_name", staDTO.getContents_name());
+			tableMap.put("contents_cd", staDTO.getContents_cd());
+			tableMap.put("total_sale_count", staDTO.getTotal_sale_count());
+			tableMap.put("total_sale_price", staDTO.getTotal_sale_price());
+			tableMap.put("sale_device", staDTO.getSale_device());
+			tableMap.put("sale_str_date", staDTO.getSale_str_date());
+			tableMap.put("sale_end_date", staDTO.getSale_end_date());
+			tableListMap.add(tableMap);
+		}
+		return tableListMap;
 	}
 
 	

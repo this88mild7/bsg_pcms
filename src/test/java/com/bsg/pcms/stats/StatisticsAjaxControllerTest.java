@@ -56,6 +56,13 @@ public class StatisticsAjaxControllerTest {
 	}
 	
 	@Test
+	public void testProductPieGraphForJsonThisMonth() {
+		String result = statisticsAjaxController.productPieGraph(null);
+		assertThat(result, is(notNullValue()));
+		logger.info("{}", result);
+	}
+	
+	@Test
 	public void testPieGraphForJsonTargetMonth() {
 		param.setSearchEndDate("2013");
 		String result = statisticsAjaxController.pieGraph(param);
@@ -65,6 +72,12 @@ public class StatisticsAjaxControllerTest {
 	@Test
 	public void testLineGraphForJson() {
 		String result = statisticsAjaxController.lineGraph(null);
+		assertThat(result, is(notNullValue()));
+		logger.info("pie json : {}", result);
+	}
+	@Test
+	public void testProductLineGraphForJson() {
+		String result = statisticsAjaxController.productLineGraph(null);
 		assertThat(result, is(notNullValue()));
 		logger.info("pie json : {}", result);
 	}
@@ -93,10 +106,18 @@ public class StatisticsAjaxControllerTest {
 	
 	@Test
 	public void testSaleCompanySearchByOrderBy() {
-		param.setOrderByType("regDt");
+		param.setSortingType("1");
 		String result = statisticsAjaxController.list(param);
 		assertThat(result, is(notNullValue()));
-		logger.info("pie json : {}", result);
+		logger.info("{}", result);
+	}
+	
+	@Test
+	public void testProductList() {
+		param.setSortingType("1");
+		String result = statisticsAjaxController.productList(param);
+		assertThat(result, is(notNullValue()));
+		logger.info("{}", result);
 	}
 
 }

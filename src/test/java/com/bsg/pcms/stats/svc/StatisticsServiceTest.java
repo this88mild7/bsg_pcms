@@ -47,7 +47,7 @@ public class StatisticsServiceTest {
 		// given 
 
 		// when
-		List<StatisticsDTO> listResult = statService.list();
+		List<StatisticsDTO> listResult = statService.list(null);
 
 		// then
 		assertThat(listResult.size(), is(not(0)));
@@ -65,7 +65,7 @@ public class StatisticsServiceTest {
 		List<StatisticsDTO> searchResult = statService.search(param);
 
 		// then
-		List<StatisticsDTO> listResult = statService.list();
+		List<StatisticsDTO> listResult = statService.list(null);
 		if(listResult.size() == 0){
 			assertThat(searchResult.size(), is(0));
 		}else{
@@ -89,7 +89,7 @@ public class StatisticsServiceTest {
 	@Test
 	public void teststatisSearchByDate() {
 
-		List<StatisticsDTO> listResult = statService.list();
+		List<StatisticsDTO> listResult = statService.list(null);
 		
 		
 		if(listResult.size() != 0){
@@ -115,23 +115,6 @@ public class StatisticsServiceTest {
 	}
 	
 	@Test
-	public void testPieGraphList() {
-
-		// given 
-
-		// when
-		List<StatisticsDTO> pieGraphList = statService.pieGraph(null);
-
-		// then
-		List<StatisticsDTO> listResult = statService.list();
-		
-		if(listResult.size() > 0){
-			assertThat(pieGraphList.size(), is(not(0)));
-		}
-		
-	}
-	
-	@Test
 	public void testLineGraphList() {
 		
 		// given 
@@ -142,7 +125,7 @@ public class StatisticsServiceTest {
 		logger.info("lineGraphList MonthCount : {}", lineGraphList.get(1).getMonthSaleCount());
 		
 		// then
-		List<StatisticsDTO> listResult = statService.list();
+		List<StatisticsDTO> listResult = statService.list(null);
 		
 		if(listResult.size() > 0){
 			assertThat(lineGraphList.size(), is(not(0)));
