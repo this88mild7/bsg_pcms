@@ -788,11 +788,10 @@ $(function(){
 						if(boxData.payments_type == "lump_sum") {
 							//do nothing
 						} else if(boxData.payments_type == "installments") {
-							//분납필드 채워넣기
-							console.info("분납필드 채워넣기 로직 넣기");
+							//forEach로 분납필드 채워넣음.
 						} else {
 							//etc
-							$("#sale_profit_rate").val(boxData.sale_price_detail);
+							$("#sale_profit_rate").val(boxData.sale_profit_rate);
 						}
 						
 					} else if(boxData.contract_type == "CT001003"){

@@ -56,15 +56,17 @@
 			</div>
 		</div>
 		
+		<table class="table" style="margin-bottom:0px;">
+			<tr>
+				<th>순위</th>
+				<th>판매처</th>
+				<th>판매기기</th>
+				<th>총매출금액</th>
+				<th>누적판매량</th>
+			</tr>
+		</table>
 		<div id="tbl-wrapper">
 			<table class="table table-striped table-hover">
-				<tr>
-					<th>순위</th>
-					<th>판매처</th>
-					<th>판매기기</th>
-					<th>총매출금액</th>
-					<th>누적판매량</th>
-				</tr>
 				<c:forEach items="${ dummyList }" var="dummy">
 				<tr>
 					<td>~</td>
@@ -77,10 +79,13 @@
 			</table>
 		</div>
 		
+		<br />
+		<br />
+		
 		<div class="row-fluid">
 			<div class="span4">
-				<div class="chart-title">
-					<span>판매처별 판매그래프</span>
+				<div class="chart-title text-center">
+					판매처별 판매그래프
 				</div>
 				<div id="chart1"></div>
 			</div>
