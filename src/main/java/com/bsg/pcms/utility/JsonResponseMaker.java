@@ -2,6 +2,7 @@ package com.bsg.pcms.utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.bsg.pcms.dto.CateDTO;
 import com.bsg.pcms.dto.SeriesDTO;
 import com.bsg.pcms.provision.content.ContentDTOEx;
+import com.bsg.pcms.stats.dto.StatisticsDTO;
 
 @Service
 public class JsonResponseMaker {
@@ -162,6 +164,38 @@ public class JsonResponseMaker {
 		return json.toJSONString();
 	}
 	
+	public String generateLineGraph(String string,
+			List<StatisticsDTO> companyList) {
+		JSONObject json = new JSONObject();
+		
+		if (companyList != null) {
+			setSucessCode(json);
+			JSONArray result = new JSONArray();
+			for(StatisticsDTO statDTO : companyList){
+				JSONObject saleCompany = new JSONObject();
+				saleCompany.put("saleCompanyName", statDTO.getCompany_name());
+				
+				
+				Map saleCompanyCount = statDTO.getMonthSaleCount();
+				
+				JSONArray saleCompanyMonthCount = new JSONArray();
+				Iterator<String> it = statDTO.getMonthSaleCount().keySet().iterator();
+				while(it.hasNext()){
+					String key = it.next();
+					saleCompanyCount.get(key);
+					saleCompanyMonthCount.add(((Double)saleCompanyCount.get(key)).intValue());
+				}
+				saleCompany.put("monthCount", saleCompanyMonthCount);
+				result.add(saleCompany);
+			}
+			json.put(string, result);
+			json.put("saleCompanyCount", companyList.size());
+		}else{
+			setFailCode(json);
+		}
+		return json.toJSONString();
+	}
+	
 	
 	public String generateSucessCode(){
 		return generateDefaultJson(1);
@@ -194,5 +228,7 @@ public class JsonResponseMaker {
 		result.put(CODE, bigstarProperties.getFailedCode());
 		result.put(MSG, bigstarProperties.getFailedMsg());
 	}
+
+
 
 }

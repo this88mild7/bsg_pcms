@@ -263,9 +263,11 @@ $("#btn-sale-product-list").click(function(event){
 
 $('.autoNumeric').autoNumeric('init',{aPad: false });
 
-$("#contractForm").submit(function(){
+$("#balanceForm").submit(function(){
 	//금액 콤마 제거	(숫자만 가져옴)		
-	//$('#sale_price').val($('#sale_price').autoNumeric('get'));
+	$("#sale-content-list").find("input.autoNumeric").each(function(){
+		$(this).val($(this).autoNumeric('get'));
+	});
 });
 
 //판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
