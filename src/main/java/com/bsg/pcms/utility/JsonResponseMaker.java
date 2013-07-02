@@ -183,13 +183,45 @@ public class JsonResponseMaker {
 				while(it.hasNext()){
 					String key = it.next();
 					saleCompanyCount.get(key);
-					saleCompanyMonthCount.add(((Double)saleCompanyCount.get(key)).intValue());
+					saleCompanyMonthCount.add(saleCompanyCount.get(key));
 				}
 				saleCompany.put("monthCount", saleCompanyMonthCount);
 				result.add(saleCompany);
 			}
 			json.put(string, result);
 			json.put("saleCompanyCount", companyList.size());
+		}else{
+			setFailCode(json);
+		}
+		return json.toJSONString();
+	}
+	
+	public String generateProductLineGraph(String string,
+			List<StatisticsDTO> companyList) {
+		JSONObject json = new JSONObject();
+		
+		if (companyList != null) {
+			setSucessCode(json);
+			JSONArray result = new JSONArray();
+			for(StatisticsDTO statDTO : companyList){
+				JSONObject saleCompany = new JSONObject();
+				saleCompany.put("contentName", statDTO.getContents_name());
+				
+				
+				Map saleCompanyCount = statDTO.getMonthSaleCount();
+				
+				JSONArray saleCompanyMonthCount = new JSONArray();
+				Iterator<String> it = statDTO.getMonthSaleCount().keySet().iterator();
+				while(it.hasNext()){
+					String key = it.next();
+					saleCompanyCount.get(key);
+					saleCompanyMonthCount.add(saleCompanyCount.get(key));
+				}
+				saleCompany.put("monthCount", saleCompanyMonthCount);
+				result.add(saleCompany);
+			}
+			json.put(string, result);
+			json.put("contentCount", companyList.size());
 		}else{
 			setFailCode(json);
 		}
@@ -228,6 +260,8 @@ public class JsonResponseMaker {
 		result.put(CODE, bigstarProperties.getFailedCode());
 		result.put(MSG, bigstarProperties.getFailedMsg());
 	}
+
+	
 
 
 

@@ -36,20 +36,13 @@ public class StatisticsAjaxController {
 	/**
 	 * 
 	 * param 
-	 * searchEndDate ex) : "2013"
+	 * searchEndDate ex) : "2013" 
 	 * 
+	 * response
 	 * {
 			"pieGraph": [{
 				"saleCompany": "지순컴페니",
 				"saleCount": 235802
-			},
-			{
-				"saleCompany": "성환컴페니",
-				"saleCount": 147591
-			},
-			{
-				"saleCompany": "솔맷컴패니",
-				"saleCount": 18277
 			}],
 			"code": 200,
 			"msg": "OK"
@@ -67,11 +60,48 @@ public class StatisticsAjaxController {
 	}
 	
 	/**
+	 * response
+	 * {
+		"pieGraph": [{
+				"saleCount": 131653,
+				"contentName": "Alphabet book"
+			}],
+			"code": 200,
+			"msg": "OK"
+		}
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping( value = "product/pieGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String productPieGraph(StatisticsDTO param) {
+		
+		List<Map> companyList = statService.productPieGraphForMap(param);
+		
+		String jsonString = _jsonResponseMaker.generateMapList("pieGraph", companyList);
+		
+		return jsonString;
+	}
+	
+	/**
 	 * param
 	 *  searchQuery ex : "솔맷";
 		sortingType ex : "1";
 		searchStrDate ex : "2013-06"
 		searchEndDate ex : "2013-07"
+	   
+	 * response
+		{
+			"code": 200,
+			"msg": "OK",
+			"tableList": [{
+				"sale_end_date": "2013-07-31",
+				"company_name": "솔맷컴패니",
+				"sale_str_date": "2013-07-01",
+				"total_sale_count": 18257,
+				"sale_device": "ios",
+				"total_sale_price": 27092000
+			}]
+		}
 	 * 
 	 * @param param
 	 * @return
@@ -85,27 +115,51 @@ public class StatisticsAjaxController {
 		
 		return jsonString;
 	}
+	/**
+	 * param
+	 *  searchQuery ex : "솜사탕";
+		sortingType ex : "1";
+		searchStrDate ex : "2013-06"
+		searchEndDate ex : "2013-07"
+		
+	 * response
+		{
+			"code": 200,
+			"msg": "OK",
+			"tableList": [{
+				"sale_end_date": "2013-07-31",
+				"sale_str_date": "2013-07-01",
+				"total_sale_count": 131653,
+				"contents_cd": "CP04_SE33P0001_PB",
+				"sale_device": "ios",
+				"total_sale_price": 133837000,
+				"contens_name": "Alphabet book"
+			}]
+		}
+	 * 
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping( value = "product/list.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String productList(StatisticsDTO param) {
+		
+		List<Map> companyList = statService.productListForMap(param);
+		
+		String jsonString = _jsonResponseMaker.generateMapList("tableList", companyList);
+		
+		return jsonString;
+	}
 	
 	/**
 	 * param
 	 * searchEndDate ex) : "2013"
+	 * 
+	 * response
 	 * {
 		"saleCompanyCount": 1,
 		"lineGraph": [{
 			"saleCompanyName": "솔맷컴패니",
-			"monthCount": [
-			0,
-			0,
-			0,
-			0,
-			0,
-			441,
-			17836,
-			0,
-			0,
-			0,
-			0,
-			0]
+			"monthCount": [0, 0, 0, 0, 0, 441, 17836, 0, 0, 0, 0,0]
 		}],
 		"code": 200,
 		"msg": "OK"
@@ -119,6 +173,46 @@ public class StatisticsAjaxController {
 		 List<StatisticsDTO> companyList = statService.lineGraph(searchDate);
 		
 		String jsonString = _jsonResponseMaker.generateLineGraph("lineGraph", companyList);
+		
+		return jsonString;
+	}
+	
+	
+	/**
+	 * param
+	 * searchEndDate ex) : "2013"
+	 * 
+	 * response
+	 * {
+			"lineGraph": [{
+				"contentName": "Alphabet book",
+				"monthCount": [
+					0,
+					0,
+					0,
+					0.0,
+					0,
+					30,
+					131180,
+					0.0,
+					0,
+					0,
+					0,
+					0]
+			}],
+			"contentCount": 10,
+			"code": 200,
+			"msg": "OK"
+		}
+	 * @param searchDate
+	 * @return
+	 */
+	@RequestMapping( value = "product/lineGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String productLineGraph(String searchDate) {
+		
+		List<StatisticsDTO> companyList = statService.productLineGraph(searchDate);
+		
+		String jsonString = _jsonResponseMaker.generateProductLineGraph("lineGraph", companyList);
 		
 		return jsonString;
 	}

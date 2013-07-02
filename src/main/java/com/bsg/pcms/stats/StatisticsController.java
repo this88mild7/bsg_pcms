@@ -60,6 +60,7 @@ public class StatisticsController {
 		mav.setViewName("statistics-product-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_PRODUCT);
+		mav.addObject("tableList", statService.productList(null));
 		
 		//dummy work
 		Integer[] dummyArr = new Integer[37];

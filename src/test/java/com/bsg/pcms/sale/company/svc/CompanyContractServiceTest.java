@@ -72,12 +72,6 @@ public class CompanyContractServiceTest {
 //		assertThat(contractList.size(), is(not(0)));
 //		_logger.info("{}", contractList);
 	}
-	@Test
-	public void testContractSaleTypeList(){
-		List<CompanyContractDTOEx> contractList = _saleContractService.saleTypeList();
-		assertThat(contractList.size(), is(not(0)));
-		_logger.info("{}", contractList);
-	}
 	
 	@Test
 	public void testContractDetail(){

@@ -30,6 +30,10 @@ public class StatisticsDTO extends CompanyDTO{
 	
 	private String searchQuery;
 	
+	private String contents_name;
+	
+	private String contents_cd;
+
 	
 	public int getTotal_sale_count() {
 		return total_sale_count;
@@ -117,6 +121,35 @@ public class StatisticsDTO extends CompanyDTO{
 
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
+	}
+
+	public String getContents_name() {
+		return contents_name;
+	}
+
+	public void setContents_name(String contents_name) {
+		this.contents_name = contents_name;
+	}
+
+	public String getContents_cd() {
+		return contents_cd;
+	}
+
+	public void setContents_cd(String contents_cd) {
+		this.contents_cd = contents_cd;
+	}
+
+	@Override
+	public String toString() {
+		return "StatisticsDTO [total_sale_count=" + total_sale_count
+				+ ", total_sale_price=" + total_sale_price + ", sale_device="
+				+ sale_device + ", sale_content_name=" + sale_content_name
+				+ ", searchStrDate=" + searchStrDate + ", searchEndDate="
+				+ searchEndDate + ", sale_str_date=" + sale_str_date
+				+ ", sale_end_date=" + sale_end_date + ", monthSaleCount="
+				+ monthSaleCount + ", sortingType=" + sortingType
+				+ ", searchQuery=" + searchQuery + ", contents_name="
+				+ contents_name + ", contents_cd=" + contents_cd + "]";
 	}
 
 	
