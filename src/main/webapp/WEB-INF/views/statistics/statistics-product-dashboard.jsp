@@ -65,13 +65,13 @@
 					<th>총매출금액</th>
 					<th>누적판매량</th>
 				</tr>
-				<c:forEach items="${ dummyList }" var="dummy">
+				<c:forEach items="${ tableList }" var="obj" varStatus="status">
 				<tr>
-					<td>~</td>
-					<td>!</td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>${ status.count }</td>
+					<td>${ obj.contents_name }</td>
+					<td>${ obj.sale_device }</td>
+					<td class="price">${ obj.total_sale_price }</td>
+					<td class="count">${ obj.total_sale_count }</td>
 				</tr>
 				</c:forEach>
 			</table>
