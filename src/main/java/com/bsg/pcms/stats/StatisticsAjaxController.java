@@ -65,4 +65,55 @@ public class StatisticsAjaxController {
 		return jsonString;
 	}
 	
+	/**
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping( value = "sale-company/list.ajax")
+	public String list(StatisticsDTO param) {
+		
+//		List<StatisticsDTO> companyList = statService.listForMap();
+//		
+//		String jsonString = _jsonResponseMaker.generateMapList("pieGraph", companyList);
+//		
+//		return jsonString;
+		return null;
+	}
+	
+	/**
+	 * 
+	 * {
+		"saleCompanyCount": 1,
+		"lineGraph": [{
+			"saleCompanyName": "솔맷컴패니",
+			"monthCount": [
+			0,
+			0,
+			0,
+			0,
+			0,
+			441,
+			17836,
+			0,
+			0,
+			0,
+			0,
+			0]
+		}],
+		"code": 200,
+		"msg": "OK"
+	}
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping( value = "sale-company/lineGraph.ajax")
+	public String lineGraph(String searchDate) {
+		
+		 List<StatisticsDTO> companyList = statService.lineGraph(searchDate);
+		
+		String jsonString = _jsonResponseMaker.generateLineGraph("lineGraph", companyList);
+		
+		return jsonString;
+	}
+	
 }

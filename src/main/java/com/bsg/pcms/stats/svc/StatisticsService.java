@@ -32,10 +32,20 @@ public class StatisticsService {
 		return statDao.pieGraph(param);
 	}
 	
-	public List<StatisticsDTO> lineGraph(){
-		List<String> companyList = statDao.lineGraphCompany();
-		//statDao.lineGraphMonthCount(company_mgmtno, year, month);
-		return null;
+	public List<StatisticsDTO> lineGraph(String searchYear){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		
+		if(StringUtils.isBlank(searchYear)){
+			searchYear = sdf.format(System.currentTimeMillis());
+		}
+		
+		List<StatisticsDTO> companyList = statDao.lineGraphCompany();
+		for(StatisticsDTO companyMgmtno : companyList){
+			companyMgmtno.setSearchEndDate(searchYear);
+			companyMgmtno.setMonthSaleCount(statDao.lineGraphMonthCount(companyMgmtno));
+			
+		}
+ 		return companyList;
 	}
 
 	public List<Map> pieGraphForMap(StatisticsDTO param) {

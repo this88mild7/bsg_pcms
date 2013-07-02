@@ -54,10 +54,17 @@ public class StatisticsAjaxControllerTest {
 		assertThat(result, is(notNullValue()));
 		logger.info("pie json : {}", result);
 	}
+	
 	@Test
 	public void testPieGraphForJsonTargetMonth() {
 		param.setSearchEndDate("2013");
 		String result = statisticsAjaxController.pieGraph(param);
+		assertThat(result, is(notNullValue()));
+		logger.info("pie json : {}", result);
+	}
+	@Test
+	public void testLineGraphForJson() {
+		String result = statisticsAjaxController.lineGraph(null);
 		assertThat(result, is(notNullValue()));
 		logger.info("pie json : {}", result);
 	}

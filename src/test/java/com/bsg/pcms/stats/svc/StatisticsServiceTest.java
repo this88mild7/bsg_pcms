@@ -11,6 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,6 +22,8 @@ import com.bsg.pcms.stats.dto.StatisticsDTO;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:servlet-contextForTest.xml"})
 public class StatisticsServiceTest {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private StatisticsDTO param = null;
 	
@@ -123,6 +127,25 @@ public class StatisticsServiceTest {
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
+		}
+		
+	}
+	
+	@Test
+	public void testLineGraphList() {
+		
+		// given 
+		
+		// when
+		List<StatisticsDTO> lineGraphList = statService.lineGraph("2013");
+		logger.info("lineGraphList : {}", lineGraphList);
+		logger.info("lineGraphList MonthCount : {}", lineGraphList.get(1).getMonthSaleCount());
+		
+		// then
+		List<StatisticsDTO> listResult = statService.list();
+		
+		if(listResult.size() > 0){
+			assertThat(lineGraphList.size(), is(not(0)));
 		}
 		
 	}

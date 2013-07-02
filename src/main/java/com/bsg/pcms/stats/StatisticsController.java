@@ -61,14 +61,6 @@ public class StatisticsController {
 	 *  sale_str_date, 
 	 *  sale_end_date
 	 *  
-	 * pieGraph setting propertis : 
-	 *  company_name, 
-	 *  total_sale_count, 
-	 *  total_sale_price, 
-	 *  sale_device, 
-	 *  sale_str_date, 
-	 *  sale_end_date
-	 * 
 	 * @return
 	 */
 	@RequestMapping( value = "sale-company/list.do", method = RequestMethod.GET )
@@ -79,7 +71,6 @@ public class StatisticsController {
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
 		mav.addObject("tableList", statService.list());
-		mav.addObject("pieGraph", statService.pieGraph(null));
 
 		return mav;
 	}

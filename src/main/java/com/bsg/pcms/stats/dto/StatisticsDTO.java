@@ -24,15 +24,8 @@ public class StatisticsDTO extends CompanyDTO{
 	
 	private String sale_end_date;
 	
-	private List<Map> monthSaleCount;
+	private Map monthSaleCount;
 	
-	public List<Map> getMonthSaleCount() {
-		return monthSaleCount;
-	}
-
-	public void setMonthSaleCount(List<Map> monthSaleCount) {
-		this.monthSaleCount = monthSaleCount;
-	}
 
 	public int getTotal_sale_count() {
 		return total_sale_count;
@@ -96,6 +89,14 @@ public class StatisticsDTO extends CompanyDTO{
 
 	public void setSearchEndDate(String searchEndDate) {
 		this.searchEndDate = searchEndDate;
+	}
+
+	public Map getMonthSaleCount() {
+		return monthSaleCount;
+	}
+
+	public void setMonthSaleCount(Map monthSaleCount) {
+		this.monthSaleCount = monthSaleCount;
 	}
 
 	

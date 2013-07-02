@@ -170,7 +170,7 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<String> lineGraphList = statisDao.lineGraphCompany();
+		List<StatisticsDTO> lineGraphList = statisDao.lineGraphCompany();
 		
 		// then
 		List<StatisticsDTO> listResult = statisDao.list();
@@ -185,13 +185,18 @@ public class StatisticsDaoTest {
 	public void testLineGraphMonthCount() {
 		
 		// given
-		String company_mgmtno = "39";
-		String year = "2013";
-		String month = "01";
+		
 		List<StatisticsDTO> listResult = statisDao.list();
 		
 		// when
-		int monthTotalCount = statisDao.lineGraphMonthCount(company_mgmtno, year, month);
+		for(StatisticsDTO statDTO : listResult){
+			statDTO.setSearchEndDate("2013");
+			statDTO.setMonthSaleCount(statisDao.lineGraphMonthCount(statDTO));
+			
+		}
+		
+		logger.info("lineGraph Count : {}", listResult);
+		logger.info("lineGraph Count : {}", listResult.get(0).getMonthSaleCount());
 		
 		
 		// then

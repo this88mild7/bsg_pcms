@@ -74,24 +74,140 @@
 		ORDER BY A.TOTAL_SALE_COUNT DESC 
 	</select>
 	
-	<select id="lineGraphCompany" resultType="String" >
+	<select id="lineGraphCompany" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
    		SELECT /* statisQuery.lineGraphCompany */
-   			COM.COMPANY_NAME
+   			COM.COMPANY_NAME,
+   			COM.COMPANY_MGMTNO
    		FROM BALANCE BAL, COMPANY COM
 		WHERE 1=1
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
 		AND COM.COMPANY_TYPE='SC'
 		GROUP BY BAL.COMPANY_MGMTNO
+		ORDER BY SUM(BAL.TOTAL_SALE_COUNT) DESC
 	</select>
 	
-	<select id="lineGraphMonthCount" resultType="int" >
-   		SELECT /* statisQuery.pieGraph */
-   			IFNULL(SUM(BAL.TOTAL_SALE_COUNT), 0)
-   		FROM BALANCE BAL, COMPANY COM
-		WHERE 1=1
-		AND BAL.COMPANY_MGMTNO = #{company_mgmtno}
-		AND date_format(SALE_END_DATE, '%Y') = #{year}
-		AND date_format(SALE_END_DATE, '%m') = #{month}
+	<select id="lineGraphMonthCount" resultType="java.util.TreeMap" >
+   		SELECT /* statisQuery.lineGraphMonthCount*/
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '01'
+			), 0) AS '01'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '02'
+			), 0) AS '02'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '03'
+			), 0) AS '03'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '04'
+			), 0) AS '04'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '05'
+			), 0) AS '05'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '06'
+			), 0) AS '06'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '07'
+			), 0) AS '07'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '08'
+			), 0) AS '08'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '09'
+			), 0) AS '09'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '10'
+			), 0) AS '10'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '11'
+			), 0) AS '11'
+		, 
+			IFNULL(
+			(SELECT 
+			SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+			FROM BALANCE BAL
+			WHERE 1=1
+			AND BAL.COMPANY_MGMTNO = ${company_mgmtno}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '12'
+			), 0) AS '12'
+		FROM DUAL
 	</select>
    
    

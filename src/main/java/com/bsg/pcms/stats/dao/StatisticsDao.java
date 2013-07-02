@@ -25,20 +25,12 @@ public class StatisticsDao extends SqlSessionDaoSupport{
 		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.pieGraph", param);
 	}
 
-	public List<String> lineGraphCompany() {
-		return (List<String>)getSqlSession().selectList("statisQuery.lineGraphCompany");
+	public List<StatisticsDTO> lineGraphCompany() {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.lineGraphCompany");
 	}
 
-	public List<Map> lineGraphMonthCount() {
-		return (List<Map>)getSqlSession().selectList("statisQuery.lineGraphMonthCount");
-	}
-
-	public int lineGraphMonthCount(String company_mgmtno, String year, String month) {
-		Map<String, String> yearAndMonth = new HashMap<String, String>();
-		yearAndMonth.put("company_mgmtno", company_mgmtno);
-		yearAndMonth.put("year", year);
-		yearAndMonth.put("month", month);
-		return (Integer)getSqlSession().selectOne("statisQuery.lineGraphMonthCount", yearAndMonth);
+	public Map<String, String> lineGraphMonthCount(StatisticsDTO param) {
+		return (Map<String, String>)getSqlSession().selectOne("statisQuery.lineGraphMonthCount", param);
 	}
 
 }
