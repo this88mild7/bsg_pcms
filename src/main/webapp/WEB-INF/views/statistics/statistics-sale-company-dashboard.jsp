@@ -56,24 +56,22 @@
 			</div>
 		</div>
 		
-		<table class="table" style="margin-bottom:0px;">
-			<tr>
-				<th>순위</th>
-				<th>판매처</th>
-				<th>판매기기</th>
-				<th>총매출금액</th>
-				<th>누적판매량</th>
-			</tr>
-		</table>
 		<div id="tbl-wrapper">
 			<table class="table table-striped table-hover">
-				<c:forEach items="${ dummyList }" var="dummy">
 				<tr>
-					<td>~</td>
-					<td>!</td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th>순위</th>
+					<th>판매처</th>
+					<th>판매기기</th>
+					<th>총매출금액</th>
+					<th>누적판매량</th>
+				</tr>
+				<c:forEach items="${ tableList }" var="obj" varStatus="status">
+				<tr>
+					<td>${ status.count }</td>
+					<td>${ obj.company_name }</td>
+					<td>${ obj.sale_device }</td>
+					<td>${ obj.total_sale_price }</td>
+					<td>${ obj.total_sale_count }</td>
 				</tr>
 				</c:forEach>
 			</table>
@@ -165,7 +163,56 @@ $(function(){
 		"height":"300px"
 	});
 	
+	//파이차트 그리기
+	createPidChart();
+	
 });
 
+function createPidChart(option){
+
+	//option work
+	console.info(option);
+	
+	var param;
+	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
+	
+	$.getJSON(url, param, function(data) {
+		console.info( data );
+		
+		/*
+		if(data.code == 999) {
+			bootbox.alert( data.msg );
+			return false;
+		}
+		
+		{ // 초기화
+			$target.find("tbody").remove();
+		}
+		
+		if(data.contentList.length == 0) {
+			bootbox.alert( "등록된 상품이 없습니다. 상품등록을 마친 후 정산 입력해 주세요." );
+			return false;
+		}
+		
+		$.each(data.contentList, function(idx, ele){
+			$html = '<option value="' + ele.sale_type + '">' + ele.sale_type_name + '</option>';
+			$target.append( $html );
+			
+				var name = ele.name,
+					salePrice = ele.sale_price,
+					saleCompanyRate = ele.sale_company_rate,
+					cpName = ele.cp_name,
+					cpRate = ele.cp_rate,
+					contentsCd = ele.contents_cd;
+				
+				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" data-cp_name="{5}" value="{4}"></td><td>{0} {1} 원</td></tr>',
+						name, salePrice, saleCompanyRate, cpRate, contentsCd, cpName );
+			
+				$target.find("table").append( $html );
+		});
+		
+		*/
+	});
+}
 
 </script>
