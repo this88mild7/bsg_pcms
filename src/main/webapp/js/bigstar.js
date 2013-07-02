@@ -14,7 +14,7 @@ INDEX
 0. COMMON
 -------------------------------------------------------------- */
 {//IE placeholder 플러그인 시작
-	this.placeholderForIE();
+	$('input, textarea').placeholder();
 }//IE placeholder 플러그인 마침
 
 {//버튼 클릭 후 페이지 이동 작업 시작
@@ -88,32 +88,6 @@ INDEX
 		}
 	});
 }//컨텐츠 폼 라벨 좌측 정렬 마침
-
-
-// IE placeholder 를 위한 함수
-function placeholderForIE(){
-	if (!("placeholder" in $('<input />')[0])) {
-		$(":input[placeholder]").each(function () {
-			var $input = $(this).attr('id', 'fix-' + this.name);
-			var $label = $('<label />', {
-				'for' : $input.attr('id'),
-				'class' : 'handler',
-				'text' : $input.attr('placeholder')
-			}).css({
-				'width' : $input.width(),
-				'font-size' : $input.css('font-size'),
-				'margin-top' : parseInt($input.css('padding-top')) + parseInt($input.css('border-top-width')) + 1,
-				'margin-left' : parseInt($input.css('padding-left')) + parseInt($input.css('border-left-width')) + 1
-			}).insertBefore($input).hide();
-			$input.on('focus', function() {
-				$label.hide();
-			}).on('blur', function() {
-				if(!this.value.length) $label.css('display', '');
-			}).filter(function(){return !this.value.length;}).prev().css('display', '');
-		});
-	}
-	
-}
 
 /* --------------------------------------------------------------
 4. FOOTER

@@ -48,14 +48,16 @@
 	<tiles:insertAttribute name="footer"/>
 	
 	<script src="/pcms/js/jquery.blockUI.js"></script>
+	<script src="/pcms/js/jquery.placeholder.min.js"></script>
 	<script src="/pcms/js/json2.js"></script>
 	<script src="/pcms/js/bootstrap-datepicker.js"></script>
 	<script src="/pcms/js/bootbox.min.js"></script>
+	<script src="/pcms/js/flotr2.js"></script>
 	<script src="/pcms/js/jqBootstrapValidation.js"></script>
 	<script src="/pcms/js/bigstar.js"></script>
 	<script src="/pcms/js/autoNumeric.js"></script>
 	<script src="/pcms/js/locales/datepicker-kr.js"></script>
-	
+		
 </body>
 </html>
 	
