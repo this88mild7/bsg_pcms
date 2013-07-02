@@ -26,7 +26,8 @@ public class StatisticsDTO extends CompanyDTO{
 	
 	private Map monthSaleCount;
 	
-
+	private String orderByType;
+	
 	public int getTotal_sale_count() {
 		return total_sale_count;
 	}
@@ -97,6 +98,14 @@ public class StatisticsDTO extends CompanyDTO{
 
 	public void setMonthSaleCount(Map monthSaleCount) {
 		this.monthSaleCount = monthSaleCount;
+	}
+
+	public String getOrderByType() {
+		return orderByType;
+	}
+
+	public void setOrderByType(String orderByType) {
+		this.orderByType = orderByType;
 	}
 
 	

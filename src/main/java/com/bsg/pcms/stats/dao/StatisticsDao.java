@@ -12,8 +12,8 @@ import com.bsg.pcms.stats.dto.StatisticsDTO;
 @Repository
 public class StatisticsDao extends SqlSessionDaoSupport{
 	
-	public List<StatisticsDTO> list() {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.list");
+	public List<StatisticsDTO> list(StatisticsDTO requestParam) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.list", requestParam);
 		
 	}
 
@@ -31,6 +31,11 @@ public class StatisticsDao extends SqlSessionDaoSupport{
 
 	public Map<String, String> lineGraphMonthCount(StatisticsDTO param) {
 		return (Map<String, String>)getSqlSession().selectOne("statisQuery.lineGraphMonthCount", param);
+	}
+
+	public List<StatisticsDTO> productLineGraphCompany() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

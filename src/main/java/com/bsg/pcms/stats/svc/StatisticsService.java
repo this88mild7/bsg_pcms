@@ -20,17 +20,34 @@ public class StatisticsService {
 	@Autowired
 	StatisticsDao statDao;
 	
-	public List<StatisticsDTO> list() {
-		return statDao.list();
+	public List<StatisticsDTO> list(StatisticsDTO requestParam) {
+		return statDao.list(requestParam);
+	}
+	
+	public List<Map> listForMap(StatisticsDTO requestParam) {
+		
+		List<StatisticsDTO> saleCompanyTable = statDao.list(requestParam);
+		
+		List<Map> tableListMap = new ArrayList<Map>();
+		
+		for(StatisticsDTO staDTO : saleCompanyTable){
+			Map<String, Object> tableMap = new HashMap<String, Object>();
+			tableMap.put("company_name", staDTO.getCompany_name());
+			tableMap.put("total_sale_count", staDTO.getTotal_sale_count());
+			tableMap.put("total_sale_price", staDTO.getTotal_sale_price());
+			tableMap.put("sale_device", staDTO.getSale_device());
+			tableMap.put("sale_str_date", staDTO.getSale_str_date());
+			tableMap.put("sale_end_date", staDTO.getSale_end_date());
+			tableListMap.add(tableMap);
+		}
+		
+		return tableListMap;
 	}
 
 	public List<StatisticsDTO> search(StatisticsDTO param) {
 		return statDao.search(param);
 	}
 
-	public List<StatisticsDTO> pieGraph(StatisticsDTO param) {
-		return statDao.pieGraph(param);
-	}
 	
 	public List<StatisticsDTO> lineGraph(String searchYear){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -50,7 +67,7 @@ public class StatisticsService {
 
 	public List<Map> pieGraphForMap(StatisticsDTO param) {
 		
-		List<StatisticsDTO> pieGraphResult = pieGraph(param);
+		List<StatisticsDTO> pieGraphResult = statDao.pieGraph(param);
 		
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
 		for(StatisticsDTO temp : pieGraphResult){
@@ -61,5 +78,47 @@ public class StatisticsService {
 		}
 		return pieGraphGForMap;
 	}
+	
+	public List<StatisticsDTO> productList() {
+//		return statDao.list();
+		return null;
+	}
+	
+	public List<StatisticsDTO> productSearch(StatisticsDTO param) {
+		return statDao.search(param);
+	}
+	
+	
+	public List<StatisticsDTO> productLineGraph(String searchYear){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		
+		if(StringUtils.isBlank(searchYear)){
+			searchYear = sdf.format(System.currentTimeMillis());
+		}
+		
+		List<StatisticsDTO> companyList = statDao.productLineGraphCompany();
+		for(StatisticsDTO companyMgmtno : companyList){
+			companyMgmtno.setSearchEndDate(searchYear);
+			companyMgmtno.setMonthSaleCount(statDao.lineGraphMonthCount(companyMgmtno));
+			
+		}
+		return companyList;
+	}
+	
+	public List<Map> productPieGraphForMap(StatisticsDTO param) {
+		
+		List<StatisticsDTO> pieGraphResult = statDao.pieGraph(param);
+		
+		List<Map> pieGraphGForMap = new ArrayList<Map>();
+		for(StatisticsDTO temp : pieGraphResult){
+			Map<String, Object> pieMap = new HashMap<String, Object>();
+			pieMap.put("saleCompany", temp.getCompany_name());
+			pieMap.put("saleCount", temp.getTotal_sale_count());
+			pieGraphGForMap.add(pieMap);
+		}
+		return pieGraphGForMap;
+	}
+
+	
 
 }

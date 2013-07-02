@@ -20,6 +20,12 @@
 		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
 		AND COM.COMPANY_TYPE='SC'
 		GROUP BY BAL.COMPANY_MGMTNO
+		<if test="orderByType eq 'regDt'">
+			ORDER BY BAL.REG_DT DESC
+		</if>
+		<if test="orderByType eq 'saleCount'">
+			ORDER BY SUM(BAL.TOTAL_SALE_COUNT) DESC
+		</if>
 	</select>
 	
 	<select id="search" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 

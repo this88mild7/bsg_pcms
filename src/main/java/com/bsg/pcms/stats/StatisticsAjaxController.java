@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.stats.dto.StatisticsDTO;
@@ -55,8 +56,8 @@ public class StatisticsAjaxController {
 		}
 	 * @return
 	 */
-	@RequestMapping( value = "sale-company/pieGraph.ajax")
-	public String pieGraph(StatisticsDTO param) {
+	@RequestMapping( value = "sale-company/pieGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String pieGraph(StatisticsDTO param) {
 		
 		List<Map> companyList = statService.pieGraphForMap(param);
 		
@@ -69,15 +70,14 @@ public class StatisticsAjaxController {
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping( value = "sale-company/list.ajax")
-	public String list(StatisticsDTO param) {
+	@RequestMapping( value = "sale-company/list.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String list(StatisticsDTO param) {
 		
-//		List<StatisticsDTO> companyList = statService.listForMap();
-//		
-//		String jsonString = _jsonResponseMaker.generateMapList("pieGraph", companyList);
-//		
-//		return jsonString;
-		return null;
+		List<Map> companyList = statService.listForMap(param);
+		
+		String jsonString = _jsonResponseMaker.generateMapList("tableList", companyList);
+		
+		return jsonString;
 	}
 	
 	/**
@@ -106,8 +106,8 @@ public class StatisticsAjaxController {
 	 * @param param
 	 * @return
 	 */
-	@RequestMapping( value = "sale-company/lineGraph.ajax")
-	public String lineGraph(String searchDate) {
+	@RequestMapping( value = "sale-company/lineGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String lineGraph(String searchDate) {
 		
 		 List<StatisticsDTO> companyList = statService.lineGraph(searchDate);
 		

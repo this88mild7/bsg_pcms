@@ -68,5 +68,35 @@ public class StatisticsAjaxControllerTest {
 		assertThat(result, is(notNullValue()));
 		logger.info("pie json : {}", result);
 	}
+	
+	/**
+	 * {
+		"code": 200,
+		"msg": "OK",
+		"tableList": [
+			{
+			"sale_end_date": "2013-07-31",
+			"company_name": "성환컴페니",
+			"sale_str_date": "2013-07-01",
+			"total_sale_count": 147591,
+			"sale_device": "android",
+			"total_sale_price": 147591000}
+		]
+	}
+	 */
+	@Test
+	public void testList() {
+		String result = statisticsAjaxController.list(null);
+		assertThat(result, is(notNullValue()));
+		logger.info("pie json : {}", result);
+	}
+	
+	@Test
+	public void testSaleCompanySearchByOrderBy() {
+		param.setOrderByType("regDt");
+		String result = statisticsAjaxController.list(param);
+		assertThat(result, is(notNullValue()));
+		logger.info("pie json : {}", result);
+	}
 
 }

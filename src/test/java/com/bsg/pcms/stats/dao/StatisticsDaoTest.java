@@ -54,7 +54,7 @@ public class StatisticsDaoTest {
 		// given 
 
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list();
+		List<StatisticsDTO> statDTO = statisDao.list(null);
 			
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -65,7 +65,46 @@ public class StatisticsDaoTest {
 			assertThat(temp.getCompany_name(), is(notNullValue()));
 			assertThat(temp.getSale_device(), is(notNullValue()));
 		}
-
+	}
+	
+	@Test
+	public void testSaleCompanyListOrderbyRegDt() {
+		
+		// given 
+		param.setOrderByType("regDt");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	
+	@Test
+	public void testProductLineGraphCompany() {
+		
+		// given 
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(null);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+		
 		
 	}
 	
@@ -79,7 +118,7 @@ public class StatisticsDaoTest {
 		List<StatisticsDTO> searchResult = statisDao.search(param);
 
 		// then
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		if(listResult.size() == 0){
 			assertThat(searchResult.size(), is(0));
 		}else{
@@ -103,7 +142,7 @@ public class StatisticsDaoTest {
 	@Test
 	public void teststatisSearchByDate() {
 
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		
 		
 		if(listResult.size() != 0){
@@ -138,7 +177,7 @@ public class StatisticsDaoTest {
 		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(null);
 
 		// then
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -156,7 +195,7 @@ public class StatisticsDaoTest {
 		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(param);
 		
 		// then
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -173,7 +212,7 @@ public class StatisticsDaoTest {
 		List<StatisticsDTO> lineGraphList = statisDao.lineGraphCompany();
 		
 		// then
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		
 		if(listResult.size() > 0){
 			assertThat(lineGraphList.size(), is(not(0)));
@@ -186,7 +225,7 @@ public class StatisticsDaoTest {
 		
 		// given
 		
-		List<StatisticsDTO> listResult = statisDao.list();
+		List<StatisticsDTO> listResult = statisDao.list(null);
 		
 		// when
 		for(StatisticsDTO statDTO : listResult){

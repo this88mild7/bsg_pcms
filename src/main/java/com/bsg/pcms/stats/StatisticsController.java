@@ -77,16 +77,17 @@ public class StatisticsController {
 	 *  
 	 * @return
 	 */
-	@RequestMapping( value = "sale-company/list.do", method = RequestMethod.GET )
-	public ModelAndView saleCompanyList() {
+	@RequestMapping( value = "product/list.do", method = RequestMethod.GET )
+	public ModelAndView productList() {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-		mav.addObject("tableList", statService.list());
+		mav.addObject("tableList", statService.list(null));
 
 		return mav;
 	}
+	
 	
 }
