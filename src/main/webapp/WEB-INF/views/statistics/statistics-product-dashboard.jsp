@@ -16,8 +16,8 @@
 .chart-title {
 	background-color: gray;
 	color: white;
-	height: 40px;
-	font-size: 20px;
+	font-size: 16px;
+	padding: 10px;
 }
 </style>
 <div class="page-name">
@@ -77,24 +77,25 @@
 			</table>
 		</div>
 		
+		<br />
+		<br />
+		
 		<div class="row-fluid">
 			<div class="span4">
 				<div class="chart-title">
-					<span>판매처별 판매그래프</span>
+					상품별 판매그래프
 				</div>
 				<div id="chart1"></div>
 			</div>
 			<div class="span8">
 				<div class="chart-title">
-					<span>기간별 판매그래프</span>
-					<span>
-						<select class="span2">
-							<option>2013년</option>
-							<option>2012년</option>
-							<option>2011년</option>
-							<option>2010년</option>
-						</select>
-					</span>
+					기간별 판매그래프
+					<select class="select-mini span3 pull-right">
+						<option>2013년</option>
+						<option>2012년</option>
+						<option>2011년</option>
+						<option>2010년</option>
+					</select>
 				</div>
 				<div id="chart2"></div>
 			</div>
@@ -130,7 +131,7 @@ $(function(){
 function createPidChart(option){
 
 	var param;
-	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
+	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
 		console.info( data );
@@ -145,7 +146,7 @@ function createPidChart(option){
 		
 		var pieRows = [];
 		$.each( data.pieGraph, function(idx, ele){
-			var pieData = [ ele.saleCompany, ele.saleCount ];
+			var pieData = [ ele.contentName, ele.saleCount ];
 			pieRows.push(pieData);
 		});
 		
@@ -160,7 +161,7 @@ function createPidChart(option){
 function createLineChart(option){
 
 	var param;
-	var url = '<spring:eval expression="@urlProp['statsCompanyLineChart']"/>';
+	var url = '<spring:eval expression="@urlProp['statsProductLineChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
 		console.info( data );
@@ -177,7 +178,7 @@ function createLineChart(option){
 		var firstRow = [ "" ];
 		//set company name
 		$.each( data.lineGraph, function(idx, ele){
-			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
+			firstRow.push( ele.contentName ); //['','companyName','companyName(n)']
 		});
 		lineRows.push(firstRow);
 		
