@@ -16,8 +16,8 @@
 .chart-title {
 	background-color: gray;
 	color: white;
-	height: 40px;
-	font-size: 20px;
+	font-size: 16px;
+	padding: 10px;
 }
 </style>
 <div class="page-name">
@@ -82,22 +82,20 @@
 		
 		<div class="row-fluid">
 			<div class="span4">
-				<div class="chart-title text-center">
+				<div class="chart-title">
 					판매처별 판매그래프
 				</div>
 				<div id="chart1"></div>
 			</div>
 			<div class="span8">
 				<div class="chart-title">
-					<span>기간별 판매그래프</span>
-					<span>
-						<select class="span2">
-							<option>2013년</option>
-							<option>2012년</option>
-							<option>2011년</option>
-							<option>2010년</option>
-						</select>
-					</span>
+					기간별 판매그래프
+					<select class="select-mini span3 pull-right">
+						<option>2013년</option>
+						<option>2012년</option>
+						<option>2011년</option>
+						<option>2010년</option>
+					</select>
 				</div>
 				<div id="chart2"></div>
 			</div>

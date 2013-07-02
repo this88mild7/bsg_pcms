@@ -102,64 +102,127 @@
 	
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
-
-      google.load('visualization', '1.0', {'packages':['corechart']});
-      //파이차트 그리기
-      google.setOnLoadCallback(drawPieChart);
-      //라인차트 그리기
-      google.setOnLoadCallback(drawLineChart);
-      
-      function drawPieChart() {
-    	  
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', '스트링');
-        data.addColumn('number', '넘버');
-        data.addRows([
-	        ['LG전자', 3],
-	        ['olleh', 1],
-	        ['기타', 1]
-        ]);
-
-        var options = {'width':'100%'};
-
-        var pieChart = new google.visualization.PieChart(document.getElementById('chart1'));
-        pieChart.draw(data, options);
-    	  
-      }
-      
-      function drawLineChart() {
-          var data = google.visualization.arrayToDataTable([
-            ['월', 'LG전자', 'olleh', '기타'],
-            ['1월', 1, 3, 1],
-            ['2월', 5,10,2],
-            ['3월', 1, 3, 1],
-            ['4월', 20,1,5],
-            ['5월', 5,10,2],
-            ['6월', 1, 3, 1],
-            ['7월', 20,1,5],
-            ['8월', 5,10,2],
-            ['9월', 1, 3, 1],
-            ['10월', 37, 7, 3],
-            ['11월', 20,1,5],
-            ['12월',  5,10,2]
-          ]);
-
-		var options = {'width':'100%'};
-
-        var lineChart = new google.visualization.LineChart(document.getElementById('chart2'));
-        lineChart.draw(data, options);
-       }
-    </script>
-	
+		google.load('visualization', '1.0', {'packages':['corechart']});
+	</script>
 </div>
 <!--/row-->
 <script>
 $(function(){
 	
+	//목록 상하 스크롤 만들기
 	$("#tbl-wrapper").css({
 		"overflow":"auto",
-		"height":"200px"
+		"height":"300px"
 	});
 	
+	//가격에 ,(콤마) 넣어주기
+	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
+	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
+	
+	//파이차트 그리기
+	createPidChart();
+
+	//선차트 그리기
+	createLineChart();
+	
 });
+
+function createPidChart(option){
+
+	var param;
+	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
+	
+	$.getJSON(url, param, function(data) {
+		console.info( data );
+		
+		if(data.code != 200) {
+			bootbox.alert( data.msg );
+			return false;
+		} else if(data.pieGraph.length == 0) {
+			bootbox.alert( "파이차트 데이터가 없습니다." );
+			return false;
+		}
+		
+		var pieRows = [];
+		$.each( data.pieGraph, function(idx, ele){
+			var pieData = [ ele.saleCompany, ele.saleCount ];
+			pieRows.push(pieData);
+		});
+		
+		//GOOGLE PIE CHART API CALL
+		drawPieChart({
+			id : "chart1",
+			rows : pieRows
+		});
+	});
+}
+
+function createLineChart(option){
+
+	var param;
+	var url = '<spring:eval expression="@urlProp['statsCompanyLineChart']"/>';
+	
+	$.getJSON(url, param, function(data) {
+		console.info( data );
+		
+		if(data.code != 200) {
+			bootbox.alert( data.msg );
+			return false;
+		} else if(data.lineGraph.length == 0) {
+			bootbox.alert( "선차트 데이터가 없습니다." );
+			return false;
+		}
+		
+		var lineRows = []; //구글 params
+		var firstRow = [ "" ];
+		//set company name
+		$.each( data.lineGraph, function(idx, ele){
+			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
+		});
+		lineRows.push(firstRow);
+		
+		//set data
+		for ( var begin = 0; begin <= 11; begin++ ) {
+			var dataRow = [ (begin+1) + "월" ];
+			$.each( data.lineGraph, function(idx, ele){
+				dataRow.push( ele.monthCount[ begin ] ); 
+			});
+			
+			lineRows.push(dataRow);
+		}
+		
+		//GOOGLE LINE CHART API CALL
+		drawLineChart({
+			rows : lineRows,
+			id : "chart2"
+		});
+	});
+}
+
+function drawPieChart( params ) {
+	console.info( params );
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'string');
+	data.addColumn('number', 'number');
+	data.addRows( params.rows );
+	
+	var options = {
+			chartArea: {width: '90%', height: '80%'},
+			legend: {position: 'bottom'}
+			};
+	var pieChart = new google.visualization.PieChart(document.getElementById( params.id ));
+	pieChart.draw(data, options);
+}
+  
+function drawLineChart( params ) {
+	console.info( params );
+    var data = google.visualization.arrayToDataTable( params.rows );
+
+	var options = {
+			chartArea: {width: '85%', height: '75%'},
+			legend: {position: 'bottom'}
+			};
+    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
+    lineChart.draw(data, options);
+}
 </script>
