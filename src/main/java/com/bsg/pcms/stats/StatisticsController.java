@@ -28,6 +28,14 @@ public class StatisticsController {
 	StatisticsService statService;
 	
 	/** 판매처 통계 대쉬보드
+	 * tableList setting properties: 
+	 * 	company_name, 
+	 *  total_sale_count, 
+	 *  total_sale_price, 
+	 *  sale_device, 
+	 *  sale_str_date, 
+	 *  sale_end_date
+	 *  
 	 * @return
 	 */
 	@RequestMapping( value = "sale-company/dashboard.do", method = RequestMethod.GET )
@@ -37,12 +45,8 @@ public class StatisticsController {
 		mav.setViewName("statistics-sale-company-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-
-		//dummy work
-		Integer[] dummyArr = new Integer[37];
-		List<Integer> dummyList = Arrays.asList(dummyArr);
-		mav.addObject("dummyList", dummyList);
-
+		mav.addObject("tableList", statService.list(null));
+		
 		return mav;
 	}
 	
