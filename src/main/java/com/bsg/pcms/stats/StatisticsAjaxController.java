@@ -35,8 +35,8 @@ public class StatisticsAjaxController {
 	
 	/**
 	 * 
-	 * param : StatisticsDTO param
-	 * ex) searchEndDate = "2013"
+	 * param 
+	 * searchEndDate ex) : "2013"
 	 * 
 	 * {
 			"pieGraph": [{
@@ -67,6 +67,12 @@ public class StatisticsAjaxController {
 	}
 	
 	/**
+	 * param
+	 *  searchQuery ex : "솔맷";
+		sortingType ex : "1";
+		searchStrDate ex : "2013-06"
+		searchEndDate ex : "2013-07"
+	 * 
 	 * @param param
 	 * @return
 	 */
@@ -81,7 +87,8 @@ public class StatisticsAjaxController {
 	}
 	
 	/**
-	 * 
+	 * param
+	 * searchEndDate ex) : "2013"
 	 * {
 		"saleCompanyCount": 1,
 		"lineGraph": [{

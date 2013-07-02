@@ -71,7 +71,68 @@ public class StatisticsDaoTest {
 	public void testSaleCompanyListOrderbyRegDt() {
 		
 		// given 
-		param.setOrderByType("regDt");
+		param.setSortingType("1");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	@Test
+	public void testSaleCompanyListOrderbySaleCount() {
+		
+		// given 
+		param.setSortingType("2");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	
+	@Test
+	public void testSaleCompanyListByQuery() {
+		
+		// given 
+		param.setSearchQuery("지순");
+		
+		// when
+		List<StatisticsDTO> statDTO = statisDao.list(param);
+		
+		// then
+		assertThat(statDTO.size(), is(not(0)));
+		
+		for(StatisticsDTO temp : statDTO){
+			assertThat(temp.getTotal_sale_count(), is(not(0)));
+			assertThat(temp.getTotal_sale_price(), is(not(0)));
+			assertThat(temp.getCompany_name(), is(notNullValue()));
+			assertThat(temp.getSale_device(), is(notNullValue()));
+		}
+	}
+	@Test
+	public void testSaleCompanyListBySearchDate() {
+		
+		// given 
+		param.setSearchQuery("솔맷");
+		param.setSortingType("1");
+		param.setSearchStrDate("2013-06");
+		param.setSearchEndDate("2013-07");
 		
 		// when
 		List<StatisticsDTO> statDTO = statisDao.list(param);

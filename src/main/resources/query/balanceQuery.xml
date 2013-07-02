@@ -118,7 +118,6 @@
 		AND CD.COMPANY_MGMTNO =  COM.COMPANY_MGMTNO
 		AND COM.COMPANY_TYPE = 'CP'
 		AND BAL.DEL_YN  = 'N'
-		GROUP BY BAL.BALANCE_MGMTNO
 		<if test="searchQuery != null">
 		AND COM.COMPANY_NAME like '%${searchQuery}%'
 		</if>
@@ -129,6 +128,7 @@
 				AND #{searchEndDate}
 			</if>
 		</if>
+		GROUP BY BAL.BALANCE_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 

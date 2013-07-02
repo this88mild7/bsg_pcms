@@ -26,7 +26,10 @@ public class StatisticsDTO extends CompanyDTO{
 	
 	private Map monthSaleCount;
 	
-	private String orderByType;
+	private String sortingType;
+	
+	private String searchQuery;
+	
 	
 	public int getTotal_sale_count() {
 		return total_sale_count;
@@ -100,13 +103,22 @@ public class StatisticsDTO extends CompanyDTO{
 		this.monthSaleCount = monthSaleCount;
 	}
 
-	public String getOrderByType() {
-		return orderByType;
+	public String getSortingType() {
+		return sortingType;
 	}
 
-	public void setOrderByType(String orderByType) {
-		this.orderByType = orderByType;
+	public void setSortingType(String sortingType) {
+		this.sortingType = sortingType;
 	}
 
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+
+	
 	
 }
