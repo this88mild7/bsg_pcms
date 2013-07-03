@@ -38,13 +38,13 @@
 				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
-			<select class="span2">
-				<option>이번달</option>
-				<option>지난달</option>
-				<option>이번주</option>
-				<option>지난주</option>
+			<select class="span2" id="period">
+				<option value="thisMonth">이번달</option>
+				<option value="lastMonth">지난달</option>
+				<option value="thisWeek">이번주</option>
+				<option value="lastWeek">지난주</option>
 			</select>
-			<input type="text" class="span2" /> - <input type="text" class="span2" />
+			<input type="text" class="span2" placeholder="시작일" /> - <input type="text" class="span2" placeholder="종료일" />
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">
@@ -125,6 +125,13 @@ $(function(){
 
 	//선차트 그리기
 	createLineChart();
+	
+	{//엘리먼트 이벤트
+		$("#period").change(function(){
+			var $this = $(this);
+			console.info( $this.val() );
+		});
+	}
 	
 });
 
