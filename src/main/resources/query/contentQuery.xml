@@ -106,6 +106,7 @@
         FROM CONTENTS
         WHERE company_mgmtno = #{ company_mgmtno }
         AND series_mgmtno = #{ series_mgmtno }
+        AND LENGTH(contentS_cd) > 6
     </select>
 
    <select id="getContentCodeListBySeriesMgmtno" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">

@@ -105,13 +105,13 @@ public class ContentServiceImpl implements ContentService {
 		// 컨텐츠 접미사 생성
 		String suffix = "";
 		String contentType = contentDTO.getContents_type();
-		if (contentType.equalsIgnoreCase("pb")) {
+		if (contentType.equalsIgnoreCase("PD001001")) {
 			suffix = "PB";
-		} else if (contentType.equalsIgnoreCase("ebook")) {
+		} else if (contentType.equalsIgnoreCase("PD001002")) {
 			suffix = "EB";
-		} else if (contentType.equalsIgnoreCase("2d")) {
+		} else if (contentType.equalsIgnoreCase("PD001003")) {
 			suffix = "2D";
-		} else if (contentType.equalsIgnoreCase("3d")) {
+		} else if (contentType.equalsIgnoreCase("PD001004")) {
 			suffix = "3D"; // 3d
 		} else {
 			suffix = "GA"; // game
