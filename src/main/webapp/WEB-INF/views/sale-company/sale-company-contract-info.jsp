@@ -598,10 +598,6 @@ div#sale-content-list {
 							$html += 	'</tr>';
 							$target.append( $html );
 						});
-						
-						//개별판매일때 멀티체크 방지
-						checkMulti();
-												
 					}
 				}
 			});
@@ -644,7 +640,7 @@ div#sale-content-list {
 		
 		// 시리즈 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
-			if (checkMulti()) {
+			/* if (checkMulti()) {
 				var $selectedItem = $(".check-product").filter(":checked");
 				if( $selectedItem.size() == 0 ){
 					bootbox.alert("1개 이상 선택해 주세요!");				
@@ -652,15 +648,15 @@ div#sale-content-list {
 				}
 				productTable($selectedItem);
 				//close modal
-				$("#series-modal").modal('toggle');
-			}
+			} */
+			$("#series-modal").modal('toggle');
 		});
 		
 		
 		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-each-select").click(function(){
-			if (checkMulti()) {
+			/* if (checkMulti()) {
 				var $selectedItem = $(".check-product").filter(":checked");
 				if( $selectedItem.size() == 0 ){
 					bootbox.alert("1개 이상 선택해 주세요!");				
@@ -668,8 +664,8 @@ div#sale-content-list {
 				}
 				productTable($selectedItem);
 				//close modal
+			} */
 				$("#product-modal").modal('toggle');
-			}
 		});
 		
 		// 분납 방식 삭제 아이콘
@@ -686,9 +682,9 @@ div#sale-content-list {
 			totalPriceCalc();
 		});
 		// 상품 선택 체크
-		$("body").delegate('.check-product', 'click', function(event){
+		/* $("body").delegate('.check-product', 'click', function(event){
 			checkMulti();
-		});
+		}); */
 		// 상품 가격 변동시 총 판매 가격 변경
 		$("body").delegate('.product_price', 'change', function(event){
 			totalPriceCalc();
@@ -708,18 +704,34 @@ div#sale-content-list {
 			//재계산
 			 totalPriceCalc();
 		});
-		/* 
+		
 		$("body").delegate(".check-product", "click", function(){
-			if(checkMulti()){
-				
-			var $selectedItem = $(".check-product").filter(":checked");
-			// if( $selectedItem.size() == 0 ){
-			//	bootbox.alert("1개 이상 선택해 주세요!");				
-			//	return false;				
-			} 
-				productTable($(this));
-			}
-		}); */
+			
+	    	console.log($(".content_cd").size());
+			var $product = $(this);
+			
+		    if($product.is(":checked")){
+				if(checkMulti()){
+					productTable($product);
+				}else{
+					$product.attr("checked", false);
+				}
+		    }else{
+		    	// 해당 content_cd 를 가지고 있는 input box 검색
+		    	$.each($(".content_cd"), function(){
+		    		if($(this).val() == $product.val()){
+		    			$(this).parent().parent().remove();
+		    		}
+		    	});
+		    	totalPriceCalc();
+		    	//$.each($("input.content_cd")()
+		    	//$("input.content_cd:[value='+$(this).val()+']").parent().parent().remove();
+		    	
+		    	 //$('button.btn-remove-product').trigger("click");
+				// selected-product remove in productTable row		    	
+		    	//$(this).parent().parent().remove();
+		    }
+		}); 
 		
 		// 라이센스 버튼 이벤트
 		$(".btn-license").click(function(){
@@ -872,16 +884,12 @@ div#sale-content-list {
 	function productTable($selectedItem){
 		var $insertPlace = $("#product-content-tb");
 		var productHtml;
-		var seletedTotlaPrice=0;
-		
-		//$insertPlace.empty();
-		
 		
 		$selectedItem.each(function(){
 			
 			var $this = $(this);
 			productHtml +='<tr>';
-			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
+			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" class="content_cd" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
 			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
 			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
 			productHtml +='<td class="span1"><input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
@@ -889,7 +897,6 @@ div#sale-content-list {
 			productHtml +='</td>';
 			productHtml +='</tr>';
 			
-			seletedTotlaPrice += $this.data("content_price");
 		});
 		
 		$insertPlace.append(productHtml);
@@ -897,12 +904,29 @@ div#sale-content-list {
 		$('.product_price').autoNumeric('update',{aPad: false });
 		
 		totalPriceCalc();
-		/* $("#sale_price").val(seletedTotlaPrice);
-		$('#sale_price').autoNumeric('init',{aPad: false });
-		$('#sale_price').autoNumeric('update',{aPad: false }); */
 	};
 	
 	function checkMulti() {
+		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
+		
+		//개별판매인가(체크박스 갯수를 세야하는가?)
+		if( saleType == 'CT002001' ){
+			
+			$( "input[name=checkbox_all]" ).hide();
+		
+			if($(".content_cd").size() > 0){
+				$(this).prop("checked", false);
+				bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
+				return false;
+			}
+			else{
+				return true;
+			}
+		}else{
+			return true;
+		} 
+	}
+/* 	function checkMulti() {
 		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
 		
 		//개별판매인가(체크박스 갯수를 세야하는가?)
@@ -923,7 +947,7 @@ div#sale-content-list {
 		}else{
 			return true;
 		} 
-	}
+	} */
 	
 
 </script>
