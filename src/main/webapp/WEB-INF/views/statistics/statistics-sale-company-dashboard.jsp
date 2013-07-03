@@ -36,10 +36,10 @@
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
 			</select>
 			기간설정
-			<select class="span2 pull-right" id="searchYear">
+			<select class="span2" id="searchYear">
 				<option value="2013">2013년</option>
 			</select>
-			<select class="span2 pull-right" id="searchMonth">
+			<select class="span2" id="searchMonth">
 				<option value="01">1월</option>
 				<option value="02">2월</option>
 				<option value="03">3월</option>
@@ -53,7 +53,7 @@
 				<option value="11">11월</option>
 				<option value="12">12월</option>
 			</select>
-			<div class="input-append pull-right">
+			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
