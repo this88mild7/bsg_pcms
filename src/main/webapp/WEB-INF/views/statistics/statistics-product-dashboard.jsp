@@ -31,11 +31,9 @@
 
 		<div>
 			출력순
-			<select id="sorting_type" class="span2">
+			<select id="sorting_type" name="sortingType" class="span2">
 				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-				<option value="3" <c:if test="${sortingType eq '3' }">selected="selected"</c:if> >수익수</option>
-				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
 			<select class="span2" id="period">
@@ -44,7 +42,8 @@
 				<option value="thisWeek">이번주</option>
 				<option value="lastWeek">지난주</option>
 			</select>
-			<input type="text" class="span2" placeholder="시작일" /> - <input type="text" class="span2" placeholder="종료일" />
+			<input type="text" class="span2" name="searchStrDate" placeholder="시작일" /> - 
+			<input type="text" class="span2" name="searchEndDate" placeholder="종료일" />
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">

@@ -31,20 +31,21 @@
 
 		<div>
 			출력순
-			<select id="sorting_type" class="span2">
+			<select id="sorting_type" name="sortingType" class="span2">
 				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-				<option value="3" <c:if test="${sortingType eq '3' }">selected="selected"</c:if> >수익수</option>
-				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
-			<select class="span2">
-				<option>이번달</option>
-				<option>지난달</option>
-				<option>이번주</option>
-				<option>지난주</option>
+			<select class="span2" id="period">
+				<option value="thisMonth">이번달</option>
+				<option value="lastMonth">지난달</option>
+				<!-- 
+				<option value="thisWeek">이번주</option>
+				<option value="lastWeek">지난주</option>
+				 -->
 			</select>
-			<input type="text" class="span2" placeholder="시작일" /> - <input type="text" class="span2" placeholder="종료일" />
+			<input type="text" class="span2" name="searchStrDate" placeholder="시작일" /> - 
+			<input type="text" class="span2" name="searchEndDate" placeholder="종료일" />
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
@@ -92,9 +93,6 @@
 					기간별 판매그래프
 					<select class="select-mini span3 pull-right">
 						<option>2013년</option>
-						<option>2012년</option>
-						<option>2011년</option>
-						<option>2010년</option>
 					</select>
 				</div>
 				<div id="chart2"></div>
@@ -125,6 +123,28 @@ $(function(){
 
 	//선차트 그리기
 	createLineChart();
+	
+	var sdate, edate;
+	$( "input.datepicker" ).datepicker({autoclose:true})
+		.on('changeDate', function(ev){
+			if( "str_date" === $(this).attr("name") ) {
+				sdate = ev.date.valueOf();
+			} else {
+				edate = ev.date.valueOf();
+				if( sdate > edate ) {
+					bootbox.alert( "계약종료일 재설정" );
+					$( this ).val( "" );
+				}
+				$( "input[name=str_date]" ).datepicker( "hide" );
+			}
+		});
+	
+	{//엘리먼트 이벤트
+		$("#period").change(function(){
+			var $this = $(this);
+			console.info( $this.val() );
+		});
+	}
 	
 });
 
