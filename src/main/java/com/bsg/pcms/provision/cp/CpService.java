@@ -105,18 +105,22 @@ public class CpService {
 	 * @return
 	 */
 	private int createPdList(CpDTOEx cpDTOEx) {
-		List<Map<String, String>> pdList = new ArrayList<Map<String, String>>();
 		
+		int pdResult = 0;
+		
+		List<Map<String, String>> pdList = new ArrayList<Map<String, String>>();
 		for(String pdName : cpDTOEx.getPdNameList()) {
-			
 			Map<String, String> pdMap = new HashMap<String, String>();
 			pdMap.put(COMPANY_MGMTNO, String.valueOf(cpDTOEx.getCompany_mgmtno()));
 			pdMap.put(PD_NAME, pdName);
-			
 			pdList.add(pdMap);
 		}
 		
-		int pdResult = cpDao.createPd(pdList);
+		if( pdList.size() > 0 ) {
+			pdResult = cpDao.createPd(pdList);
+			logger.debug("pdResult : {}", pdResult);
+		}
+		
 		return pdResult;
 	}
 
