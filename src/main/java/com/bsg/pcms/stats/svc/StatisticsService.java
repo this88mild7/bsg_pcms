@@ -74,13 +74,35 @@ public class StatisticsService {
 		List<StatisticsDTO> pieGraphResult = statDao.pieGraph(param);
 		
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
-		for(StatisticsDTO temp : pieGraphResult){
-			Map<String, Object> pieMap = new HashMap<String, Object>();
-			pieMap.put("saleCompany", temp.getCompany_name());
-			pieMap.put("saleCount", temp.getTotal_sale_count());
-			pieGraphGForMap.add(pieMap);
+		
+		int etcSaleCount = 0;
+		String etcCompanyName = "ETC";
+		Map<String, Object> etcCompany = new HashMap<String, Object>();
+		
+		for(int x=0; x<pieGraphResult.size();x++){
+			
+			if(x>4){
+				etcSaleCount += pieGraphResult.get(x).getTotal_sale_count();
+			}else{
+				Map<String, Object> pieMap = new HashMap<String, Object>();
+				pieMap.put("saleCompany", pieGraphResult.get(x).getCompany_name());
+				pieMap.put("saleCount", pieGraphResult.get(x).getTotal_sale_count());
+				pieGraphGForMap.add(pieMap);
+			}
 		}
+		etcCompany.put("saleCompany", etcCompanyName);
+		etcCompany.put("saleCount", etcSaleCount);
+		pieGraphGForMap.add(etcCompany);
+		
+		
 		return pieGraphGForMap;
+//		for(StatisticsDTO temp : pieGraphResult){
+//			Map<String, Object> pieMap = new HashMap<String, Object>();
+//			pieMap.put("saleCompany", temp.getCompany_name());
+//			pieMap.put("saleCount", temp.getTotal_sale_count());
+//			pieGraphGForMap.add(pieMap);
+//		}
+//		return pieGraphGForMap;
 	}
 	
 	public List<StatisticsDTO> productList(StatisticsDTO param) {
@@ -116,14 +138,35 @@ public class StatisticsService {
 		
 		List<StatisticsDTO> pieGraphResult = statDao.productPieGraph(param);
 		
+		int etcSaleCount = 0;
+		String etcCompanyName = "ETC";
+		Map<String, Object> etcCompany = new HashMap<String, Object>();
+		
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
-		for(StatisticsDTO temp : pieGraphResult){
-			Map<String, Object> pieMap = new HashMap<String, Object>();
-			pieMap.put("contentName", temp.getContents_name());
-			pieMap.put("saleCount", temp.getTotal_sale_count());
-			pieGraphGForMap.add(pieMap);
+		for(int x=0; x<pieGraphResult.size();x++){
+			
+			if(x>4){
+				etcSaleCount += pieGraphResult.get(x).getTotal_sale_count();
+			}else{
+				Map<String, Object> pieMap = new HashMap<String, Object>();
+				pieMap.put("contentName", pieGraphResult.get(x).getContents_name());
+				pieMap.put("saleCount", pieGraphResult.get(x).getTotal_sale_count());
+				pieGraphGForMap.add(pieMap);
+			}
 		}
+		etcCompany.put("contentName", etcCompanyName);
+		etcCompany.put("saleCount", etcSaleCount);
+		pieGraphGForMap.add(etcCompany);
 		return pieGraphGForMap;
+		
+//		List<Map> pieGraphGForMap = new ArrayList<Map>();
+//		for(StatisticsDTO temp : pieGraphResult){
+//			Map<String, Object> pieMap = new HashMap<String, Object>();
+//			pieMap.put("contentName", temp.getContents_name());
+//			pieMap.put("saleCount", temp.getTotal_sale_count());
+//			pieGraphGForMap.add(pieMap);
+//		}
+//		return pieGraphGForMap;
 	}
 
 	public List<Map> productListForMap(StatisticsDTO param) {
