@@ -561,14 +561,12 @@ div#sale-content-list {
 							$insertPlace.append( $html );
 							
 						});
-						$("#series-modal").modal('toggle');
 					}
-					
-					$seriesModal.show();
-					
-					$(".check-product").attr('checked', false);
 				}
 			});
+			if ( $(this).is("#btn-series-create") ) {
+				$("#series-modal").modal('toggle');
+			}
 		});
 		
 		// 개별상품 검색 버튼 이벤트
