@@ -374,7 +374,7 @@ div#sale-content-list {
 	<div class="modal-body">
 		<div class="input-append pull-right">
 			<input type="text" id="seriesQuery" name="seriesQuery" class="input-large">
-			<button class="btn btn-series-search-form" type="button"><i class="icon-search"></i></button>
+			<button id="btn-series-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 		</div>
 		<table class="table table-striped table-hover">
 			<thead>
@@ -403,7 +403,7 @@ div#sale-content-list {
 	<div class="modal-body">
 		<div class="input-append pull-right">
 			<input type="text" id="contentQuery" name="contentQuery" class="input-large">
-			<button class="btn btn-search-content-form" type="button"><i class="icon-search"></i></button>
+			<button id="btn-search-content-form" class="btn " type="button"><i class="icon-search"></i></button>
 		</div>
 		<div class="input-append">
 			<select name="category">
@@ -526,10 +526,16 @@ div#sale-content-list {
 		});
 		
 		// 시리즈 등록 버튼 이벤트
-		$("#btn-series-create").click(function(){
+		// 시리즈 검색 버튼 이벤트
+		$("#btn-series-create, #btn-series-search-form").click(function(){
 			
+			var searchQuery = $("#seriesQuery").val();
+			if($(this).is("btn-series-create")){
+				searchQuery = "";
+			}
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			$.ajax({
+				data:{ search : searchQuery },
 				dataType: "json",
 				url: searchUrl,
 				success: function(response){
@@ -561,6 +567,44 @@ div#sale-content-list {
 					$seriesModal.show();
 					
 					$(".check-product").attr('checked', false);
+				}
+			});
+		});
+		
+		// 개별상품 검색 버튼 이벤트
+		$("#btn-search-content-form").click(function(){
+			var contentQuery = $("#contentQuery").val();
+			$.ajax({
+				dataType: "json",
+				data : {search : contentQuery},
+				url: '<spring:eval expression="@urlProp['ajaxSaleCompanyContentsList']"/>',
+				success: function(data){
+					
+					var $target = $("#findEachBody");
+					
+					//init
+					$target.html(""); //성공시 리스트 초기화
+					
+					if(data.resultCnt > 0) {
+						var $json = data.result;
+						$.each($json, function(){
+							$html = 	'<tr>';
+							$html += 	'<td><input class="check-product" name="check_list" type="checkbox" data-content_name="' + this.content_name 
+										+ '" data-content_cd="'+this.content_cd
+										+ '" data-content_price="'+this.content_price
+										+ '" data-cp_name="'+this.cp_name
+										+ '" value="' + this.content_cd
+										+ '"></td>';
+							$html += 	'<td>' + this.content_name + '</td>';
+							$html += 	'<td>' + this.content_price + '</td>';
+							$html += 	'</tr>';
+							$target.append( $html );
+						});
+						
+						//개별판매일때 멀티체크 방지
+						checkMulti();
+												
+					}
 				}
 			});
 		});

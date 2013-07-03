@@ -21,6 +21,10 @@ public class StatisticsService {
 	StatisticsDao statDao;
 	
 	public List<StatisticsDTO> list(StatisticsDTO requestParam) {
+		if(requestParam == null){
+			requestParam = new StatisticsDTO();
+			requestParam.setSortingType("1");
+		}
 		return statDao.list(requestParam);
 	}
 	
@@ -80,6 +84,10 @@ public class StatisticsService {
 	}
 	
 	public List<StatisticsDTO> productList(StatisticsDTO param) {
+		if(param == null){
+			param = new StatisticsDTO();
+			param.setSortingType("1");
+		}
 		return statDao.productList(param);
 	}
 	
