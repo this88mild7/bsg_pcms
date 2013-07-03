@@ -54,7 +54,15 @@ public class CompanyContractDTOEx extends ContractDTO{
 	
 	private List<String> selectedContentsPrice;
 	
+	private List<String> selectedContentsCurrency;
 	
+	
+	public List<String> getSelectedContentsCurrency() {
+		return selectedContentsCurrency;
+	}
+	public void setSelectedContentsCurrency(List<String> selectedContentsCurrency) {
+		this.selectedContentsCurrency = selectedContentsCurrency;
+	}
 	public String getContract_type_cd() {
 		return contract_type_cd;
 	}

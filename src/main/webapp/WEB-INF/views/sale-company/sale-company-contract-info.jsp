@@ -59,15 +59,15 @@ div#sale-content-list {
 				<div class="controls" style="margin-top : 5px;">
 					<div id="payments-type" class="input-prepend" style="display:none">
 						<div class="btn-group no-padding">
-							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">
+							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown" type="button">
 									<span id="currency-view">KRW</span><span class="caret"></span>
 							</button>
 							<ul id="currency-menu" class="dropdown-menu">
-								<li><a href="#">KRW</a></li>
-								<li><a href="#">USD</a></li>
-								<li><a href="#">JPY</a></li>
-								<li><a href="#">CNY</a></li>
-								<li><a href="#">EUR</a></li>
+								<li><a href="#null">KRW</a></li>
+								<li><a href="#null">USD</a></li>
+								<li><a href="#null">JPY</a></li>
+								<li><a href="#null">CNY</a></li>
+								<li><a href="#null">EUR</a></li>
 							</ul>
 						</div>
 						<input type="hidden" id="currency" name="currency" value="KRW">
@@ -414,6 +414,12 @@ div#sale-content-list {
 			$('#currency').val(selectedValue);
 		});
 		
+		$("body").delegate(".sale-price-currency-li", "click", function(){
+			var selectedValue = $(this).text();
+			$("#sale-price-currency-toggle span").first().text(selectedValue);
+			$('#contents_price_currency').val(selectedValue);
+		});
+		
 		// 계약기간
 		var strDate, endDate;
 		$("input.contract-date").datepicker({
@@ -480,8 +486,6 @@ div#sale-content-list {
 			}else{
 				searchQuery = $("#seriesQuery").val();
 			}
-			alert(searchQuery);
-			alert($("#seriesQuery").val());
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			$.ajax({
 				data:{ search : searchQuery },
@@ -824,22 +828,21 @@ div#sale-content-list {
 			productHtml +='<td class="span1">';
 			productHtml +='<div id="sale-price-currency" class="input-prepend">';
 			productHtml +='<div class="btn-group no-padding">';
-			productHtml +='<button id="sale-price-currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">';
+			productHtml +='<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">';
 			productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
 			productHtml +='</button>';
 			productHtml +='<ul id="sale-price-currency-menu" class="dropdown-menu">';
-			productHtml +='<li><a href="#">KRW</a></li>';
-			productHtml +='<li><a href="#">USD</a></li>';
-			productHtml +='<li><a href="#">JPY</a></li>';
-			productHtml +='<li><a href="#">CNY</a></li>';
-			productHtml +='<li><a href="#">EUR</a></li>';
+			productHtml +='<li><a href="#null" class="sale-price-currency-li">KRW</a></li>';
+			productHtml +='<li><a href="#null" class="sale-price-currency-li">USD</a></li>';
+			productHtml +='<li><a href="#null" class="sale-price-currency-li">JPY</a></li>';
+			productHtml +='<li><a href="#null" class="sale-price-currency-li">CNY</a></li>';
+			productHtml +='<li><a href="#null" class="sale-price-currency-li">EUR</a></li>';
 			productHtml +='</ul>';
 			productHtml +='</div>';
-			productHtml +='<input type="hidden" id="sale_price_currency" name="currency" value="KRW">';
+			productHtml +='<input type="hidden" id="contents_price_currency" name="selectedContentsCurrency" value="KRW">';
 			productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" />';						
 			productHtml +='</div>';
 	
-			// <input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
 			productHtml +='<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>';			
 			productHtml +='</td>';
 			productHtml +='</tr>';

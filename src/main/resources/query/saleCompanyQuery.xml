@@ -116,6 +116,7 @@
             SERIES_MGMTNO, 
             CONTENTS_CD, 
             SALE_PRICE,
+            CURRENCY,
             REG_DT, 
             MOD_DT
        )
@@ -125,6 +126,7 @@
             (SELECT SERIES_MGMTNO FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
             #{contents_cd},
             #{sale_price},
+            #{currency},
             now(), 
             now() 
         )
