@@ -205,78 +205,7 @@ div#sale-content-list {
 					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
-				<div class="controls sale-device" >
-					<c:choose>
-						<c:when test="${viewType eq 1}">
-							<div class="row-fluid" >
-								<div>
-									<div class="span3">
-										<select size="1" name="device_cd_list">
-											<c:forEach items="${ deviceList }" var="device">
-												<option value="${device.cd}" >${device.cd_detail}</option>
-											</c:forEach>
-										</select>
-									</div>
-									<div class="span2 device-add-icon">
-										<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
-									</div>
-									<!-- 아래로만 추가 하기 위한 empty -->
-									<div class="span7">
-										<!--  empty -->
-									</div>
-									
-									<!-- 기타 일 경우 나타 나게
-									<div class="span3">
-										<div class="span3">기기명</div>
-										<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
-									</div>
-									 -->
-								</div>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<c:forEach items="${ saleContractDetail.contractedDeviceList }" var="contractedDeviceList" varStatus="index">
-								<div class="row-fluid">
-									<div>
-										<div class="span3">							
-											<select size="1" name="device_cd_list">
-												<c:forEach items="${ deviceList }" var="device">
-													<option value="${device.cd}" <c:if test="${contractedDeviceList eq device.cd}">selected="selected"</c:if> >${device.cd_detail}</option>
-												</c:forEach>
-											</select>
-										</div>
-										<c:choose>
-											<c:when test="${not index.first }">
-												<div class="span2 device-remove-icon">
-													<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
-												</div>
-											</c:when>
-											<c:otherwise>
-												<div class="span2 device-add-icon">
-													<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
-												</div>
-											</c:otherwise>
-										</c:choose>
-										<!-- 아래로만 추가 하기 위한 empty -->
-										<div class="span7">
-											<!--  empty -->
-										</div>
-								
-									<!-- 기타 일 경우 나타 나게
-									<div class="span3">
-										<div class="span3">기기명</div>
-										<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
-									</div>
-									 -->							
-									</div>
-								</div>
-								</c:forEach>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
+			
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
@@ -299,7 +228,7 @@ div#sale-content-list {
 
 			<div class="control-group">
 				<label class="control-label" for=""></label>
-				<div class="controls" id="sale-content-list" >
+				<div class="controls well" id="sale-content-list" >
 					
 					<c:choose>
 						<c:when test="${viewType eq 1}">
@@ -544,10 +473,15 @@ div#sale-content-list {
 		// 시리즈 검색 버튼 이벤트
 		$("#btn-series-create, #btn-series-search-form").click(function(){
 			
-			var searchQuery = $("#seriesQuery").val();
+			var searchQuery;
 			if($(this).is("btn-series-create")){
 				searchQuery = "";
+				$("#seriesQuery").val("");
+			}else{
+				searchQuery = $("#seriesQuery").val();
 			}
+			alert(searchQuery);
+			alert($("#seriesQuery").val());
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			$.ajax({
 				data:{ search : searchQuery },
@@ -798,13 +732,12 @@ div#sale-content-list {
 				};
 			})
 		});
-		
-		if($("#payment").val() == 0){
+		if($("#payments").val() == 0){
 			$("#rd-payments-has-no").trigger("click");
 		}else{
 			$("#rd-payments-has").trigger("click");
 		}
-		
+			
 	}); //init function
 	
 	function totalPriceCalc(){
@@ -888,7 +821,25 @@ div#sale-content-list {
 			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" class="content_cd" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
 			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
 			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
-			productHtml +='<td class="span1"><input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
+			productHtml +='<td class="span1">';
+			productHtml +='<div id="sale-price-currency" class="input-prepend">';
+			productHtml +='<div class="btn-group no-padding">';
+			productHtml +='<button id="sale-price-currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">';
+			productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
+			productHtml +='</button>';
+			productHtml +='<ul id="sale-price-currency-menu" class="dropdown-menu">';
+			productHtml +='<li><a href="#">KRW</a></li>';
+			productHtml +='<li><a href="#">USD</a></li>';
+			productHtml +='<li><a href="#">JPY</a></li>';
+			productHtml +='<li><a href="#">CNY</a></li>';
+			productHtml +='<li><a href="#">EUR</a></li>';
+			productHtml +='</ul>';
+			productHtml +='</div>';
+			productHtml +='<input type="hidden" id="sale_price_currency" name="currency" value="KRW">';
+			productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" />';						
+			productHtml +='</div>';
+	
+			// <input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
 			productHtml +='<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>';			
 			productHtml +='</td>';
 			productHtml +='</tr>';
