@@ -361,9 +361,6 @@
 			MASTER = #{master},
 			MASTER_PHONENO = #{master_phoneno},
 			COMPANY_NO = #{company_no},
-			DEPOSIT_BANK = #{deposit_bank},
-			ACCOUNT_NO = #{account_no},
-			ACCOUNT_HOLDER = #{account_holder},
 			MOD_DT = now()
 		WHERE COMPANY_MGMTNO = #{company_mgmtno}
 	</update>

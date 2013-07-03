@@ -656,6 +656,8 @@ div#sale-content-list {
 			}
 		});
 		
+		
+		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-each-select").click(function(){
 			if (checkMulti()) {
@@ -706,6 +708,18 @@ div#sale-content-list {
 			//재계산
 			 totalPriceCalc();
 		});
+		/* 
+		$("body").delegate(".check-product", "click", function(){
+			if(checkMulti()){
+				
+			var $selectedItem = $(".check-product").filter(":checked");
+			// if( $selectedItem.size() == 0 ){
+			//	bootbox.alert("1개 이상 선택해 주세요!");				
+			//	return false;				
+			} 
+				productTable($(this));
+			}
+		}); */
 		
 		// 라이센스 버튼 이벤트
 		$(".btn-license").click(function(){
@@ -860,7 +874,7 @@ div#sale-content-list {
 		var productHtml;
 		var seletedTotlaPrice=0;
 		
-		$insertPlace.empty();
+		//$insertPlace.empty();
 		
 		
 		$selectedItem.each(function(){
