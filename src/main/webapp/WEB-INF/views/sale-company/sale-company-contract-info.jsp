@@ -640,31 +640,11 @@ div#sale-content-list {
 		
 		// 시리즈 등록하기 버튼 이벤트
 		$("#btn-series-select").click(function(){
-			/* if (checkMulti()) {
-				var $selectedItem = $(".check-product").filter(":checked");
-				if( $selectedItem.size() == 0 ){
-					bootbox.alert("1개 이상 선택해 주세요!");				
-					return false;		
-				}
-				productTable($selectedItem);
-				//close modal
-			} */
 			$("#series-modal").modal('toggle');
 		});
 		
-		
-		
 		// 개별상품 등록하기 버튼 이벤트
 		$("#btn-each-select").click(function(){
-			/* if (checkMulti()) {
-				var $selectedItem = $(".check-product").filter(":checked");
-				if( $selectedItem.size() == 0 ){
-					bootbox.alert("1개 이상 선택해 주세요!");				
-					return false;				
-				}
-				productTable($selectedItem);
-				//close modal
-			} */
 				$("#product-modal").modal('toggle');
 		});
 		
@@ -681,10 +661,6 @@ div#sale-content-list {
 			$(this).parent().parent().remove();
 			totalPriceCalc();
 		});
-		// 상품 선택 체크
-		/* $("body").delegate('.check-product', 'click', function(event){
-			checkMulti();
-		}); */
 		// 상품 가격 변동시 총 판매 가격 변경
 		$("body").delegate('.product_price', 'change', function(event){
 			totalPriceCalc();
@@ -707,7 +683,6 @@ div#sale-content-list {
 		
 		$("body").delegate(".check-product", "click", function(){
 			
-	    	console.log($(".content_cd").size());
 			var $product = $(this);
 			
 		    if($product.is(":checked")){
@@ -724,12 +699,6 @@ div#sale-content-list {
 		    		}
 		    	});
 		    	totalPriceCalc();
-		    	//$.each($("input.content_cd")()
-		    	//$("input.content_cd:[value='+$(this).val()+']").parent().parent().remove();
-		    	
-		    	 //$('button.btn-remove-product').trigger("click");
-				// selected-product remove in productTable row		    	
-		    	//$(this).parent().parent().remove();
 		    }
 		}); 
 		
@@ -812,14 +781,6 @@ div#sale-content-list {
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		$('#sale_price').autoNumeric('update',{aPad: false });
 	}
-	
-	/* function plusIcontooltip(){
-		$("i.icon-plus-sign").tooltip({"title":"추가", "placement":"top" });
-	}
-	
-	function minusIcontooltip(){
-		$("i.icon-remove-sign").tooltip( { "title":"삭제", "placement":"right" } );
-	} */
 	
 	function categoryChange(){
 		$( "select[name='category']" ).change(function () {
@@ -926,28 +887,5 @@ div#sale-content-list {
 			return true;
 		} 
 	}
-/* 	function checkMulti() {
-		var saleType = $("#product_sale_type").find("option").filter(":selected").val(); 
-		
-		//개별판매인가(체크박스 갯수를 세야하는가?)
-		if( saleType == 'CT002001' ){
-			
-			var $selectedItem = $(".check-product").filter(":checked");
-			
-			$( "input[name=checkbox_all]" ).hide();
-		
-			if($selectedItem.size() > 1){
-				$(this).prop("checked", false);
-				bootbox.alert("판매형식이 개별판매 일때에는 다수 선택이 불가 합니다.");
-				return false;
-			}
-			else{
-				return true;
-			}
-		}else{
-			return true;
-		} 
-	} */
-	
 
 </script>
