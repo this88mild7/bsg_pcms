@@ -38,7 +38,7 @@ public class CompanyContractDTOEx extends ContractDTO{
 	
 	private String searchQuery;
 	
-	private double payments;
+	private double payments =0;
 	
 	private String currency;
 	

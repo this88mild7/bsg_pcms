@@ -47,9 +47,17 @@ div#sale-content-list {
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="customer_license"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급대금</label>
+				<label class="control-label" for="payments"><img src='<spring:eval expression="@urlProp['v']"/>'> 지급대금</label>
 				<div class="controls">
-					<div class="input-prepend">
+					<label class="radio inline">
+						<input id="rd-payments-has" type="radio" name="has_payment"  > 있음
+					</label>
+					<label class="radio inline">
+						<input id="rd-payments-has-no" type="radio" name="no_has_payment" checked="checked"> 없음
+					</label>
+				</div>
+				<div class="controls" style="margin-top : 5px;">
+					<div id="payments-type" class="input-prepend" style="display:none">
 						<div class="btn-group no-padding">
 							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">
 									<span id="currency-view">KRW</span><span class="caret"></span>
@@ -63,12 +71,19 @@ div#sale-content-list {
 							</ul>
 						</div>
 						<input type="hidden" id="currency" name="currency" value="KRW">
-						<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" data-validation-required-message="지급대금을 입력해 주세요." required />
+						<c:choose>
+							<c:when test="${saleContractDetail.payments  == null}">
+								<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="0" />
+							</c:when>
+							<c:otherwise>
+								<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="${ saleContractDetail.payments }" />
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
 			
-			<div class="control-group">
+			<div id="payments-group" class="control-group" style="display:none">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 지급방식</label>
 				<div class="controls">
 					<select size="1" name="payments_type" id="payments_type" >
@@ -78,13 +93,13 @@ div#sale-content-list {
 					</select>
 				</div>
 			</div>
-			<div class="control-group" id="installments-group" >
+			<div class="control-group" id="installments-group" style="display:none">
 				<label class="control-label" for="payments">분납방식</label>
 				<div class="controls">
 						<c:choose>
 							<c:when test="${saleContractDetail == null || fn:length(saleContractDetail.installmentList) == 0}">
 								<div class="installments-date input-append date" data-date-format="yyyy-mm-dd">
-								 	<input type="text"  name="installments_dt"  placeholder="분납입">
+								 	<input id="installments_dt" type="text"  name="installments_dt"  placeholder="분납입">
 								 	<span class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 							 	<input type="text" class="price" name="installments_price" placeholder="금액" >
@@ -648,6 +663,21 @@ div#sale-content-list {
 				$("#product-modal").modal('toggle');
 		});
 		
+		// 지급대금 방식 라디오 버튼 이벤트(있음)
+		$("#rd-payments-has").click(function(){
+			$("#payments-type").show();
+			$("#payments-group").show();
+			$("#installments-group").show();
+			$("#rd-payments-has-no").attr("checked", false);
+		});
+		// 지급대금 방식 라디오 버튼 이벤트(없음)
+		$("#rd-payments-has-no").click(function(){
+			$("#payments-type").hide();
+			$("#payments-group").hide();
+			$("#installments-group").hide();
+			$("#rd-payments-has").attr("checked", false);
+		});
+		
 		// 분납 방식 삭제 아이콘
 		$("body").delegate('img.removePd', 'click', function(event){
 			  $(this).parent().remove();
@@ -769,6 +799,11 @@ div#sale-content-list {
 			})
 		});
 		
+		if($("#payment").val() == 0){
+			$("#rd-payments-has-no").trigger("click");
+		}else{
+			$("#rd-payments-has").trigger("click");
+		}
 		
 	}); //init function
 	
