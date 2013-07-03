@@ -55,6 +55,7 @@
 			</select>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
+					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
@@ -128,23 +129,8 @@ $(function(){
 	//선차트 그리기
 	createLineChart();
 	
-	var sdate, edate;
-	$( "input.datepicker" ).datepicker({autoclose:true})
-		.on('changeDate', function(ev){
-			if( "str_date" === $(this).attr("name") ) {
-				sdate = ev.date.valueOf();
-			} else {
-				edate = ev.date.valueOf();
-				if( sdate > edate ) {
-					bootbox.alert( "계약종료일 재설정" );
-					$( this ).val( "" );
-				}
-				$( "input[name=str_date]" ).datepicker( "hide" );
-			}
-		});
-	
 	{//엘리먼트 이벤트
-		$("#period").change(function(){
+		$("#btn-content-search-form").click(function(){
 			var $this = $(this);
 			console.info( $this.val() );
 		});
