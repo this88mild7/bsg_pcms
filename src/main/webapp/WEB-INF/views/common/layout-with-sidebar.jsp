@@ -57,6 +57,7 @@
 	<script src="/pcms/js/bigstar.js"></script>
 	<script src="/pcms/js/autoNumeric.js"></script>
 	<script src="/pcms/js/locales/datepicker-kr.js"></script>
+	<script src="/pcms/js/date.js"></script>
 		
 </body>
 </html>
