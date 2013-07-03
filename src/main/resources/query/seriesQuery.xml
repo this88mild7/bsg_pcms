@@ -38,16 +38,16 @@
             /* type이 null 이 아니면 검색 */
                 <choose>
                     <when test="type eq '시리즈명'">
-                        AND CON.NAME like '%${query}%'
+                        AND CONTENTS.NAME like '%${query}%'
                     </when>
                     <when test="type eq 'SERIES코드'">
-                        AND CON.CONTENTS_CD = #{query}
+                        AND CONTENTS.CONTENTS_CD = #{query}
                     </when>
                     <otherwise>
                         AND (
-                        CON.NAME like '%${query}%'
+                        CONTENTS.NAME like '%${query}%'
                         OR
-                        CON.CONTENTS_CD = #{query}
+                        CONTENTS.CONTENTS_CD = #{query}
                         )
                     </otherwise>
                 </choose>
