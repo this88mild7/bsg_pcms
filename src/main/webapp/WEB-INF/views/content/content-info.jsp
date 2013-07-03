@@ -223,12 +223,10 @@ $(function(){
 	// CP 업체 선택
 	$("#company_mgmtno").find("option[value='" + $("div.box").data("company_mgmtno") + "']").prop("selected", true);
 	
-	// 콘텐츠 유형 선택
-	$("#contents_type").each(function(){
-		if( $( "div.box" ).data( "content_type" ) == $(this).val() ){
-			$( this ).prop("checked", true);
-		}
-	});
+	// 콘텐츠 유형 선택안되어 있으면 첫번째 선택
+	if( $("input[name='contents_type']").filter(":checked").size() == 0 ) {
+		$("input[name='contents_type']").first().prop( "checked", true );
+	}
 	// 연령 선택
 	$("#age").find("option[value='" + $( "div.box" ).data( "content_age" ) + "']" ).prop("selected", true);
 	
