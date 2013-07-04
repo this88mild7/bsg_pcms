@@ -159,12 +159,11 @@ $("#btn-sale-product-list").click(function(event){
 	event.preventDefault();
 	
 	var companyMgmtno = $("#saleCompanyList").find("option").filter(":selected").val();
-	var saleType = $("#deviceTypeList").find("option").filter(":selected").val();
 	var contractType = $("#contractTypeList").find("option").filter(":selected").val();
 	
 	var $target = $("#findProduct");
 	var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContents']"/>';
-	var param = { company_mgmtno : companyMgmtno, sale_type : saleType, contract_type : contractType };
+	var param = { company_mgmtno : companyMgmtno, contract_type : contractType };
 	$.getJSON(url, param, function(data) {
 		console.info( data );
 		if(data.code == 999) {
