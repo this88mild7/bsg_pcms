@@ -64,7 +64,7 @@ div[class="tooltip-inner"] {
 				<div class="controls">
 					<span id="series_name" class="uneditable-input">${ series.series_name }</span>
 					<input type="hidden" id="cate_id" name="cate_id" value="${ series.cate_id }">
-					<input type="hidden" id="series_mgmtno" name="series_mgmtno" value="${ series.series_mgmtno }">
+					<input type="hidden" id="series_mgmtno" name="series_mgmtno" value="${ series.series_mgmtno }" 	>
 					<button id="btn-find-content" class="btn">찾아보기</button>
 				</div>
 			</div>
@@ -235,7 +235,7 @@ div[class="tooltip-inner"] {
 							</ul>
 						</div>
 						<input type="hidden" id="currency" name="sale_price_currency" value="${ contract.sale_price_currency }">
-						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
+						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }" required>
 					</div>
 					<a id="sale_price_tip" href="#" data-toggle="tooltip" >tip</a>
 				</div>
@@ -243,7 +243,7 @@ div[class="tooltip-inner"] {
 			<div class="control-group" id="profit-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률(%) </label>
 				<div class="controls">
-					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }">
+					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }" required>
 					<a id="sale_profit_rate_tip" href="#" data-toggle="tooltip" >tip</a>
 				</div>
 			</div>
@@ -350,6 +350,9 @@ div[class="tooltip-inner"] {
 <script>
 $(function(){
 		
+	//validation check... now length error
+	//$("input").not("[type=submit]").jqBootstrapValidation();
+	
 	var boxData = $("div.contract-box").data();
 	console.info(boxData);
 	
@@ -358,6 +361,8 @@ $(function(){
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		
 		$("#contractForm").submit(function(){
+			
+			
 			//금액 콤마 제거	(숫자만 가져옴)		
 			$('#sale_price').val($('#sale_price').autoNumeric('get'));
 			

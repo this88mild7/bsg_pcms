@@ -147,7 +147,9 @@ div#sale-content-list {
 
 <script>
 $(function(){
-	
+
+	//validation
+	//$("#company_name,#phoneno").not("[type=submit]").jqBootstrapValidation();
 	
 //매출 등록하기 버튼 이벤트
 $("#btn-content-create-action").click(function(evnet){

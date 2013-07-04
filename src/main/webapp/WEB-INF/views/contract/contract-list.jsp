@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="page-name">
 	<h4>
@@ -49,7 +50,7 @@
 			<td>${ contract.series_name }</td>
 			<td>${ contract.str_date } ~ ${ contract.end_date }</td>
 			<td>${ contract.contract_type }</td>
-			<td>${ contract.sale_price }</td>
+			<td class="price">${fn:substringBefore(contract.sale_price, '.')}</td>
 			<td>${ contract.sale_profit_rate }</td>
 			<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contractDetail']"/>?contract_mgmtno=${ contract.contract_mgmtno }">상세보기</button></td>
 		</tr>
@@ -87,7 +88,10 @@
 </div>
 <!--/row-->
 <script>
-		
+$(function(){
+	
+	$("td.price").autoNumeric('init',{aPad: false });
+	
 	//검색종류 클릭한 글자로 변경.
 	$("ul.dropdown-menu").find("a").click(function(){
 		$("a.dropdown-toggle span" ).first().text( $(this).text() );
@@ -138,4 +142,5 @@
 		}
 	});
 	
+});	
 </script>
