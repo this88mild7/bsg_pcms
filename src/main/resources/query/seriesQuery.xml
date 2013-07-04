@@ -23,39 +23,51 @@
 
     <!-- SELECT -->
     <select id="getSeriesList" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
-        SELECT /* seriesQuery.getSeriesList 2013.06.27 정대원 */ 
-            CONTENTS.name AS SERIES_NAME, 
-            CONTENTS.sale_price, 
-            CONTENTS.series_mgmtno,
-            CONTENTS.company_mgmtno,
-            COMPANY.company_name
-        FROM CONTENTS, COMPANY
+        SELECT 
+        	SERIES.series_name,
+        	SERIES.series_mgmtno,
+        	SELTBL.company_name,
+        	SELTBL.company_mgmtno
+        FROM 
+        	SERIES,
+        	(
+        	SELECT 
+        		SERIES.series_mgmtno,
+        		COMPANY.COMPANY_NAME, 
+        		COMPANY.company_mgmtno	
+        	FROM CONTRACT, CONTRACT_CONTENTS_GROUP, COMPANY, SERIES 
+        	WHERE CONTRACT.del_yn = 'N' 
+        	AND COMPANY.company_type = 'CP' 
+        	AND CONTRACT.company_mgmtno = COMPANY.company_mgmtno 
+        	AND CONTRACT.contract_mgmtno = CONTRACT_CONTENTS_GROUP.contract_mgmtno 
+        	AND CONTRACT_CONTENTS_GROUP.series_mgmtno = SERIES.series_mgmtno 
+        	GROUP BY SERIES.series_mgmtno
+        	) AS SELTBL
         <where>
-        	CONTENTS.series_mgmtno = CONTENTS.contents_cd
-            AND CONTENTS.series_mgmtno > 0
-            AND CONTENTS.company_mgmtno = COMPANY.company_mgmtno  
+            SERIES.series_mgmtno = SELTBL.series_mgmtno
             <if test="type != null">
             /* type이 null 이 아니면 검색 */
                 <choose>
                     <when test="type eq '시리즈명'">
-                        AND CONTENTS.NAME like '%${query}%'
+                        AND SERIES.series_name like '%${query}%'
                     </when>
                     <when test="type eq 'SERIES코드'">
-                        AND CONTENTS.CONTENTS_CD = #{query}
+                        AND SERIES.series_mgmtno = #{query}
                     </when>
                     <otherwise>
                         AND (
-                        CONTENTS.NAME like '%${query}%'
+                        SERIES.series_name like '%${query}%'
                         OR
-                        CONTENTS.CONTENTS_CD = #{query}
+                        SERIES.series_mgmtno = #{query}
                         )
                     </otherwise>
                 </choose>
             </if>
             <if test="cate_id > 0">
-                AND CONTENTS.cate_id = #{ cate_id }
+                AND SERIES.cate_id = #{ cate_id }
             </if>
         </where>
+        ORDER BY series_name
     </select>
     
     <select id="getSeriesListAll" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
