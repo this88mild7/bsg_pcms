@@ -36,20 +36,27 @@
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
 			</select>
 			기간설정
-			<select class="span2" id="period">
-				<option value="thisMonth">이번달</option>
-				<option value="lastMonth">지난달</option>
-				<option value="thisWeek">이번주</option>
-				<option value="lastWeek">지난주</option>
+			<select class="span2" id="searchYear">
+				<option value="2013">2013년</option>
 			</select>
-			<input type="text" class="span2" name="searchStrDate" placeholder="시작일" /> - 
-			<input type="text" class="span2" name="searchEndDate" placeholder="종료일" />
+			<select class="span2" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
 			<div class="input-append">
-				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
-					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">
-					<input type="hidden" id="sortingType" name="sortingType" >
-					<input type="hidden" id="searchStrDate" name="searchStrDate" >
-					<input type="hidden" id="searchEndDate" name="searchEndDate" >
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceProductSearch']"/>">
+					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
@@ -60,7 +67,6 @@
 				<tr>
 					<th>순위</th>
 					<th>상품명</th>
-					<th>판매기기</th>
 					<th>총매출금액</th>
 					<th>누적판매량</th>
 				</tr>
@@ -68,7 +74,6 @@
 				<tr>
 					<td>${ status.count }</td>
 					<td>${ obj.contents_name }</td>
-					<td>${ obj.sale_device }</td>
 					<td class="price">${ obj.total_sale_price }</td>
 					<td class="count">${ obj.total_sale_count }</td>
 				</tr>

@@ -870,9 +870,8 @@ $(function(){
 			});
 	}
 	
-	console.info( $("input").attr("required",true) );
 	//validation check... now length error
-	$("input").filter().jqBootstrapValidation();
+	$("#sale_price").jqBootstrapValidation();
 	
 });
 </script>
