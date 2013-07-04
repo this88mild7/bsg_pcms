@@ -59,18 +59,28 @@ div#sale-content-list {
 				<div class="controls" style="margin-top : 5px;">
 					<div id="payments-type" class="input-prepend" style="display:none">
 						<div class="btn-group no-padding">
-							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown">
-									<span id="currency-view">KRW</span><span class="caret"></span>
+							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown" type="button">
+								<span id="currency-view">
+									<c:choose>
+										<c:when test="${viewType eq 1}">
+											KRW
+										</c:when>
+										<c:otherwise>
+											${saleContractDetail.payments_currency}
+										</c:otherwise>
+									</c:choose>
+								</span>
+								<span class="caret"></span>
 							</button>
 							<ul id="currency-menu" class="dropdown-menu">
-								<li><a href="#">KRW</a></li>
-								<li><a href="#">USD</a></li>
-								<li><a href="#">JPY</a></li>
-								<li><a href="#">CNY</a></li>
-								<li><a href="#">EUR</a></li>
+								<li><a href="#null">KRW</a></li>
+								<li><a href="#null">USD</a></li>
+								<li><a href="#null">JPY</a></li>
+								<li><a href="#null">CNY</a></li>
+								<li><a href="#null">EUR</a></li>
 							</ul>
 						</div>
-						<input type="hidden" id="currency" name="currency" value="KRW">
+						<input type="hidden" id="payments_currency" name="payments_currency" value="KRW">
 						<c:choose>
 							<c:when test="${saleContractDetail.payments  == null}">
 								<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="0" />
@@ -206,78 +216,6 @@ div#sale-content-list {
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="deviceType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매형태</label>
-				<div class="controls sale-device" >
-					<c:choose>
-						<c:when test="${viewType eq 1}">
-							<div class="row-fluid" >
-								<div>
-									<div class="span3">
-										<select size="1" name="device_cd_list">
-											<c:forEach items="${ deviceList }" var="device">
-												<option value="${device.cd}" >${device.cd_detail}</option>
-											</c:forEach>
-										</select>
-									</div>
-									<div class="span2 device-add-icon">
-										<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
-									</div>
-									<!-- 아래로만 추가 하기 위한 empty -->
-									<div class="span7">
-										<!--  empty -->
-									</div>
-									
-									<!-- 기타 일 경우 나타 나게
-									<div class="span3">
-										<div class="span3">기기명</div>
-										<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
-									</div>
-									 -->
-								</div>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<c:forEach items="${ saleContractDetail.contractedDeviceList }" var="contractedDeviceList" varStatus="index">
-								<div class="row-fluid">
-									<div>
-										<div class="span3">							
-											<select size="1" name="device_cd_list">
-												<c:forEach items="${ deviceList }" var="device">
-													<option value="${device.cd}" <c:if test="${contractedDeviceList eq device.cd}">selected="selected"</c:if> >${device.cd_detail}</option>
-												</c:forEach>
-											</select>
-										</div>
-										<c:choose>
-											<c:when test="${not index.first }">
-												<div class="span2 device-remove-icon">
-													<img class="removePd" src="/pcms/img/remove.png" alt="x"/>
-												</div>
-											</c:when>
-											<c:otherwise>
-												<div class="span2 device-add-icon">
-													<img id="addDeviceType" src="/pcms/img/plus.png" alt="+"/>
-												</div>
-											</c:otherwise>
-										</c:choose>
-										<!-- 아래로만 추가 하기 위한 empty -->
-										<div class="span7">
-											<!--  empty -->
-										</div>
-								
-									<!-- 기타 일 경우 나타 나게
-									<div class="span3">
-										<div class="span3">기기명</div>
-										<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
-									</div>
-									 -->							
-									</div>
-								</div>
-								</c:forEach>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
 					<select size="1" name="contract_type" id="product_sale_type">
@@ -299,7 +237,7 @@ div#sale-content-list {
 
 			<div class="control-group">
 				<label class="control-label" for=""></label>
-				<div class="controls" id="sale-content-list" >
+				<div class="controls well" id="sale-content-list" >
 					
 					<c:choose>
 						<c:when test="${viewType eq 1}">
@@ -313,7 +251,9 @@ div#sale-content-list {
 										<td class="span3">${content.contents_cd }<input type="hidden" name="selectedContentsCd" value="${content.contents_cd }"></td>
 										<td class="span4">${content.name}</td>
 										<td class="span3">${content.company_name}</td>
+										<!-- 
 										<td class="span1"><input class="price product_price" type="text" name="selectedContentsPrice" value="${content.sale_price}"></td>
+										 -->
 										<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>	
 									</tr>
 									</c:forEach>
@@ -326,8 +266,35 @@ div#sale-content-list {
 			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 판매가 결정</label>
 				<div class="controls">
+							<div id="sale-price-currency" class="input-prepend">
+								<div class="btn-group no-padding">
+									<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+									<span id="sale-price-currency-view">
+									<c:choose>
+										<c:when test="${viewType eq 1}">
+											KRW
+										</c:when>
+										<c:otherwise>
+											${saleContractDetail.sale_price_currency}
+										</c:otherwise>
+									</c:choose>
+									</span>
+									<span class="caret"></span>
+									</button>
+									<ul id="sale-price-currency-menu" class="dropdown-menu">
+									<li><a href="#null" class="sale-price-currency-li">KRW</a></li>
+									<li><a href="#null" class="sale-price-currency-li">USD</a></li>
+									<li><a href="#null" class="sale-price-currency-li">JPY</a></li>
+									<li><a href="#null" class="sale-price-currency-li">CNY</a></li>
+									<li><a href="#null" class="sale-price-currency-li">EUR</a></li>
+									</ul>
+								</div>
+								<input type="hidden" id="sale_price_currency" name="sale_price_currency" value="${saleContractDetail.sale_price_currency }">
+								<input type="text" class="price" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+							</div>
 					<c:choose>
 						<c:when test="${viewType eq 1}">
+						<!-- 
 							<label class="radio inline">
 								<input type="radio" id="etc_price_type" name="sale_price_type" value="0">
 								기타 판매가격
@@ -337,8 +304,10 @@ div#sale-content-list {
 								기본 판매가격
 							</label>
 							<input type="text" class="price" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
+						 -->
 						</c:when>
 						<c:otherwise>
+						<!-- 
 							<label class="radio inline">
 								<input type="radio" name="sale_price_type" value="0" <c:if test="${saleContractDetail.sale_price_type == 0}">checked</c:if>>
 								기타 판매가격
@@ -347,7 +316,7 @@ div#sale-content-list {
 								<input type="radio" name="sale_price_type" value="1" <c:if test="${saleContractDetail.sale_price_type == 1}">checked</c:if>>
 								기본 판매가격
 							</label>
-							<input type="text" class="price" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+						 -->
 						</c:otherwise>
 					</c:choose>					
 				</div>
@@ -482,7 +451,13 @@ div#sale-content-list {
 		$("#currency-menu").find("a").click(function(){
 			var selectedValue = $(this).text();
 			$("#currency-toggle span").first().text(selectedValue);
-			$('#currency').val(selectedValue);
+			$('#payments_currency').val(selectedValue);
+		});
+		
+		$("body").delegate(".sale-price-currency-li", "click", function(){
+			var selectedValue = $(this).text();
+			$("#sale-price-currency-toggle span").first().text(selectedValue);
+			$('#sale_price_currency').val(selectedValue);
 		});
 		
 		// 계약기간
@@ -544,9 +519,12 @@ div#sale-content-list {
 		// 시리즈 검색 버튼 이벤트
 		$("#btn-series-create, #btn-series-search-form").click(function(){
 			
-			var searchQuery = $("#seriesQuery").val();
+			var searchQuery;
 			if($(this).is("btn-series-create")){
 				searchQuery = "";
+				$("#seriesQuery").val("");
+			}else{
+				searchQuery = $("#seriesQuery").val();
 			}
 			var searchUrl = '<spring:eval expression="@urlProp['ajaxSaleCompanySeriesList']"/>';
 			$.ajax({
@@ -689,11 +667,11 @@ div#sale-content-list {
 		// 선택 삭제 아이콘
 		$("body").delegate('img.remove-product', 'click', function(event){
 			$(this).parent().parent().remove();
-			totalPriceCalc();
+			//totalPriceCalc();
 		});
 		// 상품 가격 변동시 총 판매 가격 변경
 		$("body").delegate('.product_price', 'change', function(event){
-			totalPriceCalc();
+			//totalPriceCalc();
 			$("#etc_price_type").attr("checked", true);
 			$("#default_price_type").attr("checked", false);
 		});
@@ -708,7 +686,7 @@ div#sale-content-list {
 			var $this = $(this);
 			$this.parent().parent().remove();
 			//재계산
-			 totalPriceCalc();
+			// totalPriceCalc();
 		});
 		
 		$("body").delegate(".check-product", "click", function(){
@@ -728,7 +706,7 @@ div#sale-content-list {
 		    			$(this).parent().parent().remove();
 		    		}
 		    	});
-		    	totalPriceCalc();
+		    	//totalPriceCalc();
 		    }
 		}); 
 		
@@ -798,16 +776,15 @@ div#sale-content-list {
 				};
 			})
 		});
-		
-		if($("#payment").val() == 0){
+		if($("#payments").val() == 0){
 			$("#rd-payments-has-no").trigger("click");
 		}else{
 			$("#rd-payments-has").trigger("click");
 		}
-		
+			
 	}); //init function
 	
-	function totalPriceCalc(){
+	/* function totalPriceCalc(){
 		var seletedTotlaPrice=0;
 		$.each($(".product_price"), function(){
 			seletedTotlaPrice = parseInt(seletedTotlaPrice)+parseInt($(this).val().replace(/,/gi, ''));
@@ -815,7 +792,7 @@ div#sale-content-list {
 		$("#sale_price").val(seletedTotlaPrice);
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		$('#sale_price').autoNumeric('update',{aPad: false });
-	}
+	} */
 	
 	function categoryChange(){
 		$( "select[name='category']" ).change(function () {
@@ -888,9 +865,27 @@ div#sale-content-list {
 			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" class="content_cd" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
 			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
 			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
-			productHtml +='<td class="span1"><input type="text" class="price product_price" name="selectedContentsPrice" value="'+$this.data("content_price")+'"></td>';
-			productHtml +='<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>';			
+			productHtml +='<td class="span1">';
+				/* productHtml +='<div id="sale-price-currency" class="input-prepend">';
+					productHtml +='<div class="btn-group no-padding">';
+					productHtml +='<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">';
+					productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
+					productHtml +='</button>';
+					productHtml +='<ul id="sale-price-currency-menu" class="dropdown-menu">';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">KRW</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">USD</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">JPY</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">CNY</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">EUR</a></li>';
+					productHtml +='</ul>';
+					productHtml +='</div>';
+					productHtml +='<input type="hidden" id="contents_price_currency" name="selectedContentsCurrency" value="KRW">';
+					productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" value='+$this.data("content_price")+' />';						
+				productHtml +='</div>'; */
 			productHtml +='</td>';
+			productHtml +='<td class="span2">';
+				productHtml +='<button type="button" class="btn btn-remove-product">삭제</button>'
+			productHtml +='</td>';			
 			productHtml +='</tr>';
 			
 		});
@@ -899,7 +894,7 @@ div#sale-content-list {
 		$('.product_price').autoNumeric('init',{aPad: false });
 		$('.product_price').autoNumeric('update',{aPad: false });
 		
-		totalPriceCalc();
+		//totalPriceCalc();
 	};
 	
 	function checkMulti() {

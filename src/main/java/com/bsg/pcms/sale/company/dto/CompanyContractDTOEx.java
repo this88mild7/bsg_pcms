@@ -40,21 +40,29 @@ public class CompanyContractDTOEx extends ContractDTO{
 	
 	private double payments =0;
 	
-	private String currency;
+	private String payments_currency;
+	
+	private String sale_price_currency;
 	
 	private String payments_type;
 	
-	private List<String> installments_dt;
-	
-	private List<String> installments_price;
-	
 	private List<InstallmentsDTO> installmentList;
 	
+	
+	// JSP List 파라미터
+	private List<String> installments_dt;
+	private List<String> installments_price;
 	private List<String> selectedContentsCd;
-	
 	private List<String> selectedContentsPrice;
+	private List<String> selectedContentsCurrency;
 	
 	
+	public List<String> getSelectedContentsCurrency() {
+		return selectedContentsCurrency;
+	}
+	public void setSelectedContentsCurrency(List<String> selectedContentsCurrency) {
+		this.selectedContentsCurrency = selectedContentsCurrency;
+	}
 	public String getContract_type_cd() {
 		return contract_type_cd;
 	}
@@ -78,12 +86,6 @@ public class CompanyContractDTOEx extends ContractDTO{
 	}
 	public void setPayments(double payments) {
 		this.payments = payments;
-	}
-	public String getCurrency() {
-		return currency;
-	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
 	}
 	public String getPayments_type() {
 		return payments_type;
@@ -217,6 +219,19 @@ public class CompanyContractDTOEx extends ContractDTO{
 	}
 	public void setInstallments_dt(List<String> installments_dt) {
 		this.installments_dt = installments_dt;
+		
+	}
+	public String getPayments_currency() {
+		return payments_currency;
+	}
+	public void setPayments_currency(String payments_currency) {
+		this.payments_currency = payments_currency;
+	}
+	public String getSale_price_currency() {
+		return sale_price_currency;
+	}
+	public void setSale_price_currency(String sale_price_currency) {
+		this.sale_price_currency = sale_price_currency;
 	}
 	@Override
 	public String toString() {
@@ -234,12 +249,15 @@ public class CompanyContractDTOEx extends ContractDTO{
 				+ ", device_cd_list=" + device_cd_list
 				+ ", contractedDeviceList=" + contractedDeviceList
 				+ ", searchType=" + searchType + ", searchQuery=" + searchQuery
-				+ ", payments=" + payments + ", currency=" + currency
-				+ ", payments_type=" + payments_type + ", installments_dt="
-				+ installments_dt + ", installments_price="
-				+ installments_price + ", installmentList=" + installmentList
+				+ ", payments=" + payments + ", payments_currency="
+				+ payments_currency + ", sale_price_currency="
+				+ sale_price_currency + ", payments_type=" + payments_type
+				+ ", installments_dt=" + installments_dt
+				+ ", installments_price=" + installments_price
+				+ ", installmentList=" + installmentList
 				+ ", selectedContentsCd=" + selectedContentsCd
-				+ ", selectedContentsPrice=" + selectedContentsPrice + "]";
+				+ ", selectedContentsPrice=" + selectedContentsPrice
+				+ ", selectedContentsCurrency=" + selectedContentsCurrency
+				+ "]";
 	}
-	
 }

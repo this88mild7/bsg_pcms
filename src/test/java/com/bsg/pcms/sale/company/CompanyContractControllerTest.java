@@ -2,15 +2,15 @@ package com.bsg.pcms.sale.company;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -21,12 +21,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
-import com.bsg.pcms.sale.company.CompanyContractController;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
-import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:servlet-contextForTest.xml"})
@@ -94,60 +91,50 @@ public class CompanyContractControllerTest {
 	
 	private CompanyContractDTOEx generateContractDto(){
 		CompanyContractDTOEx retVal = new CompanyContractDTOEx();
-		retVal.setUser_mgmtseq(1);
-		retVal.setCompany_mgmtno(1);
-		retVal.setLicense_cd("sdf");
-		retVal.setLicense_cd_detail("license_detail");
-		retVal.setSale_price(12313);
-		retVal.setSale_profit_rate(12313);
-		retVal.setSale_profit_type("1");
-		retVal.setEtc("1");
-		retVal.setContract_type("1");
-		retVal.setContract_type_detail("1");
-		
-		List<String> saleTypeList = new ArrayList<String>();
-		saleTypeList.add("ios");
-		saleTypeList.add("android");
-		saleTypeList.add("web");
-		retVal.setDevice_cd_list(saleTypeList);
+		retVal.setCompany_mgmtno(39);
+		retVal.setLicense_cd("LS001001");
+		retVal.setSale_price(15000648);
+		retVal.setSale_price_type("0");
+		retVal.setSale_price_currency("USD");
+		retVal.setSale_profit_rate(50);
+		retVal.setContract_type("CT002002");
 		
 		// Contents Group Generate
-		List<CompanyContentsDTOEx> contentsList = new ArrayList<CompanyContentsDTOEx>();
+		List<String> contentsList = new ArrayList<String>();
+		contentsList.add("85");
+		contentsList.add("84");
+		retVal.setSelectedContentsCd(contentsList);
 		
-		for(int x=1;x<3;x++){
-			CompanyContentsDTOEx temp = new CompanyContentsDTOEx();
-			temp.setContents_cd("CP03_CA40P000"+x+"_PB");
-			contentsList.add(temp);
-		}
-		retVal.setContentsList(contentsList);
+//		// Contents Price
+//		List<String> contentsPriceList = new ArrayList<String>();
+//		contentsPriceList.add("50");
+//		contentsPriceList.add("100");
+//		retVal.setSelectedContentsPrice(contentsPriceList);
+//		
+//		// Contents Currency
+//		List<String> selectedContentsCurrency = new ArrayList<String>();
+//		selectedContentsCurrency.add("USD");
+//		selectedContentsCurrency.add("KRW");
+//		retVal.setSelectedContentsCurrency(selectedContentsCurrency);
+		
+		
+		// installments
+		List<String> installments_dt = new ArrayList<String>();
+		installments_dt.add("2013-07-01");
+		retVal.setInstallments_dt(installments_dt);
+		
+		List<String> installments_price = new ArrayList<String>();
+		installments_price.add("123123");
+		retVal.setInstallments_price(installments_price);
+		
+		retVal.setStr_date(new Date(System.currentTimeMillis()));
+		retVal.setEnd_date(new Date(System.currentTimeMillis()));
+		
+		retVal.setPayments(123123);
+		retVal.setPayments_currency("USD");
+		retVal.setPayments_type("분납지급");
 		
 		return retVal;
 	}
-	
-//	@Test
-//	public void testCreateCustomerView() {
-//		try {
-//			ModelAndView resView = customerController.createSaleCompanyContractView();
-//			List<CompanyDTOEx>  resultcode = (List<CompanyDTOEx> )resView.getModel().get("customerList");
-//			assertThat(resultcode.size(), is(not(0)));
-//			logger.info("{}", resultcode);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error("{}", e.getMessage());
-//		}
-//	}
-	
-//	@Test
-//	public void testCreateContractAction() {
-//		try {
-//			ModelAndView resView = customerController.createContractAction(companyDTOEx, request);
-//			List<CompanyDTOEx>  resultcode = (List<CompanyDTOEx> )resView.getModel().get("customerList");
-//			assertThat(resultcode.size(), is(not(0)));
-//			logger.info("{}", resultcode);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error("{}", e.getMessage());
-//		}
-//	}
 
 }

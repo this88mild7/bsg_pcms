@@ -19,7 +19,8 @@
             STR_DATE, 
             END_DATE,
             SALE_PRICE, 
-            SALE_PRICE_TYPE, 
+            SALE_PRICE_TYPE,
+            SALE_PRICE_CURRENCY,
             SALE_PROFIT_RATE, 
             SALE_PROFIT_TYPE,
             SALE_PROFIT_TYPE_DETAIL, 
@@ -30,7 +31,7 @@
             BALANCE_DETAIL,
             PAYMENTS,
             PAYMENTS_TYPE,
-            CURRENCY
+            PAYMENTS_CURRENCY
        )
 	   VALUES ( 
             #{user_mgmtseq}, 
@@ -43,6 +44,7 @@
 	        #{end_date}, 
 	        #{sale_price}, 
 	        #{sale_price_type}, 
+            #{sale_price_currency},  
 	        #{sale_profit_rate}, 
 	        #{sale_profit_type},
 	        #{sale_profit_type_detail}, 
@@ -53,7 +55,7 @@
             #{balance_type_detail},
             #{payments},
             #{payments_type},
-            #{currency}  
+            #{payments_currency}  
         )
    </insert>
    
@@ -116,6 +118,7 @@
             SERIES_MGMTNO, 
             CONTENTS_CD, 
             SALE_PRICE,
+            CURRENCY,
             REG_DT, 
             MOD_DT
        )
@@ -125,6 +128,7 @@
             (SELECT SERIES_MGMTNO FROM CONTENTS WHERE CONTENTS_CD = #{contents_cd}),
             #{contents_cd},
             #{sale_price},
+            #{currency},
             now(), 
             now() 
         )
@@ -185,11 +189,10 @@
 			) AS sale_type,	
 			CT.REG_DT,
 			(SELECT CD_DETAIL FROM CD WHERE CD = CT.CONTRACT_TYPE) AS CONTRACT_TYPE
-		FROM CONTRACT CT, COMPANY COM, CONTRACT_CONTENTS_GROUP CCG, CONTRACT_DETAIL CTD
+		FROM CONTRACT CT, COMPANY COM, CONTRACT_CONTENTS_GROUP CCG
 		WHERE 1=1
 		AND CT.COMPANY_MGMTNO = COM.COMPANY_MGMTNO
 		AND CT.CONTRACT_MGMTNO = CCG.CONTRACT_MGMTNO
-		AND CT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
 		AND COM.COMPANY_TYPE = 'SC'
 		AND CT.DEL_YN = 'N'
 		<if test="searchType != null">
@@ -202,8 +205,6 @@
 							CT.CONTRACT_MGMTNO like '%${searchQuery}%'
 							OR
 							COM.PHONENO like '%${searchQuery}%'
-							OR
-							CTD.SALE_TYPE like '%${searchQuery}%'
 							OR
 							COM.COMPANY_NAME like '%${searchQuery}%'
 							OR 
@@ -250,6 +251,7 @@
 			CT.BALANCE_DETAIL,
 			CT.SALE_PRICE,
 			CT.SALE_PRICE_TYPE,
+			CT.SALE_PRICE_CURRENCY,
 			CT.SALE_PROFIT_RATE,
 			CT.SALE_PROFIT_TYPE,
 			CT.SALE_PROFIT_TYPE_DETAIL,
@@ -260,12 +262,11 @@
 			CT.BALANCE_TYPE,
 			CT.PAYMENTS,
 			CT.PAYMENTS_TYPE,
-			CT.CURRENCY
+			CT.PAYMENTS_CURRENCY
 		FROM 
-			CONTRACT CT, CONTRACT_DETAIL CTD, COMPANY COM, CONTENTS CON
+			CONTRACT CT, COMPANY COM, CONTENTS CON
 		WHERE 1=1
 		AND CT.CONTRACT_MGMTNO = #{contract_mgmtno}
-		AND CT.CONTRACT_MGMTNO = CTD.CONTRACT_MGMTNO
 		AND CT.COMPANY_MGMTNO = COM.COMPANY_MGMTNO		
 		AND CT.DEL_YN = 'N'
 		GROUP BY CT.CONTRACT_MGMTNO
@@ -407,6 +408,7 @@
             END_DATE = #{end_date},
             SALE_PRICE = #{sale_price}, 
             SALE_PRICE_TYPE = #{sale_price_type}, 
+            SALE_PRICE_CURRENCY = #{sale_price_currency}, 
             SALE_PROFIT_RATE = #{sale_profit_rate}, 
             SALE_PROFIT_TYPE = #{sale_profit_type}, 
             ETC = #{etc},
@@ -416,7 +418,7 @@
             BALANCE_DETAIL = #{balance_type_detail},
             PAYMENTS = #{payments},
             PAYMENTS_TYPE = #{payments_type},
-            CURRENCY = #{currency}
+            PAYMENTS_CURRENCY = #{payments_currency}
 		WHERE CONTRACT_MGMTNO = #{contract_mgmtno}
    </update>
 	

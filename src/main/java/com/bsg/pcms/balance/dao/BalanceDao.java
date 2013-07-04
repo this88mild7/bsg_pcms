@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -66,7 +67,9 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public List<Map> saleType(int company_mgmtno, String sale_type) {
 		Map<String, Object> daoParam = new HashMap<String, Object>();
 		daoParam.put("company_mgmtno", company_mgmtno);
-		daoParam.put("sale_type", sale_type);
+		if(StringUtils.isNotBlank(sale_type)){
+			daoParam.put("sale_type", sale_type);
+		}
 		return (List<Map>)getSqlSession().selectList("balanceQuery.saleType", daoParam);
 	}
 	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {

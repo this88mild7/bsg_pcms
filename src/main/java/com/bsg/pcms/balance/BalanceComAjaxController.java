@@ -63,6 +63,14 @@ public class BalanceComAjaxController {
 			"contractTypeList": [{
 				"contract_type": "CT002001",
 				"contract_type_name": "개별"
+			},
+			{
+				"contract_type": "CT002002",
+				"contract_type_name": "패키지"
+			},
+			{
+				"contract_type": "CT002003",
+				"contract_type_name": "번들"
 			}],
 			"code": 200,
 			"msg": "OK"

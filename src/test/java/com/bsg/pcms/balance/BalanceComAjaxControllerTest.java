@@ -58,7 +58,7 @@ public class BalanceComAjaxControllerTest {
 		// given 
 		
 		// when
-		String jsonResult = balanceComAjaxController.contractType(32, "DV001002"); 
+		String jsonResult = balanceComAjaxController.contractType(32, null); 
 		
 		// then
 		assertThat(jsonResult, is(notNullValue()));
@@ -84,7 +84,7 @@ public class BalanceComAjaxControllerTest {
 		CompanyContractDTOEx companyContractDTOEx = new CompanyContractDTOEx();
 		
 		companyContractDTOEx.setContract_type("CT002002");
-		companyContractDTOEx.setSale_type("DV001002");
+		//companyContractDTOEx.setSale_type("DV001002");
 		companyContractDTOEx.setCompany_mgmtno(32);
 		
 		

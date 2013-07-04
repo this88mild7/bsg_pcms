@@ -48,11 +48,12 @@ public class CompanyContractService {
 
 	public CompanyContractDTOEx detail(CompanyContractDTOEx saleCompany) {
 		CompanyContractDTOEx companyContractDTOEx = _saleContractDao.contractDetail(saleCompany);
+//		List<String> contractedDeviceList = _saleContractDao.contractedDeviceList(saleCompany.getContract_mgmtno());
+//		companyContractDTOEx.setContractedDeviceList(contractedDeviceList);
+		
 		List<CompanyContentsDTOEx> contentsList = _saleContractDao.contractContentsList(saleCompany.getContract_mgmtno());
-		List<String> contractedDeviceList = _saleContractDao.contractedDeviceList(saleCompany.getContract_mgmtno());
-		List<InstallmentsDTO> installmentList = _saleContractDao.installmentList(saleCompany.getContract_mgmtno());
-		companyContractDTOEx.setContractedDeviceList(contractedDeviceList);
 		companyContractDTOEx.setContentsList(contentsList);
+		List<InstallmentsDTO> installmentList = _saleContractDao.installmentList(saleCompany.getContract_mgmtno());
 		companyContractDTOEx.setInstallmentList(installmentList);
 		
 		return companyContractDTOEx;
@@ -116,21 +117,23 @@ public class CompanyContractService {
 		
 		// Map list insert호 개선 필요
 		List<String> selectedContentsCd = paramContractDTOEx.getSelectedContentsCd();
-		List<String> selectedContentsPrice = paramContractDTOEx.getSelectedContentsPrice();
+//		List<String> selectedContentsPrice = paramContractDTOEx.getSelectedContentsPrice();
+//		List<String> selectedContentsCurrency = paramContractDTOEx.getSelectedContentsCurrency();
 		for(int x=0;x<selectedContentsCd.size();x++){
 			Map<String, Object> contentGroupParam = new HashMap<String, Object>();
 			contentGroupParam.put("contract_mgmtno", paramContractDTOEx.getContract_mgmtno());
 			contentGroupParam.put("contents_cd", selectedContentsCd.get(x));
-			contentGroupParam.put("sale_price", selectedContentsPrice.get(x));
+//			contentGroupParam.put("sale_price", selectedContentsPrice.get(x));
+//			contentGroupParam.put("currency", selectedContentsCurrency.get(x));
 			_saleContractDao.createContentsGroup(contentGroupParam);
 		}
 		
-		for(String saleType : paramContractDTOEx.getDevice_cd_list()){
-			CompanyContractDTOEx tmpContractDto = new CompanyContractDTOEx();
-			tmpContractDto.setContract_mgmtno(paramContractDTOEx.getContract_mgmtno());
-			tmpContractDto.setSale_type(saleType);
-			_saleContractDao.createContractDetail(tmpContractDto);
-		}
+//		for(String saleType : paramContractDTOEx.getDevice_cd_list()){
+//			CompanyContractDTOEx tmpContractDto = new CompanyContractDTOEx();
+//			tmpContractDto.setContract_mgmtno(paramContractDTOEx.getContract_mgmtno());
+//			tmpContractDto.setSale_type(saleType);
+//			_saleContractDao.createContractDetail(tmpContractDto);
+//		}
 		
 		for(int x=0;x<paramContractDTOEx.getInstallments_dt().size();x++){
 			InstallmentsDTO installnetsDTO = new InstallmentsDTO();
