@@ -23,7 +23,7 @@
 
     <!-- SELECT -->
     <select id="getSeriesList" resultType="com.bsg.pcms.dto.SeriesDTO" parameterType="com.bsg.pcms.dto.SeriesDTO">
-        SELECT 
+        SELECT /* seriesQuery.getSeriesList 2013.07.04 정대원 */ 
         	SERIES.series_name,
         	SERIES.series_mgmtno,
         	SELTBL.company_name,
