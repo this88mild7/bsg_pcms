@@ -67,7 +67,6 @@
 				<tr>
 					<th>순위</th>
 					<th>판매처</th>
-					<th>판매기기</th>
 					<th>총매출금액</th>
 					<th>누적판매량</th>
 				</tr>
@@ -75,7 +74,6 @@
 				<tr>
 					<td>${ status.count }</td>
 					<td>${ obj.company_name }</td>
-					<td>${ obj.sale_device }</td>
 					<td class="price">${ obj.total_sale_price }</td>
 					<td class="count">${ obj.total_sale_count }</td>
 				</tr>
