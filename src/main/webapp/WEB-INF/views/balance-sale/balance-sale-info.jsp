@@ -43,17 +43,6 @@ div#sale-content-list {
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="deviceTypeList"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매기종</label>
-				<div class="controls">
-					<select size="1" id="deviceTypeList" name="sale_type">
-						<option value="0">판매기종을 선택해 주세요.</option>
-						<!-- 
-							ajax
-						 -->
-					</select>
-				</div>
-			</div>
-			<div class="control-group">
 				<label class="control-label" for="contractTypeList"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
 					<select size="1" id="contractTypeList" name="contract_type" data-cnt="${ fn:length( cpList ) }">
@@ -369,50 +358,10 @@ $('#salePeriodTip')
 			return false;
 		}
 		
-		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleDeviceType']"/>';
-		$.getJSON(url, { company_mgmtno : $this.val() }, function(data) {
-			console.info(data);
-			if(data.code == 999) {
-				bootbox.alert( data.msg );
-				return false;
-			}
-			
-			var $target = $("#deviceTypeList");
-			{ // 초기화
-				$target.find("option").not(":first").remove();
-				$("#saleTypeList").find("option").not(":first").remove();
-			}
-			
-			if(data.deviceTypeList.length == 0) {
-				bootbox.alert( "판매기종이 없습니다." );
-				return false;
-			}
-			
-			$.each(data.deviceTypeList, function(idx, ele){
-		    
-				var saleType = ele.sale_type,
-					saleTypeName = ele.sale_type_name;
-				
-				var $html = String.format('<option value="{0}">{1}</option>', saleType, saleTypeName);
-				$target.append( $html );
-			});
-		})
-		.fail(function() { bootbox.alert( data.msg ); });
-		
-	});
-	
-	//판매기종이 선택되면 판매방식 가져오기
-	$("#deviceTypeList").change(function(){
-		var $this = $(this);
-		if($this.val() == 0) {
-			return false;
-		}
-		
 		var companyMgmtno = $("#saleCompanyList").find("option").filter(":selected").val();
-		var saleType = $("#deviceTypeList").find("option").filter(":selected").val();
 		
 		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContractType']"/>';
-		var param = { company_mgmtno : companyMgmtno, sale_type : saleType };
+		var param = { company_mgmtno : companyMgmtno };
 		$.getJSON(url, param, function(data) {
 			console.info(data);
 			if(data.code == 999) {
@@ -463,14 +412,9 @@ $('#salePeriodTip')
 }
 
 String.format = function() {
-    // The string containing the format items (e.g. "{0}")
-    // will and always has to be the first argument.
     var theString = arguments[0];
     
-    // start with the second argument (i = 1)
     for (var i = 1; i < arguments.length; i++) {
-        // "gm" = RegEx options for Global search (more than one instance)
-        // and for Multiline search
         var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
         theString = theString.replace(regEx, arguments[i]);
     }

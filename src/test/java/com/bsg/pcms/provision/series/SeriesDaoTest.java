@@ -70,7 +70,7 @@ public class SeriesDaoTest {
 		int cateId = 0; 
 		
 		//검색 조건절
-		String type = "시리즈명"; //검색할 경우 null대신 { 회사명|CP코드|"" } 입력
+		String type = null;//"시리즈명"; //검색할 경우 null대신 { 회사명|CP코드|"" } 입력
 		String query = "ㅁ"; //검색어
 		
 		SeriesDTO seriesDTO = new SeriesDTO();

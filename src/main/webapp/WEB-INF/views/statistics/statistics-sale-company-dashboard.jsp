@@ -29,28 +29,34 @@
 
 <div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
 
-		<div>
+		<div class="row-fluid">
 			출력순
-			<select id="sorting_type" class="span2">
+			<select id="sorting_type" name="sortingType" class="span2">
 				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-				<option value="3" <c:if test="${sortingType eq '3' }">selected="selected"</c:if> >수익수</option>
-				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
-			<select class="span2">
-				<option>이번달</option>
-				<option>지난달</option>
-				<option>이번주</option>
-				<option>지난주</option>
+			<select class="span2" id="searchYear">
+				<option value="2013">2013년</option>
 			</select>
-			<input type="text" class="span2" placeholder="시작일" /> - <input type="text" class="span2" placeholder="종료일" />
+			<select class="span2" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
+					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
-					<input type="hidden" id="sortingType" name="sortingType" >
-					<input type="hidden" id="searchStrDate" name="searchStrDate" >
-					<input type="hidden" id="searchEndDate" name="searchEndDate" >
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
@@ -92,9 +98,6 @@
 					기간별 판매그래프
 					<select class="select-mini span3 pull-right">
 						<option>2013년</option>
-						<option>2012년</option>
-						<option>2011년</option>
-						<option>2010년</option>
 					</select>
 				</div>
 				<div id="chart2"></div>
@@ -125,6 +128,13 @@ $(function(){
 
 	//선차트 그리기
 	createLineChart();
+	
+	{//엘리먼트 이벤트
+		$("#btn-content-search-form").click(function(){
+			var $this = $(this);
+			console.info( $this.val() );
+		});
+	}
 	
 });
 

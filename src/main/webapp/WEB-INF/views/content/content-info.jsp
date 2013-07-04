@@ -126,7 +126,7 @@ data-currency="${ content.currency }"
 							</ul>
 						</div>
 						<input type="hidden" id="currency" name="currency" value="KRW">
-						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }" data-validation-required-message="판매단가를 숫자로 입력해 주세요.">
+						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ content.sale_price }" >
 					</div>
 					<a id="tip2" href="#" data-toggle="tooltip" >tip</a>
 					<script>
@@ -189,9 +189,7 @@ $(function(){
 			$( "div.price-group" ).hide();
 			$('#sale_price').prop("required", false);
 			
-			console.info($('#sale_price').val());
 			$('#sale_price').val(0);
-			console.info($('#sale_price').val());
 		}
 	});
 	
@@ -205,12 +203,6 @@ $(function(){
 		});
 	}
 	
-	$("#contentForm").submit(function(){
-		
-		// 10,000 원 => 숫자로만 변경
-		$('#sale_price').val($('#sale_price').autoNumeric('get'));
-	});
-	
 	//환율 변경
 	$("#currency-menu").find("a").click(function(){
 		var nowCurrency = $(this).text();
@@ -223,12 +215,10 @@ $(function(){
 	// CP 업체 선택
 	$("#company_mgmtno").find("option[value='" + $("div.box").data("company_mgmtno") + "']").prop("selected", true);
 	
-	// 콘텐츠 유형 선택
-	$("#contents_type").each(function(){
-		if( $( "div.box" ).data( "content_type" ) == $(this).val() ){
-			$( this ).prop("checked", true);
-		}
-	});
+	// 콘텐츠 유형 선택안되어 있으면 첫번째 선택
+	if( $("input[name='contents_type']").filter(":checked").size() == 0 ) {
+		$("input[name='contents_type']").first().prop( "checked", true );
+	}
 	// 연령 선택
 	$("#age").find("option[value='" + $( "div.box" ).data( "content_age" ) + "']" ).prop("selected", true);
 	
@@ -247,10 +237,22 @@ $(function(){
 	$("#btn-content-create-action").click(function(){
 		bootbox.confirm( "등록 하시겠습니까?", function(result) {
 			if( result ) {
-				$( "#contentForm" ).submit();
+				$('#sale_price').val($('#sale_price').autoNumeric('get'));
+				
+				$( "#contentForm" )
+					.attr("action", '<spring:eval expression="@urlProp['contentCreateAction']"/>')
+					.submit();
 			}
 		}); 
 	});
+	
+	$( "#contentForm" ).submit(function(){
+		if( $('#sale_price').val().length < 1 ) {
+			$('#sale_price').val(0);
+		}
+	});
+	
+	
 	$("#btn-content-delete-action").click(function(){
 		bootbox.confirm( "삭제하시겠습니까?", function(result) {
 			if( result ) {
@@ -261,6 +263,7 @@ $(function(){
 	$("#btn-content-update-action").click(function(){
 		bootbox.confirm( "업데이트 하시겠습니까?", function(result) {
 			if( result ) {
+				$('#sale_price').val($('#sale_price').autoNumeric('get'));
 				$( "#contentForm" )
 					.attr("action", '<spring:eval expression="@urlProp['contentUpdateAction']"/>')
 					.submit();

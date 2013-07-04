@@ -21,13 +21,13 @@ public interface SeriesService {
 
 	public SeriesDTO getSeries(SeriesDTO seriesDTO);
 
-	/** 시리즈 목록을 조회함.
+	/** 업체랑 계약된 시리즈 목록 조회함.
 	 * @param seriesDTO 에 cate_id 셋팅
 	 * @return List<SeriesDTO>
 	 */
 	public List<SeriesDTO> getSeriesList(SeriesDTO seriesDTO);
 
-	/** 업체 여부와 관계없이 시리즈 목록 조회함
+	/** 업체랑 계약여부와 관계없이 시리즈 목록 조회함
 	 * @param seriesDTO 에 cate_id 셋팅
 	 * @return List<SeriesDTO>
 	 */
