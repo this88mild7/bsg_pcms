@@ -7,6 +7,7 @@ public class ContentDTO extends CompanyDTO{
 	// CONTENTS TABLE COLUMN
 	private int company_mgmtno;
 	private int cate_id;
+	private String cate_name;
 	private int series_mgmtno;
 	private int age;
 	private int sale_price;
@@ -65,5 +66,11 @@ public class ContentDTO extends CompanyDTO{
 	@Override
 	public String toString() {
 		return "\nContentDTO [company_mgmtno=" + company_mgmtno + ", cate_id=" + cate_id + ", series_mgmtno=" + series_mgmtno + ", age=" + age + ", sale_price=" + sale_price + ", contents_cd=" + contents_cd + ", contents_type=" + contents_type + ", name=" + name + "]\n";
+	}
+	public String getCate_name() {
+		return cate_name;
+	}
+	public void setCate_name(String cate_name) {
+		this.cate_name = cate_name;
 	}
 }

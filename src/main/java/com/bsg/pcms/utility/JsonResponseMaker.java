@@ -66,8 +66,8 @@ public class JsonResponseMaker {
 				temp.put("series_mgmtno", seriesDTO.getSeries_mgmtno());
 				temp.put("series_name", seriesDTO.getSeries_name());
 				temp.put("series_price", seriesDTO.getSale_price());
-				temp.put("series_price", seriesDTO.getSale_price());
 				temp.put("cp_name", seriesDTO.getCompany_name());
+				temp.put("cate_name", seriesDTO.getCate_name());
 				result.add(temp);
 			}
 			json.put(RESULT, result);

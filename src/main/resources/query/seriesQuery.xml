@@ -27,7 +27,8 @@
         	SERIES.series_name,
         	SERIES.series_mgmtno,
         	SELTBL.company_name,
-        	SELTBL.company_mgmtno
+        	SELTBL.company_mgmtno,
+        	(SELECT CATE_NAME FROM CATE WHERE CATE_ID = SERIES.CATE_ID) AS CATE_NAME
         FROM 
         	SERIES,
         	(

@@ -520,6 +520,7 @@ div#sale-content-list {
 							$html += 	'<td><input class="check-product" name="check_list" type="checkbox" data-content_name="' + this.series_name 
 											+ '" data-content_cd="'+this.series_mgmtno
 											+ '" data-content_price="'+this.series_price
+											+ '" data-content_series_name="'+this.cate_name
 											+ '" data-cp_name="'+this.cp_name
 											+ '" value="' + this.series_mgmtno 
 											+ '"></td>';
