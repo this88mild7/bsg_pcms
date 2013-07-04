@@ -4,7 +4,7 @@
 
 <div class="page-name">
 	<h3>
-		<img src='<spring:eval expression="@urlProp['star']"/>'> 카테고리 관리 <small>&gt;&gt; 콘텐츠 학습 카테고리 관리 화면입니다.</small>
+		<img src='<spring:eval expression="@urlProp['star']"/>'> 시리즈 관리 <small>&gt;&gt; 콘텐츠 학습 카테고리/시리즈 관리 화면입니다.</small>
 	</h3>
 </div>
 

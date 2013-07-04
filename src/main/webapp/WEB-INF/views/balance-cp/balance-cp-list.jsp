@@ -15,26 +15,32 @@
 		
 		<div>
 			출력순
-			<select id="sorting_type" class="span2">
+			<select id="sorting_type" name="sortingType" class="span2">
 				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
 				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-				<option value="3" <c:if test="${sortingType eq '3' }">selected="selected"</c:if> >수익수</option>
-				<option value="4" <c:if test="${sortingType eq '4' }">selected="selected"</c:if> >판매량</option>
 			</select>
 			기간설정
-			<select class="span2">
-				<option>이번달</option>
-				<option>지난달</option>
-				<option>이번주</option>
-				<option>지난주</option>
+			<select class="span2" id="searchYear">
+				<option value="2013">2013년</option>
 			</select>
-			<input type="text" class="span2" /> - <input type="text" class="span2" />
+			<select class="span2" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
-					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }">
-					<input type="hidden" id="sortingType" name="sortingType" >
-					<input type="hidden" id="searchStrDate" name="searchStrDate" >
-					<input type="hidden" id="searchEndDate" name="searchEndDate" >
+					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
@@ -56,8 +62,8 @@
 			</td>
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contract_type }</td>
-			<td>${ balance.total_sale_price }</td>
-			<td>${ balance.cp_commission }</td>
+			<td class="price">${ balance.total_sale_price }</td>
+			<td class="price">${ balance.cp_commission }</td>
 			<td>${ balance.reg_dt }</td>
 		</tr>
 		</c:forEach>
@@ -94,6 +100,10 @@
 </div>
 <!--/row-->
 <script>
+$(function(){
+	
+	//가격에 ,(콤마) 넣어주기
+	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 
 $("#btn-content-search-form").click(function(){
 	$("#sorting_type").val($("#sorting-type-select").val());
@@ -150,5 +160,7 @@ $("#btn-content-selected-delete").click(function(){
 			}
 		}); 
 	}
+});
+
 });
 </script>

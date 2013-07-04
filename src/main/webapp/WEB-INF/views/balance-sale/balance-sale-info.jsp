@@ -136,9 +136,13 @@
 <div id="findProduct" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3></h3>
+		<h3 class="text-center">상품 등록</h3>
 	</div>
 	<div class="modal-body">
+		<div class="input-append pull-right">
+			<input type="text" id="seriesQuery" name="seriesQuery" class="input-large">
+			<button class="btn btn-series-search-form" type="button"><i class="icon-search"></i></button>
+		</div>
 		<table class="table table-striped table-hover">
 			<thead>
 			<tr>

@@ -111,12 +111,6 @@
 <script>
 $(function(){
 	
-	//목록 상하 스크롤 만들기
-	$("#tbl-wrapper").css({
-		"overflow":"auto",
-		"height":"300px"
-	});
-	
 	//가격에 ,(콤마) 넣어주기
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
