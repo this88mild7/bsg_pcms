@@ -32,7 +32,7 @@
 			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
 		]]>
 		</if>
-		GROUP BY BAL.SALE_TYPE, BAL.COMPANY_MGMTNO
+		GROUP BY BAL.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO DESC

@@ -126,19 +126,19 @@ public class StatisticsService {
 		}
 		
 		List<StatisticsDTO> companyList = statDao.productLineGraphContent();
-		for(int x=0;x<companyList.size();x++){
-			companyList.get(x).setSearchEndDate(searchYear);
-			if(x >4){
-				
-			}
+//		for(int x=0;x<companyList.size();x++){
+//			companyList.get(x).setSearchEndDate(searchYear);
+//			if(x >4){
+//				
+//			}
 //			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
 			
-		}
-//		for(StatisticsDTO companyMgmtno : companyList){
-//			companyMgmtno.setSearchEndDate(searchYear);
-//			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
-//			
 //		}
+		for(StatisticsDTO companyMgmtno : companyList){
+			companyMgmtno.setSearchEndDate(searchYear);
+			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
+			
+		}
  		return companyList;
 	}
 	

@@ -45,7 +45,6 @@
 			<th>판매처</th>
 			<th>상품</th>
 			<th>판매방식</th>
-			<th>기기</th>
 			<th>판매횟수</th>
 			<th>총매출금액</th>
 			<th>판매업체수수료</th>
@@ -61,7 +60,6 @@
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contents_name }</td>
 			<td>${ balance.contract_type }</td>
-			<td>${ balance.sale_type }</td>
 			<td>${ balance.total_sale_count } </td>
 			<td>${ balance.total_sale_price }</td>
 			<td>${ balance.sale_commission }</td>
