@@ -871,7 +871,7 @@ $(function(){
 	}
 	
 	//validation check... now length error
-	$("#sale_price").jqBootstrapValidation();
+	//$("textarea").jqBootstrapValidation();
 	
 });
 </script>

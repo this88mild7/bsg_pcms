@@ -93,12 +93,12 @@
 			<hr>
 			<div class="control-group">
 				<div class="text-right" style="padding-right:80px;">
-					<h3>
+					<h4>
 						매출계산: 
 						<span class="autoNumeric totalSalePrice blue"></span>(총 매출금액) - 
 						<span class="autoNumeric totalSaleCompanyCommission blue"></span>(판매처 수수료) - 
 						<span class="autoNumeric totalCpCommission blue"></span>(업체 수수료)
-					</h3>
+					</h4>
 					<br />
 					<h3>최종 자사 수익 : <span class="autoNumeric totalProfit blue"></span> 원</h3>
 				</div>
