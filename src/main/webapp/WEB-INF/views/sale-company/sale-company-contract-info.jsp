@@ -416,31 +416,6 @@ div#sale-content-list {
 	</div>
 </div>
 
-<!--판매형태(device) 추가 HTML -->
-<div id="device-list" hidden="true">
-	<div class="span3">
-		<select size="1" name="device_cd_list">
-			<c:forEach items="${ deviceList }" var="device">
-				<option value="${device.cd}" >${device.cd_detail}</option>
-			</c:forEach>
-		</select>
-	</div>
-	<div class="span2 device-remove-icon">
-		<img class="remove-device" src="/pcms/img/remove.png" alt="x"/>
-	</div>
-	<!-- 아래로만 추가 하기 위한 empty -->
-	<div class="span7">
-		<!--  empty -->
-	</div>
-	
-	<!-- 기타 일 경우 나타 나게
-	<div class="span3">
-		<div class="span3">기기명</div>
-		<input class="span9" type="text" name="product_device_name" placeholder="기기명 입력">
-	</div>
-	 -->
-</div>
-
 <script>
 	$(function(){
 		
@@ -829,7 +804,7 @@ div#sale-content-list {
 						var $target = $("#findEachBody");
 						
 						//init
-						$target.html(""); //성공시 리스트 초기화
+						$target.empty(); //성공시 리스트 초기화
 						
 						if(data.resultCnt > 0) {
 							
@@ -838,6 +813,7 @@ div#sale-content-list {
 								$html = 	'<tr>';
 								$html += 	'<td><input class="check-product" name="content_checkbox" type="checkbox"'
 											+ ' data-content_price="' + this.content_price + '"' 
+											+ ' data-content_series_name="' + this.content_series_name + '"' 
 											+ ' data-content_name="'+ this.content_name + '"'
 											+ ' data-content_cd="'+ this.content_cd + '"'
 											+ ' data-cp_name="'+ this.cp_name + '"'
@@ -863,10 +839,10 @@ div#sale-content-list {
 			var $this = $(this);
 			productHtml +='<tr>';
 			productHtml +='<td class="span3">'+$this.data("content_cd")+'<input type="hidden" class="content_cd" name="selectedContentsCd" value="'+$this.data("content_cd")+'"></td>';
-			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
-			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
-			productHtml +='<td class="span1">';
-				/* productHtml +='<div id="sale-price-currency" class="input-prepend">';
+			productHtml +='<td class="span2"> '+$this.data("content_series_name")+'</td>';
+			productHtml +='<td class="span2"> '+$this.data("cp_name")+'</td>';
+			/* productHtml +='<td class="span1">';
+				 productHtml +='<div id="sale-price-currency" class="input-prepend">';
 					productHtml +='<div class="btn-group no-padding">';
 					productHtml +='<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">';
 					productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
@@ -881,9 +857,10 @@ div#sale-content-list {
 					productHtml +='</div>';
 					productHtml +='<input type="hidden" id="contents_price_currency" name="selectedContentsCurrency" value="KRW">';
 					productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" value='+$this.data("content_price")+' />';						
-				productHtml +='</div>'; */
-			productHtml +='</td>';
-			productHtml +='<td class="span2">';
+				productHtml +='</div>'; 
+			productHtml +='</td>'; */
+			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
+			productHtml +='<td class="span1">';
 				productHtml +='<button type="button" class="btn btn-remove-product">삭제</button>'
 			productHtml +='</td>';			
 			productHtml +='</tr>';

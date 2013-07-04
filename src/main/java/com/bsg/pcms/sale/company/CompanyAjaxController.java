@@ -66,6 +66,7 @@ public class CompanyAjaxController {
 			seriesDTO.setType("시리즈명");
 			seriesList = _seriesService.getSeriesList(seriesDTO);
 			seriesJson = _jsonResponseMaker.generateSeries(seriesList);
+			logger.info("seriesJons : {}", seriesJson);
 			return seriesJson;
 		}
 		
@@ -77,6 +78,7 @@ public class CompanyAjaxController {
 			seriesList = _seriesService.getSeriesList(seriesDTO);
 		}
 		seriesJson = _jsonResponseMaker.generateSeries(seriesList);
+		logger.info("seriesJons : {}", seriesJson);
 		return seriesJson;
 	}
 	@RequestMapping( value = "cateList.ajax", produces = "application/json;charset=UTF-8")

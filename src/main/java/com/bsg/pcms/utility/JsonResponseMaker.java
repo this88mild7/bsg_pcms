@@ -154,6 +154,7 @@ public class JsonResponseMaker {
 				temp.put("content_name", contents.getName());
 				temp.put("content_price", contents.getSale_price());
 				temp.put("cp_name", contents.getCompany_name());
+				temp.put("content_series_name", contents.getSeries_name());
 				result.add(temp);
 			}
 			json.put(RESULT, result);

@@ -112,7 +112,8 @@
    <select id="getContentCodeListBySeriesMgmtno" resultType="com.bsg.pcms.provision.content.ContentDTOEx" parameterType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery."getContentCodeListBySeriesMgmtno" 2013.06.28 정대원 */
             CONTENTS.*,
-            COMPANY.company_name
+            COMPANY.company_name,
+            (SELECT SERIES_NAME FROM SERIES WHERE SERIES_MGMTNO = CONTENTS.SERIES_MGMTNO) AS SERIES_NAME
         FROM CONTENTS, COMPANY
         WHERE CONTENTS.series_mgmtno = #{ series_mgmtno }
         AND CONTENTS.company_mgmtno = COMPANY.company_mgmtno
@@ -130,8 +131,9 @@
 
    <select id="getContentListByCpId" resultType="com.bsg.pcms.provision.content.ContentDTOEx">
         SELECT /* contentQuery.getContentListByCpId 2013.06.04 정대원 */
-	       *
-        FROM CONTENTS
+	       CON.*,
+	       (SELECT SERIES_NAME FROM SERIES WHERE SERIES_MGMTNO = CON.SERIES_MGMTNO) AS SEREIS_NAME
+        FROM CONTENTS CON
         WHERE company_mgmtno = #{ company_mgmtno }
         ORDER BY reg_dt DESC
     </select>
