@@ -60,7 +60,17 @@ div#sale-content-list {
 					<div id="payments-type" class="input-prepend" style="display:none">
 						<div class="btn-group no-padding">
 							<button id="currency-toggle" class="btn dropdown-toggle" data-toggle="dropdown" type="button">
-									<span id="currency-view">KRW</span><span class="caret"></span>
+								<span id="currency-view">
+									<c:choose>
+										<c:when test="${viewType eq 1}">
+											KRW
+										</c:when>
+										<c:otherwise>
+											${saleContractDetail.payments_currency}
+										</c:otherwise>
+									</c:choose>
+								</span>
+								<span class="caret"></span>
 							</button>
 							<ul id="currency-menu" class="dropdown-menu">
 								<li><a href="#null">KRW</a></li>
@@ -70,7 +80,7 @@ div#sale-content-list {
 								<li><a href="#null">EUR</a></li>
 							</ul>
 						</div>
-						<input type="hidden" id="currency" name="currency" value="KRW">
+						<input type="hidden" id="payments_currency" name="payments_currency" value="KRW">
 						<c:choose>
 							<c:when test="${saleContractDetail.payments  == null}">
 								<input id="payments" class="input-medium payments price" type="text" name="payments" placeholder="지급대금 입력" value="0" />
@@ -205,7 +215,6 @@ div#sale-content-list {
 					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
 				</div>
 			</div>
-			
 			<div class="control-group">
 				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
@@ -242,7 +251,9 @@ div#sale-content-list {
 										<td class="span3">${content.contents_cd }<input type="hidden" name="selectedContentsCd" value="${content.contents_cd }"></td>
 										<td class="span4">${content.name}</td>
 										<td class="span3">${content.company_name}</td>
+										<!-- 
 										<td class="span1"><input class="price product_price" type="text" name="selectedContentsPrice" value="${content.sale_price}"></td>
+										 -->
 										<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>	
 									</tr>
 									</c:forEach>
@@ -255,8 +266,35 @@ div#sale-content-list {
 			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 판매가 결정</label>
 				<div class="controls">
+							<div id="sale-price-currency" class="input-prepend">
+								<div class="btn-group no-padding">
+									<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+									<span id="sale-price-currency-view">
+									<c:choose>
+										<c:when test="${viewType eq 1}">
+											KRW
+										</c:when>
+										<c:otherwise>
+											${saleContractDetail.sale_price_currency}
+										</c:otherwise>
+									</c:choose>
+									</span>
+									<span class="caret"></span>
+									</button>
+									<ul id="sale-price-currency-menu" class="dropdown-menu">
+									<li><a href="#null" class="sale-price-currency-li">KRW</a></li>
+									<li><a href="#null" class="sale-price-currency-li">USD</a></li>
+									<li><a href="#null" class="sale-price-currency-li">JPY</a></li>
+									<li><a href="#null" class="sale-price-currency-li">CNY</a></li>
+									<li><a href="#null" class="sale-price-currency-li">EUR</a></li>
+									</ul>
+								</div>
+								<input type="hidden" id="sale_price_currency" name="sale_price_currency" value="${saleContractDetail.sale_price_currency }">
+								<input type="text" class="price" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+							</div>
 					<c:choose>
 						<c:when test="${viewType eq 1}">
+						<!-- 
 							<label class="radio inline">
 								<input type="radio" id="etc_price_type" name="sale_price_type" value="0">
 								기타 판매가격
@@ -266,8 +304,10 @@ div#sale-content-list {
 								기본 판매가격
 							</label>
 							<input type="text" class="price" id="sale_price" name=sale_price placeholder="판매가 입력" data-validation-required-message="판매가는 필수값 입니다." required>
+						 -->
 						</c:when>
 						<c:otherwise>
+						<!-- 
 							<label class="radio inline">
 								<input type="radio" name="sale_price_type" value="0" <c:if test="${saleContractDetail.sale_price_type == 0}">checked</c:if>>
 								기타 판매가격
@@ -276,7 +316,7 @@ div#sale-content-list {
 								<input type="radio" name="sale_price_type" value="1" <c:if test="${saleContractDetail.sale_price_type == 1}">checked</c:if>>
 								기본 판매가격
 							</label>
-							<input type="text" class="price" id="sale_price" name="sale_price" placeholder="판매가 입력" value="${saleContractDetail.sale_price }" data-validation-required-message="판매가는 필수이고 숫자여야 합니다." required>
+						 -->
 						</c:otherwise>
 					</c:choose>					
 				</div>
@@ -411,13 +451,13 @@ div#sale-content-list {
 		$("#currency-menu").find("a").click(function(){
 			var selectedValue = $(this).text();
 			$("#currency-toggle span").first().text(selectedValue);
-			$('#currency').val(selectedValue);
+			$('#payments_currency').val(selectedValue);
 		});
 		
 		$("body").delegate(".sale-price-currency-li", "click", function(){
 			var selectedValue = $(this).text();
 			$("#sale-price-currency-toggle span").first().text(selectedValue);
-			$('#contents_price_currency').val(selectedValue);
+			$('#sale_price_currency').val(selectedValue);
 		});
 		
 		// 계약기간
@@ -627,11 +667,11 @@ div#sale-content-list {
 		// 선택 삭제 아이콘
 		$("body").delegate('img.remove-product', 'click', function(event){
 			$(this).parent().parent().remove();
-			totalPriceCalc();
+			//totalPriceCalc();
 		});
 		// 상품 가격 변동시 총 판매 가격 변경
 		$("body").delegate('.product_price', 'change', function(event){
-			totalPriceCalc();
+			//totalPriceCalc();
 			$("#etc_price_type").attr("checked", true);
 			$("#default_price_type").attr("checked", false);
 		});
@@ -646,7 +686,7 @@ div#sale-content-list {
 			var $this = $(this);
 			$this.parent().parent().remove();
 			//재계산
-			 totalPriceCalc();
+			// totalPriceCalc();
 		});
 		
 		$("body").delegate(".check-product", "click", function(){
@@ -666,7 +706,7 @@ div#sale-content-list {
 		    			$(this).parent().parent().remove();
 		    		}
 		    	});
-		    	totalPriceCalc();
+		    	//totalPriceCalc();
 		    }
 		}); 
 		
@@ -744,7 +784,7 @@ div#sale-content-list {
 			
 	}); //init function
 	
-	function totalPriceCalc(){
+	/* function totalPriceCalc(){
 		var seletedTotlaPrice=0;
 		$.each($(".product_price"), function(){
 			seletedTotlaPrice = parseInt(seletedTotlaPrice)+parseInt($(this).val().replace(/,/gi, ''));
@@ -752,7 +792,7 @@ div#sale-content-list {
 		$("#sale_price").val(seletedTotlaPrice);
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		$('#sale_price').autoNumeric('update',{aPad: false });
-	}
+	} */
 	
 	function categoryChange(){
 		$( "select[name='category']" ).change(function () {
@@ -826,25 +866,26 @@ div#sale-content-list {
 			productHtml +='<td class="span4"> '+$this.data("content_name")+'</td>';
 			productHtml +='<td class="span3"> '+$this.data("cp_name")+'</td>';
 			productHtml +='<td class="span1">';
-			productHtml +='<div id="sale-price-currency" class="input-prepend">';
-			productHtml +='<div class="btn-group no-padding">';
-			productHtml +='<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">';
-			productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
-			productHtml +='</button>';
-			productHtml +='<ul id="sale-price-currency-menu" class="dropdown-menu">';
-			productHtml +='<li><a href="#null" class="sale-price-currency-li">KRW</a></li>';
-			productHtml +='<li><a href="#null" class="sale-price-currency-li">USD</a></li>';
-			productHtml +='<li><a href="#null" class="sale-price-currency-li">JPY</a></li>';
-			productHtml +='<li><a href="#null" class="sale-price-currency-li">CNY</a></li>';
-			productHtml +='<li><a href="#null" class="sale-price-currency-li">EUR</a></li>';
-			productHtml +='</ul>';
-			productHtml +='</div>';
-			productHtml +='<input type="hidden" id="contents_price_currency" name="selectedContentsCurrency" value="KRW">';
-			productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" />';						
-			productHtml +='</div>';
-	
-			productHtml +='<td class="span2"><button type="button" class="btn btn-remove-product">삭제</button></td>';			
+				/* productHtml +='<div id="sale-price-currency" class="input-prepend">';
+					productHtml +='<div class="btn-group no-padding">';
+					productHtml +='<button id="sale-price-currency-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown">';
+					productHtml +='<span id="sale-price-currency-view">KRW</span><span class="caret"></span>';
+					productHtml +='</button>';
+					productHtml +='<ul id="sale-price-currency-menu" class="dropdown-menu">';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">KRW</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">USD</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">JPY</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">CNY</a></li>';
+					productHtml +='<li><a href="#null" class="sale-price-currency-li">EUR</a></li>';
+					productHtml +='</ul>';
+					productHtml +='</div>';
+					productHtml +='<input type="hidden" id="contents_price_currency" name="selectedContentsCurrency" value="KRW">';
+					productHtml +='<input class="input-medium price product_price" type="text" name="selectedContentsPrice" placeholder="판매가격 입력" value='+$this.data("content_price")+' />';						
+				productHtml +='</div>'; */
 			productHtml +='</td>';
+			productHtml +='<td class="span2">';
+				productHtml +='<button type="button" class="btn btn-remove-product">삭제</button>'
+			productHtml +='</td>';			
 			productHtml +='</tr>';
 			
 		});
@@ -853,7 +894,7 @@ div#sale-content-list {
 		$('.product_price').autoNumeric('init',{aPad: false });
 		$('.product_price').autoNumeric('update',{aPad: false });
 		
-		totalPriceCalc();
+		//totalPriceCalc();
 	};
 	
 	function checkMulti() {
