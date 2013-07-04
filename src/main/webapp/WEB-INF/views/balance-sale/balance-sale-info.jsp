@@ -4,10 +4,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <style>
-div#sale-content-list {
+.well {
 	height : 200px;
 	overflow-y : scroll; 
 }
+#sale-tbl { table-layout: fixed; }
+#sale-tbl th, #sale-tbl td { overflow: hidden; }
 </style>
 <div class="page-name">
 	<h4>
@@ -68,10 +70,19 @@ div#sale-content-list {
 					<a id="contentListTip" href="#" data-toggle="tooltip" >tip</a>
 					<br />
 					<br />
-					<div class="well" id="sale-content-list">
-						<!-- 
-						ajax sale-content here
-						 -->
+					<div class="well">
+						<table id="sale-tbl" class="tbl" style="width:100%;">
+							<tr>
+								<th style="width: 40%">상품명</th>
+								<th style="width: 20%">업체</th>
+								<th style="width: 20%">매출액</th>
+								<th style="width: 13%">판매수량</th>
+								<th style="width: 7%"></th>
+							</tr>
+							<!-- 
+							ajax sale-content here
+							 -->
+						</table>
 					</div>
 					<div class="rowspan">
 						<div class="span6"><h4>총 판매수량 : <span class="autoNumeric totalSaleCnt blue"></span> 건</h4></div>
@@ -193,7 +204,7 @@ $("#btn-sale-product-list").click(function(event){
 					cpRate = ele.cp_rate,
 					contentsCd = ele.contents_cd;
 				
-				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" data-cp_name="{5}" value="{4}"></td><td>{0} {1} 원</td></tr>',
+				var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" data-cp_name="{5}" value="{4}"></td><td>{0}</td></tr>',
 						name, salePrice, saleCompanyRate, cpRate, contentsCd, cpName );
 			
 				$target.find("table").append( $html );
@@ -209,10 +220,9 @@ $("#btn-sale-product-list").click(function(event){
 	//상품 선택하고 선택하면 상품리스트에 집어넣기
 	$("#btn-select-product").click(function(){
 		
-		var $target = $("#sale-content-list");
+		var $target = $("#sale-tbl");
 		var $selectedProduct = $("#findProduct").find("input[name='check_list']").filter(":checked");
 		
-		var tableHtml = '<table class="tbl" style="width:100%;">';
 		$selectedProduct.each(function(index){
 			var $this = $(this),
 				name = $this.data("name"),
@@ -222,20 +232,17 @@ $("#btn-sale-product-list").click(function(event){
 				cpRate = $this.data("cp_rate"),
 				contentsCd = $this.data("contents_cd");
 			
-			var wrapHtml  = '<tr>';
-				wrapHtml += '<td class="span4">{0}</td>'; 		//상품명
-				wrapHtml += '<td class="span2">{1}</td>';		//업체명
-				wrapHtml += '<td class="span2 blue">{2} 원</td>';		//가격
-				wrapHtml += '<td class="span2"><input class="autoNumeric product-list pl{3}" type="text" name="saleCount" placeholder="판매수량" data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" /></td>';
-				wrapHtml += '<td class="span2"><button class="btn btn-remove-product">삭제</button></td>';
+			var wrapHtml  = '<tr data-sale_price="{2}" data-sale_company_rate="{4}" data-cp_rate="{5}" >';
+				wrapHtml += '<td>{0}</td>'; 		//상품명
+				wrapHtml += '<td>{1}</td>';		//업체명
+				wrapHtml += '<td><input style="width:90%" class="autoNumeric product-sale-price" type="text" name="salePrice" placeholder="매출액"/></td>';
+				wrapHtml += '<td><input style="width:86%" class="autoNumeric product-cnt" type="text" name="saleCount" placeholder="판매수량"/></td>';
+				wrapHtml += '<td><button class="btn btn-remove-product pull-right">삭제</button></td>';
 				wrapHtml += '<input type="hidden" name="contentList" value="{6}" />';
 				wrapHtml += '</tr>';
 				
-			tableHtml += String.format(wrapHtml, name, cpName, salePrice, index, saleCompanyRate, cpRate, contentsCd);
-			
+			$target.append( String.format(wrapHtml, name, cpName, salePrice, index, saleCompanyRate, cpRate, contentsCd) );
 		});
-		tableHtml += '</table>';
-		$target.append( tableHtml );
 		
 		//상품 삭제버튼이 눌러지면 해당 엘리먼트 제거
 		$("button.btn-remove-product").click(function(){
@@ -255,13 +262,13 @@ $('.autoNumeric').autoNumeric('init',{aPad: false });
 
 $("#balanceForm").submit(function(){
 	//금액 콤마 제거	(숫자만 가져옴)		
-	$("#sale-content-list").find("input.autoNumeric").each(function(){
+	$("#sale-tbl").find("input.autoNumeric").each(function(){
 		$(this).val($(this).autoNumeric('get'));
 	});
 });
 
-//판매수량이 숫자 하나하나 입력될 때마다 이벤트 발생
-$("body").on("keyup", $("input.product-list"), function(event){
+//판매수량/매출액 입력될 때마다 이벤트 발생
+$("body").on("keyup", $("input.product-cnt,input.product-sale-price"), function(event){
 	calculate();
 });
 
@@ -277,40 +284,43 @@ $("body").on("keyup", $("input.product-list"), function(event){
 			// 상품별 판매처 및 CP 업체 수익 값 DIV
 			$("#product-value").empty();
 			
-			console.debug(String.format("price * cnt = salePrice, ( earning - saleCompanyFee ) - cpFee = profit"));
-			$("#sale-content-list").find("input.autoNumeric").each(function(){
+			$("#sale-tbl").find("tr").not(":first").each(function(){
 				
 				var $this = $(this),
-					productData = $this.data();
+					productData = $this.data(),
+					$tdList = $this.find("td");
 				
-				//계산
-				var cnt = $this.autoNumeric('get');
+				var salePrice = $tdList.eq(2).find("input").autoNumeric('get');
+				var saleCnt = $tdList.eq(3).find("input").autoNumeric('get');
+				var saleCompanyRate = isNaN( productData.sale_company_rate ) ? 0 : productData.sale_company_rate;
+				var cpRate = isNaN( productData.cp_rate ) ? 0 : productData.cp_rate;
 				
-				var salePrice = productData.sale_price * cnt,
-					saleFee = salePrice * ( productData.sale_company_rate / 100 ),
+				if( isNaN(salePrice) || salePrice.length == 0 ) {
+					salePrice = 0;
+				}
+				if( isNaN(saleCnt) || saleCnt.length == 0  ) {
+					saleCnt = 0;
+				}
+				
+				var avgPrice = salePrice / saleCnt,
+					saleFee = salePrice * ( saleCompanyRate / 100 ),
 					earning = salePrice - saleFee,
-					cpFee = earning * ( productData.cp_rate / 100 ),
+					cpFee = earning * ( cpRate / 100 ),
 					profit = earning - cpFee;
 				
-				console.debug(String.format("{0} * {1} = {2}, ( {3} - {4} ) - {5} = {6}", 
-						productData.sale_price, cnt, salePrice, earning, saleFee, cpFee, profit ));
+				console.debug( String.format("avgPrice:{0} saleFee:{1} cpFee:{2} profit:{3} earning:{4}", avgPrice, saleFee, cpFee, profit, earning) );
 				
-				//판매 수량이 입력 안되었을때 
-				if( isNaN(cnt) || cnt.length == 0 ) {
-					cnt = 0;
-			   	}
-				//누적 데이터 쌓기
-				totalSaleCnt += parseInt(cnt);
-				totalSalePrice += salePrice;
-				totalSaleCompanyFee += saleFee;
-				totalCpFee += cpFee;
-				totalProfit += profit;
+				totalSaleCnt += parseInt(saleCnt);
+				totalSalePrice += parseInt(salePrice);
+				totalSaleCompanyFee += parseInt(saleFee);
+				totalCpFee += parseInt(cpFee);
+				totalProfit += parseInt(profit);
 				
 				// 판매처 및 업체 수수료 추가
 				
 				var saleFreeHtml = '<input type="hidden" name="contentSaleProfit" value="'+saleFee+'" />';
 				var cpFreeHtml = '<input type="hidden" name="contentCpProfit" value="'+cpFee +'" />';
-				var contentPriceHtml = '<input type="hidden" name="contentSalePrice" value="'+productData.sale_price +'" />';
+				var contentPriceHtml = '<input type="hidden" name="contentSalePrice" value="'+ salePrice +'" />';
 				$("#product-value").append(saleFreeHtml);
 				$("#product-value").append(cpFreeHtml);
 				$("#product-value").append(contentPriceHtml);
@@ -330,8 +340,6 @@ $("body").on("keyup", $("input.product-list"), function(event){
 			$("#totalSaleCompanyCommission").val(totalSaleCompanyFee);
 			$("#totalCpCommission").val(totalCpFee);
 			$("#totalProfit").val(totalProfit);
-			
-			
 			
 			//숫자 표시 업데이트 000,000
 			$('.autoNumeric').autoNumeric('update',{aPad: false });

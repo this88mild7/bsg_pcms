@@ -350,9 +350,6 @@ div[class="tooltip-inner"] {
 <script>
 $(function(){
 		
-	//validation check... now length error
-	//$("input").not("[type=submit]").jqBootstrapValidation();
-	
 	var boxData = $("div.contract-box").data();
 	console.info(boxData);
 	
@@ -816,21 +813,21 @@ $(function(){
 			$( "input[name='license_cd']" ).each(function(){
 				if(boxData.license_cd == $(this).val() ) {
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//라이센스 국가 제한 체크
 			$("input[name='license_country']").each(function(){
 				if(boxData.license_country == $(this).val() ){
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//지급방식 체크 
 			$( "input[name='payments_type']" ).each(function(){
 				if(boxData.payments_type == $(this).val() ) {
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//은행 체크
@@ -843,12 +840,12 @@ $(function(){
 						if($this.val() == boxData.deposit_bank) {
 							$this.prop("selected", true);
 							$("div.account-group").show();
-						};
+						}
 					});
 			}
-		};
+		}
 		
-	};//상세보기 기존 값 체크 시작
+	}//상세보기 기존 값 체크 시작
 	
 	{ //툴팁
 		$('#sale_profit_rate_tip')
@@ -872,6 +869,10 @@ $(function(){
 				"placement":"bottom"
 			});
 	}
+	
+	console.info( $("input").attr("required",true) );
+	//validation check... now length error
+	$("input").filter().jqBootstrapValidation();
 	
 });
 </script>
