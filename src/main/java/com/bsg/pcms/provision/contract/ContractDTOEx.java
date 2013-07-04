@@ -22,7 +22,7 @@ public class ContractDTOEx extends ContractDTO{
 	private String isGame;
 	private String balance_detail;
 	
-	private String currency;
+	private String sale_price_currency;
 	private String sale_price_detail; //판매 상세
 	private String payments_type;
 	
@@ -119,11 +119,11 @@ public class ContractDTOEx extends ContractDTO{
 	public void setInstallments_dt(List<String> installments_dt) {
 		this.installments_dt = installments_dt;
 	}
-	public String getCurrency() {
-		return currency;
+	public String getSale_price_currency() {
+		return sale_price_currency;
 	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
+	public void setSale_price_currency(String sale_price_currency) {
+		this.sale_price_currency = sale_price_currency;
 	}
 	public List<String> getInstallments_price() {
 		return installments_price;
@@ -133,8 +133,8 @@ public class ContractDTOEx extends ContractDTO{
 	}
 	@Override
 	public String toString() {
-		return "\nContractDTOEx [cate_name=" + cate_name + ", series_name=" + series_name + ", company_name=" + company_name + ", cate_id=" + cate_id + ", series_mgmtno=" + series_mgmtno + ", series_cnt=" + series_cnt + ", isPicturebook=" + isPicturebook + ", isEbook=" + isEbook + ", is2d=" + is2d + ", is3d=" + is3d + ", isGame=" + isGame + ", balance_detail=" + balance_detail + ", currency="
-				+ currency + ", sale_price_detail=" + sale_price_detail + ", payments_type=" + payments_type + ", installments_dt=" + installments_dt + ", installments_price=" + installments_price + "]\n";
+		return "\nContractDTOEx [cate_name=" + cate_name + ", series_name=" + series_name + ", company_name=" + company_name + ", cate_id=" + cate_id + ", series_mgmtno=" + series_mgmtno + ", series_cnt=" + series_cnt + ", isPicturebook=" + isPicturebook + ", isEbook=" + isEbook + ", is2d=" + is2d + ", is3d=" + is3d + ", isGame=" + isGame + ", balance_detail=" + balance_detail
+				+ ", sale_price_currency=" + sale_price_currency + ", sale_price_detail=" + sale_price_detail + ", payments_type=" + payments_type + ", installments_dt=" + installments_dt + ", installments_price=" + installments_price + "]\n";
 	}
 	
 	

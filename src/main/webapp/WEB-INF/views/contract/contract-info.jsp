@@ -33,6 +33,7 @@ div[class="tooltip-inner"] {
 	data-contract_type_detail="${ contract.contract_type_detail }"
 	data-sale_price="${ contract.sale_price }"
 	data-sale_price_detail="${ contract.sale_price_detail }"
+	data-sale_price_currency="${ contract.sale_price_currency }"
 	data-sale_profit_rate="${ contract.sale_profit_rate }"
 	data-payments_type="${ contract.payments_type }"
 	data-deposit_bank="${ contract.deposit_bank }"
@@ -63,7 +64,7 @@ div[class="tooltip-inner"] {
 				<div class="controls">
 					<span id="series_name" class="uneditable-input">${ series.series_name }</span>
 					<input type="hidden" id="cate_id" name="cate_id" value="${ series.cate_id }">
-					<input type="hidden" id="series_mgmtno" name="series_mgmtno" value="${ series.series_mgmtno }">
+					<input type="hidden" id="series_mgmtno" name="series_mgmtno" value="${ series.series_mgmtno }" 	>
 					<button id="btn-find-content" class="btn">찾아보기</button>
 				</div>
 			</div>
@@ -121,32 +122,22 @@ div[class="tooltip-inner"] {
 			<div class="control-group">
 				<label class="control-label" for="contract_type"><img src='<spring:eval expression="@urlProp['v']"/>'> 계약방식</label>
 				<div class="controls">
-					<c:forEach items="${contractTypeList}" var="contractType" varStatus="index">
-						<c:choose>
-							<c:when test="${index.first }">
-								<label class="radio inline">
-									<input type="radio" name="contract_type" value="${contractType.cd }" checked="checked">${contractType.cd_detail}
-								</label>
-							</c:when>
-							<c:otherwise>
-								<label class="radio inline">
-									<input type="radio" name="contract_type" value="${contractType.cd }">${contractType.cd_detail}
-								</label>
-							</c:otherwise>
-						</c:choose>
+					<c:forEach items="${contractTypeList}" var="contractType" varStatus="status">
+						<c:if test="${status.index < 3}">
+							<c:choose>
+								<c:when test="${status.first }">
+									<label class="radio inline">
+										<input type="radio" name="contract_type" value="${contractType.cd }" checked="checked">${contractType.cd_detail}
+									</label>
+								</c:when>
+								<c:otherwise>
+									<label class="radio inline">
+										<input type="radio" name="contract_type" value="${contractType.cd }">${contractType.cd_detail}
+									</label>
+								</c:otherwise>
+							</c:choose>
+						</c:if>
 					</c:forEach>
-					<script>
-						titleStr  = "1. 개발대행 : 콘텐츠의 개발대행 업무<br/>";
-						titleStr += "2. 라이센싱 : 저작물의 라이선스 협력 계약(빅스타가 구매하는 경우)<br/>";
-						titleStr += "3. 삼품판매납품 : 콘텐츠저작권자와 빅스타가 라이선스 협력 후 판매처에 판매를 위해 수익률을 나눠 개발<br/>";
-						titleStr += "4. 외주의뢰 : 당사가 외주 개발 용역 계약<br/>";
-					$('#contract_type_tip')
-						.tooltip({
-							"html": true,
-							"title": titleStr,
-							"placement":"bottom"
-						});
-					</script>
 				</div>
 			</div>
 
@@ -155,13 +146,14 @@ div[class="tooltip-inner"] {
 					상세정보 입력
 				</h4>
 			</div>
+
 			
 			<div class="control-group">
 				<label class="control-label" for="license_cd"><img src='<spring:eval expression="@urlProp['v']"/>'> 라이선스</label>
 				<div class="controls">
-					<c:forEach items="${licenseList}" var="license" varStatus="index">
+					<c:forEach items="${licenseList}" var="license" varStatus="status">
 						<c:choose>
-							<c:when test="${index.first }">
+							<c:when test="${status.first }">
 							<label class="radio inline">
 								<input type="radio" name="license_cd" value="${license.cd }" checked="checked">${license.cd_detail}
 							</label>
@@ -242,23 +234,17 @@ div[class="tooltip-inner"] {
 								<li><a href="#">EUR</a></li>
 							</ul>
 						</div>
-						<input type="hidden" id="currency" name="currency" value="${ contract.currency }">
-						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }">
+						<input type="hidden" id="currency" name="sale_price_currency" value="${ contract.sale_price_currency }">
+						<input type="text" id="sale_price" name="sale_price" placeholder="판매단가" value="${ contract.sale_price }" required>
 					</div>
 					<a id="sale_price_tip" href="#" data-toggle="tooltip" >tip</a>
-					<script>
-					$('#sale_price_tip')
-						.tooltip({
-							"title":"콘텐츠 판매가는 실제 판매상품 등록 시 여러 환율 단위로 등록이 가능합니다. 대표 가격만 입력해주세요.",
-							"placement":"bottom"
-						});
-					</script>
 				</div>
 			</div>
 			<div class="control-group" id="profit-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 수익률(%) </label>
 				<div class="controls">
-					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }">
+					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ contract.sale_profit_rate }" required>
+					<a id="sale_profit_rate_tip" href="#" data-toggle="tooltip" >tip</a>
 				</div>
 			</div>
 			<div class="control-group">
@@ -266,14 +252,6 @@ div[class="tooltip-inner"] {
 				<div class="controls">
 					<input class="datepicker" type="text" name="str_date" data-date-format="yyyy-mm-dd" value="${ contract.str_date }" placeholder="시작일"> - 
 					<input class="datepicker" type="text" name="end_date" data-date-format="yyyy-mm-dd" value="${ contract.end_date }" placeholder="종료일">
-					<a id="tip3" href="#" data-toggle="tooltip" >tip</a>
-					<script>
-					$('#tip3')
-						.tooltip({
-							"title":"시작일과 종료일을 넣어주세요.",
-							"placement":"bottom"
-						});
-					</script>
 				</div>
 			</div>
 			<div class="control-group">
@@ -380,6 +358,8 @@ $(function(){
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		
 		$("#contractForm").submit(function(){
+			
+			
 			//금액 콤마 제거	(숫자만 가져옴)		
 			$('#sale_price').val($('#sale_price').autoNumeric('get'));
 			
@@ -564,6 +544,7 @@ $(function(){
 	
 	//계약방식에 따른 UI변경
 	$("input[name='contract_type']").change(function(){
+		
 		var contractType = $(this).val();
 		console.info("계약방식 : " + contractType);
 		if(contractType == "CT001001") {
@@ -574,7 +555,13 @@ $(function(){
 			$("#profit-group").show();
 			
 			setSiSelect();
+			$("#sale_profit_rate").autoNumeric('init',{
+				aPad: false,
+				vMax:'100'
+				});
+			
 		} else if(contractType == "CT001002") {
+			
 			//license 셀렉트 셋팅
 			$("#price_text").text("지급대금");
 			$("#payments_type_text").text("지급방식");
@@ -582,9 +569,14 @@ $(function(){
 			$("#profit-group").show();
 			
 			setLicenseSelect();
+			$("#sale_profit_rate").autoNumeric('init',{
+				aPad: false,
+				vMax:'100'
+				});
+			
 		} else if(contractType == "CT001003"){
 			//협력 셀렉트 셋팅
-			$("#price_text").text("계약대금");
+			$("#price_text").text("판매가");
 			$("#payments_type_text").text("수익쉐어");
 			$("#bank").show();
 			$("#profit-group").hide();
@@ -722,13 +714,18 @@ $(function(){
 			
 			$('#payments_tip')
 			.tooltip({
-				"title":"%, 비율에 따라 금액이 달라지니 주의해 주십시오.",
+				"title":"%, 비율에 따라 금액이 달라지니 주의해 주십시오. 입력값(0~100)",
 				"placement":"bottom"
 			});
 			
 			$("#payments-children").hide();
+			$("#sale_profit_rate").autoNumeric('init',{
+				aPad: false,
+				vMax:'100'
+				});
 			
 		}
+		
 			$("body").on("click", "#payments_type_list a", function(){
 				var nowPaymentType = $(this).text();
 				$("#payments_type_view").text(nowPaymentType);
@@ -816,21 +813,21 @@ $(function(){
 			$( "input[name='license_cd']" ).each(function(){
 				if(boxData.license_cd == $(this).val() ) {
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//라이센스 국가 제한 체크
 			$("input[name='license_country']").each(function(){
 				if(boxData.license_country == $(this).val() ){
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//지급방식 체크 
 			$( "input[name='payments_type']" ).each(function(){
 				if(boxData.payments_type == $(this).val() ) {
 					$(this).prop("checked", true).trigger("change");
-				};
+				}
 			});
 			
 			//은행 체크
@@ -843,12 +840,39 @@ $(function(){
 						if($this.val() == boxData.deposit_bank) {
 							$this.prop("selected", true);
 							$("div.account-group").show();
-						};
+						}
 					});
 			}
-		};
+		}
 		
-	};//상세보기 기존 값 체크 시작
+	}//상세보기 기존 값 체크 시작
+	
+	{ //툴팁
+		$('#sale_profit_rate_tip')
+			.tooltip({
+				"title":"입력값(0~100).",
+				"placement":"bottom"
+			});
+		var	titleStr  = "1. 개발대행 : 콘텐츠의 개발대행 업무<br/>";
+			titleStr += "2. 라이센싱 : 저작물의 라이선스 협력 계약(빅스타가 구매하는 경우)<br/>";
+			titleStr += "3. 삼품판매납품 : 콘텐츠저작권자와 빅스타가 라이선스 협력 후 판매처에 판매를 위해 수익률을 나눠 개발<br/>";
+			titleStr += "4. 외주의뢰 : 당사가 외주 개발 용역 계약<br/>";
+		$('#contract_type_tip')
+			.tooltip({
+				"html": true,
+				"title": titleStr,
+				"placement":"bottom"
+			});
+		$('#sale_price_tip')
+			.tooltip({
+				"title":"콘텐츠 판매가는 실제 판매상품 등록 시 여러 환율 단위로 등록이 가능합니다. 대표 가격만 입력해주세요.",
+				"placement":"bottom"
+			});
+	}
+	
+	console.info( $("input").attr("required",true) );
+	//validation check... now length error
+	$("input").filter().jqBootstrapValidation();
 	
 });
 </script>

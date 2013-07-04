@@ -26,7 +26,7 @@
             contract_type_detail,
             payments_type,
             sale_price_detail,
-            currency,
+            sale_price_currency,
             deposit_bank,
             account_no,
             account_holder
@@ -51,7 +51,7 @@
             #{ contract_type_detail },
             #{ payments_type },
             #{ sale_price_detail },
-            #{ currency },
+            #{ sale_price_currency },
             #{ deposit_bank },
             #{ account_no },
             #{ account_holder }
@@ -226,7 +226,7 @@
             contract_type_detail = #{ contract_type_detail },
             payments_type = #{ payments_type },
             sale_price_detail = #{ sale_price_detail },
-            currency = #{ currency },
+            sale_price_currency = #{ sale_price_currency },
             mod_dt = NOW(),
             deposit_bank = #{ deposit_bank },
             account_no = #{ account_no },
