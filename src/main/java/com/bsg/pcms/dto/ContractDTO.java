@@ -11,7 +11,7 @@ public class ContractDTO extends CommonDTO {
 	private int contract_mgmtno;
 	private int user_mgmtseq;
 	private int company_mgmtno;
-	private int sale_price;
+	private Double sale_price;
 	private int sale_profit_rate;
 	private String sale_profit_type;
 	private String sale_type;
@@ -60,12 +60,7 @@ public class ContractDTO extends CommonDTO {
 	public void setCompany_mgmtno(int company_mgmtno) {
 		this.company_mgmtno = company_mgmtno;
 	}
-	public int getSale_price() {
-		return sale_price;
-	}
-	public void setSale_price(int sale_price) {
-		this.sale_price = sale_price;
-	}
+	
 	public int getSale_profit_rate() {
 		return sale_profit_rate;
 	}
@@ -197,6 +192,12 @@ public class ContractDTO extends CommonDTO {
 		return "nContractDTO [contract_mgmtno=" + contract_mgmtno + ", user_mgmtseq=" + user_mgmtseq + ", company_mgmtno=" + company_mgmtno + ", sale_price=" + sale_price + ", sale_profit_rate=" + sale_profit_rate + ", sale_profit_type=" + sale_profit_type + ", sale_type=" + sale_type + ", sale_type_detail=" + sale_type_detail + ", license_cd=" + license_cd + ", license_cd_detail="
 				+ license_cd_detail + ", license_country=" + license_country + ", license_country_detail=" + license_country_detail + ", type=" + type + ", expi_yn=" + expi_yn + ", contract_type=" + contract_type + ", contract_type_detail=" + contract_type_detail + ", etc=" + etc + ", balance_type=" + balance_type + ", balance_type_detail=" + balance_type_detail + ", del_yn=" + del_yn
 				+ ", deposit_bank=" + deposit_bank + ", account_no=" + account_no + ", account_holder=" + account_holder + ", str_date=" + str_date + ", end_date=" + end_date + "]n";
+	}
+	public Double getSale_price() {
+		return sale_price;
+	}
+	public void setSale_price(Double sale_price) {
+		this.sale_price = sale_price;
 	}
 	
 	
