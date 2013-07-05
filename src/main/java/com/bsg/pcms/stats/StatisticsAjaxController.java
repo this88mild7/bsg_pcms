@@ -36,7 +36,7 @@ public class StatisticsAjaxController {
 	/**
 	 * 
 	 * param 
-	 * searchEndDate ex) : "2013" 
+	 * searchEndDate ex) : "2013-01" 
 	 * 
 	 * response
 	 * {
@@ -60,6 +60,8 @@ public class StatisticsAjaxController {
 	}
 	
 	/**
+	 * param 
+	 * searchEndDate ex) : "2013-01" 
 	 * response
 	 * {
 		"pieGraph": [{

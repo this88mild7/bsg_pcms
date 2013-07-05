@@ -125,7 +125,7 @@
 			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
 			AND COM.COMPANY_TYPE='SC'
 			<if test="searchEndDate !=null">
-			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = '${searchEndDate}'
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
 			</if>
 			GROUP BY BAL.COMPANY_MGMTNO
 			ORDER BY BAL.TOTAL_SALE_COUNT
@@ -151,7 +151,7 @@
 			AND CON.CONTENTS_CD = BALD.CONTENTS_CD
 			AND COM.COMPANY_TYPE='SC'
 			<if test="searchEndDate !=null">
-			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = '${searchEndDate}'
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
 			</if>
 			GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
 			ORDER BY BAL.TOTAL_SALE_COUNT
