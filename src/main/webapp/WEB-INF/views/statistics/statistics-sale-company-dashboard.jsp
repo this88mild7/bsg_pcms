@@ -62,27 +62,38 @@
 			</div>
 		</div>
 		
-		<div id="tbl-wrapper">
-			<table class="table table-striped table-hover">
-				<tr>
-					<th>순위</th>
-					<th>판매처</th>
-					<th>총매출금액</th>
-					<th>누적판매량</th>
-				</tr>
-				<c:forEach items="${ tableList }" var="obj" varStatus="status">
-				<tr>
-					<td>${ status.count }</td>
-					<td>${ obj.company_name }</td>
-					<td class="price">${ obj.total_sale_price }</td>
-					<td class="count">${ obj.total_sale_count }</td>
-				</tr>
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>순위</th>
+				<th>판매처</th>
+				<th>총매출금액</th>
+				<th>누적판매량</th>
+			</tr>
+			<c:forEach items="${ tableList }" var="obj" varStatus="status">
+			<tr>
+				<td>${ status.count }</td>
+				<td>${ obj.company_name }</td>
+				<td class="price">${ obj.total_sale_price }</td>
+				<td class="count">${ obj.total_sale_count }</td>
+			</tr>
+			</c:forEach>
+		</table>
+			
+		<c:if test="${ not empty pageLink }">
+		<div class="pagination pagination-centered">
+			<ul>
+				<c:if test="${ 0 ne pageLink.pagePrev }">
+				<li><a href="<spring:eval expression="@urlProp['statsCompanyList']"/>?pageNum=${ pageLink.pagePrev }${ empty search.search? '' : search.search }">Prev</a></li>
+				</c:if>
+				<c:forEach items="${ pageLink.pageList }" var="page" >
+				<li data-page-num="${ page.pageNum }"><a href="<spring:eval expression="@urlProp['statsCompanyList']"/>?pageNum=${ page.pageNum }${ empty search.search? '' : search.search }">${ page.pageNum }</a></li>
 				</c:forEach>
-			</table>
+				<c:if test="${ 0 ne pageLink.pageNext }">
+				<li><a href="<spring:eval expression="@urlProp['statsCompanyList']"/>?pageNum=${ pageLink.pageNext }${ empty search.search? '' : search.search }">Next</a></li>
+				</c:if>
+			</ul>
 		</div>
-		
-		<br />
-		<br />
+		</c:if>
 		
 		<div class="row-fluid">
 			<div class="span4">

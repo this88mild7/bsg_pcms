@@ -69,12 +69,6 @@
 		</c:forEach>
 		</table>
 		
-		<div class="clearfix">
-			<p class="pull-right">
-				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['balanceCpInfo']"/>">매출입력</button>
-			</p>
-		</div>
-		
 		<c:if test="${ not empty pageLink }">
 		<div class="pagination pagination-centered">
 			<ul>
@@ -105,62 +99,37 @@ $(function(){
 	//가격에 ,(콤마) 넣어주기
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 
-$("#btn-content-search-form").click(function(){
-	$("#sorting_type").val($("#sorting-type-select").val());
-	$("#searchStrDate").val($("#search-str-date").val());
-	$("#searchEndDate").val($("#search-end-date").val());
-	$("#contentSearchForm").submit();
-});
-
-//검색종류 클릭한 글자로 변경.
-$("ul.dropdown-menu").find("a").click(function(){
-	$("a.dropdown-toggle span" ).first().text( $(this).text() );
-});
-
-// null일때 length에러 나서 &&문 처리하였음.
-if( $("div.box").data("type") != null && 0 < $("div.box").data("type").length ) {
-	$("a.dropdown-toggle").find("span").first().text( $("div.box").data("type") );
-}
-
-// Enter키로 눌러서 검색시 type넣어주기
-$("#contentSearchForm").submit(function() {
-	var typeText = $("a.dropdown-toggle").find("span").first().text();
-	$("#type").val(typeText);
-    return true;
-});
-
-$("#btn-content-search-form").click(function(){
-	//현재 선택된 type
-	var typeText = $("a.dropdown-toggle").find("span").first().text();
-	$("#type").val(typeText);
-	$("#contentSearchForm").submit();
-});
+	$("#btn-content-search-form").click(function(){
+		$("#sorting_type").val($("#sorting-type-select").val());
+		$("#searchStrDate").val($("#search-str-date").val());
+		$("#searchEndDate").val($("#search-end-date").val());
+		$("#contentSearchForm").submit();
+	});
 	
-
-//컨텐츠 삭제
-$("#btn-content-selected-delete").click(function(){
-	// 체크된 컨텐츠 리스트
-	var $checkedContentList = $("input[name='check_list']").filter(":checked");
+	//검색종류 클릭한 글자로 변경.
+	$("ul.dropdown-menu").find("a").click(function(){
+		$("a.dropdown-toggle span" ).first().text( $(this).text() );
+	});
 	
-	if( $checkedContentList.length === 0 ){
-		bootbox.alert("삭제할 콘텐츠를 선택해주세요.");
-	} else {
-		bootbox.confirm( "선택한 콘텐츠를 삭제하시겠습니까?", function(result) {
-			if( result ) {
-				var contentCd = "";
-				$.each( $checkedContentList, function(idx){
-					if( idx > 0 ) {
-						contentCd += ",";
-					}
-					contentCd += $(this).val();
-				});
-				
-				$("#strList").val(contentCd);
-				$("#hiddenForm").submit();
-			}
-		}); 
+	// null일때 length에러 나서 &&문 처리하였음.
+	if( $("div.box").data("type") != null && 0 < $("div.box").data("type").length ) {
+		$("a.dropdown-toggle").find("span").first().text( $("div.box").data("type") );
 	}
-});
+	
+	// Enter키로 눌러서 검색시 type넣어주기
+	$("#contentSearchForm").submit(function() {
+		var typeText = $("a.dropdown-toggle").find("span").first().text();
+		$("#type").val(typeText);
+	    return true;
+	});
+	
+	$("#btn-content-search-form").click(function(){
+		//현재 선택된 type
+		var typeText = $("a.dropdown-toggle").find("span").first().text();
+		$("#type").val(typeText);
+		$("#contentSearchForm").submit();
+	});
+	
 
 });
 </script>
