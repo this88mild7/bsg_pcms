@@ -50,8 +50,8 @@
 			<td>${ contract.series_name }</td>
 			<td>${ contract.str_date } ~ ${ contract.end_date }</td>
 			<td>${ contract.contract_type }</td>
-			<td class="price">${fn:substringBefore(contract.sale_price, '.')}</td>
-			<td>${ contract.sale_profit_rate }</td>
+			<td class="price">${contract.sale_price}</td>
+			<td class="percent">${ contract.sale_profit_rate }</td>
 			<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['contractDetail']"/>?contract_mgmtno=${ contract.contract_mgmtno }">상세보기</button></td>
 		</tr>
 		</c:forEach>
@@ -90,7 +90,8 @@
 <script>
 $(function(){
 	
-	$("td.price").autoNumeric('init',{aPad: false });
+	$("td.price").autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
+	$("td.percent").autoNumeric("init",{aPad: false, aSign: " %", pSign: "s" });
 	
 	//검색종류 클릭한 글자로 변경.
 	$("ul.dropdown-menu").find("a").click(function(){

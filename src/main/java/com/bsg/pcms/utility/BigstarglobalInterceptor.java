@@ -97,15 +97,16 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 				String paramIngo = "["+name+" : ";
 				for(int x=0;x < values.length;x++){
 					if(x==0){
-						paramIngo +=  URLEncoder.encode(values[x], "UTF-8");
+//						paramIngo +=  URLEncoder.encode(values[x], "UTF-8");
+						paramIngo +=  values[x];
 					}else{
-						paramIngo += ", "+URLEncoder.encode(values[x], "UTF-8");
+//						paramIngo += ", "+URLEncoder.encode(values[x], "UTF-8");
+						paramIngo += ", "+values[x];
 					}
 				}
 				
 				if(StringUtils.isNotEmpty(name)){
 					if(name.equals("pwd")){
-						
 						paramIngo = "xxxx ]";
 					}else{
 						paramIngo += "]";
