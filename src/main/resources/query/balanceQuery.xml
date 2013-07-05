@@ -294,7 +294,7 @@
 		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}
 		AND CNTR.CONTRACT_TYPE = #{contract_type}
 		<if test="searchQuery != null">
-		AND CON.CONTENTS_NAME like'%${searchQuery}%'
+		AND CON.NAME like '%${searchQuery}%'
 		</if>
 		GROUP BY CCGR.CONTENTS_CD
 		

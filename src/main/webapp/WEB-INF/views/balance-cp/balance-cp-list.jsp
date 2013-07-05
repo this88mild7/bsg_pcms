@@ -14,31 +14,35 @@
 	<div class="span12">
 		
 		<div>
-			출력순
-			<select id="sorting_type" name="sortingType" class="span2">
-				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
-				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-			</select>
-			기간설정
-			<select class="span2" id="searchYear">
-				<option value="2013">2013년</option>
-			</select>
-			<select class="span2" id="searchMonth">
-				<option value="01">1월</option>
-				<option value="02">2월</option>
-				<option value="03">3월</option>
-				<option value="04">4월</option>
-				<option value="05">5월</option>
-				<option value="06">6월</option>
-				<option value="07">7월</option>
-				<option value="08">8월</option>
-				<option value="09">9월</option>
-				<option value="10">10월</option>
-				<option value="11">11월</option>
-				<option value="12">12월</option>
-			</select>
+			<span class="">
+				<span>출력순</span>
+				<select id="sorting_type" name="sortingType" class="span2">
+					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >정산월</option>
+					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+				</select>
+			</span>
+			<span class="ml mr">
+				기간설정
+				<select class="span2 push" id="searchYear">
+					<option value="2013">2013년</option>
+				</select>
+				<select class="span2 push" id="searchMonth">
+					<option value="01">1월</option>
+					<option value="02">2월</option>
+					<option value="03">3월</option>
+					<option value="04">4월</option>
+					<option value="05">5월</option>
+					<option value="06">6월</option>
+					<option value="07">7월</option>
+					<option value="08">8월</option>
+					<option value="09">9월</option>
+					<option value="10">10월</option>
+					<option value="11">11월</option>
+					<option value="12">12월</option>
+				</select>
+			</span>
 			<div class="input-append">
-				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpSearch']"/>">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleSearch']"/>">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
@@ -48,7 +52,7 @@
 		
 		<table class="table table-striped table-hover">
 		<tr>
-			<th>정산일</th>
+			<th>정산월</th>
 			<th>업체명</th>
 			<th>계약조건</th>
 			<th>총매출금액</th>
