@@ -117,7 +117,11 @@ public class BalanceComAjaxController {
 	}
 	
 	/**
-	 * @param company_mgmtno, sale_type, contract_type
+	 * @param company_mgmtno, contract_type, searchQuery
+	 * 
+	 * search : company_mgmtno, contract_type, searchQuery
+	 * list : company_mgmtno, contract_type
+	 * 
 	 * {
 			"contentList": [{
 				"sale_price": 1000.0,
