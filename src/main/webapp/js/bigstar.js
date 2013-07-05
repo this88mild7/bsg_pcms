@@ -26,7 +26,7 @@ INDEX
 {//Ajax 시작과 끝 로딩 이미지 처리 시작
 	$(document)
 		.ajaxStart(function() {
-			$.blockUI({ message: '<h2><img src="/pcms/img/busy.gif" /> 데이터 가져오는중...</h2>' }); 
+			$.blockUI({ message: '<h2><img src="/img/busy.gif" /> 데이터 가져오는중...</h2>' }); 
 		})
 		.ajaxComplete(function() {
 			$.unblockUI({ fadeOut: 200 }); 

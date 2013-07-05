@@ -203,7 +203,7 @@ div[class="tooltip-inner"] {
 							<span class="add-on"><i class="icon-calendar"></i></span>
 							</div>
 							<input type="text" name="installments_price" placeholder="금액" value="${ installments.installments_price }">
-							<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;">
+							<img id="addInstallments" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;">
 						</c:if>
 						<c:if test="${not status.first }">
 							<div style="margin-top : 5px;">
@@ -212,7 +212,7 @@ div[class="tooltip-inner"] {
 								<span class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 								<input type="text" name="installments_price" placeholder="금액" value="${ installments.installments_price }">
-								<img class="removeInstallments" src="/pcms/img/remove.png" alt="+" style="cursor: pointer;">
+								<img class="removeInstallments" src="<spring:eval expression="@urlProp['remove']"/>" alt="+" style="cursor: pointer;">
 							</div>
 						</c:if>
 					</c:forEach>	
@@ -621,7 +621,7 @@ $(function(){
 							html += '&nbsp;';
 							html += '<input type="text" name="installments_price" placeholder="금액">';
 							html += '&nbsp;';
-							html += '<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;">';
+							html += '<img id="addInstallments" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;">';
 						
 							$paymentsChildren
 								.find(".controls")
@@ -662,7 +662,7 @@ $(function(){
 					html += '&nbsp;';
 					html += '<input type="text" name="installments_price" placeholder="금액">';
 					html += '&nbsp;';
-					html += '<img class="removeInstallments" src="/pcms/img/remove.png" alt="+" style="cursor: pointer;">';
+					html += '<img class="removeInstallments" src="<spring:eval expression="@urlProp['remove']"/>" alt="+" style="cursor: pointer;">';
 					html += '</div>';
 				
 				$("#payments-children")

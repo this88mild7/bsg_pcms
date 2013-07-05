@@ -4,6 +4,6 @@
 
 <div class="sidebar lnb">
 	<a href="<spring:eval expression="@urlProp['saleCompanyList']"/>">판매업체 리스트</a>
-	<a href="<spring:eval expression="@urlProp['saleCompanyContractList']"/>">판매 계약 리스트</a>	
+	<a href="<spring:eval expression="@urlProp['saleCompanyContractList']"/>">판매계약 리스트</a>	
 </div>
     
