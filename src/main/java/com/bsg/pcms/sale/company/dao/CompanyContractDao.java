@@ -91,6 +91,10 @@ public class CompanyContractDao extends SqlSessionDaoSupport {
 		getSqlSession().delete( "saleCompanyQuery.deleteInstallment", contract_mgmtno);
 	}
 
+	public int totalCount(CompanyContractDTOEx saleCompany) {
+		return (Integer)getSqlSession().selectOne( "saleCompanyQuery.totalCount", saleCompany);
+	}
+
 
 
 

@@ -28,7 +28,7 @@ public class CompanyDao extends SqlSessionDaoSupport {
 	}
 	
 	public CompanyDTOEx detail(CompanyDTOEx saleCompany) {
-		return (CompanyDTOEx)getSqlSession().selectOne( "saleCompanyQuery.companyList", saleCompany );
+		return (CompanyDTOEx)getSqlSession().selectOne( "saleCompanyQuery.companyDetail", saleCompany );
 	}
 	
 	public void modify(CompanyDTOEx saleCompany) {
@@ -46,5 +46,9 @@ public class CompanyDao extends SqlSessionDaoSupport {
 	
 	public void modifyCompanyAdministor(CompanyDTOEx saleCompany) {
 		getSqlSession().update( "saleCompanyQuery.modifyCompanyAdministor", saleCompany);
+	}
+
+	public int totalCount(CompanyDTOEx saleCompany) {
+		return (Integer)getSqlSession().selectOne("saleCompanyQuery.companyTotalCount", saleCompany);
 	}
 }

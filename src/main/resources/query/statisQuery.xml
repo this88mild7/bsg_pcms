@@ -7,8 +7,8 @@
    <!-- INSERT -->
    
    <!-- SELECT -->
-	<select id="list" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
-   		SELECT /* statisQuery.list */
+	<select id="saleCompanys" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.saleCompanys */
    			COM.COMPANY_NAME
    			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
    			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
@@ -41,9 +41,45 @@
 		<if test="sortingType == 2">
 			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
 		</if>
+		LIMIT #{ startRownum }, #{ perPage }
 	</select>
-	<select id="productList" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
-   		SELECT /* statisQuery.productList */
+	
+	<select id="saleCompanysCount" resultType="int">
+		SELECT /* statisQuery.saleCompanysCount */
+   			COUNT(*)
+   		FROM (
+   			SELECT
+	   			COM.COMPANY_NAME
+	   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
+	   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
+	   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
+	   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
+	   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE
+	   		FROM BALANCE BAL, COMPANY COM
+			WHERE 1=1
+			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+			AND COM.COMPANY_TYPE='SC'
+			<if test="searchQuery != null">
+				AND COM.COMPANY_NAME like '%${searchQuery}%'
+			</if>
+			<if test="searchStrDate != null">
+			<![CDATA[
+				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
+			]]>
+			</if>
+			<if test="searchEndDate != null">
+			<![CDATA[
+				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+			]]>
+			</if>
+			GROUP BY BAL.COMPANY_MGMTNO
+		) A
+	</select>
+	
+	
+	
+	<select id="products" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.products */
    			CON.NAME AS contents_name
    			, CON.CONTENTS_CD AS contents_cd
    			, SUM(BALD.SALE_COUNT) AS TOTAL_SALE_COUNT
@@ -79,41 +115,47 @@
 		<if test="sortingType == 2">
 			ORDER BY SUM(BALD.SALE_PRICE) DESC
 		</if>
+		LIMIT #{ startRownum }, #{ perPage }
+	</select>
+	<select id="productsCount" resultType="int" >
+   		SELECT /* statisQuery.productsCount */
+   			COUNT(*)
+   		FROM (	
+	   		SELECT
+		   			CON.NAME AS contents_name
+	   			, CON.CONTENTS_CD AS contents_cd
+	   			, SUM(BALD.SALE_COUNT) AS TOTAL_SALE_COUNT
+	   			, SUM(BALD.SALE_PRICE) AS TOTAL_SALE_PRICE
+	   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
+	   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
+	   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE
+   			FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BALD, CONTENTS CON
+			WHERE 1=1
+			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+			AND BAL.BALANCE_MGMTNO = BALD.BALANCE_MGMTNO
+			AND CON.CONTENTS_CD = BALD.CONTENTS_CD
+			AND COM.COMPANY_TYPE='SC'
+			<if test="searchQuery != null">
+				AND CON.NAME like '%${searchQuery}%'
+			</if>
+			<if test="searchStrDate != null">
+			<![CDATA[
+				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
+			]]>
+			</if>
+			<if test="searchEndDate != null">
+			<![CDATA[
+				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+			]]>
+			</if>
+			GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
+		) A
 	</select>
 	
-	<select id="search" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
-						resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
-   		SELECT /* statisQuery.search */
-   			COM.COMPANY_NAME
-   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
-   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
-   			, (SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_DEVICE
-   			, DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m-%d') AS SALE_STR_DATE
-   			, DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m-%d') AS SALE_END_DATE   			
-   		FROM BALANCE BAL, COMPANY COM
-		WHERE 1=1
-		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
-		AND COM.COMPANY_TYPE='SC'
-		<if test="query != null">
-			AND COM.COMPANY_NAME like '%${query}%' 
-		</if>
-		<if test="searchStrDate != null">
-		<![CDATA[
-			AND BAL.SALE_STR_DATE >= '${searchStrDate}'
-		]]>
-		</if>
-		<if test="searchEndDate != null">
-		<![CDATA[
-			AND BAL.SALE_END_DATE <= '${searchEndDate}' 
-		]]>
-		</if>
-		GROUP BY BAL.COMPANY_MGMTNO
-	</select>
-	
-	<select id="pieGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
+	<select id="saleCompanysPieGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
 							resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
 		SELECT * FROM (
-	   		SELECT /* statisQuery.pieGraph */
+	   		SELECT /* statisQuery.saleCompanysPieGraph */
 	   			COM.COMPANY_NAME
 	   			, SUM(BAL.TOTAL_SALE_COUNT) AS TOTAL_SALE_COUNT
 	   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
@@ -133,10 +175,10 @@
 		ORDER BY A.TOTAL_SALE_COUNT DESC
 	</select>
 	
-	<select id="productPieGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
+	<select id="productsPieGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
 							resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
 			SELECT * FROM (
-			SELECT /* statisQuery.productPieGraph */
+			SELECT /* statisQuery.productsPieGraph */
 	   			CON.NAME AS contents_name
 	   			, CON.CONTENTS_CD AS contents_cd
 	   			, SUM(BALD.SALE_COUNT) AS TOTAL_SALE_COUNT
@@ -159,8 +201,8 @@
 		ORDER BY A.TOTAL_SALE_COUNT DESC 
 	</select>
 	
-	<select id="lineGraphCompany" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
-   		SELECT /* statisQuery.lineGraphCompany */
+	<select id="saleCompanysLineGraph" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.saleCompanysLineGraph */
    			COM.COMPANY_NAME,
    			COM.COMPANY_MGMTNO
    		FROM BALANCE BAL, COMPANY COM
@@ -171,8 +213,8 @@
 		ORDER BY SUM(BAL.TOTAL_SALE_COUNT) DESC
 	</select>
 	
-	<select id="productLineGraphContent" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
-   		SELECT /* statisQuery.lineGraphCompany */
+	<select id="productsLineGraph" resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
+   		SELECT /* statisQuery.productsLineGraph */
    			CON.NAME AS contents_name,
    			BALD.CONTENTS_CD
    		FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BALD, CONTENTS CON
@@ -185,7 +227,7 @@
 		ORDER BY SUM(BAL.TOTAL_SALE_COUNT) DESC
 	</select>
 	
-	<select id="lineGraphMonthCount" resultType="java.util.TreeMap" >
+	<select id="saleCompanysLineGraphMonthCount" resultType="java.util.TreeMap" >
    		SELECT /* statisQuery.lineGraphMonthCount*/
 			IFNULL(
 			(SELECT 
@@ -308,8 +350,8 @@
 			), 0) AS '12'
 		FROM DUAL
 	</select>
-	<select id="productLineGraphMonthCount" resultType="java.util.TreeMap" >
-   		SELECT /* statisQuery.lineGraphMonthCount*/
+	<select id="productsLineGraphMonthCount" resultType="java.util.TreeMap" >
+   		SELECT /* statisQuery.productsLineGraphMonthCount*/
 			IFNULL(
 			(SELECT 
 			SUM(BALD.SALE_COUNT) AS TOTAL_SALE_COUNT

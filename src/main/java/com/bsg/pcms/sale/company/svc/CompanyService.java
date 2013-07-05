@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.sale.company.dao.CompanyDao;
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 
 @Service
@@ -28,11 +29,15 @@ public class CompanyService {
 		_saleCompanyDao.createCompanyAdministor(compDto);
 	}
 	
-	public List<CompanyDTOEx> list() {
-		return _saleCompanyDao.list(null);      
+	public int totalCount(CompanyDTOEx saleCompanyDto){
+		return _saleCompanyDao.totalCount(saleCompanyDto);
 	}
 	
-	public List<CompanyDTOEx> searchlist(CompanyDTOEx saleCompanyDto) {
+	public List<CompanyDTOEx> list(CompanyDTOEx saleCompanyDto) {
+		if(saleCompanyDto == null){
+			saleCompanyDto = new CompanyDTOEx();
+		}
+		saleCompanyDto.setStartRownum((saleCompanyDto.getPageNum() - 1) * saleCompanyDto.getPerPage());
 		return _saleCompanyDao.list(saleCompanyDto);      
 	}
 	
@@ -58,10 +63,4 @@ public class CompanyService {
 			_saleCompanyDao.delete(saleCompany);
 		}
 	}
-
-	public List<CompanyDTOEx> search(CompanyDTOEx saleCompany) {
-		return _saleCompanyDao.list(saleCompany);  
-	}
-
-	
 }

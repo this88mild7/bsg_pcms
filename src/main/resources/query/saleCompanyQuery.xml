@@ -170,7 +170,35 @@
             NOW()
         )
    </insert>
-
+	<select id="totalCount" parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" resultType="int">
+		SELECT /* saleCompanyQuery.contractTotalCount 2013.06.03 최지순 */ 
+			COUNT(*) 
+		FROM CONTRACT CT, COMPANY COM
+		WHERE 1=1
+		AND CT.COMPANY_MGMTNO = COM.COMPANY_MGMTNO
+		AND COM.COMPANY_TYPE = 'SC'
+		AND CT.DEL_YN = 'N'
+		<if test="searchType != null">
+			<choose>
+				<when test="searchType eq '판매처명'">
+					AND COM.COMPANY_NAME like '%${searchQuery}%'					
+				</when>
+				<otherwise>
+					AND (
+							CT.CONTRACT_MGMTNO like '%${searchQuery}%'
+							OR
+							COM.COMPANY_NAME like '%${searchQuery}%'
+							OR 
+							CT.CONTRACT_MGMTNO in (
+													SELECT CONTRACT_MGMTNO FROM CONTRACT_CONTENTS_GROUP A, CONTENTS B WHERE 1=1
+													AND A.CONTENTS_CD = B.CONTENTS_CD
+													AND B.NAME like '%${searchQuery}%'
+												 ) 
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
 
    <select id="contractList" 
    			parameterType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx"
@@ -204,8 +232,6 @@
 					AND (
 							CT.CONTRACT_MGMTNO like '%${searchQuery}%'
 							OR
-							COM.PHONENO like '%${searchQuery}%'
-							OR
 							COM.COMPANY_NAME like '%${searchQuery}%'
 							OR 
 							CT.CONTRACT_MGMTNO in (
@@ -217,7 +243,9 @@
 				</otherwise>
 			</choose>
 		</if>
+		
 		GROUP BY CT.CONTRACT_MGMTNO
+		LIMIT #{ startRownum }, #{ perPage }
    </select>
    
    <select id="contractContensList" 
@@ -322,9 +350,55 @@
        		</choose>
          </if>
       </where>
+      LIMIT #{ startRownum }, #{ perPage }
    </select>
-   
- 
+   <select id="companyTotalCount" 
+		   resultType="int" 
+		   parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
+       SELECT /* SaleCompany.companyTotalCount 2013.06.03 최지순 */
+          COUNT(*)
+       FROM  
+       COMPANY_ADMIN CA LEFT OUTER JOIN COMPANY COM  ON COM.COMPANY_MGMTNO = CA.COMPANY_MGMTNO
+       <where>       	  
+       	  COM.DEL_YN = 'N'
+       	  AND COM.COMPANY_TYPE = 'SC'
+         <if test="searchType != null">
+         	<choose>
+	            <when test="searchType eq '판매처명'">
+	            	AND COM.COMPANY_NAME like '%${searchQuery}%'
+	            </when>
+	            <otherwise>
+	            	AND(
+	            	  COM.COMPANY_NAME like '%${searchQuery}%'
+	            	  OR
+	            	  COM.PHONENO like '%${searchQuery}%'
+	            	  OR
+	            	  COM.COMPANY_NO like '%${searchQuery}%'
+	            	)
+	            </otherwise>
+       		</choose>
+         </if>
+      </where>
+   </select>
+   <select id="companyDetail" 
+		   resultType="com.bsg.pcms.sale.company.dto.CompanyDTOEx" 
+		   parameterType="com.bsg.pcms.sale.company.dto.CompanyDTOEx">
+       SELECT /* SaleCompany.companyDetail 2013.06.03 최지순 */
+          COM.COMPANY_MGMTNO,
+          COM.COMPANY_NAME,
+          DATE_FORMAT(COM.REG_DT,'%Y-%m-%d') AS REG_DT,
+          COM.PHONENO,
+          COM.COMPANY_NO,
+          COM.MASTER,
+          COM.MASTER_EMAIL,
+          COM.ADDR,
+          CA.PD_NAME
+       FROM  
+       COMPANY_ADMIN CA LEFT OUTER JOIN COMPANY COM  ON COM.COMPANY_MGMTNO = CA.COMPANY_MGMTNO
+       WHERE  COM.DEL_YN = 'N'
+       AND COM.COMPANY_TYPE = 'SC'
+       AND COM.COMPANY_MGMTNO = #{company_mgmtno}
+ </select>
    
    <select id="installment" resultType="com.bsg.pcms.dto.InstallmentsDTO" >
        SELECT /* SaleCompany.installment 2013.06.03 최지순 */

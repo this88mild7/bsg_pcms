@@ -84,7 +84,7 @@ public class BalanceComController {
 		mav.addObject("isCreate", 1);
 		
 		//판매처 리스트
-		mav.addObject("saleCompanyList", _saleCompanyService.list());
+		mav.addObject("saleCompanyList", _saleCompanyService.list(new CompanyDTOEx()));
 		
 		return mav;
 		

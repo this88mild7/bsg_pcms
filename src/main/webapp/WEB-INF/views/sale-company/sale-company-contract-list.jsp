@@ -10,7 +10,7 @@
 	</h3>
 </div>
 <div class="row-fluid product-box" data-json='${ jsonStr }'>
-
+ <div class="span12">
 	<div class="pull-right">
 		<div class="btn-group">
 			<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
@@ -20,9 +20,9 @@
 			</ul>
 		</div>
 		<div class="input-append">
-			<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanyContractSearchAction']"/>">
+			<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanyContractList']"/>">
 				<input type="hidden" id="searchType" name="searchType" value="전체">			
-				<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" >
+				<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${search.searchQuery }">
 				<button id="btn-search" class="btn" type="button"><i class="icon-search"></i></button>
 			</form>
 		</div>
@@ -81,6 +81,22 @@
 		</p>
 	</div>
 	
+	<c:if test="${ not empty pageLink }">
+		<div class="pagination pagination-centered">
+			<ul>
+				<c:if test="${ 0 ne pageLink.pagePrev }">
+				<li><a href="<spring:eval expression="@urlProp['saleCompanyContractList']"/>?pageNum=${ pageLink.pagePrev }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">Prev</a></li>
+				</c:if>
+				<c:forEach items="${ pageLink.pageList }" var="page" >
+				<li data-page-num="${ page.pageNum }"><a href="<spring:eval expression="@urlProp['saleCompanyContractList']"/>?pageNum=${ page.pageNum }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">${ page.pageNum }</a></li>
+				</c:forEach>
+				<c:if test="${ 0 ne pageLink.pageNext }">
+				<li><a href="<spring:eval expression="@urlProp['saleCompanyContractList']"/>?pageNum=${ pageLink.pageNext }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">Next</a></li>
+				</c:if>
+			</ul>
+		</div>
+		</c:if>
+	</div>
 	<form id="deleteContractForm" action="<spring:eval expression="@urlProp['saleCompanyContractDeleteAction']"/>" method="POST">
 		
 	</form>

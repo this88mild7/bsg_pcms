@@ -12,41 +12,45 @@ import com.bsg.pcms.stats.dto.StatisticsDTO;
 @Repository
 public class StatisticsDao extends SqlSessionDaoSupport{
 	
-	public List<StatisticsDTO> list(StatisticsDTO requestParam) {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.list", requestParam);
+	public List<StatisticsDTO> saleCompanys(StatisticsDTO requestParam) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.saleCompanys", requestParam);
 		
 	}
 
-	public List<StatisticsDTO> search(StatisticsDTO param) {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.search", param);
+	public List<StatisticsDTO> saleCompanysPieGraph(StatisticsDTO param) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.saleCompanysPieGraph", param);
+	}
+	public List<StatisticsDTO> productsPieGraph(StatisticsDTO param) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productsPieGraph", param);
 	}
 
-	public List<StatisticsDTO> pieGraph(StatisticsDTO param) {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.pieGraph", param);
-	}
-	public List<StatisticsDTO> productPieGraph(StatisticsDTO param) {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productPieGraph", param);
+	public List<StatisticsDTO> saleCompanysLineGraph() {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.saleCompanysLineGraph");
 	}
 
-	public List<StatisticsDTO> lineGraphCompany() {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.lineGraphCompany");
-	}
-
-	public Map<String, String> lineGraphMonthCount(StatisticsDTO param) {
-		return (Map<String, String>)getSqlSession().selectOne("statisQuery.lineGraphMonthCount", param);
+	public Map<String, String> saleCompanysLineGraphMonthCount(StatisticsDTO param) {
+		return (Map<String, String>)getSqlSession().selectOne("statisQuery.saleCompanysLineGraphMonthCount", param);
 	}
 
 
-	public List<StatisticsDTO> productList(StatisticsDTO requestParam) {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productList", requestParam);
+	public List<StatisticsDTO> products(StatisticsDTO requestParam) {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.products", requestParam);
 	}
 
-	public List<StatisticsDTO> productLineGraphContent() {
-		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productLineGraphContent");
+	public List<StatisticsDTO> productsLineGraph() {
+		return (List<StatisticsDTO>)getSqlSession().selectList("statisQuery.productsLineGraph");
 	}
 
-	public Map productLineGraphMonthCount(StatisticsDTO param) {
-		return (Map<String, String>)getSqlSession().selectOne("statisQuery.productLineGraphMonthCount", param);
+	public Map productsLineGraphMonthCount(StatisticsDTO param) {
+		return (Map<String, String>)getSqlSession().selectOne("statisQuery.productsLineGraphMonthCount", param);
+	}
+
+	public int saleCompanysCount(StatisticsDTO requestParam) {
+		return (Integer)getSqlSession().selectOne("statisQuery.saleCompanysCount", requestParam);
+	}
+
+	public int productsCount(StatisticsDTO requestParam) {
+		return (Integer)getSqlSession().selectOne("statisQuery.productsCount", requestParam);
 	}
 
 }

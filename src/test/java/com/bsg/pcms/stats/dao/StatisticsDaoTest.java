@@ -54,7 +54,7 @@ public class StatisticsDaoTest {
 		// given 
 
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(null);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(null);
 			
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -74,7 +74,7 @@ public class StatisticsDaoTest {
 		param.setSortingType("1");
 		
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(param);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(param);
 		
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -93,7 +93,7 @@ public class StatisticsDaoTest {
 		param.setSortingType("2");
 		
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(param);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(param);
 		
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -113,7 +113,7 @@ public class StatisticsDaoTest {
 		param.setSearchQuery("지순");
 		
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(param);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(param);
 		
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -135,7 +135,7 @@ public class StatisticsDaoTest {
 		param.setSearchEndDate("2013-07");
 		
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(param);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(param);
 		
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -154,7 +154,7 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<StatisticsDTO> statDTO = statisDao.list(null);
+		List<StatisticsDTO> statDTO = statisDao.saleCompanys(null);
 		
 		// then
 		assertThat(statDTO.size(), is(not(0)));
@@ -176,10 +176,10 @@ public class StatisticsDaoTest {
 		param.setQuery(query);
 
 		// when
-		List<StatisticsDTO> searchResult = statisDao.search(param);
+		List<StatisticsDTO> searchResult = statisDao.searchSaleCompanys(param);
 
 		// then
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		if(listResult.size() == 0){
 			assertThat(searchResult.size(), is(0));
 		}else{
@@ -203,7 +203,7 @@ public class StatisticsDaoTest {
 	@Test
 	public void teststatisSearchByDate() {
 
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		
 		
 		if(listResult.size() != 0){
@@ -213,7 +213,7 @@ public class StatisticsDaoTest {
 			param.setSearchEndDate(listResult.get(0).getSale_end_date());
 		
 		// when
-			List<StatisticsDTO> searchResult = statisDao.search(param);
+			List<StatisticsDTO> searchResult = statisDao.searchSaleCompanys(param);
 				
 		// then
 			assertThat(searchResult.size(), is(not(0)));					
@@ -235,10 +235,10 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(null);
+		List<StatisticsDTO> pieGraphList = statisDao.saleCompanysPieGraph(null);
 
 		// then
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -253,10 +253,10 @@ public class StatisticsDaoTest {
 		param.setSearchEndDate("2013-06");
 		
 		// when
-		List<StatisticsDTO> pieGraphList = statisDao.pieGraph(param);
+		List<StatisticsDTO> pieGraphList = statisDao.saleCompanysPieGraph(param);
 		
 		// then
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -270,10 +270,10 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<StatisticsDTO> pieGraphList = statisDao.productPieGraph(null);
+		List<StatisticsDTO> pieGraphList = statisDao.productsPieGraph(null);
 
 		// then
-		List<StatisticsDTO> listResult = statisDao.productList(null);
+		List<StatisticsDTO> listResult = statisDao.products(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -288,10 +288,10 @@ public class StatisticsDaoTest {
 		param.setSearchEndDate("2013-06");
 		
 		// when
-		List<StatisticsDTO> pieGraphList = statisDao.productPieGraph(param);
+		List<StatisticsDTO> pieGraphList = statisDao.productsPieGraph(param);
 		
 		// then
-		List<StatisticsDTO> listResult = statisDao.productList(null);
+		List<StatisticsDTO> listResult = statisDao.products(null);
 		
 		if(listResult.size() > 0){
 			assertThat(pieGraphList.size(), is(not(0)));
@@ -305,10 +305,10 @@ public class StatisticsDaoTest {
 		// given 
 		
 		// when
-		List<StatisticsDTO> lineGraphList = statisDao.lineGraphCompany();
+		List<StatisticsDTO> lineGraphList = statisDao.saleCompanysLineGraph();
 		
 		// then
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		
 		if(listResult.size() > 0){
 			assertThat(lineGraphList.size(), is(not(0)));
@@ -321,12 +321,12 @@ public class StatisticsDaoTest {
 		
 		// given
 		
-		List<StatisticsDTO> listResult = statisDao.list(null);
+		List<StatisticsDTO> listResult = statisDao.saleCompanys(null);
 		
 		// when
 		for(StatisticsDTO statDTO : listResult){
 			statDTO.setSearchEndDate("2013");
-			statDTO.setMonthSaleCount(statisDao.lineGraphMonthCount(statDTO));
+			statDTO.setMonthSaleCount(statisDao.saleCompanysLineGraphMonthCount(statDTO));
 		}
 		
 		logger.info("lineGraph Count : {}", listResult);
@@ -338,7 +338,7 @@ public class StatisticsDaoTest {
 		
 		// given
 		
-		List<StatisticsDTO> listResult = statisDao.productList(null);
+		List<StatisticsDTO> listResult = statisDao.products(null);
 		
 		logger.info("lineGraph Count : {}", listResult);
 	}

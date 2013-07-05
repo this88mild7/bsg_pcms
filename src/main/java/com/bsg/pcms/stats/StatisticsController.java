@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bsg.pcms.dto.PageLinkDTO;
+import com.bsg.pcms.stats.dto.StatisticsDTO;
 import com.bsg.pcms.stats.svc.StatisticsService;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping( value = "statistics" )
@@ -27,6 +30,9 @@ public class StatisticsController {
 	@Autowired
 	StatisticsService statService;
 	
+	@Autowired
+	PageUtil pageUtil;
+	
 	/** 판매처 통계 대쉬보드
 	 * tableList setting properties: 
 	 * 	company_name, 
@@ -39,13 +45,18 @@ public class StatisticsController {
 	 * @return
 	 */
 	@RequestMapping( value = "sale-company/dashboard.do", method = RequestMethod.GET )
-	public ModelAndView saleCompanyDashboard() {
+	public ModelAndView saleCompanyDashboard(StatisticsDTO requestParam) {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics-sale-company-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-		mav.addObject("tableList", statService.list(null));
+		mav.addObject("tableList", statService.saleCompanys(requestParam));
+		int saleCompanyTotalCount = statService.saleCompanysCount(requestParam);
+		int pageNum = requestParam.getPageNum();
+		PageLinkDTO pageLink = pageUtil.setPageLinkDTO(saleCompanyTotalCount, pageNum);
+		mav.addObject("pageLink", pageLink);
+		mav.addObject("search", requestParam);
 		
 		return mav;
 	}
@@ -54,13 +65,20 @@ public class StatisticsController {
 	 * @return
 	 */
 	@RequestMapping( value = "product/dashboard.do", method = RequestMethod.GET )
-	public ModelAndView productDashboard() {
+	public ModelAndView productDashboard(StatisticsDTO requestParam) {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics-product-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_PRODUCT);
 		mav.addObject("tableList", statService.productList(null));
+		
+		
+		int productTotalCount = statService.productsCount(requestParam);
+		int pageNum = requestParam.getPageNum();
+		PageLinkDTO pageLink = pageUtil.setPageLinkDTO(productTotalCount, pageNum);
+		mav.addObject("pageLink", pageLink);
+		mav.addObject("search", requestParam);
 		
 		return mav;
 	}
@@ -84,7 +102,7 @@ public class StatisticsController {
 		mav.setViewName("statistics");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-		mav.addObject("tableList", statService.list(null));
+		mav.addObject("tableList", statService.saleCompanys(null));
 
 		return mav;
 	}

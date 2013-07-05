@@ -52,7 +52,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "sale-company/pieGraph.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String pieGraph(StatisticsDTO param) {
 		
-		List<Map> companyList = statService.pieGraphForMap(param);
+		List<Map> companyList = statService.saleCompanysPieGraph(param);
 		
 		String jsonString = _jsonResponseMaker.generateMapList("pieGraph", companyList);
 		
@@ -77,7 +77,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "product/pieGraph.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String productPieGraph(StatisticsDTO param) {
 		
-		List<Map> companyList = statService.productPieGraphForMap(param);
+		List<Map> companyList = statService.productsPieGraph(param);
 		
 		String jsonString = _jsonResponseMaker.generateMapList("pieGraph", companyList);
 		
@@ -111,7 +111,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "sale-company/list.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String list(StatisticsDTO param) {
 		
-		List<Map> companyList = statService.listForMap(param);
+		List<Map> companyList = statService.saleCompanysForMap(param);
 		
 		String jsonString = _jsonResponseMaker.generateMapList("tableList", companyList);
 		
@@ -145,7 +145,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "product/list.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String productList(StatisticsDTO param) {
 		
-		List<Map> companyList = statService.productListForMap(param);
+		List<Map> companyList = statService.productsForMap(param);
 		
 		String jsonString = _jsonResponseMaker.generateMapList("tableList", companyList);
 		
@@ -172,7 +172,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "sale-company/lineGraph.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String lineGraph(String searchDate) {
 		
-		 List<StatisticsDTO> companyList = statService.lineGraph(searchDate);
+		 List<StatisticsDTO> companyList = statService.saleCompanysLineGraph(searchDate);
 		
 		String jsonString = _jsonResponseMaker.generateLineGraph("lineGraph", companyList);
 		
@@ -212,7 +212,7 @@ public class StatisticsAjaxController {
 	@RequestMapping( value = "product/lineGraph.ajax", produces = "application/json;charset=UTF-8")
 	public @ResponseBody String productLineGraph(String searchDate) {
 		
-		List<StatisticsDTO> companyList = statService.productLineGraph(searchDate);
+		List<StatisticsDTO> companyList = statService.productsLineGraphMonthCount(searchDate);
 		
 		String jsonString = _jsonResponseMaker.generateProductLineGraph("lineGraph", companyList);
 		

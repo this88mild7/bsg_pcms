@@ -14,12 +14,14 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bsg.pcms.dto.CompanyDTO;
 import com.bsg.pcms.dto.InstallmentsDTO;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.CompanyController;
 import com.bsg.pcms.sale.company.dao.CompanyContractDao;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
+import com.bsg.pcms.utility.PageUtil;
 
 @Service
 public class CompanyContractService {
@@ -29,12 +31,20 @@ public class CompanyContractService {
 	@Autowired
 	private CompanyContractDao _saleContractDao;
 	
+	@Autowired
+	private PageUtil pageUtils;
 	
-	public List<CompanyContractDTOEx> list() {
-		return list(null);      
+	
+	public int totalCount(CompanyContractDTOEx saleCompany){
+		return _saleContractDao.totalCount(saleCompany);
 	}
 	
 	public List<CompanyContractDTOEx> list(CompanyContractDTOEx saleCompany) {
+		if(saleCompany == null){
+			saleCompany = new CompanyContractDTOEx();
+		}
+		saleCompany.setStartRownum((saleCompany.getPageNum() - 1) * saleCompany.getPerPage());
+		
 		List<CompanyContractDTOEx> contractList  = _saleContractDao.contractList(saleCompany);
 		for(CompanyContractDTOEx cDTO : contractList){
 			List<CompanyContentsDTOEx> contentsList = _saleContractDao.contractContentsList(cDTO.getContract_mgmtno());
@@ -165,12 +175,9 @@ public class CompanyContractService {
 		return contentsList;
 	}
 
-	public List<CompanyContractDTOEx> search(CompanyContractDTOEx companyDTO) {
-		return list(companyDTO); 
-	}
-
 	public List<ContentDTOEx> contents(CompanyContractDTOEx saleCompany) {
 		return _saleContractDao.contents(saleCompany);
 	}
 	
 }
+

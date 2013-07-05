@@ -10,54 +10,71 @@
 </div>
 
 <div class="row-fluid customer-box">
-
-	<div class="pull-right">
-		<div class="btn-group">
-			<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
-			<ul id="search-menu" class="dropdown-menu">
-				<li><a href="#">전체</a></li>
-				<li><a href="#">판매처명</a></li>
+	<div class="span12">
+		<div class="pull-right">
+			<div class="btn-group">
+				<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+				<ul id="search-menu" class="dropdown-menu">
+					<li><a href="#">전체</a></li>
+					<li><a href="#">판매처명</a></li>
+				</ul>
+			</div>
+			<div class="input-append">
+				<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanyList']"/>">
+					<input type="hidden" id="searchType" name="searchType" value="전체">			
+					<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" value="${ salCompany.query }">
+					<button id="btn-search" class="btn" type="button"><i class="icon-search"></i></button>
+				</form>
+			</div>
+		</div>
+			
+		<table class="table table-striped table-hover">
+			<tr>
+				<th><input class="check-all" type="checkbox" name="checkbox_all" value="false" data-toggle="tooltip"></th>
+				<th>판매처 코드</th>
+				<th>판매처명</th>
+				<th>등록날짜</th>
+				<th>연락처</th>
+				<th>상세보기</th>
+			</tr>
+			<c:forEach items="${salCompanyList}" var="salCompany">
+		        <tr>
+		        	<td><input type="checkbox" name="check_list" value="${ salCompany.company_mgmtno }"></td>
+		   	    	<td>${ salCompany.company_mgmtno }</td>
+		   	    	<td>${ salCompany.company_name }</td>
+		   	    	<td>${ salCompany.reg_dt }</td>
+		   	    	<td>${ salCompany.phoneno }</td>
+					<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyDetail']"/>?company_mgmtno=${ salCompany.company_mgmtno }">상세보기</button></td>
+		        </tr>
+			</c:forEach>
+		</table>
+		
+		<div class="clearfix">
+			<p class="pull-right">
+				<button id ="btn-delete" class="btn ">선택삭제</button>
+				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyCreate']"/>">판매처 등록</button>
+			</p>
+		</div>
+		
+		<c:if test="${ not empty pageLink }">
+		<div class="pagination pagination-centered">
+			<ul>
+				<c:if test="${ 0 ne pageLink.pagePrev }">
+				<li><a href="<spring:eval expression="@urlProp['saleCompanyList']"/>?pageNum=${ pageLink.pagePrev }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">Prev</a></li>
+				</c:if>
+				<c:forEach items="${ pageLink.pageList }" var="page" >
+				<li data-page-num="${ page.pageNum }"><a href="<spring:eval expression="@urlProp['saleCompanyList']"/>?pageNum=${ page.pageNum }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">${ page.pageNum }</a></li>
+				</c:forEach>
+				<c:if test="${ 0 ne pageLink.pageNext }">
+				<li><a href="<spring:eval expression="@urlProp['saleCompanyList']"/>?pageNum=${ pageLink.pageNext }&searchQuery=${search.searchQuery}&searchType=${search.searchType}">Next</a></li>
+				</c:if>
 			</ul>
 		</div>
-		<div class="input-append">
-			<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanySearch']"/>">
-				<input type="hidden" id="searchType" name="searchType" value="전체">			
-				<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium" value="${ salCompany.query }">
-				<button id="btn-search" class="btn" type="button"><i class="icon-search"></i></button>
-			</form>
-		</div>
-	</div>
+		</c:if>
 		
-	<table class="table table-striped table-hover">
-		<tr>
-			<th><input class="check-all" type="checkbox" name="checkbox_all" value="false" data-toggle="tooltip"></th>
-			<th>판매처 코드</th>
-			<th>판매처명</th>
-			<th>등록날짜</th>
-			<th>연락처</th>
-			<th>상세보기</th>
-		</tr>
-		<c:forEach items="${salCompanyList}" var="salCompany">
-	        <tr>
-	        	<td><input type="checkbox" name="check_list" value="${ salCompany.company_mgmtno }"></td>
-	   	    	<td>${ salCompany.company_mgmtno }</td>
-	   	    	<td>${ salCompany.company_name }</td>
-	   	    	<td>${ salCompany.reg_dt }</td>
-	   	    	<td>${ salCompany.phoneno }</td>
-				<td class="span2"><button class="btn btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyDetail']"/>?company_mgmtno=${ salCompany.company_mgmtno }">상세보기</button></td>
-	        </tr>
-		</c:forEach>
-	</table>
-	
-	<div class="clearfix">
-		<p class="pull-right">
-			<button id ="btn-delete" class="btn ">선택삭제</button>
-			<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyCreate']"/>">판매처 등록</button>
-		</p>
+		<form id="deleteForm" action="<spring:eval expression="@urlProp['saleCompanyDeleteAction']"/>" method="POST">
+		</form>
 	</div>
-	
-	<form id="deleteForm" action="<spring:eval expression="@urlProp['saleCompanyDeleteAction']"/>" method="POST">
-	</form>
 </div>
 <!--/row-->
 
@@ -72,11 +89,6 @@ $(function(){
 	
 	// 검색 버튼 이벤트
 	$("#btn-search").click(function(){
-		//if( $( "#customerQuery").val().length ) {
-			//검색어 체크 해야할까?
-		//};
-		//var typeText = $("a.dropdown-toggle").find("span").first().text();
-		//$("#searchType").val(typeText);
 		$( "#search-form" ).submit();
 	});
 

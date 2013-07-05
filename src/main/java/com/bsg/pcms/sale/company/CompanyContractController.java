@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.code.dto.CodeDTO;
 import com.bsg.pcms.code.svc.CodeService;
+import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContentsDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
@@ -26,6 +27,7 @@ import com.bsg.pcms.sale.company.dto.DeviceDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyContractService;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping( value = "saleCompany/contract" )
@@ -45,28 +47,25 @@ public class CompanyContractController {
 	@Autowired
 	CodeService _codeService;
 	
+	@Autowired
+	private PageUtil pageUtil;
 	
 	@RequestMapping( value = "list.do", method = RequestMethod.GET )
-	public ModelAndView list() {
-		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.list();
-		return saleContractListMAV(saleCompanyContractList);
+	public ModelAndView list(CompanyContractDTOEx companyDTO) {
+		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.list(companyDTO);
+		int contractTotalCount = _saleContractService.totalCount(companyDTO);
+		ModelAndView mav = saleContractListMAV(saleCompanyContractList, contractTotalCount);
+		
+		int pageNum = companyDTO.getPageNum();
+		PageLinkDTO pageLink = pageUtil.setPageLinkDTO(contractTotalCount, pageNum);
+		mav.addObject("pageLink", pageLink);
+		mav.addObject("search", companyDTO);
+		return mav;
 	}
 
-	
-	
-	@RequestMapping( value = "search.do", method = RequestMethod.GET )
-	public ModelAndView search(CompanyContractDTOEx companyDTO) {
-		if(StringUtils.isBlank(companyDTO.getSearchQuery())){
-			companyDTO.setSearchType(null);
-		}
-		List<CompanyContractDTOEx> saleCompanyContractList = _saleContractService.search(companyDTO);
-		return saleContractListMAV(saleCompanyContractList);
-	}
-	
-	
 	@RequestMapping( value = "createView.do", method = RequestMethod.GET )
 	public ModelAndView createView() {
-		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list();
+		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list(null);
 		List<CodeDTO> deviceList = _codeService.deviceList();
 		List<CodeDTO> contractTypeList = _codeService.saleTypeList();
 		List<CodeDTO> licenseList = _codeService.licenseList();
@@ -128,12 +127,14 @@ public class CompanyContractController {
 	}
 	
 	private ModelAndView saleContractListMAV(
-			List<CompanyContractDTOEx> saleCompanyContractList) {
+			List<CompanyContractDTOEx> saleCompanyContractList,
+			int totalCount) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName( _bigstarConstant.VW_SALE_COMPANY_CONTRACT_LIST );
 		mav.addObject( _bigstarConstant.OB_LEFT_MENU_SEQ, _bigstarConstant.LEFT_SALE_COMPANY_CONTRACT);
 		mav.addObject( _bigstarConstant.OB_NAV_SEQ, _bigstarConstant.HEADER_SALE_COMPANY );
 		mav.addObject( _bigstarConstant.OB_SALE_COMPANY_CONTRACT_LIST, saleCompanyContractList );
+		mav.addObject( "totalCount", totalCount );
 		return mav;
 	}
 	

@@ -41,7 +41,7 @@ public class DashboardController {
 		List<CompanyDTO> cpList = cpService.getCpList(new CompanyDTO());
 		mav.addObject( "cpList", cpList );
 		
-		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list();
+		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list(new CompanyDTOEx());
 		mav.addObject( "saleCompanyList", saleCompanyList );
 		
 		return mav;

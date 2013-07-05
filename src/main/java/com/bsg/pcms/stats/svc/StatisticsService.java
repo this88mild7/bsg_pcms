@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.stats.dao.StatisticsDao;
 import com.bsg.pcms.stats.dto.StatisticsDTO;
 
@@ -20,17 +21,24 @@ public class StatisticsService {
 	@Autowired
 	StatisticsDao statDao;
 	
-	public List<StatisticsDTO> list(StatisticsDTO requestParam) {
+	public List<StatisticsDTO> saleCompanys(StatisticsDTO requestParam) {
 		if(requestParam == null){
 			requestParam = new StatisticsDTO();
 			requestParam.setSortingType("2");
 		}
-		return statDao.list(requestParam);
+		
+		if(StringUtils.isEmpty(requestParam.getSortingType())){
+			requestParam.setSortingType("2");
+		}
+		
+		requestParam.setStartRownum((requestParam.getPageNum() - 1) * requestParam.getPerPage());
+		
+		return statDao.saleCompanys(requestParam);
 	}
 	
-	public List<Map> listForMap(StatisticsDTO requestParam) {
+	public List<Map> saleCompanysForMap(StatisticsDTO requestParam) {
 		
-		List<StatisticsDTO> saleCompanyTable = statDao.list(requestParam);
+		List<StatisticsDTO> saleCompanyTable = statDao.saleCompanys(requestParam);
 		
 		List<Map> tableListMap = new ArrayList<Map>();
 		
@@ -48,39 +56,30 @@ public class StatisticsService {
 		return tableListMap;
 	}
 
-	public List<StatisticsDTO> search(StatisticsDTO param) {
-		return statDao.search(param);
-	}
-
-	
-	public List<StatisticsDTO> lineGraph(String searchYear){
+	public List<StatisticsDTO> saleCompanysLineGraph(String searchYear){
 		
 		if(StringUtils.isBlank(searchYear)){
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 			searchYear = sdf.format(System.currentTimeMillis());
 		}
 		
-		List<StatisticsDTO> companyList = statDao.lineGraphCompany();
+		List<StatisticsDTO> companyList = statDao.saleCompanysLineGraph();
 		for(StatisticsDTO companyMgmtno : companyList){
 			companyMgmtno.setSearchEndDate(searchYear);
-			companyMgmtno.setMonthSaleCount(statDao.lineGraphMonthCount(companyMgmtno));
-			
+			companyMgmtno.setMonthSaleCount(statDao.saleCompanysLineGraphMonthCount(companyMgmtno));
 		}
  		return companyList;
 	}
 
-	public List<Map> pieGraphForMap(StatisticsDTO param) {
+	public List<Map> saleCompanysPieGraph(StatisticsDTO param) {
 		
-		List<StatisticsDTO> pieGraphResult = statDao.pieGraph(param);
-		
+		List<StatisticsDTO> pieGraphResult = statDao.saleCompanysPieGraph(param);
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
-		
 		int etcSaleCount = 0;
 		String etcCompanyName = "ETC";
 		Map<String, Object> etcCompany = new HashMap<String, Object>();
 		
 		for(int x=0; x<pieGraphResult.size();x++){
-			
 			if(x>4){
 				etcSaleCount += pieGraphResult.get(x).getTotal_sale_count();
 			}else{
@@ -94,15 +93,7 @@ public class StatisticsService {
 		etcCompany.put("saleCount", etcSaleCount);
 		pieGraphGForMap.add(etcCompany);
 		
-		
 		return pieGraphGForMap;
-//		for(StatisticsDTO temp : pieGraphResult){
-//			Map<String, Object> pieMap = new HashMap<String, Object>();
-//			pieMap.put("saleCompany", temp.getCompany_name());
-//			pieMap.put("saleCount", temp.getTotal_sale_count());
-//			pieGraphGForMap.add(pieMap);
-//		}
-//		return pieGraphGForMap;
 	}
 	
 	public List<StatisticsDTO> productList(StatisticsDTO param) {
@@ -110,41 +101,28 @@ public class StatisticsService {
 			param = new StatisticsDTO();
 			param.setSortingType("2");
 		}
-		return statDao.productList(param);
+		return statDao.products(param);
 	}
 	
-	public List<StatisticsDTO> productSearch(StatisticsDTO param) {
-		return statDao.search(param);
-	}
-	
-	
-	public List<StatisticsDTO> productLineGraph(String searchYear){
+	public List<StatisticsDTO> productsLineGraphMonthCount(String searchYear){
 		
 		if(StringUtils.isBlank(searchYear)){
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 			searchYear = sdf.format(System.currentTimeMillis());
 		}
 		
-		List<StatisticsDTO> companyList = statDao.productLineGraphContent();
-//		for(int x=0;x<companyList.size();x++){
-//			companyList.get(x).setSearchEndDate(searchYear);
-//			if(x >4){
-//				
-//			}
-//			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
-			
-//		}
+		List<StatisticsDTO> companyList = statDao.productsLineGraph();
 		for(StatisticsDTO companyMgmtno : companyList){
 			companyMgmtno.setSearchEndDate(searchYear);
-			companyMgmtno.setMonthSaleCount(statDao.productLineGraphMonthCount(companyMgmtno));
+			companyMgmtno.setMonthSaleCount(statDao.productsLineGraphMonthCount(companyMgmtno));
 			
 		}
  		return companyList;
 	}
 	
-	public List<Map> productPieGraphForMap(StatisticsDTO param) {
+	public List<Map> productsPieGraph(StatisticsDTO param) {
 		
-		List<StatisticsDTO> pieGraphResult = statDao.productPieGraph(param);
+		List<StatisticsDTO> pieGraphResult = statDao.productsPieGraph(param);
 		
 		int etcSaleCount = 0;
 		String etcCompanyName = "ETC";
@@ -167,20 +145,16 @@ public class StatisticsService {
 		pieGraphGForMap.add(etcCompany);
 		return pieGraphGForMap;
 		
-//		List<Map> pieGraphGForMap = new ArrayList<Map>();
-//		for(StatisticsDTO temp : pieGraphResult){
-//			Map<String, Object> pieMap = new HashMap<String, Object>();
-//			pieMap.put("contentName", temp.getContents_name());
-//			pieMap.put("saleCount", temp.getTotal_sale_count());
-//			pieGraphGForMap.add(pieMap);
-//		}
-//		return pieGraphGForMap;
 	}
 
-	public List<Map> productListForMap(StatisticsDTO param) {
+	public List<Map> productsForMap(StatisticsDTO param) {
 		
-		List<StatisticsDTO> saleCompanyTable = statDao.productList(param);
+		if(param == null){
+			param = new StatisticsDTO();
+		}
+		param.setStartRownum((param.getPageNum() - 1) * param.getPerPage());
 		
+		List<StatisticsDTO> saleCompanyTable = statDao.products(param);
 		List<Map> tableListMap = new ArrayList<Map>();
 		
 		for(StatisticsDTO staDTO : saleCompanyTable){
@@ -195,6 +169,14 @@ public class StatisticsService {
 			tableListMap.add(tableMap);
 		}
 		return tableListMap;
+	}
+
+	public int saleCompanysCount(StatisticsDTO requestParam) {
+		return statDao.saleCompanysCount(requestParam);
+	}
+
+	public int productsCount(StatisticsDTO requestParam) {
+		return statDao.productsCount(requestParam);
 	}
 
 	
