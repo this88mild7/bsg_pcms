@@ -141,7 +141,7 @@
 	<div class="modal-body">
 		<div class="input-append pull-right">
 			<input type="text" id="seriesQuery" name="seriesQuery" class="input-large">
-			<button class="btn btn-series-search-form" type="button"><i class="icon-search"></i></button>
+			<button id="btn-series-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 		</div>
 		<table class="table table-striped table-hover">
 			<thead>
@@ -259,6 +259,62 @@ $("#btn-sale-product-list").click(function(event){
 		$('.autoNumeric').autoNumeric("init",{aPad: false });
 		$(".blue").css("color", "blue");
 		$("#findProduct").modal('toggle');
+	});
+	
+	if ($("#seriesQuery").is(":focus")) {
+		
+	}
+	
+	//검색어 입력후 ENTER키 입력하면 검색하기
+	$('#seriesQuery').keyup(function( event ) {
+		if( event.which == 13 ) {
+			$("#btn-series-search-form").trigger("click");
+		}
+	});
+	
+	$("#btn-series-search-form").click(function(){
+		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContents']"/>';
+		var param = { 
+			company_mgmtno : $("#saleCompanyList").val(),
+			contract_type : $("#contractTypeList").val(),
+			searchQuery : $("#seriesQuery").val()
+		};
+		$.getJSON(url, param, function(data) {
+			console.info(data);
+			if(data.code == 999) {
+				bootbox.alert( data.msg );
+				return false;
+			}
+			
+			var $target = $("#findProduct");
+				
+			{ // 초기화
+				$target.find("tbody").remove();
+			}
+			
+			if(data.contentList.length == 0) {
+				bootbox.alert( "등록된 상품이 없습니다. 상품등록을 마친 후 정산 입력해 주세요." );
+				return false;
+			}
+			
+			$.each(data.contentList, function(idx, ele){
+				$html = '<option value="' + ele.sale_type + '">' + ele.sale_type_name + '</option>';
+				$target.append( $html );
+				
+					var name = ele.name,
+						salePrice = ele.sale_price,
+						saleCompanyRate = ele.sale_company_rate,
+						cpName = ele.cp_name,
+						cpRate = ele.cp_rate,
+						contentsCd = ele.contents_cd;
+					
+					var $html = String.format('<tr><td><input type="checkbox" name="check_list" data-name="{0}" data-sale_price="{1}" data-sale_company_rate="{2}" data-cp_rate="{3}" data-contents_cd="{4}" data-cp_name="{5}" value="{4}"></td><td>{0}</td></tr>',
+							name, salePrice, saleCompanyRate, cpRate, contentsCd, cpName );
+				
+					$target.find("table").append( $html );
+			});
+		})
+		.fail(function() { bootbox.alert( data.msg ); });
 	});
 }
 

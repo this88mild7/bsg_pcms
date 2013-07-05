@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <div class="page-name">
 	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매 정산현황
@@ -14,29 +13,33 @@
 	<div class="span12">
 		
 		<div>
-			출력순
-			<select id="sorting_type" name="sortingType" class="span2">
-				<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >등록순</option>
-				<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
-			</select>
-			기간설정
-			<select class="span2" id="searchYear">
-				<option value="2013">2013년</option>
-			</select>
-			<select class="span2" id="searchMonth">
-				<option value="01">1월</option>
-				<option value="02">2월</option>
-				<option value="03">3월</option>
-				<option value="04">4월</option>
-				<option value="05">5월</option>
-				<option value="06">6월</option>
-				<option value="07">7월</option>
-				<option value="08">8월</option>
-				<option value="09">9월</option>
-				<option value="10">10월</option>
-				<option value="11">11월</option>
-				<option value="12">12월</option>
-			</select>
+			<span class="">
+				<span>출력순</span>
+				<select id="sorting_type" name="sortingType" class="span2">
+					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >정산월</option>
+					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+				</select>
+			</span>
+			<span class="ml mr">
+				기간설정
+				<select class="span2 push" id="searchYear">
+					<option value="2013">2013년</option>
+				</select>
+				<select class="span2 push" id="searchMonth">
+					<option value="01">1월</option>
+					<option value="02">2월</option>
+					<option value="03">3월</option>
+					<option value="04">4월</option>
+					<option value="05">5월</option>
+					<option value="06">6월</option>
+					<option value="07">7월</option>
+					<option value="08">8월</option>
+					<option value="09">9월</option>
+					<option value="10">10월</option>
+					<option value="11">11월</option>
+					<option value="12">12월</option>
+				</select>
+			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleSearch']"/>">
 					<input type="hidden" id="searchDate" name="searchDate" >
@@ -47,6 +50,7 @@
 		</div>
 		<table class="table table-striped table-hover">
 		<tr>
+			<th>정산월</th>
 			<th>판매처</th>
 			<th>상품</th>
 			<th>판매방식</th>
@@ -62,6 +66,7 @@
 		</tr>
 		<c:forEach items="${ balanceList }" var="balance">
 		<tr>
+			<td>월</td>
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contents_name }</td>
 			<td>${ balance.contract_type }</td>
