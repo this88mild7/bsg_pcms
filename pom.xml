@@ -330,7 +330,7 @@
                     </dependency> 
                </dependencies>
                 <configuration>
-                    <contextPath>/pcms</contextPath>
+                    <contextPath>/</contextPath>
                     <scanIntervalSeconds>3</scanIntervalSeconds>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
