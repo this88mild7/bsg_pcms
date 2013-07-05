@@ -32,17 +32,17 @@
 </style>
 <div class="navbar">
 	<div class="container">
-		<a class="brand" href="/pcms/dashboard.do">
-			<img class="logo" src="/pcms/img/logo.png" />
+		<a class="brand" href="<spring:eval expression="@urlProp['dashboard']"/>">
+			<img class="logo" src="/img/logo.png" />
 		</a>
 		<div class="gnb">
-			<a class="dashboard" href="/pcms/dashboard.do">메인</a>
-			<a class="cp" href="/pcms/cp/list.do">업체관리</a>
-			<a class="customer" href="/pcms/saleCompany/list.do">판매관리</a>
-			<a class="balance" href="/pcms/balance/sale-company/list.do">정산</a>						
-			<a class="statistics" href="/pcms/statistics/sale-company/dashboard.do">통계</a>						
+			<a class="dashboard" href="<spring:eval expression="@urlProp['dashboard']"/>">메인</a>
+			<a class="cp" href="<spring:eval expression="@urlProp['cpList']"/>">업체관리</a>
+			<a class="customer" href="<spring:eval expression="@urlProp['saleCompanyList']"/>">판매관리</a>
+			<a class="balance" href="<spring:eval expression="@urlProp['balanceSaleList']"/>">정산</a>						
+			<a class="statistics" href="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">통계</a>						
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
-				<a class="site" href="/pcms/site/manage.do">사이트관리</a>
+				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
 			</c:if>
 		</div>
 		<p class="loginfo user">

@@ -20,9 +20,9 @@
 			</div>
 			<div class="span2">
 				<h5>판매 관리</h5>
-				<a href='<spring:eval expression="@urlProp['customerList']"/>'>판매업체 리스트</a>
+				<a href='<spring:eval expression="@urlProp['saleCompanyList']"/>'>판매업체 리스트</a>
 				<br />
-				<a href='<spring:eval expression="@urlProp['productList']"/>'>판매상품 리스트</a>
+				<a href='<spring:eval expression="@urlProp['saleCompanyContractList']"/>'>판매계약 리스트</a>
 				<br />
 			</div>
 			<div class="span2">

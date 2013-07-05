@@ -113,7 +113,7 @@ div#sale-content-list {
 								 	<span class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 							 	<input type="text" class="price" name="installments_price" placeholder="금액" >
-								<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+								<img id="addInstallments" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;"/>
 							</c:when>
 							<c:otherwise>
 								<c:forEach items="${saleContractDetail.installmentList }" var="installment" varStatus="index">
@@ -125,7 +125,7 @@ div#sale-content-list {
 											 	<span class="add-on"><i class="icon-calendar"></i></span>
 											</div>
 										 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
-											<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>
+											<img class="removePd" src="<spring:eval expression="@urlProp['remove']"/>" alt="x" style="cursor: pointer;"/>
 										</div>
 										</c:when>
 										<c:otherwise>
@@ -134,7 +134,7 @@ div#sale-content-list {
 											 	<span class="add-on"><i class="icon-calendar"></i></span>
 											</div>
 										 	<input type="text" class="price" name="installments_price" placeholder="금액" value="${ installment.installments_price }">
-											<img id="addInstallments" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+											<img id="addInstallments" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;"/>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -472,7 +472,7 @@ div#sale-content-list {
 				html += '&nbsp;';
 				html += '<input type="text" class="price" name="installments_price" placeholder="금액">';
 				html += '&nbsp;';
-				html += '<img class="removePd" src="/pcms/img/remove.png" alt="+" style="cursor: pointer;">';
+				html += '<img class="removePd" src="<spring:eval expression="@urlProp['remove']"/>" alt="+" style="cursor: pointer;">';
 				html += '</div>';
 			
 			$("#installments-group")

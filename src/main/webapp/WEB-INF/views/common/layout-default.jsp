@@ -6,13 +6,13 @@
 <head>
 	<title>BIGSTAR GLOBAL</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="/pcms/img/favicon.ico" />
-	<link href="/pcms/css/bootstrap.css" rel="stylesheet">
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+	<link href="/css/bootstrap.css" rel="stylesheet">
 	<!-- 
-	 <link href="/pcms/css/bootstrap-responsive.min.css" rel="stylesheet">
+	 <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
 	 -->
-	<link href="/pcms/css/datepicker.css" rel="stylesheet">
-	<link href="/pcms/css/bigstar.css" rel="stylesheet" media="screen">
+	<link href="/css/datepicker.css" rel="stylesheet">
+	<link href="/css/bigstar.css" rel="stylesheet" media="screen">
 	
 	<script src="http://code.jquery.com/jquery.js"></script>
 	
@@ -27,18 +27,18 @@
 	
 	<tiles:insertAttribute name="footer"/>
 	
-	<script src="/pcms/js/jquery.blockUI.js"></script>
-	<script src="/pcms/js/jquery.placeholder.min.js"></script>
-	<script src="/pcms/js/json2.js"></script>
-	<script src="/pcms/js/bootstrap.min.js"></script>
-	<script src="/pcms/js/bootstrap-datepicker.js"></script>
-	<script src="/pcms/js/bootbox.min.js"></script>
-	<script src="/pcms/js/bigstar.js"></script>
-	<script src="/pcms/js/jqBootstrapValidation.js"></script>
-	<script src="/pcms/js/flotr2.js"></script>
-	<script src="/pcms/js/locales/datepicker-kr.js"></script>
-	<script src="/pcms/js/bsg_ajax.js"></script>
-	<script src="/pcms/js/bsg_pcms_sale.js"></script>
+	<script src="/js/jquery.blockUI.js"></script>
+	<script src="/js/jquery.placeholder.min.js"></script>
+	<script src="/js/json2.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/bootstrap-datepicker.js"></script>
+	<script src="/js/bootbox.min.js"></script>
+	<script src="/js/bigstar.js"></script>
+	<script src="/js/jqBootstrapValidation.js"></script>
+	<script src="/js/flotr2.js"></script>
+	<script src="/js/locales/datepicker-kr.js"></script>
+	<script src="/js/bsg_ajax.js"></script>
+	<script src="/js/bsg_pcms_sale.js"></script>
 	
 </body>
 </html>

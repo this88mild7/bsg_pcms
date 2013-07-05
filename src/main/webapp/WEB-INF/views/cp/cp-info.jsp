@@ -55,7 +55,7 @@
 						<c:when test="${ fn:length(pdList) == 0 }">
 							<div>
 								<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" />
-								<img id="addPd" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+								<img id="addPd" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;"/>
 								<a id="pdNameListTip" href="#" data-toggle="tooltip" >tip</a>
 							</div>
 						</c:when>
@@ -64,14 +64,14 @@
 								<c:if test="${status.first }">
 									<div>
 										<input type="text" id="pdNameList" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" />
-										<img id="addPd" src="/pcms/img/plus.png" alt="+" style="cursor: pointer;"/>
+										<img id="addPd" src="<spring:eval expression="@urlProp['plus']"/>" alt="+" style="cursor: pointer;"/>
 										<a id="pdNameListTip" href="#" data-toggle="tooltip" >tip</a>
 									</div>
 								</c:if>
 	    						<c:if test="${not status.first }">
 	    							<div style="margin-top : 5px;">
 		    							<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" value="${ pdObj.pd_name }" >
-		    							<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;">
+		    							<img class="removePd" src="<spring:eval expression="@urlProp['remove']"/>" alt="x" style="cursor: pointer;">
 	    							</div>
 	    						</c:if>
 							</c:forEach>
@@ -147,7 +147,7 @@ $(function(){
 			//추가될 HTML
 			var html =  '<div style="margin-top : 5px;">';
 				html += '<input type="text" name="pdNameList" placeholder="담당PD" class="input-xlarge" /> ';	
-				html += '<img class="removePd" src="/pcms/img/remove.png" alt="x" style="cursor: pointer;"/>';	
+				html += '<img class="removePd" src="<spring:eval expression="@urlProp['remove']"/>" alt="x" style="cursor: pointer;"/>';	
 				html += '</div>';
 			
 			$target.append(html);
