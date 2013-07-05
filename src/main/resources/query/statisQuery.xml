@@ -77,7 +77,7 @@
 		</if>
 		<!-- 매출순 -->
 		<if test="sortingType == 2">
-			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
+			ORDER BY SUM(BALD.SALE_PRICE) DESC
 		</if>
 	</select>
 	
