@@ -33,8 +33,8 @@
 			<span class="">
 				<span>출력순</span>
 				<select id="sorting_type" name="sortingType" class="span2">
-					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >정산월</option>
-					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >총매출금액</option>
+					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >누적판매량</option>
 				</select>
 			</span>
 			<span class="ml mr">
