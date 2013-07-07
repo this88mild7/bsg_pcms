@@ -42,9 +42,9 @@
 				</select>
 			</span>
 			<div class="input-append">
-				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleSearch']"/>">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpList']"/>">
 					<input type="hidden" id="searchDate" name="searchDate" >
-					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.searchQuery }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
@@ -76,13 +76,13 @@
 		<div class="pagination pagination-centered">
 			<ul>
 				<c:if test="${ 0 ne pageLink.pagePrev }">
-				<li><a href="<spring:eval expression="@urlProp['contentList']"/>?pageNum=${ pageLink.pagePrev }${ empty search.search? '' : search.search }">Prev</a></li>
+				<li><a href="<spring:eval expression="@urlProp['balanceCpList']"/>?pageNum=${ pageLink.pagePrev }${ empty search.search? '' : search.search }">Prev</a></li>
 				</c:if>
 				<c:forEach items="${ pageLink.pageList }" var="page" >
-				<li data-page-num="${ page.pageNum }"><a href="<spring:eval expression="@urlProp['contentList']"/>?pageNum=${ page.pageNum }${ empty search.search? '' : search.search }">${ page.pageNum }</a></li>
+				<li data-page-num="${ page.pageNum }"><a href="<spring:eval expression="@urlProp['balanceCpList']"/>?pageNum=${ page.pageNum }${ empty search.search? '' : search.search }">${ page.pageNum }</a></li>
 				</c:forEach>
 				<c:if test="${ 0 ne pageLink.pageNext }">
-				<li><a href="<spring:eval expression="@urlProp['contentList']"/>?pageNum=${ pageLink.pageNext }${ empty search.search? '' : search.search }">Next</a></li>
+				<li><a href="<spring:eval expression="@urlProp['balanceCpList']"/>?pageNum=${ pageLink.pageNext }${ empty search.search? '' : search.search }">Next</a></li>
 				</c:if>
 			</ul>
 		</div>

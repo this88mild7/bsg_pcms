@@ -13,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
+import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping( value = "balance/cp" )
@@ -27,6 +29,8 @@ public class BalanceCpController {
 	@Autowired
 	private BalanceService balanceService;
 	
+	@Autowired
+	private PageUtil pageUtil;
 	
 	@RequestMapping(value = "list.do")
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
@@ -39,25 +43,18 @@ public class BalanceCpController {
 		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_CP);
 		mav.addObject("balanceList", balanceList);
+		
+		int balanceCpTotalCount = balanceService.cpsCount(balanceDTOEx);
+		
+		int pageNum = balanceDTOEx.getPageNum();
+		PageLinkDTO pageLink = pageUtil.setPageLinkDTO(balanceCpTotalCount, pageNum);
+		mav.addObject("pageLink", pageLink);
+		mav.addObject("search", balanceDTOEx);
+		
 		return mav;
-		//주석 테스트561616161
 		
 	}
 	
-	@RequestMapping(value = "search.do")
-	public ModelAndView search(BalanceDTOEx balanceDTOEx) {
-		
-		List<BalanceDTOEx> balanceList = balanceService.searchCP(balanceDTOEx);
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance-cp-list");
-		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
-		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_CP);
-		mav.addObject("balanceList", balanceList);
-		
-		return mav;
-		
-	}
 	
 	@RequestMapping(value = "create.do", method = RequestMethod.GET)
 	public String create(BalanceDTOEx balanceDto) {

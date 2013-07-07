@@ -1,5 +1,6 @@
 package com.bsg.pcms.balance.dao;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +39,6 @@ public class BalanceDao extends SqlSessionDaoSupport{
 		return (List<String>)getSqlSession().selectList("balanceQuery.saleTypeList", balanceDtoEx);
 	}
 
-	public List<BalanceDTOEx> searchSale(BalanceDTOEx balanceDtoEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchSale", balanceDtoEx);
-	}
-	
-	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
-		return (List<BalanceDTOEx>)getSqlSession().selectList("balanceQuery.searchCP", balanceDTOEx);
-	}
-
 	public void modify(BalanceDTOEx balanceDto) {
 		getSqlSession().update("balanceQuery.modify", balanceDto);
 		
@@ -75,11 +68,10 @@ public class BalanceDao extends SqlSessionDaoSupport{
 	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {
 		return (List<Map>)getSqlSession().selectList("balanceQuery.contents", companyContractDTOEx);
 	}
-	
-	
-
-	
-
-	
-
+	public int cpsCount(BalanceDTOEx balanceDto) {
+		return (Integer)getSqlSession().selectOne("balanceQuery.cpsCount", balanceDto);
+	}
+	public int salesCount(BalanceDTOEx balanceDto) {
+		return (Integer)getSqlSession().selectOne("balanceQuery.salesCount", balanceDto);
+	}
 }

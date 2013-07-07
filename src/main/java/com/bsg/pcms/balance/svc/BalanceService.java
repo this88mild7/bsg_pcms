@@ -71,16 +71,6 @@ public class BalanceService {
 		
 		return  balanceDao.saleList(balanceDTOEx);
 	}
-	public List<BalanceDTOEx> searchSale(BalanceDTOEx balanceDTOEx) {
-		
-		balanceDTOEx.checkBlankSearchParam();
-		return balanceDao.searchSale(balanceDTOEx);
-	}
-	
-	public List<BalanceDTOEx> searchCP(BalanceDTOEx balanceDTOEx) {
-		balanceDTOEx.checkBlankSearchParam();
-		return balanceDao.searchCP(balanceDTOEx);
-	}
 	public List<Map> saleCompanyList() {
 		return balanceDao.saleCompanyList();
 	}
@@ -92,6 +82,13 @@ public class BalanceService {
 	}
 	public List<Map> contents(CompanyContractDTOEx companyContractDTOEx) {
 		return balanceDao.contents(companyContractDTOEx);
+	}
+	
+	public int cpsCount(BalanceDTOEx balanceDto) {
+		return balanceDao.cpsCount(balanceDto);
+	}
+	public int salesCount(BalanceDTOEx balanceDto) {
+		return balanceDao.salesCount(balanceDto);
 	}
 
 }

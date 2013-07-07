@@ -14,10 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
 import com.bsg.pcms.dto.BalanceDTO;
+import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping( value = "balance/sale-company" )
@@ -34,6 +36,9 @@ public class BalanceComController {
 	@Autowired
 	private CompanyService _saleCompanyService; 
 	
+	@Autowired
+	private PageUtil pageUtil;
+	
 	@RequestMapping(value = "list.do")
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
 		
@@ -46,20 +51,12 @@ public class BalanceComController {
 		mav.addObject("balanceList", balanceList);
 		mav.addObject("sorting_type", balanceDTOEx.getSorting_type());
 		
-		return mav;
+		int balanceSalesTotalCount = balanceService.salesCount(balanceDTOEx);
 		
-	}
-	
-	@RequestMapping(value = "search.do")
-	public ModelAndView search(BalanceDTOEx balanceDTOEx) {
-		
-		List<BalanceDTOEx> balanceList = balanceService.searchSale(balanceDTOEx);
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("balance-sale-list");
-		mav.addObject("navSeq", bigstarConstant.HEADER_BALANCE);
-		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_BALANCE_SALE);
-		mav.addObject("balanceList", balanceList);
+		int pageNum = balanceDTOEx.getPageNum();
+		PageLinkDTO pageLink = pageUtil.setPageLinkDTO(balanceSalesTotalCount, pageNum);
+		mav.addObject("pageLink", pageLink);
+		mav.addObject("search", balanceDTOEx);
 		
 		return mav;
 		
