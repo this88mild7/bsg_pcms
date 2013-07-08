@@ -221,8 +221,8 @@ $(function(){
 
 function createColumnChart(option){
 
-	var param;
-	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
+	var param = {searchEndDate:'2013-07'};
+	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
 		console.info( data );
@@ -240,7 +240,7 @@ function createColumnChart(option){
 		$.each( data.pieGraph, function(idx, ele){
 			
 			// For columnChart
-			columnFirstRow.push( ele.contentName );
+			columnFirstRow.push( ele.saleCompany );
 			columnSecondRow.push( ele.saleCount );
 			
 		});
@@ -251,6 +251,7 @@ function createColumnChart(option){
 			rows : [ columnFirstRow, columnSecondRow ]
 		});
 	});
+	
 }
 
 function createLineChart(option){
