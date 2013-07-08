@@ -34,9 +34,6 @@ h4 {
 #myTab>li.active>a {
 	color: #B404AE;
 }
-.tabbable .btn-url {
-	margin-left : 100px;
-}
 .tab-content .table {
 	margin : 0px 0px 0px;
 }
@@ -98,7 +95,7 @@ h4 {
 					<th>회사명</th>
 					<th>등록일</th>
 					<th>연락처</th>
-					<th>상세보기</th>
+					<th class="span2">상세보기</th>
 				</tr>
 				<c:forEach items="${cpList}" var="cp" varStatus="loop">
 					<c:choose>
@@ -122,7 +119,7 @@ h4 {
 					<th>판매처명</th>
 					<th>계약날짜</th>
 					<th>연락처</th>
-					<th>상세보기</th>
+					<th class="span2">상세보기</th>
 				</tr>
 				<c:forEach items="${saleCompanyList}" var="saleCompany" varStatus="loop">
 					<c:choose>
