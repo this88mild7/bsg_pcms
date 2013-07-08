@@ -1,5 +1,6 @@
 package com.bsg.pcms.balance;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +44,13 @@ public class BalanceComController {
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
 		
 		List<BalanceDTOEx> balanceList = balanceService.saleList(balanceDTOEx);
+		
+		DecimalFormat df = new DecimalFormat("#");
+		for( BalanceDTOEx bde :balanceList ) {
+			bde.setSaleMoney( df.format(bde.getSale_commission()) );
+			bde.setCpMoney( df.format(bde.getCp_commission()) );
+			bde.setTotalMoney( df.format(bde.getTotal_sale_price()) );
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("balance-sale-list");
