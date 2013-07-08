@@ -247,9 +247,12 @@ function createLineChart(option){
 		
 		var lineRows = []; //구글 params
 		var firstRow = [ "" ];
+		var lineCnt = 5; //차트에 보여질 선 갯수
 		//set company name
 		$.each( data.lineGraph, function(idx, ele){
-			firstRow.push( ele.contentName ); //['','companyName','companyName(n)']
+			if(idx < lineCnt) {
+				firstRow.push( ele.contentName ); //['','companyName','companyName(n)']
+			}
 		});
 		lineRows.push(firstRow);
 		
@@ -257,7 +260,9 @@ function createLineChart(option){
 		for ( var begin = 0; begin <= 11; begin++ ) {
 			var dataRow = [ (begin+1) + "월" ];
 			$.each( data.lineGraph, function(idx, ele){
-				dataRow.push( ele.monthCount[ begin ] ); 
+				if(idx < lineCnt) {
+					dataRow.push( ele.monthCount[ begin ] ); 
+				}
 			});
 			
 			lineRows.push(dataRow);

@@ -65,8 +65,8 @@
 			</td>
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contract_type }</td>
-			<td class="price">${ balance.total_sale_price }</td>
-			<td class="price">${ balance.cp_commission }</td>
+			<td class="price">${ balance.totalMoney }</td>
+			<td class="price">${ balance.cpMoney }</td>
 			<td>${ balance.reg_dt }</td>
 		</tr>
 		</c:forEach>
