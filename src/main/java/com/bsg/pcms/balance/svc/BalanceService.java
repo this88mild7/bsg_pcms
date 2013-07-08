@@ -61,6 +61,13 @@ public class BalanceService {
 		return balanceDao.detail(balanceDto);
 	}
 	public List<BalanceDTOEx> cpList(BalanceDTOEx balanceDto) {
+		if(balanceDto == null){
+			balanceDto = new BalanceDTOEx();
+		}
+		
+		if(StringUtils.isBlank(balanceDto.getSortingType())){
+			balanceDto.setSortingType("1");
+		}
 		return balanceDao.cpList(balanceDto);
 	}
 	public void delete(BalanceDTOEx balanceDto) {

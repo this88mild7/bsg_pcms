@@ -92,10 +92,10 @@
 				AND #{searchEndDate}
 			</if>
 		</if>
-		GROUP BY COM.COMPANY_MGMTNO
+		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO 
+			ORDER BY DATE_FORMAT(BAL.SALE_END_DATE,'%Y-%m') DESC
 		</if>
 		<!-- 매출순 -->
 		<if test="sortingType == 2">
@@ -204,7 +204,7 @@
 	
 	<select id="salesCount" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx"  resultType="int">
 		SELECT COUNT(*) FROM (
-			SELECT /* Balance.saleList */ 
+			SELECT /* Balance.salesCount */ 
 			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_TYPE, 
 			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.CONTRACT_TYPE) AS CONTRACT_TYPE, 
 			DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') AS SALE_STR_DATE, 
@@ -230,6 +230,7 @@
 				CONT.NAME like '%${searchQuery}%'
 			)
 		</if>
+		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		) A
 	</select>
 	
