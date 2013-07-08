@@ -151,6 +151,20 @@ public class StatisticsAjaxController {
 		
 		return jsonString;
 	}
+
+	/**
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping( value = "product/columnGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String productColumnGraph(StatisticsDTO param) {
+		
+		//List<Map> companyList = statService.productsForMap(param);
+		
+		String jsonString = "";//_jsonResponseMaker.generateMapList("tableList", companyList);
+		
+		return jsonString;
+	}
 	
 	/**
 	 * param

@@ -3,12 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <style>
-#chart1 {
+#pie-chart-layer {
         height: 400px;
         margin: 10px auto;
         padding: 10px;
       }
-#chart2 {
+#line-chart-layer {
         height: 400px;
         margin: 10px auto;
         padding: 10px;
@@ -104,7 +104,7 @@
 				<div class="chart-title">
 					판매처별 판매그래프
 				</div>
-				<div id="chart1"></div>
+				<div id="pie-chart-layer"></div>
 			</div>
 			<div class="span8">
 				<div class="chart-title">
@@ -113,7 +113,7 @@
 						<option>2013년</option>
 					</select>
 				</div>
-				<div id="chart2"></div>
+				<div id="line-chart-layer"></div>
 			</div>
 		</div>
 	
@@ -131,7 +131,7 @@ $(function(){
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
 	
 	//파이차트 그리기
-	createPidChart();
+	createPieChart();
 
 	//선차트 그리기
 	createLineChart();
@@ -145,7 +145,7 @@ $(function(){
 	
 });
 
-function createPidChart(option){
+function createPieChart(option){
 
 	var param;
 	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
@@ -169,7 +169,7 @@ function createPidChart(option){
 		
 		//GOOGLE PIE CHART API CALL
 		drawPieChart({
-			id : "chart1",
+			id : "pie-chart-layer",
 			rows : pieRows
 		});
 	});
@@ -212,7 +212,7 @@ function createLineChart(option){
 		//GOOGLE LINE CHART API CALL
 		drawLineChart({
 			rows : lineRows,
-			id : "chart2"
+			id : "line-chart-layer"
 		});
 	});
 }

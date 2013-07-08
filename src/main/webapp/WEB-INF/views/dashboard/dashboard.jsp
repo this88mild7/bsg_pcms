@@ -7,12 +7,10 @@
 .alert-info {
 	height : 250px;
 }
-#chart1 {
+#column-chart-layer {
         height: 400px;
-        margin: 10px auto;
-        padding: 10px;
       }
-#chart2 {
+#line-chart-layer {
         height: 400px;
         margin: 10px auto;
         padding: 10px;
@@ -65,18 +63,20 @@ h4 {
 		<tr>
 			<th>상품코드</th>
 			<th>상품명</th>
-			<th>판매방식</th>	
 			<th>판매처</th>
 			<th class="span2">상세보기</th>
 		</tr>
-		<c:forEach begin="0" end="5" step="1">
-		<tr>
-			<td>노부영 시리즈</td>
-			<td>LG</td>
-			<td>김아무개</td>
-			<td>Ios</td>
-			<td><button class="btn btn-mini"><i class="icon-zoom-in"></i> 상세보기</button></td>
-		</tr>
+		<c:forEach items="${productList}" var="product" varStatus="loop">
+			<c:choose>
+			<c:when test="${loop.count lt 7}">
+	        <tr>
+	   	    	<td>${ product.product_mgmtno }</td>
+	   	    	<td>${ product.name }</td>
+	   	    	<td>${ product.company_name }</td>
+				<td><button class="btn btn-mini btn-url" data-url="<spring:eval expression="@urlProp['productDetail']"/>?company_mgmtno=${ cp.company_mgmtno }"><i class="icon-zoom-in"></i> 상세보기</button></td>
+	        </tr>
+			</c:when> 
+			</c:choose> 
 		</c:forEach>
 		</table>
 	</div>
@@ -150,8 +150,8 @@ h4 {
 		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 3월 판매처 판매통계</h4>
 		<span class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></span>
 		<div class="clearfix"></div>
-		<div id="chart1">
-		&nbsp;
+		<div id="column-chart-layer">
+			<!-- GOOGLE COLUMN CHART HERE -->
 		</div>
 		
 	</div>
@@ -161,15 +161,29 @@ h4 {
 		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 월 상품통계</h4>
 		<div class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></div>
 		<div class="clearfix"></div>
-		<div id="chart2">
-		&nbsp;
+		<div id="line-chart-layer">
+			<!-- GOOGLE LINE CHART HERE -->
 		</div>
 		
 	</div>
 	
 </div>
+
+	<!-- GOOGLE CHART API -->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart']});
+    </script>
+    
 <script>
 $(function(){
+	
+	//컬럼차트 그리기
+	createColumnChart();
+
+	//선차트 그리기
+	createLineChart();
+	
 	
 	//CP업체|판매처 탭 활성화
 	$("#myTab")
@@ -185,117 +199,140 @@ $(function(){
 				return false;
 			
 			$(this).click(function(){
-				addStar( index );
+				if( 0 == index ) {
+					$("span.star-box")
+						.eq(1).hide()
+						.end()
+						.eq(0).show();
+				} else {
+					$("span.star-box")
+						.eq(0).hide()
+						.end()
+						.eq(1).show();
+				}
 			});
 		});
 	
 	
-	chart1( document.getElementById('chart1') );
-	basic( document.getElementById('chart2') );
 });
 
-var addStar = function( index ) {
+function createColumnChart(option){
+
+	var param;
+	var url = '<spring:eval expression="@urlProp['statsCompanyColumnChart']"/>';
 	
-	if( 0 == index ) {
-		$("span.star-box")
-			.eq(1).hide()
-			.end()
-			.eq(0).show();
-	} else {
-		$("span.star-box")
-			.eq(0).hide()
-			.end()
-			.eq(1).show();
-	}
+	drawColumnChart({
+		id : "column-chart-layer"
+	});
+	
+	/*
+	$.getJSON(url, param, function(data) {
+		
+		console.info( data );
+		
+		if(data.code != 200) {
+			bootbox.alert( data.msg );
+			return false;
+		} else if(data.pieGraph.length == 0) {
+			bootbox.alert( "파이차트 데이터가 없습니다." );
+			return false;
+		}
+		
+		var pieRows = [];
+		$.each( data.pieGraph, function(idx, ele){
+			var pieData = [ ele.saleCompany, ele.saleCount ];
+			pieRows.push(pieData);
+		});
+		
+		//GOOGLE PIE CHART API CALL
+		drawColumnChart({
+			id : "column-chart-layer",
+			rows : pieRows
+		});
+	});
+	*/
 }
 
-//하단 좌측 차트 더미 데이터  
-function chart1(container) {
-   var d1 = [ [1.3, 4.0],[2.3, 3.0],[3.3, 4.3],[4.3, 4.7],[5.3, 4.7],[6.3, 4.3],[7.3, 4.7],[8.3, 4.2] ],    // My
-       d2 = [ [1,3.5],[2,3.7],[3,3.5],[4,3.7],[5,3.7],[6,3.2],[7,3.4],[8,3.5] ];
+function createLineChart(option){
 
-   var bar1 = {
-       data: d1,
-       label: "Me",
-       bars: {
-           show: true,
-           barWidth: 0.3
-       }
-   }, mark1 = {
-       data: d1,
-       markers: {
-           show: true,
-             position: 'ct',
-             fontSize: '10'
-       }
-   }, bar2 = {
-       data: d2,
-       label: "Avg",
-       bars: {
-           show: true,
-           barWidth: 0.3
-       }
-   }, mark2 = {
-       data: d2,
-       markers: {
-           show: true,
-             position: 'ct',
-             fontSize: '10'
-       }
-   };
+	var param;
+	var url = '<spring:eval expression="@urlProp['statsProductLineChart']"/>';
+	
+	$.getJSON(url, param, function(data) {
+		console.info( data );
+		
+		if(data.code != 200) {
+			bootbox.alert( data.msg );
+			return false;
+		} else if(data.lineGraph.length == 0) {
+			bootbox.alert( "선차트 데이터가 없습니다." );
+			return false;
+		}
+		
+		var lineRows = []; //구글 params
+		var firstRow = [ "" ];
+		//set company name
+		$.each( data.lineGraph, function(idx, ele){
+			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
+		});
+		lineRows.push(firstRow);
+		
+		//set data
+		for ( var begin = 0; begin <= 11; begin++ ) {
+			var dataRow = [ (begin+1) + "월" ];
+			$.each( data.lineGraph, function(idx, ele){
+				dataRow.push( ele.monthCount[ begin ] ); 
+			});
+			
+			lineRows.push(dataRow);
+		}
+		
+		//GOOGLE LINE CHART API CALL
+		drawLineChart({
+			rows : lineRows,
+			id : "line-chart-layer"
+		});
+	});
+}
 
-   Flotr.draw(
-       container,
-       [bar1, mark1, bar2, mark2],
-       {
-         legend : {
-               position : 'sw',
-               backgroundOpacity: 1,
-               backgroundColor: '#e0e0e0'
-           },
-           yaxis: {
-               min: 0,
-               max: 6,
-                 tickDecimals: 'no',
-                 ticks: [ [1,"1"], [2,"2"], [3,"3"], [4,"4"], [5,"5"] ]
-           },
-           xaxis: {
-                 ticks: [ [1.1,"Total"], [2.1,"Job"], [3.1, "TMR"],
-                          [4.1, "Ini"], [5.1, "Com"], [6.1, "Exe"],
-                          [7.1, "Co"], [8.1, "Re"] ]
-           },
-           mouse: { track: true }
-       }
-   )
+function drawColumnChart( params ) {
+	console.info( params );
+	
+	/*
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'string');
+	data.addColumn('number', 'number');
+	data.addRows( params.rows );
+	*/
+	
+	// Data
+	var data = google.visualization.arrayToDataTable([
+		['Year', '상품명1', '상품명2', '상품명3', '상품명4', '테스트1', '테스트2', 'test3', 'test4'],
+		['2004',  1000,    400,     345,     951  ,  1000,    400,     345,     951    ]
+	]);
+	
+	var options = {
+			//chartArea: {width: '90%', height: '80%'},
+			//legend: {position: 'bottom'}
+			title: '7월 통계',
+			//bar:{groupWidth:300},
+			hAxis: {title: "7월"},
+			backgroundColor:{fill:'white'}
+			
+		};
+	var columnChart = new google.visualization.ColumnChart(document.getElementById( params.id ));
+	columnChart.draw(data, options);
+}
+  
+function drawLineChart( params ) {
+	console.info( params );
+    var data = google.visualization.arrayToDataTable( params.rows );
 
-   // for FF case z-index error fix
-   $('.flotr-legend').css('z-index', '2');
-   $('.flotr-legend-bg').css('z-index', '1');
-
-
-   }
-   
-// 하단 우측 차트 더미 데이터   
-function basic(container) {
-
-	  var
-	    d1 = [[0, 3], [4, 8], [8, 5], [9, 13]], // First data series
-	    d2 = [],                                // Second data series
-	    i, graph;
-
-	  // Generate first data set
-	  for (i = 0; i < 14; i += 0.5) {
-	    d2.push([i, Math.sin(i)]);
-	  }
-
-	  // Draw Graph
-	  graph = Flotr.draw(container, [ d1, d2 ], {
-	    xaxis: {
-	      minorTickFreq: 4
-	    }, 
-	    grid: {
-	      minorVerticalLines: true
-	    }
-	  });
-	};
+	var options = {
+			chartArea: {width: '85%', height: '75%'},
+			legend: {position: 'bottom'}
+			};
+    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
+    lineChart.draw(data, options);
+}
 </script>
