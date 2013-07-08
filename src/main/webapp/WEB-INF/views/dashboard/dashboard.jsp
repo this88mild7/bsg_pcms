@@ -219,38 +219,35 @@ $(function(){
 function createColumnChart(option){
 
 	var param;
-	var url = '<spring:eval expression="@urlProp['statsCompanyColumnChart']"/>';
+	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
-	drawColumnChart({
-		id : "column-chart-layer"
-	});
-	
-	/*
 	$.getJSON(url, param, function(data) {
-		
 		console.info( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
 			return false;
 		} else if(data.pieGraph.length == 0) {
-			bootbox.alert( "파이차트 데이터가 없습니다." );
+			bootbox.alert( "컬럼차트 데이터가 없습니다." );
 			return false;
 		}
 		
-		var pieRows = [];
+		var columnFirstRow = [""];
+		var columnSecondRow = [""];
 		$.each( data.pieGraph, function(idx, ele){
-			var pieData = [ ele.saleCompany, ele.saleCount ];
-			pieRows.push(pieData);
+			
+			// For columnChart
+			columnFirstRow.push( ele.contentName );
+			columnSecondRow.push( ele.saleCount );
+			
 		});
 		
 		//GOOGLE PIE CHART API CALL
 		drawColumnChart({
 			id : "column-chart-layer",
-			rows : pieRows
+			rows : [ columnFirstRow, columnSecondRow ]
 		});
 	});
-	*/
 }
 
 function createLineChart(option){
@@ -296,29 +293,18 @@ function createLineChart(option){
 }
 
 function drawColumnChart( params ) {
+	console.info( "drawColumnChart" );
 	console.info( params );
 	
-	/*
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'string');
-	data.addColumn('number', 'number');
-	data.addRows( params.rows );
-	*/
-	
 	// Data
-	var data = google.visualization.arrayToDataTable([
-		['Year', '상품명1', '상품명2', '상품명3', '상품명4', '테스트1', '테스트2', 'test3', 'test4'],
-		['2004',  1000,    400,     345,     951  ,  1000,    400,     345,     951    ]
-	]);
+	var data = google.visualization.arrayToDataTable( params.rows);
 	
 	var options = {
-			//chartArea: {width: '90%', height: '80%'},
-			//legend: {position: 'bottom'}
-			title: '7월 통계',
-			//bar:{groupWidth:300},
+			chartArea: {width: '80%', height: '80%'},
+			legend: {position: 'bottom'},
 			hAxis: {title: "7월"},
-			backgroundColor:{fill:'white'}
-			
+			backgroundColor:{fill:'white'},
+			bar:{groupWidth:"90%"}
 		};
 	var columnChart = new google.visualization.ColumnChart(document.getElementById( params.id ));
 	columnChart.draw(data, options);
