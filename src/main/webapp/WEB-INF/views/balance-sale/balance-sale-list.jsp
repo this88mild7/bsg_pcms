@@ -76,7 +76,7 @@
 			<td>${ balance.cp_commission }</td>
 			<td>${ balance.cp_commission }</td>
 			 -->
-			<td class="price">${ balance.owner_profit }</td>
+			<td class="price">${ balance.ownerMoney }</td>
 		</tr>
 		</c:forEach>
 		</table>

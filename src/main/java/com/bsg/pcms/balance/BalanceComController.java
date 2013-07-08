@@ -49,6 +49,7 @@ public class BalanceComController {
 		for( BalanceDTOEx bde :balanceList ) {
 			bde.setSaleMoney( df.format(bde.getSale_commission()) );
 			bde.setCpMoney( df.format(bde.getCp_commission()) );
+			bde.setOwnerMoney( df.format(bde.getOwner_profit()) );
 			bde.setTotalMoney( df.format(bde.getTotal_sale_price()) );
 		}
 		
