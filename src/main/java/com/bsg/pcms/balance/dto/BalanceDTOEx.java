@@ -39,6 +39,11 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String total_profit;
 	
+	private String cpMoney; //cp_commission을 String타입으로 변환한 값
+	
+	private String totalMoney; //total_sale_price을 String타입으로 변환한 값
+	
+	
 	private List<String> contentCpProfit;
 	
 	private List<String> contentSaleProfit;
@@ -141,6 +146,22 @@ public class BalanceDTOEx extends BalanceDTO{
 
 	public void setSortingType(String sortingType) {
 		this.sortingType = sortingType;
+	}
+
+	public String getCpMoney() {
+		return cpMoney;
+	}
+
+	public void setCpMoney(String cpMoney) {
+		this.cpMoney = cpMoney;
+	}
+
+	public String getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(String totalMoney) {
+		this.totalMoney = totalMoney;
 	}
 
 	public List<String> getContentList() {
