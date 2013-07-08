@@ -421,6 +421,8 @@ $('#salePeriodTip')
 {
 	//판매처 아이디가 변할때 마다 판매기종 가져오기
 	$("#saleCompanyList").change(function(){
+		
+		/*
 		var $this = $(this);
 		if($this.val() == 0) {
 			return false;
@@ -428,11 +430,11 @@ $('#salePeriodTip')
 		
 		var companyMgmtno = $("#saleCompanyList").find("option").filter(":selected").val();
 		
-		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContractType']"/>';
+		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContents']"/>';
 		var param = { company_mgmtno : companyMgmtno };
 		$.getJSON(url, param, function(data) {
 			console.info(data);
-			if(data.code == 999) {
+			if(data.code != 200) {
 				bootbox.alert( data.msg );
 				return false;
 			}
@@ -457,6 +459,7 @@ $('#salePeriodTip')
 			});
 		})
 		.fail(function() { bootbox.alert( data.msg ); });
+		*/
 		
 	});
 	
