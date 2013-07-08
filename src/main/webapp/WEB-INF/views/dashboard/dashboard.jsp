@@ -58,7 +58,7 @@ h4 {
 	<div class="span6">
 		
 		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 최신등록상품</h4>
-		<span class="pull-right"><button class="btn btn-small btn-dashboard" data-url=""><i class="icon-list-alt"></i> 더보기</button></span>
+		<span class="pull-right"><button class="btn btn-small btn-url" data-url='<spring:eval expression="@urlProp['saleCompanyContractList']"/>'><i class="icon-list-alt"></i> 더보기</button></span>
 			
 			
 		<table class="table table-striped table-hover">
@@ -87,7 +87,7 @@ h4 {
 		 <ul id="myTab" class="nav nav-tabs">
 	      <li><a href="#cpTab" data-toggle="tab"><span class="star-box"><img src='<spring:eval expression="@urlProp['star']"/>'></span> CP업체</a></li>
 	      <li><a href="#customerTab" data-toggle="tab"><span class="star-box"><img src='<spring:eval expression="@urlProp['star']"/>'></span> 판매처</a></li>
-	      <li class="pull-right"><button class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['cpList']"/>"><i class="icon-list-alt"></i> 더보기</button></li>
+	      <li class="pull-right"><button id="cross" class="btn btn-small btn-url cross" data-url="<spring:eval expression="@urlProp['cpList']"/>"><i class="icon-list-alt"></i> 더보기</button></li>
 	    </ul>
    
 	    <div class="tab-content">
@@ -150,7 +150,7 @@ h4 {
 	<div class="span6">
 	
 		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> <span id="thisMonth"></span>월 판매처 판매통계</h4>
-		<span class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></span>
+		<span class="pull-right"><button class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>"><i class="icon-list-alt"></i> 더보기</button></span>
 		<div class="clearfix"></div>
 		<div id="column-chart-layer">
 			<!-- GOOGLE COLUMN CHART HERE -->
@@ -160,8 +160,8 @@ h4 {
 	
 	<div class="span6">
 		
-		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 월 상품통계</h4>
-		<div class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></div>
+		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 월간 상품통계</h4>
+		<div class="pull-right"><button class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['statsProductDashboard']"/>"><i class="icon-list-alt"></i> 더보기</button></div>
 		<div class="clearfix"></div>
 		<div id="line-chart-layer">
 			<!-- GOOGLE LINE CHART HERE -->
@@ -207,11 +207,16 @@ $(function(){
 						.eq(1).hide()
 						.end()
 						.eq(0).show();
+					
+					$("#cross").data("url", "<spring:eval expression="@urlProp['cpList']"/>");
+					
 				} else {
 					$("span.star-box")
 						.eq(0).hide()
 						.end()
 						.eq(1).show();
+					
+					$("#cross").data("url", "<spring:eval expression="@urlProp['saleCompanyList']"/>");
 				}
 			});
 		});
