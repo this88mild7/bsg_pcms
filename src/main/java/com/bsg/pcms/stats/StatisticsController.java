@@ -71,7 +71,7 @@ public class StatisticsController {
 		mav.setViewName("statistics-product-dashboard");
 		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
 		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_PRODUCT);
-		mav.addObject("tableList", statService.productList(null));
+		mav.addObject("tableList", statService.products(requestParam));
 		
 		
 		int productTotalCount = statService.productsCount(requestParam);
@@ -82,30 +82,4 @@ public class StatisticsController {
 		
 		return mav;
 	}
-	
-	/**
-	 * 
-	 * tableList setting properties: 
-	 * 	company_name, 
-	 *  total_sale_count, 
-	 *  total_sale_price, 
-	 *  sale_device, 
-	 *  sale_str_date, 
-	 *  sale_end_date
-	 *  
-	 * @return
-	 */
-	@RequestMapping( value = "product/list.do", method = RequestMethod.GET )
-	public ModelAndView productList() {
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("statistics");
-		mav.addObject("navSeq", bigstarConstant.HEADER_STATS);
-		mav.addObject("leftMenuSeq", bigstarConstant.LEFT_STATISTICS_SALE_COMPANY);
-		mav.addObject("tableList", statService.saleCompanys(null));
-
-		return mav;
-	}
-	
-	
 }

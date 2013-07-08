@@ -53,7 +53,6 @@
 			<th>정산월</th>
 			<th>판매처</th>
 			<th>상품</th>
-			<th>판매방식</th>
 			<th>판매횟수</th>
 			<th>총매출금액</th>
 			<th>판매업체수수료</th>
@@ -69,7 +68,6 @@
 			<td>${ balance.sale_str_date }월</td>
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contents_name }</td>
-			<td>${ balance.contract_type }</td>
 			<td class="count">${ balance.total_sale_count } </td>
 			<td class="price">${ balance.total_sale_price }</td>
 			<td class="price">${ balance.sale_commission }</td>

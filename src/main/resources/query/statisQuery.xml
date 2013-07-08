@@ -175,6 +175,7 @@
 		ORDER BY A.TOTAL_SALE_COUNT DESC
 	</select>
 	
+	
 	<select id="productsPieGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
 							resultType="com.bsg.pcms.stats.dto.StatisticsDTO" >
 			SELECT * FROM (
@@ -483,6 +484,25 @@
 			), 0) AS '12'
 		FROM DUAL
 	</select>
+	
+	<select id="saleCompanysStickGraph" parameterType="com.bsg.pcms.stats.dto.StatisticsDTO" 
+							resultType="Map" >
+	   		SELECT /* statisQuery.saleCompanysStickGraph */
+	   			COM.COMPANY_NAME
+	   			, SUM(BAL.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
+	   		FROM BALANCE BAL, COMPANY COM
+			WHERE 1=1
+			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
+			AND COM.COMPANY_TYPE='SC'
+			<if test="searchEndDate !=null">
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
+			</if>
+			<if test="searchEndDate ==null">
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = DATE_FORMAT(now(), '%Y-%m')
+			</if>
+			GROUP BY BAL.COMPANY_MGMTNO
+			ORDER BY BAL.TOTAL_SALE_COUNT
+	</select> 
    
    
    <!-- UPDATE -->

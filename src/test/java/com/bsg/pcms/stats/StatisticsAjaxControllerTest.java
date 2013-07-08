@@ -119,5 +119,12 @@ public class StatisticsAjaxControllerTest {
 		assertThat(result, is(notNullValue()));
 		logger.info("{}", result);
 	}
+	@Test
+	public void testStickGraph() {
+		param.setSortingType("1");
+		String result = statisticsAjaxController.stickGraph(param);
+		assertThat(result, is(notNullValue()));
+		logger.info("{}", result);
+	}
 
 }

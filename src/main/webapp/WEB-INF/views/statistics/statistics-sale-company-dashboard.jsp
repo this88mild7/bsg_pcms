@@ -58,7 +58,7 @@
 				</select>
 			</span>
 			<div class="input-append">
-				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleSearch']"/>">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>

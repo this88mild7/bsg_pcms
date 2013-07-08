@@ -182,7 +182,7 @@
 				AND #{searchEndDate}
 			</if>
 		</if>
-		GROUP BY BAL.BALANCE_MGMTNO
+		GROUP BY COM.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
@@ -301,8 +301,7 @@
 		AND CNTR.CONTRACT_MGMTNO = CCGR.CONTRACT_MGMTNO
 		AND COM.COMPANY_MGMTNO = CNTR.COMPANY_MGMTNO 
 		AND CON.CONTENTS_CD = CCGR.CONTENTS_CD		
-		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}
-		AND CNTR.CONTRACT_TYPE = #{contract_type}
+		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}		
 		<if test="searchQuery != null">
 		AND CON.NAME like '%${searchQuery}%'
 		</if>

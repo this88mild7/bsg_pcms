@@ -53,4 +53,8 @@ public class StatisticsDao extends SqlSessionDaoSupport{
 		return (Integer)getSqlSession().selectOne("statisQuery.productsCount", requestParam);
 	}
 
+	public List<Map> saleCompanysStickGraph(StatisticsDTO param) {
+		return (List<Map>)getSqlSession().selectList("statisQuery.saleCompanysStickGraph", param);
+	}
+
 }
