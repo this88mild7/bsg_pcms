@@ -33,7 +33,6 @@
 			<tr>
 				<th><input class="check-all" type="checkbox" name="checkbox_all" value="false" data-toggle="tooltip"></th>
 				<th>계약코드</th>
-				<th>판매방식</th>
 				<th>판매처</th>
 				<th>상품명</th>
 				<th>등록일</th>
@@ -50,7 +49,6 @@
 									<c:when test="${roop.index == 0}">
 										<td rowspan="${contract.contents_count}"><input type="checkbox" name="check_list" data-contract_mgmtno="${contract.contract_mgmtno }" ></td>						
 										<td rowspan="${contract.contents_count}">${contract.contract_mgmtno }</td>						
-										<td rowspan="${contract.contents_count}">${contract.contract_type }</td>						
 										<td rowspan="${contract.contents_count}">${contract.company_name }</td>						
 										<td>${contractContent.name }</td>		
 										<td rowspan="${contract.contents_count}">${contract.reg_dt }</td>				
