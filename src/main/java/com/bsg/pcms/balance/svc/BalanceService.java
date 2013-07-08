@@ -68,6 +68,9 @@ public class BalanceService {
 		if(StringUtils.isBlank(balanceDto.getSortingType())){
 			balanceDto.setSortingType("1");
 		}
+		
+		balanceDto.setStartRownum((balanceDto.getPageNum() - 1) * balanceDto.getPerPage());
+		
 		return balanceDao.cpList(balanceDto);
 	}
 	public void delete(BalanceDTOEx balanceDto) {
@@ -81,6 +84,8 @@ public class BalanceService {
 		if(StringUtils.isBlank(balanceDTOEx.getSortingType())){
 			balanceDTOEx.setSortingType("1");
 		}
+		
+		balanceDTOEx.setStartRownum((balanceDTOEx.getPageNum() - 1) * balanceDTOEx.getPerPage());
 		
 		return  balanceDao.saleList(balanceDTOEx);
 	}
