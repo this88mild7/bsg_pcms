@@ -97,8 +97,12 @@ public class StatisticsService {
 	public List<StatisticsDTO> products(StatisticsDTO param) {
 		if(param == null){
 			param = new StatisticsDTO();
+		}
+		
+		if(StringUtils.isBlank(param.getSortingType())){
 			param.setSortingType("2");
 		}
+		
 		param.setStartRownum((param.getPageNum() - 1) * param.getPerPage());
 		
 		return statDao.products(param);
