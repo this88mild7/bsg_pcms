@@ -182,7 +182,7 @@
 				AND #{searchEndDate}
 			</if>
 		</if>
-		GROUP BY COM.COMPANY_MGMTNO
+		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
 			ORDER BY BAL.BALANCE_MGMTNO 
