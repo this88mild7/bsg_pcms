@@ -70,10 +70,10 @@ h4 {
 			<c:choose>
 			<c:when test="${loop.count lt 7}">
 	        <tr>
-	   	    	<td>${ product.product_mgmtno }</td>
-	   	    	<td>${ product.name }</td>
+	   	    	<td>${ product.contents_cd }</td> 
+	   	    	<td>${ product.contents_name }</td> 
 	   	    	<td>${ product.company_name }</td>
-				<td><button class="btn btn-mini btn-url" data-url="<spring:eval expression="@urlProp['productDetail']"/>?company_mgmtno=${ cp.company_mgmtno }"><i class="icon-zoom-in"></i> 상세보기</button></td>
+				<td><button class="btn btn-mini btn-url" data-url="<spring:eval expression="@urlProp['saleCompanyContractDetail']"/>?contract_mgmtno=${ product.contract_mgmtno }"><i class="icon-zoom-in"></i> 상세보기</button></td>
 	        </tr>
 			</c:when> 
 			</c:choose> 

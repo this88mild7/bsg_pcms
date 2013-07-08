@@ -12,6 +12,7 @@ public class CompanyContractDTOEx extends ContractDTO{
 	private int contents_count;
 	private String company_name;
 	private String contents_cd;
+	private String contents_name;
 	private String device_cd;
 	private String device_name;
 	private String device_detail;
@@ -55,6 +56,7 @@ public class CompanyContractDTOEx extends ContractDTO{
 	private List<String> selectedContentsCd;
 	private List<String> selectedContentsPrice;
 	private List<String> selectedContentsCurrency;
+	
 	
 	
 	public List<String> getSelectedContentsCurrency() {
@@ -259,5 +261,11 @@ public class CompanyContractDTOEx extends ContractDTO{
 				+ ", selectedContentsPrice=" + selectedContentsPrice
 				+ ", selectedContentsCurrency=" + selectedContentsCurrency
 				+ "]";
+	}
+	public String getContents_name() {
+		return contents_name;
+	}
+	public void setContents_name(String contents_name) {
+		this.contents_name = contents_name;
 	}
 }

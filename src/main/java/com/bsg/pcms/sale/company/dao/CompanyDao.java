@@ -6,6 +6,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import com.bsg.pcms.dto.CompanyDTO;
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 
 
@@ -26,6 +27,12 @@ public class CompanyDao extends SqlSessionDaoSupport {
 		saleCompany.setCompany_mgmtno(0);
 		return getSqlSession().selectList( "saleCompanyQuery.companyList", saleCompany);
 	}
+	
+	public List<CompanyContractDTOEx> salProductList() {
+		return (List<CompanyContractDTOEx>)getSqlSession().selectList( "saleCompanyQuery.salProductList");
+	}
+	
+	
 	
 	public CompanyDTOEx detail(CompanyDTOEx saleCompany) {
 		return (CompanyDTOEx)getSqlSession().selectOne( "saleCompanyQuery.companyDetail", saleCompany );
@@ -51,4 +58,6 @@ public class CompanyDao extends SqlSessionDaoSupport {
 	public int totalCount(CompanyDTOEx saleCompany) {
 		return (Integer)getSqlSession().selectOne("saleCompanyQuery.companyTotalCount", saleCompany);
 	}
+
+	
 }

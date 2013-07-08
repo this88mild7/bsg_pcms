@@ -41,6 +41,10 @@ public class CompanyService {
 		return _saleCompanyDao.list(saleCompanyDto);      
 	}
 	
+	public List<CompanyContractDTOEx> saleProductList() {
+		return _saleCompanyDao.salProductList();
+	}
+	
 	public CompanyDTOEx detail(CompanyDTOEx saleCompany) {
 		return _saleCompanyDao.detail(saleCompany);
 	}
@@ -63,4 +67,6 @@ public class CompanyService {
 			_saleCompanyDao.delete(saleCompany);
 		}
 	}
+
+	
 }

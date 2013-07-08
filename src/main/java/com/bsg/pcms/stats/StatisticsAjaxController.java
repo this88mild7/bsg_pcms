@@ -41,6 +41,7 @@ public class StatisticsAjaxController {
 	 * param 
 	 * searchEndDate ex) : "2013-01" 
 	 * 
+	 * 
 	 * response
 	 * {
 			"pieGraph": [{

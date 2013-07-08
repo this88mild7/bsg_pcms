@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.dto.CompanyDTO;
+import com.bsg.pcms.dto.ProductDTO;
 import com.bsg.pcms.provision.cp.CpService;
+import com.bsg.pcms.sale.company.dto.CompanyContractDTOEx;
 import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BigstarConstant;
@@ -43,6 +45,9 @@ public class DashboardController {
 		
 		List<CompanyDTOEx> saleCompanyList = _saleCompanyService.list(new CompanyDTOEx());
 		mav.addObject( "saleCompanyList", saleCompanyList );
+		
+		List<CompanyContractDTOEx> saleProductList = _saleCompanyService.saleProductList();
+		mav.addObject( "productList", saleProductList );
 		
 		return mav;
 		
