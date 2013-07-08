@@ -3,6 +3,7 @@ package com.bsg.pcms.balance.svc;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,13 @@ public class BalanceService {
 		balanceDao.delete(balanceDto);
 	}
 	public List<BalanceDTOEx> saleList(BalanceDTOEx balanceDTOEx) {
+		if(balanceDTOEx == null){
+			balanceDTOEx = new BalanceDTOEx();
+		}
 		
-		logger.info("{}", balanceDTOEx.getSorting_type());
+		if(StringUtils.isBlank(balanceDTOEx.getSortingType())){
+			balanceDTOEx.setSortingType("2");
+		}
 		
 		return  balanceDao.saleList(balanceDTOEx);
 	}

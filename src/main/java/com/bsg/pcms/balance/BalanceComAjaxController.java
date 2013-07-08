@@ -117,9 +117,9 @@ public class BalanceComAjaxController {
 	}
 	
 	/**
-	 * @param company_mgmtno, contract_type, searchQuery
+	 * @param company_mgmtno, searchQuery
 	 * 
-	 * search : company_mgmtno, contract_type, searchQuery
+	 * search : company_mgmtno, searchQuery
 	 * list : company_mgmtno, contract_type
 	 * 
 	 * {

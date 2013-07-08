@@ -8,12 +8,22 @@ public class BigstarProperties {
 	
 	@Value("#{pmsProperties['successCode']}") 
 	int successCode;
+	
 	@Value("#{pmsProperties['failedCode']}") 
 	int failedCode;
+	
+	@Value("#{pmsProperties['notFoundCode']}") 
+	String notFoundCode;
+	
 	@Value("#{pmsProperties['successMsg']}") 
 	String successMsg;
+	
 	@Value("#{pmsProperties['failedMsg']}") 
 	String failedMsg;
+	
+	@Value("#{pmsProperties['notFoundMsg']}") 
+	String notFoundMsg;
+	
 	
 	public int getSuccessCode() {
 		return successCode;

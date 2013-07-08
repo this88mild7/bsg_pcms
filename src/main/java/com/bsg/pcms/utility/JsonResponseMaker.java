@@ -112,6 +112,7 @@ public class JsonResponseMaker {
 			json.put(jsonParentName, result);
 		}else{
 			setFailCode(json);
+			//setNotFoundCode(json);
 		}
 		
 		return json.toJSONString();
@@ -258,6 +259,10 @@ public class JsonResponseMaker {
 	}
 
 	private void setFailCode(JSONObject result) {
+		result.put(CODE, bigstarProperties.getFailedCode());
+		result.put(MSG, bigstarProperties.getFailedMsg());
+	}
+	private void setNotFoundCode(JSONObject result) {
 		result.put(CODE, bigstarProperties.getFailedCode());
 		result.put(MSG, bigstarProperties.getFailedMsg());
 	}

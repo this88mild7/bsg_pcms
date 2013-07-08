@@ -24,13 +24,11 @@ public class StatisticsService {
 	public List<StatisticsDTO> saleCompanys(StatisticsDTO requestParam) {
 		if(requestParam == null){
 			requestParam = new StatisticsDTO();
-			requestParam.setSortingType("2");
 		}
 		
 		if(StringUtils.isEmpty(requestParam.getSortingType())){
 			requestParam.setSortingType("2");
 		}
-		
 		requestParam.setStartRownum((requestParam.getPageNum() - 1) * requestParam.getPerPage());
 		
 		return statDao.saleCompanys(requestParam);
@@ -96,11 +94,13 @@ public class StatisticsService {
 		return pieGraphGForMap;
 	}
 	
-	public List<StatisticsDTO> productList(StatisticsDTO param) {
+	public List<StatisticsDTO> products(StatisticsDTO param) {
 		if(param == null){
 			param = new StatisticsDTO();
 			param.setSortingType("2");
 		}
+		param.setStartRownum((param.getPageNum() - 1) * param.getPerPage());
+		
 		return statDao.products(param);
 	}
 	
@@ -177,6 +177,10 @@ public class StatisticsService {
 
 	public int productsCount(StatisticsDTO requestParam) {
 		return statDao.productsCount(requestParam);
+	}
+
+	public List<Map> saleCompanysStickGraph(StatisticsDTO param) {
+		return statDao.saleCompanysStickGraph(param);
 	}
 
 	

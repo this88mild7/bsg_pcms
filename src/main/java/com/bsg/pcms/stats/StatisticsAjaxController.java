@@ -1,9 +1,11 @@
 package com.bsg.pcms.stats;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bsg.pcms.stats.dto.StatisticsDTO;
 import com.bsg.pcms.stats.svc.StatisticsService;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.BsgDateUtils;
 import com.bsg.pcms.utility.JsonResponseMaker;
 
 @Controller
@@ -233,4 +236,73 @@ public class StatisticsAjaxController {
 		return jsonString;
 	}
 	
+
+	/**
+	 * 
+	 * param 
+	 * searchEndDate ex) : "2013-01" 
+	 * 
+	 * response
+	 * {
+			"stickGraph": [{
+				"TOTAL_SALE_PRICE": 412233.0,
+				"COMPANY_NAME": "구글스토어"
+			},
+			{
+				"TOTAL_SALE_PRICE": 767530.0,
+				"COMPANY_NAME": "애플"
+			}],
+			"code": 200,
+			"msg": "OK"
+		}
+	 * @return
+	 */
+	@RequestMapping( value = "sale-company/main/stickGraph.ajax", produces = "application/json;charset=UTF-8")
+	public @ResponseBody String stickGraph(StatisticsDTO param) {
+		
+		List<Map> stickGraph = statService.saleCompanysStickGraph(param);
+		
+		String jsonString = _jsonResponseMaker.generateMapList("stickGraph", stickGraph);
+		
+		return jsonString;
+	}
+	
+	/**
+	 * param
+	 * searchEndDate ex) : "2013"
+	 * 
+	 * response
+	 * {
+			"lineGraph": [{
+				"contentName": "Alphabet book",
+				"monthCount": [
+					0,
+					0,
+					0,
+					0.0,
+					0,
+					30,
+					131180,
+					0.0,
+					0,
+					0,
+					0,
+					0]
+			}],
+			"contentCount": 10,
+			"code": 200,
+			"msg": "OK"
+		}
+	 * @param searchDate
+	 * @return
+	 */
+//	@RequestMapping( value = "product/main/lineGraph.ajax", produces = "application/json;charset=UTF-8")
+//	public @ResponseBody String productMainLineGraph(String searchDate) {
+//		
+//		List<StatisticsDTO> companyList = statService.productMainLineGraph(searchDate);
+//		
+//		String jsonString = _jsonResponseMaker.generateProductLineGraph("lineGraph", companyList);
+//		
+//		return jsonString;
+//	}
 }
