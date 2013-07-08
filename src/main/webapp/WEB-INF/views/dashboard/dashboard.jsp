@@ -246,7 +246,7 @@ function createColumnChart(option){
 			
 			// For columnChart
 			columnFirstRow.push( ele.saleCompany );
-			columnSecondRow.push( ele.saleCount );
+			columnSecondRow.push( ele.saleValue );
 			
 		});
 		

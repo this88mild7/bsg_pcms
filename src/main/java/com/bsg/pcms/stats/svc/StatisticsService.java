@@ -83,7 +83,7 @@ public class StatisticsService {
 			}else{
 				Map<String, Object> pieMap = new HashMap<String, Object>();
 				pieMap.put("saleCompany", pieGraphResult.get(x).getCompany_name());
-				pieMap.put("saleCount", pieGraphResult.get(x).getTotal_sale_count());
+				pieMap.put("saleValue", pieGraphResult.get(x).getTotal_sale_price());
 				pieGraphGForMap.add(pieMap);
 			}
 		}
@@ -128,7 +128,7 @@ public class StatisticsService {
 		
 		List<StatisticsDTO> pieGraphResult = statDao.productsPieGraph(param);
 		
-		int etcSaleCount = 0;
+		int etcSalePrice = 0;
 		String etcCompanyName = "ETC";
 		Map<String, Object> etcCompany = new HashMap<String, Object>();
 		
@@ -136,16 +136,16 @@ public class StatisticsService {
 		for(int x=0; x<pieGraphResult.size();x++){
 			
 			if(x>4){
-				etcSaleCount += pieGraphResult.get(x).getTotal_sale_count();
+				etcSalePrice += pieGraphResult.get(x).getTotal_sale_price();
 			}else{
 				Map<String, Object> pieMap = new HashMap<String, Object>();
 				pieMap.put("contentName", pieGraphResult.get(x).getContents_name());
-				pieMap.put("saleCount", pieGraphResult.get(x).getTotal_sale_count());
+				pieMap.put("saleValue", pieGraphResult.get(x).getTotal_sale_price());
 				pieGraphGForMap.add(pieMap);
 			}
 		}
 		etcCompany.put("contentName", etcCompanyName);
-		etcCompany.put("saleCount", etcSaleCount);
+		etcCompany.put("saleValue", etcSalePrice);
 		pieGraphGForMap.add(etcCompany);
 		return pieGraphGForMap;
 		

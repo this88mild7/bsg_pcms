@@ -163,7 +163,7 @@ function createPieChart(option){
 		
 		var pieRows = [];
 		$.each( data.pieGraph, function(idx, ele){
-			var pieData = [ ele.saleCompany, ele.saleCount ];
+			var pieData = [ ele.saleCompany, ele.saleValue ];
 			pieRows.push(pieData);
 		});
 		
@@ -183,7 +183,7 @@ function createLineChart(option){
 	$.getJSON(url, param, function(data) {
 		console.info( data );
 		
-		if(data.code != 200) {
+		if(data.code != 200) { 
 			bootbox.alert( data.msg );
 			return false;
 		} else if(data.lineGraph.length == 0) {

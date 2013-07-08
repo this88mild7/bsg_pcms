@@ -72,7 +72,7 @@ public class BalanceService {
 		}
 		
 		if(StringUtils.isBlank(balanceDTOEx.getSortingType())){
-			balanceDTOEx.setSortingType("2");
+			balanceDTOEx.setSortingType("1");
 		}
 		
 		return  balanceDao.saleList(balanceDTOEx);
