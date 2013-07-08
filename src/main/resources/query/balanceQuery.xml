@@ -294,6 +294,7 @@
 		AND COM.COMPANY_MGMTNO = CNTR.COMPANY_MGMTNO 
 		AND CON.CONTENTS_CD = CCGR.CONTENTS_CD		
 		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}		
+		AND CNTR.DEL_YN = 'N'
 		<if test="searchQuery != null">
 		AND CON.NAME like '%${searchQuery}%'
 		</if>
