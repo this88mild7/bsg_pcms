@@ -9,6 +9,8 @@
 }
 #column-chart-layer {
         height: 400px;
+        margin: 10px auto;
+        padding: 10px;
       }
 #line-chart-layer {
         height: 400px;
@@ -147,7 +149,7 @@ h4 {
 
 	<div class="span6">
 	
-		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 3월 판매처 판매통계</h4>
+		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> <span id="thisMonth"></span>월 판매처 판매통계</h4>
 		<span class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></span>
 		<div class="clearfix"></div>
 		<div id="column-chart-layer">
@@ -177,7 +179,8 @@ h4 {
     
 <script>
 $(function(){
-	
+	var d = new Date();
+	$("#thisMonth").text( d.getMonth() + 1 );
 	//컬럼차트 그리기
 	createColumnChart();
 
@@ -270,7 +273,7 @@ function createLineChart(option){
 		var firstRow = [ "" ];
 		//set company name
 		$.each( data.lineGraph, function(idx, ele){
-			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
+			firstRow.push( ele.contentName ); //['','companyName','companyName(n)']
 		});
 		lineRows.push(firstRow);
 		
@@ -302,7 +305,7 @@ function drawColumnChart( params ) {
 	var options = {
 			chartArea: {width: '80%', height: '80%'},
 			legend: {position: 'bottom'},
-			hAxis: {title: "7월"},
+			//hAxis: {title: "7월"},
 			backgroundColor:{fill:'white'},
 			bar:{groupWidth:"90%"}
 		};
@@ -320,5 +323,6 @@ function drawLineChart( params ) {
 			};
     var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
     lineChart.draw(data, options);
+    
 }
 </script>

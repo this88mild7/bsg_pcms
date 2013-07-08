@@ -35,7 +35,6 @@
 	<script src="/js/bootbox.min.js"></script>
 	<script src="/js/bigstar.js"></script>
 	<script src="/js/jqBootstrapValidation.js"></script>
-	<script src="/js/flotr2.js"></script>
 	<script src="/js/locales/datepicker-kr.js"></script>
 	<script src="/js/bsg_ajax.js"></script>
 	<script src="/js/bsg_pcms_sale.js"></script>

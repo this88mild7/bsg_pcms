@@ -52,7 +52,6 @@
 	<script src="/js/json2.js"></script>
 	<script src="/js/bootstrap-datepicker.js"></script>
 	<script src="/js/bootbox.min.js"></script>
-	<script src="/js/flotr2.js"></script>
 	<script src="/js/jqBootstrapValidation.js"></script>
 	<script src="/js/bigstar.js"></script>
 	<script src="/js/autoNumeric.js"></script>

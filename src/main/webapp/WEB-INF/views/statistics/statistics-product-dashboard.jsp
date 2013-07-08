@@ -178,7 +178,7 @@ function drawColumnChart( params ) {
 			legend: {position: 'bottom'},
 			hAxis: {title: "7월"},
 			backgroundColor:{fill:'white'},
-			bar:{groupWidth:"90%"}
+			bar:{groupWidth:"80%"}
 		};
 	var columnChart = new google.visualization.ColumnChart(document.getElementById( params.id ));
 	columnChart.draw(data, options);
