@@ -44,17 +44,16 @@
 					</select>
 				</div>
 			</div>
+			<!-- 
 			<div class="control-group">
 				<label class="control-label" for="contractTypeList"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
 					<select size="1" id="contractTypeList" name="contract_type" data-cnt="${ fn:length( cpList ) }">
 						<option value="0">판매방식을 선택해 주세요.</option>
-						<!-- 
-							ajax
-						 -->
 					</select>
 				</div>
 			</div>
+			 -->
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매기간</label>
 				<div class="controls">
