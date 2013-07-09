@@ -233,12 +233,12 @@ function createPieChart(option){
 		$.each( data.pieGraph, function(idx, ele){
 			
 			// For pieChart
-			var pieData = [ ele.contentName, ele.saleCount ];
+			var pieData = [ ele.contentName, ele.saleValue ];
 			pieRows.push(pieData);
 			
 			// For columnChart
 			columnFirstRow.push( ele.contentName );
-			columnSecondRow.push( ele.saleCount );
+			columnSecondRow.push( ele.saleValue );
 			
 		});
 		

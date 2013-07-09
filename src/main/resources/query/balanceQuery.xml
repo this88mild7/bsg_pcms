@@ -92,10 +92,10 @@
 				AND #{searchEndDate}
 			</if>
 		</if>
-		GROUP BY COM.COMPANY_MGMTNO
+		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO 
+			ORDER BY DATE_FORMAT(BAL.SALE_END_DATE,'%Y-%m') DESC
 		</if>
 		<!-- 매출순 -->
 		<if test="sortingType == 2">
@@ -185,7 +185,7 @@
 		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		<!-- 등록순 -->
 		<if test="sortingType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO 
+			ORDER BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') DESC
 		</if>
 		<!-- 매출순 -->
 		<if test="sortingType == 2">
@@ -205,39 +205,32 @@
 	<select id="salesCount" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx"  resultType="int">
 		SELECT COUNT(*) FROM (
 			SELECT /* Balance.salesCount */ 
-				(SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_TYPE, 
-				(SELECT CD_DETAIL FROM CD WHERE CD = BAL.CONTRACT_TYPE) AS CONTRACT_TYPE, 
-				DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') AS SALE_STR_DATE, 
-				DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') AS SALE_END_DATE, 
-				BAL.SALE_COMMISSION, 
-				BAL.CP_COMMISSION, 
-				BAL.OWNER_PROFIT, 
-				BAL.TOTAL_SALE_COUNT, 
-				BAL.TOTAL_SALE_PRICE, 
-				COM.COMPANY_NAME, 
-				CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name				
-			FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BD, CONTENTS CONT			
-			WHERE 1=1
-			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
-			AND BAL.BALANCE_MGMTNO = BD.BALANCE_MGMTNO 
-			AND CONT.CONTENTS_CD = BD.CONTENTS_CD
-			AND BAL.DEL_YN = 'N'
-			AND COM.COMPANY_TYPE = 'SC'
-			<if test="searchQuery != null">
-			AND ( 
-					COM.COMPANY_NAME like '%${searchQuery}%'
-					OR
-					CONT.NAME like '%${searchQuery}%'
-				)
-			</if>
-			<if test="searchStrDate != null">
-				<if test="searchEndDate != null">
-				AND BAL.REG_DT 
-					BETWEEN #{searchStrDate}  
-					AND #{searchEndDate}
-				</if>
-			</if>
-			GROUP BY BAL.BALANCE_MGMTNO
+			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.SALE_TYPE) AS SALE_TYPE, 
+			(SELECT CD_DETAIL FROM CD WHERE CD = BAL.CONTRACT_TYPE) AS CONTRACT_TYPE, 
+			DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') AS SALE_STR_DATE, 
+			DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') AS SALE_END_DATE, 
+			BAL.SALE_COMMISSION, 
+			BAL.CP_COMMISSION, 
+			BAL.OWNER_PROFIT, 
+			BAL.TOTAL_SALE_COUNT, 
+			BAL.TOTAL_SALE_PRICE, 
+			COM.COMPANY_NAME, 
+			CONCAT(CONT.NAME, ' 외 ', count(CONT.NAME)-1) AS contents_name				
+		FROM BALANCE BAL, COMPANY COM, BALANCE_DETAIL BD, CONTENTS CONT			
+		WHERE 1=1
+		AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO 
+		AND BAL.BALANCE_MGMTNO = BD.BALANCE_MGMTNO 
+		AND CONT.CONTENTS_CD = BD.CONTENTS_CD
+		AND BAL.DEL_YN = 'N'
+		AND COM.COMPANY_TYPE = 'SC'
+		<if test="searchQuery != null">
+		AND ( 
+				COM.COMPANY_NAME like '%${searchQuery}%'
+				OR
+				CONT.NAME like '%${searchQuery}%'
+			)
+		</if>
+		GROUP BY DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m'), COM.COMPANY_MGMTNO
 		) A
 	</select>
 	
@@ -302,6 +295,7 @@
 		AND COM.COMPANY_MGMTNO = CNTR.COMPANY_MGMTNO 
 		AND CON.CONTENTS_CD = CCGR.CONTENTS_CD		
 		AND CNTR.COMPANY_MGMTNO = #{company_mgmtno}		
+		AND CNTR.DEL_YN = 'N'
 		<if test="searchQuery != null">
 		AND CON.NAME like '%${searchQuery}%'
 		</if>

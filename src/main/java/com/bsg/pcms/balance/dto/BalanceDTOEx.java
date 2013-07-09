@@ -43,6 +43,10 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String totalMoney; //total_sale_price을 String타입으로 변환한 값
 	
+	private String saleMoney; //sale_commission을 String타입으로 변환한 값
+	
+	private String ownerMoney; //owner_profit String타입으로 변환한 값
+	
 	
 	private List<String> contentCpProfit;
 	
@@ -51,6 +55,22 @@ public class BalanceDTOEx extends BalanceDTO{
 	private List<String> contentSalePrice;
 	
 	
+	public String getOwnerMoney() {
+		return ownerMoney;
+	}
+
+	public void setOwnerMoney(String ownerMoney) {
+		this.ownerMoney = ownerMoney;
+	}
+
+	public String getSaleMoney() {
+		return saleMoney;
+	}
+
+	public void setSaleMoney(String saleMoney) {
+		this.saleMoney = saleMoney;
+	}
+
 	public List<String> getContentSalePrice() {
 		return contentSalePrice;
 	}
