@@ -273,8 +273,9 @@ function drawLineChart( params ) {
     var data = google.visualization.arrayToDataTable( params.rows );
 
 	var options = {
-			chartArea: {width: '85%', height: '75%'},
-			legend: {position: 'bottom'}
+			chartArea: {width: '80%', height: '75%'},
+			legend: {position: 'bottom'},
+			pointSize: 7
 			};
     var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
     lineChart.draw(data, options);

@@ -330,8 +330,9 @@ function createLineChart(option){
 	    var data = google.visualization.arrayToDataTable(lineRows);
 	
 		var options = {
-				chartArea: {width: '85%', height: '75%'},
-				legend: {position: 'bottom'}
+				chartArea: {width: '80%', height: '75%'},
+				legend: {position: 'bottom'},
+				pointSize: 7
 				};
 	    var lineChart = new google.visualization.LineChart(document.getElementById("line-chart-layer"));
 	    lineChart.draw(data, options);
