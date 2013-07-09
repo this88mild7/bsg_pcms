@@ -229,8 +229,10 @@ function drawColumnChart( params ) {
 			columnSecondRow.push( ele.saleValue );
 		});
 		
+		var ggData = [ columnFirstRow, columnSecondRow ];
+		console.info(ggData);
 		// Data
-		var data = google.visualization.arrayToDataTable([ columnFirstRow, columnSecondRow ]);
+		var data = google.visualization.arrayToDataTable(ggData);
 		
 		var options = {
 				chartArea: {width: '90%', height: '80%'},
