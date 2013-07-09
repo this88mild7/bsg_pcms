@@ -33,8 +33,9 @@ public class StatisticsDTO extends CompanyDTO{
 	private String contents_name;
 	
 	private String contents_cd;
-
 	
+	private String searchDate;
+
 	public int getTotal_sale_count() {
 		return total_sale_count;
 	}
@@ -150,6 +151,14 @@ public class StatisticsDTO extends CompanyDTO{
 				+ monthSaleCount + ", sortingType=" + sortingType
 				+ ", searchQuery=" + searchQuery + ", contents_name="
 				+ contents_name + ", contents_cd=" + contents_cd + "]";
+	}
+
+	public String getSearchDate() {
+		return searchDate;
+	}
+
+	public void setSearchDate(String searchDate) {
+		this.searchDate = searchDate;
 	}
 
 	
