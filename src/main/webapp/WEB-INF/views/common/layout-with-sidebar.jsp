@@ -7,19 +7,19 @@
 <head>
 	<title>BIGSTAR GLOBAL</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="/img/favicon.ico" />
-	<link href="/css/bootstrap.css" rel="stylesheet">
-	<link href="/css/bootstrap.icon-large.min.css" rel="stylesheet">
+	<link rel="shortcut icon" href="/beta/img/favicon.ico" />
+	<link href="/beta/css/bootstrap.css" rel="stylesheet">
+	<link href="/beta/css/bootstrap.icon-large.min.css" rel="stylesheet">
 	<!-- 
-	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="/beta/css/bootstrap-responsive.min.css" rel="stylesheet">
 	 -->
-	<link href="/css/datepicker.css" rel="stylesheet">
-	<link href="/css/bigstar.css" rel="stylesheet" media="screen">
+	<link href="/beta/css/datepicker.css" rel="stylesheet">
+	<link href="/beta/css/bigstar.css" rel="stylesheet" media="screen">
 	
 	<script src="http://code.jquery.com/jquery.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/bsg_ajax.js"></script>
-	<script src="/js/bsg_pcms_sale.js"></script>
+	<script src="/beta/js/bootstrap.min.js"></script>
+	<script src="/beta/js/bsg_ajax.js"></script>
+	<script src="/beta/js/bsg_pcms_sale.js"></script>
 	<script>
 	$(function(){
 		
@@ -47,16 +47,16 @@
 	
 	<tiles:insertAttribute name="footer"/>
 	
-	<script src="/js/jquery.blockUI.js"></script>
-	<script src="/js/jquery.placeholder.min.js"></script>
-	<script src="/js/json2.js"></script>
-	<script src="/js/bootstrap-datepicker.js"></script>
-	<script src="/js/bootbox.min.js"></script>
-	<script src="/js/jqBootstrapValidation.js"></script>
-	<script src="/js/bigstar.js"></script>
-	<script src="/js/autoNumeric.js"></script>
-	<script src="/js/locales/datepicker-kr.js"></script>
-	<script src="/js/date.js"></script>
+	<script src="/beta/js/jquery.blockUI.js"></script>
+	<script src="/beta/js/jquery.placeholder.min.js"></script>
+	<script src="/beta/js/json2.js"></script>
+	<script src="/beta/js/bootstrap-datepicker.js"></script>
+	<script src="/beta/js/bootbox.min.js"></script>
+	<script src="/beta/js/jqBootstrapValidation.js"></script>
+	<script src="/beta/js/bigstar.js"></script>
+	<script src="/beta/js/autoNumeric.js"></script>
+	<script src="/beta/js/locales/datepicker-kr.js"></script>
+	<script src="/beta/js/date.js"></script>
 		
 </body>
 </html>
