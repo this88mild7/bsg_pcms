@@ -27,6 +27,8 @@ public class BalanceDTOEx extends BalanceDTO{
 	
 	private String searchEndDate;
 	
+	private String searchDate;
+	
 	private String contentsCount = "6";
 	
 	private String sale_company_rate;
@@ -272,6 +274,14 @@ public class BalanceDTOEx extends BalanceDTO{
 
 	public void setCp_rate(String cp_rate) {
 		this.cp_rate = cp_rate;
+	}
+
+	public String getSearchDate() {
+		return searchDate;
+	}
+
+	public void setSearchDate(String searchDate) {
+		this.searchDate = searchDate;
 	}
 
 	
