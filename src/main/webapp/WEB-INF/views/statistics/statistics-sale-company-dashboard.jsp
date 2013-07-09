@@ -32,7 +32,7 @@
 		<div class="row-fluid">
 			<span class="">
 				<span>출력순</span>
-				<select id="sorting_type" name="sortingType" class="span2">
+				<select id="sortingTypeList" name="sortingType" class="span2">
 					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >총매출금액</option>
 					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >누적판매량</option>
 				</select>
@@ -59,6 +59,7 @@
 			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
@@ -137,9 +138,18 @@ $(function(){
 	createLineChart();
 	
 	{//엘리먼트 이벤트
-		$("#btn-content-search-form").click(function(){
-			var $this = $(this);
-			console.info( $this.val() );
+		$("#btn-content-search-form").click(function() {
+			$("#contentSearchForm").submit();
+		});
+		
+		//출력순 변경에 따른 검색 hidden값 변경(기본값:1)
+		$("#sortingTypeList").change(function() {
+			$("#sortingType").val( $(this).val() );
+		});
+		
+		//검색시 searchStrDate 변경. 예)2013-07 로 변경
+		$("#contentSearchForm").submit(function() {
+			$("#searchStrDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
 		});
 	}
 	
