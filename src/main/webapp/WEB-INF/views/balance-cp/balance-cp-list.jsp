@@ -9,16 +9,16 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchDate }" data-sort="${ search.sortingType }">
 
 	<div class="span12">
 		
 		<div>
 			<span class="">
 				<span>출력순</span>
-				<select id="sorting_type" name="sortingType" class="span2">
-					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >정산월</option>
-					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+				<select id="sortingTypeList" name="sortingType" class="span2">
+					<option value="1">정산월</option>
+					<option value="2">매출순</option>
 				</select>
 			</span>
 			<span class="ml mr">
@@ -43,6 +43,7 @@
 			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceCpList']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.searchQuery }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
@@ -102,36 +103,49 @@ $(function(){
 	//가격에 ,(콤마) 넣어주기
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 
-	$("#btn-content-search-form").click(function(){
-		$("#sorting_type").val($("#sorting-type-select").val());
-		$("#searchStrDate").val($("#search-str-date").val());
-		$("#searchEndDate").val($("#search-end-date").val());
-		$("#contentSearchForm").submit();
-	});
-	
-	//검색종류 클릭한 글자로 변경.
-	$("ul.dropdown-menu").find("a").click(function(){
-		$("a.dropdown-toggle span" ).first().text( $(this).text() );
-	});
-	
-	// null일때 length에러 나서 &&문 처리하였음.
-	if( $("div.box").data("type") != null && 0 < $("div.box").data("type").length ) {
-		$("a.dropdown-toggle").find("span").first().text( $("div.box").data("type") );
+	{//엘리먼트 이벤트
+		$("#btn-content-search-form").click(function() {
+			$("#contentSearchForm").submit();
+		});
+		
+		//출력순 변경에 따른 검색 hidden값 변경(기본값:1)
+		$("#sortingTypeList").change(function() {
+			$("#sortingType").val( $(this).val() );
+		});
+		
+		//검색시 searchDate 변경. 예)2013-07 로 변경
+		$("#contentSearchForm").submit(function() {
+			$("#searchDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+		});
+		
+		//검색어 입력후 ENTER키 입력하면 검색하기
+		$('#searchQuery').keyup(function( event ) {
+			if( event.which == 13 ) {
+				$("#btn-content-search-form").trigger("click");
+			}
+		});
 	}
 	
-	// Enter키로 눌러서 검색시 type넣어주기
-	$("#contentSearchForm").submit(function() {
-		var typeText = $("a.dropdown-toggle").find("span").first().text();
-		$("#type").val(typeText);
-	    return true;
-	});
-	
-	$("#btn-content-search-form").click(function(){
-		//현재 선택된 type
-		var typeText = $("a.dropdown-toggle").find("span").first().text();
-		$("#type").val(typeText);
-		$("#contentSearchForm").submit();
-	});
+	{//검색값 체크
+		var boxData = $("div.box").data();
+		
+		//출력순 선택
+		if( $(boxData.sort).length > 0 ) {
+			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
+		}
+		//년/월 선택
+		if( boxData.date.length > 0 ) {
+			var arr = boxData.date.split("-");
+			var year = arr[0];
+			var month = arr[1];
+			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
+			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
+		}
+	}
 	
 
 });

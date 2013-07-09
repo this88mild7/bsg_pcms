@@ -27,7 +27,7 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchDate }" data-sort="${ search.sortingType }">
 
 		<div class="row-fluid">
 			<span class="">
@@ -141,24 +141,28 @@ $(function(){
 		$("#btn-content-search-form").click(function() {
 			$("#contentSearchForm").submit();
 		});
-		
 		//출력순 변경에 따른 검색 hidden값 변경(기본값:1)
 		$("#sortingTypeList").change(function() {
 			$("#sortingType").val( $(this).val() );
 		});
-		
-		//검색시 searchStrDate 변경. 예)2013-07 로 변경
+		//검색시 searchDate 변경. 예)2013-07 로 변경
 		$("#contentSearchForm").submit(function() {
-			$("#searchStrDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+			$("#searchDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+		});
+		//검색어 입력후 ENTER키 입력하면 검색하기
+		$('#searchQuery').keyup(function( event ) {
+			if( event.which == 13 ) {
+				$("#btn-content-search-form").trigger("click");
+			}
 		});
 	}
 	
 	{//검색값 체크
 		var boxData = $("div.box").data();
 		
-		//검색어 있다면 검색창에 넣어주기
-		if( boxData.query.length > 0 ) {
-			$("#searchQuery").val( boxData.query );
+		//출력순 선택
+		if( $(boxData.sort).length > 0 ) {
+			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
 		}
 		//년/월 선택
 		if( boxData.date.length > 0 ) {
@@ -167,6 +171,10 @@ $(function(){
 			var month = arr[1];
 			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
 			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
 		}
 	}
 	

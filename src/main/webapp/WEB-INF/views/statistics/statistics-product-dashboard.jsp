@@ -32,14 +32,14 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchStrDate }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchDate }" data-sort="${ search.sortingType }">
 
 		<div>
 			<span class="">
 				<span>출력순</span>
 				<select id="sortingTypeList" name="sortingType" class="span2">
-					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >총매출금액</option>
-					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >누적판매량</option>
+					<option value="1">총매출금액</option>
+					<option value="2">누적판매량</option>
 				</select>
 			</span>
 			<span class="ml mr">
@@ -65,7 +65,7 @@
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsProductDashboard']"/>">
 					<input type="hidden" id="sortingType" name="sortingType" value="1">
-					<input type="hidden" id="searchStrDate" name="searchStrDate" >
+					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
@@ -169,19 +169,24 @@ $(function(){
 			$("#sortingType").val( $(this).val() );
 		});
 		
-		//검색시 searchStrDate 변경. 예)2013-07 로 변경
+		//검색시 searchDate 변경. 예)2013-07 로 변경
 		$("#contentSearchForm").submit(function() {
-			$("#searchStrDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+			$("#searchDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
 		});
-		
+		//검색어 입력후 ENTER키 입력하면 검색하기
+		$('#searchQuery').keyup(function( event ) {
+			if( event.which == 13 ) {
+				$("#btn-content-search-form").trigger("click");
+			}
+		});
 	}
 	
 	{//검색값 체크
 		var boxData = $("div.box").data();
 		
-		//검색어 있다면 검색창에 넣어주기
-		if( boxData.query.length > 0 ) {
-			$("#searchQuery").val( boxData.query );
+		//출력순 선택
+		if( $(boxData.sort).length > 0 ) {
+			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
 		}
 		//년/월 선택
 		if( boxData.date.length > 0 ) {
@@ -190,6 +195,10 @@ $(function(){
 			var month = arr[1];
 			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
 			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
 		}
 	}
 	
