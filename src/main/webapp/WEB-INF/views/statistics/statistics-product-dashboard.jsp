@@ -148,15 +148,6 @@ $(function(){
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
 	
-	//파이차트 그리기
-	createPieChart();
-
-	//선차트 그리기
-	createLineChart();
-	
-	//컬럼차트 그리기
-	//createColumnChart();
-	
 	
 	{//엘리먼트 이벤트
 	
@@ -186,6 +177,7 @@ $(function(){
 		
 		//출력순 선택
 		if( $(boxData.sort).length > 0 ) {
+			$("#sortingType").val( boxData.sort );
 			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
 		}
 		//년/월 선택
@@ -202,27 +194,54 @@ $(function(){
 		}
 	}
 	
+	//파이차트 그리기
+	drawPieChart();
+
+	//선차트 그리기
+	createLineChart();
+	
+	//컬럼차트 그리기
+	drawColumnChart();
+	
 });
 
 function drawColumnChart( params ) {
-	console.info( "drawColumnChart" );
-	console.info( params );
 	
-	// Data
-	var data = google.visualization.arrayToDataTable( params.rows);
+	var param = { contentViewCount : 20 };
+	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
-	var options = {
-			chartArea: {width: '80%', height: '80%'},
-			legend: {position: 'bottom'},
-			//hAxis: {title: "7월"},
-			backgroundColor:{fill:'white'},
-			bar:{groupWidth:"80%"}
-		};
-	var columnChart = new google.visualization.ColumnChart(document.getElementById( params.id ));
-	columnChart.draw(data, options);
+	$.getJSON(url, param, function(data) {
+		console.info( data );
+		
+		if(data.code != 200) {
+			bootbox.alert( data.msg );
+			return false;
+		} else if(data.pieGraph.length == 0) {
+			bootbox.alert( "컬럼차트 데이터가 없습니다." );
+			return false;
+		}
+		
+		var columnFirstRow = [""];
+		var columnSecondRow = [""];
+		$.each( data.pieGraph, function(idx, ele){
+			// For columnChart
+			columnFirstRow.push( ele.contentName );
+			columnSecondRow.push( ele.saleValue );
+		});
+		
+		// Data
+		var data = google.visualization.arrayToDataTable([ columnFirstRow, columnSecondRow ]);
+		
+		var options = {
+				chartArea: {width: '90%', height: '80%'},
+				legend: {position: 'bottom'}
+			};
+		var columnChart = new google.visualization.ColumnChart(document.getElementById("column-chart-layer"));
+		columnChart.draw(data, options);
+	});
 }
 
-function createPieChart(option){
+function drawPieChart(option){
 
 	var param;
 	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
@@ -238,14 +257,14 @@ function createPieChart(option){
 			return false;
 		}
 		
-		var pieRows = [];
+		var ggData = [];
 		var columnFirstRow = [""];
 		var columnSecondRow = [""];
 		$.each( data.pieGraph, function(idx, ele){
 			
 			// For pieChart
 			var pieData = [ ele.contentName, ele.saleValue ];
-			pieRows.push(pieData);
+			ggData.push(pieData);
 			
 			// For columnChart
 			columnFirstRow.push( ele.contentName );
@@ -253,17 +272,16 @@ function createPieChart(option){
 			
 		});
 		
-		//GOOGLE PIE CHART API CALL
-		drawPieChart({
-			id : "pie-chart-layer",
-			rows : pieRows
-		});
+		console.info( ggData );
+		var data = google.visualization.arrayToDataTable(ggData);
 		
-		//GOOGLE PIE CHART API CALL
-		drawColumnChart({
-			id : "column-chart-layer",
-			rows : [ columnFirstRow, columnSecondRow ]
-		});
+		var options = {
+				chartArea: {width: '90%', height: '80%'},
+				legend: {position: 'bottom'}
+				};
+		var pieChart = new google.visualization.PieChart(document.getElementById("pie-chart-layer"));
+		pieChart.draw(data, options);
+		
 	});
 }
 
@@ -307,38 +325,14 @@ function createLineChart(option){
 		}
 		
 		//GOOGLE LINE CHART API CALL
-		drawLineChart({
-			rows : lineRows,
-			id : "line-chart-layer"
-		});
-	});
-}
-
-function drawPieChart( params ) {
-	console.info( params );
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'string');
-	data.addColumn('number', 'number');
-	data.addRows( params.rows );
+	    var data = google.visualization.arrayToDataTable(lineRows);
 	
-	var options = {
-			chartArea: {width: '90%', height: '80%'},
-			legend: {position: 'bottom'}
-			};
-	var pieChart = new google.visualization.PieChart(document.getElementById( params.id ));
-	pieChart.draw(data, options);
-}
-  
-function drawLineChart( params ) {
-	console.info( params );
-    var data = google.visualization.arrayToDataTable( params.rows );
-
-	var options = {
-			chartArea: {width: '85%', height: '75%'},
-			legend: {position: 'bottom'}
-			};
-    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
-    lineChart.draw(data, options);
-    
+		var options = {
+				chartArea: {width: '85%', height: '75%'},
+				legend: {position: 'bottom'}
+				};
+	    var lineChart = new google.visualization.LineChart(document.getElementById("line-chart-layer"));
+	    lineChart.draw(data, options);
+	});
 }
 </script>

@@ -162,6 +162,7 @@ $(function(){
 		
 		//출력순 선택
 		if( $(boxData.sort).length > 0 ) {
+			$("#sortingType").val( boxData.sort );
 			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
 		}
 		//년/월 선택
