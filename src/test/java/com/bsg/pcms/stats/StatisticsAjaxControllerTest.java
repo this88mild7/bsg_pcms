@@ -59,7 +59,7 @@ public class StatisticsAjaxControllerTest {
 	@Test
 	public void testProductPieGraphForJsonThisMonth() {
 		param.setContentViewCount(20);
-		String result = statisticsAjaxController.productPieGraph(null);
+		String result = statisticsAjaxController.productPieGraph(param);
 		assertThat(result, is(notNullValue()));
 		logger.info("{}", result);
 	}

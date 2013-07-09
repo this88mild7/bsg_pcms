@@ -149,8 +149,8 @@ public class StatisticsService {
 		if(etcSalePrice > 0){
 			etcCompany.put("contentName", etcCompanyName);
 			etcCompany.put("saleValue", etcSalePrice);
+			pieGraphGForMap.add(etcCompany);
 		}
-		pieGraphGForMap.add(etcCompany);
 		return pieGraphGForMap;
 		
 	}
