@@ -260,10 +260,6 @@ $("#btn-sale-product-list").click(function(event){
 		$("#findProduct").modal('toggle');
 	});
 	
-	if ($("#seriesQuery").is(":focus")) {
-		
-	}
-	
 	//검색어 입력후 ENTER키 입력하면 검색하기
 	$('#seriesQuery').keyup(function( event ) {
 		if( event.which == 13 ) {
