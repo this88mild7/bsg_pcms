@@ -38,6 +38,7 @@
 	<script src="/js/locales/datepicker-kr.js"></script>
 	<script src="/js/bsg_ajax.js"></script>
 	<script src="/js/bsg_pcms_sale.js"></script>
+	<script src="/js/date.js"></script>
 	
 </body>
 </html>
