@@ -78,7 +78,7 @@ public class StatisticsService {
 		Map<String, Object> etcCompany = new HashMap<String, Object>();
 		
 		for(int x=0; x<pieGraphResult.size();x++){
-			if(x>4){
+			if(x > param.getContentViewCount()){
 				etcSaleCount += pieGraphResult.get(x).getTotal_sale_count();
 			}else{
 				Map<String, Object> pieMap = new HashMap<String, Object>();
@@ -87,8 +87,11 @@ public class StatisticsService {
 				pieGraphGForMap.add(pieMap);
 			}
 		}
-		etcCompany.put("saleCompany", etcCompanyName);
-		etcCompany.put("saleCount", etcSaleCount);
+		
+		if(etcSaleCount > 0){
+			etcCompany.put("saleCompany", etcCompanyName);
+			etcCompany.put("saleCount", etcSaleCount);
+		}
 		pieGraphGForMap.add(etcCompany);
 		
 		return pieGraphGForMap;
@@ -134,8 +137,7 @@ public class StatisticsService {
 		
 		List<Map> pieGraphGForMap = new ArrayList<Map>();
 		for(int x=0; x<pieGraphResult.size();x++){
-			
-			if(x>4){
+			if(x > param.getContentViewCount()){
 				etcSalePrice += pieGraphResult.get(x).getTotal_sale_price();
 			}else{
 				Map<String, Object> pieMap = new HashMap<String, Object>();
@@ -144,8 +146,10 @@ public class StatisticsService {
 				pieGraphGForMap.add(pieMap);
 			}
 		}
-		etcCompany.put("contentName", etcCompanyName);
-		etcCompany.put("saleValue", etcSalePrice);
+		if(etcSalePrice > 0){
+			etcCompany.put("contentName", etcCompanyName);
+			etcCompany.put("saleValue", etcSalePrice);
+		}
 		pieGraphGForMap.add(etcCompany);
 		return pieGraphGForMap;
 		
