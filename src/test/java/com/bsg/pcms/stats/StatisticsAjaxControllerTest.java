@@ -50,13 +50,15 @@ public class StatisticsAjaxControllerTest {
 
 	@Test
 	public void testPieGraphForJsonThisMonth() {
-		String result = statisticsAjaxController.pieGraph(null);
+		param.setContentViewCount(20);
+		String result = statisticsAjaxController.pieGraph(param);
 		assertThat(result, is(notNullValue()));
 		logger.info("pie json : {}", result);
 	}
 	
 	@Test
 	public void testProductPieGraphForJsonThisMonth() {
+		param.setContentViewCount(20);
 		String result = statisticsAjaxController.productPieGraph(null);
 		assertThat(result, is(notNullValue()));
 		logger.info("{}", result);
