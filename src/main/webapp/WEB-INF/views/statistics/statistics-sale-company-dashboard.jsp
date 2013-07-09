@@ -143,6 +143,23 @@ $(function(){
 		});
 	}
 	
+	{//검색값 체크
+		var boxData = $("div.box").data();
+		
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
+		}
+		//년/월 선택
+		if( boxData.date.length > 0 ) {
+			var arr = boxData.date.split("-");
+			var year = arr[0];
+			var month = arr[1];
+			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
+			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+	}
+	
 });
 
 function createPieChart(option){

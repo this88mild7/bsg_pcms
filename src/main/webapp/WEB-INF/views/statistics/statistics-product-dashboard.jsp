@@ -32,7 +32,7 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchStrDate }">
 
 		<div>
 			<span class="">
@@ -64,7 +64,7 @@
 			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsProductDashboard']"/>">
-					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="hidden" id="searchStrDate" name="searchStrDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
@@ -162,6 +162,33 @@ $(function(){
 			var $this = $(this);
 			console.info( $this.val() );
 		});
+	
+		$("#btn-content-search-form").click(function(){
+			$("#contentSearchForm").submit();
+		});
+		
+		//검색
+		$("#contentSearchForm").submit(function(){
+			$("#searchStrDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+		});
+		
+	}
+	
+	{//검색값 체크
+		var boxData = $("div.box").data();
+		
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
+		}
+		//년/월 선택
+		if( boxData.date.length > 0 ) {
+			var arr = boxData.date.split("-");
+			var year = arr[0];
+			var month = arr[1];
+			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
+			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
 	}
 	
 });
@@ -176,7 +203,7 @@ function drawColumnChart( params ) {
 	var options = {
 			chartArea: {width: '80%', height: '80%'},
 			legend: {position: 'bottom'},
-			hAxis: {title: "7월"},
+			//hAxis: {title: "7월"},
 			backgroundColor:{fill:'white'},
 			bar:{groupWidth:"80%"}
 		};
