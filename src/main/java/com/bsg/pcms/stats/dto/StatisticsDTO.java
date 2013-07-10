@@ -8,6 +8,8 @@ import com.bsg.pcms.dto.CompanyDTO;
 
 public class StatisticsDTO extends CompanyDTO{
 	
+	private int rank;
+	
 	private int total_sale_count;
 	
 	private int total_sale_price;
@@ -171,6 +173,14 @@ public class StatisticsDTO extends CompanyDTO{
 
 	public void setContentViewCount(int contentViewCount) {
 		this.contentViewCount = contentViewCount;
+	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 
 }

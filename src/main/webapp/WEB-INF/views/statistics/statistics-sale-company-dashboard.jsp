@@ -76,7 +76,7 @@
 			</tr>
 			<c:forEach items="${ tableList }" var="obj" varStatus="status">
 			<tr>
-				<td>${ status.count }</td>
+				<td>${ obj.rank }</td>
 				<td>${ obj.company_name }</td>
 				<td class="price">${ obj.total_sale_price }</td>
 				<td class="count">${ obj.total_sale_count }</td>

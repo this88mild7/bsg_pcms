@@ -31,7 +31,13 @@ public class StatisticsService {
 		}
 		requestParam.setStartRownum((requestParam.getPageNum() - 1) * requestParam.getPerPage());
 		
-		return statDao.saleCompanys(requestParam);
+		List<StatisticsDTO> saleCompanys = statDao.saleCompanys(requestParam);
+		
+		for(int x=1;x<=saleCompanys.size();x++){
+			saleCompanys.get(x-1).setRank(x+requestParam.getStartRownum());
+		}
+		
+		return saleCompanys;
 	}
 	
 	public List<Map> saleCompanysForMap(StatisticsDTO requestParam) {
@@ -42,6 +48,7 @@ public class StatisticsService {
 		
 		for(StatisticsDTO staDTO : saleCompanyTable){
 			Map<String, Object> tableMap = new HashMap<String, Object>();
+			
 			tableMap.put("company_name", staDTO.getCompany_name());
 			tableMap.put("total_sale_count", staDTO.getTotal_sale_count());
 			tableMap.put("total_sale_price", staDTO.getTotal_sale_price());
@@ -106,9 +113,15 @@ public class StatisticsService {
 			param.setSortingType("2");
 		}
 		
+		List<StatisticsDTO> products = statDao.products(param);
+		
 		param.setStartRownum((param.getPageNum() - 1) * param.getPerPage());
 		
-		return statDao.products(param);
+		for(int x=1;x<=products.size();x++){
+			products.get(x-1).setRank(x+param.getStartRownum());
+		}
+		
+		return products;
 	}
 	
 	public List<StatisticsDTO> productsLineGraphMonthCount(String searchYear){
