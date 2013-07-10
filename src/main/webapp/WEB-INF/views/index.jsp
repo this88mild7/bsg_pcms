@@ -6,8 +6,8 @@
 <head>
 <title>BIGSTAR GLOBAL</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/pcms/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="/pcms/css/bigstar.css" rel="stylesheet" media="screen">
+<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="/css/bigstar.css" rel="stylesheet" media="screen">
 <script src="http://code.jquery.com/jquery.js"></script>
 
 <style type="text/css">
@@ -129,8 +129,8 @@ $(function(){
 	</div>
 	<!-- /container -->
 
-	<script src="/pcms/js/bootstrap.min.js"></script>
-	<script src="/pcms/js/bigstar.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/bigstar.js"></script>
 
 </body>
 </html>
