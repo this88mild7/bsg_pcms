@@ -10,8 +10,8 @@
 	<link rel="shortcut icon" href="/img/favicon.ico" />
 	<link href="/css/bootstrap.css" rel="stylesheet">
 	<link href="/css/bootstrap.icon-large.min.css" rel="stylesheet">
-	<!-- 
 	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<!-- 
 	 -->
 	<link href="/css/datepicker.css" rel="stylesheet">
 	<link href="/css/bigstar.css" rel="stylesheet" media="screen">
@@ -38,7 +38,7 @@
 	
 	<tiles:insertAttribute name="header"/>
 	
-	<div class="container body-fix">
+	<div class="container-fluid body-fix">
 		<div class="row-fluid">
 			<div class="span2"><tiles:insertAttribute name="sidebar"/></div>
 			<div class="span10"><tiles:insertAttribute name="content"/></div>
