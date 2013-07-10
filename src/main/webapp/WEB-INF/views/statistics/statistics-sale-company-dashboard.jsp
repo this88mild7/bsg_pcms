@@ -131,11 +131,6 @@ $(function(){
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
 	
-	//파이차트 그리기
-	createPieChart();
-
-	//선차트 그리기
-	createLineChart();
 	
 	{//엘리먼트 이벤트
 		$("#btn-content-search-form").click(function() {
@@ -179,6 +174,11 @@ $(function(){
 		}
 	}
 	
+	//파이차트 그리기
+	createPieChart();
+
+	//선차트 그리기
+	createLineChart();
 });
 
 function createPieChart(option){
@@ -197,17 +197,21 @@ function createPieChart(option){
 			return false;
 		}
 		
-		var pieRows = [];
+		var ggData = [];
+		ggData.push( ["saleCompany", "saleValue"] );
 		$.each( data.pieGraph, function(idx, ele){
 			var pieData = [ ele.saleCompany, ele.saleValue ];
-			pieRows.push(pieData);
+			ggData.push(pieData);
 		});
 		
-		//GOOGLE PIE CHART API CALL
-		drawPieChart({
-			id : "pie-chart-layer",
-			rows : pieRows
-		});
+		var data = google.visualization.arrayToDataTable(ggData);
+		
+		var options = {
+				chartArea: {width: '90%', height: '80%'},
+				legend: {position: 'bottom'}
+				};
+		var pieChart = new google.visualization.PieChart(document.getElementById("pie-chart-layer"));
+		pieChart.draw(data, options);
 	});
 }
 
@@ -227,13 +231,13 @@ function createLineChart(option){
 			return false;
 		}
 		
-		var lineRows = []; //구글 params
+		var ggData = []; //구글 params
 		var firstRow = [ "" ];
 		//set company name
 		$.each( data.lineGraph, function(idx, ele){
 			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
 		});
-		lineRows.push(firstRow);
+		ggData.push(firstRow);
 		
 		//set data
 		for ( var begin = 0; begin <= 11; begin++ ) {
@@ -242,42 +246,18 @@ function createLineChart(option){
 				dataRow.push( ele.monthCount[ begin ] ); 
 			});
 			
-			lineRows.push(dataRow);
+			ggData.push(dataRow);
 		}
 		
-		//GOOGLE LINE CHART API CALL
-		drawLineChart({
-			rows : lineRows,
-			id : "line-chart-layer"
-		});
+	    var data = google.visualization.arrayToDataTable(ggData);
+
+		var options = {
+				chartArea: {width: '80%', height: '75%'},
+				legend: {position: 'bottom'},
+				pointSize: 7
+				};
+	    var lineChart = new google.visualization.LineChart(document.getElementById("line-chart-layer"));
+	    lineChart.draw(data, options);
 	});
-}
-
-function drawPieChart( params ) {
-	console.info( params );
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'string');
-	data.addColumn('number', 'number');
-	data.addRows( params.rows );
-	
-	var options = {
-			chartArea: {width: '90%', height: '80%'},
-			legend: {position: 'bottom'}
-			};
-	var pieChart = new google.visualization.PieChart(document.getElementById( params.id ));
-	pieChart.draw(data, options);
-}
-  
-function drawLineChart( params ) {
-	console.info( params );
-    var data = google.visualization.arrayToDataTable( params.rows );
-
-	var options = {
-			chartArea: {width: '80%', height: '75%'},
-			legend: {position: 'bottom'},
-			pointSize: 7
-			};
-    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
-    lineChart.draw(data, options);
 }
 </script>
