@@ -7,8 +7,10 @@
 	margin-bottom: 32px;
 	border-bottom: 1px dotted #e5e5e5;
 }
-.navbar>.container {
-	padding-left: 10px;
+@media screen and (min-width: 1025px){
+	.navbar>.container {
+		padding: 0 200px;
+	}
 }
 .gnb>a {
 	width: 120px;
@@ -33,7 +35,7 @@
 <div class="navbar">
 	<div class="container">
 		<a class="brand" href="<spring:eval expression="@urlProp['dashboard']"/>">
-			<img class="logo" src="/img/logo.png" />
+			<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
 		</a>
 		<div class="gnb">
 			<a class="dashboard" href="<spring:eval expression="@urlProp['dashboard']"/>">메인</a>
@@ -44,10 +46,10 @@
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
 				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
 			</c:if>
+			<span class="loginfo user pull-right">
+				${ sessionScope["user"].id } 님 <button id="btn-logout" type="button" class="btn btn-small">logout</button>
+			</span>
 		</div>
-		<p class="loginfo user">
-			${ sessionScope["user"].id } 님 <button id="btn-logout" type="button" class="btn btn-small">logout</button>
-		</p>
 	</div>
 </div>
 <script>

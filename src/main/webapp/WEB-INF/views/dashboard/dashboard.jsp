@@ -7,8 +7,6 @@
 .alert-info {
 	height : 250px;
 }
-#chart-layer {
-}
 h4 {
 	color: #B404AE;
 	float: left;
@@ -135,16 +133,6 @@ h4 {
 <hr />
 
 <div class="row-fluid">
-
-<!-- GOOGLE CHART API HERE
-	<div class="span6">
-		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> <span id="thisMonth"></span>월 판매처 판매통계</h4>
-		<span class="pull-right"><button class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>"><i class="icon-list-alt"></i> 더보기</button></span>
-		<div class="clearfix"></div>
-		<div id="column-chart-layer">
-		</div>
-	</div>
- -->
 	<div class="span12">
 		<div>
 			<div style="line-height: 46px;">
@@ -278,7 +266,7 @@ function createColumnChart(option){
 		console.debug( "ggData ", ggData);
 		var options = {
 				height: 400,
-				chartArea: {width: '80%', height: '80%'},
+				chartArea: { height: '80%'},
 				legend: {position: 'bottom'},
 				yAxis: {title: "7월"},
 				backgroundColor:{fill:'white'},

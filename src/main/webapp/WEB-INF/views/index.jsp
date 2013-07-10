@@ -1,12 +1,13 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <title>BIGSTAR GLOBAL</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="/css/bigstar.css" rel="stylesheet" media="screen">
+<link href="/pcms/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="/pcms/css/bigstar.css" rel="stylesheet" media="screen">
 <script src="http://code.jquery.com/jquery.js"></script>
 
 <style type="text/css">
@@ -106,7 +107,7 @@ $(function(){
 		<form class="form-signin" method="POST" action="login.do">
 		
 			<h2 class="form-signin-heading">
-				<img class="logo" src="/img/logo.png" />
+				<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
 			</h2>
 			<div class="control-group">
 				<input type="text" class="input-block-level" placeholder="Username" name="id" />
@@ -128,11 +129,8 @@ $(function(){
 	</div>
 	<!-- /container -->
 
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" charset="ISO-8859-1"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
-	<script src="/js/bigstar-validation.js"></script>
-	<script src="/js/bigstar.js"></script>
+	<script src="/pcms/js/bootstrap.min.js"></script>
+	<script src="/pcms/js/bigstar.js"></script>
 
 </body>
 </html>
