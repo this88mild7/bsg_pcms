@@ -50,6 +50,7 @@ public class UserController {
 	public String login(UserDTO member, HttpServletRequest request) {
 
 		if (userSevice.hasNoUser(member)) {
+			logger.info("here");
 			return "redirect:/index.do";
 		}
 

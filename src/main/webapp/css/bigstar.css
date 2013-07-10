@@ -69,11 +69,8 @@ form.no-margin-bottom { margin-bottom : 0px; }
 .table th, .table td {
 	text-align : center;
 }
-.ml {
-	margin-left : 100px;
-}
-.mr {
-	margin-right : 160px;
+.mt10 {
+	margin-top : 10px;
 }
 /* SIDEBAR */
 .sidebar {

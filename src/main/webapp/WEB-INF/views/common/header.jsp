@@ -31,6 +31,10 @@
 .brand {
 	width: 183px;
 }
+.user-info {
+	margin-right: 5px;
+	padding-top: 3px;
+}
 </style>
 <div class="navbar">
 	<div class="container">
@@ -46,9 +50,12 @@
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
 				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
 			</c:if>
-			<span class="loginfo user pull-right">
-				${ sessionScope["user"].id } 님 <button id="btn-logout" type="button" class="btn btn-small">logout</button>
-			</span>
+			<div class="pull-right">
+				<span><button id="btn-logout" type="button" class="btn btn-small">logout</button></span> 
+			</div>
+			<div class="user-info pull-right">
+				<span>${ sessionScope["user"].id } 님</span> 
+			</div>
 		</div>
 	</div>
 </div>

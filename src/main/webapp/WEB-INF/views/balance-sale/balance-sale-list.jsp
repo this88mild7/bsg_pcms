@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <div class="page-name">
 	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매 정산현황
@@ -12,6 +13,7 @@
 
 	<div class="span12">
 		
+		<!-- 
 		<div>
 			<span class="">
 				<span>출력순</span>
@@ -49,6 +51,46 @@
 				</form>
 			</div>
 		</div>
+		 -->
+		<div class="span3">
+			<span>출력순</span>
+			<select id="sortingTypeList" name="sortingType" class="mt10">
+				<option value="1">정산월</option>
+				<option value="2">매출순</option>
+			</select>
+		</div>
+		<div class="span6">
+			기간설정
+			<select class="mt10" id="searchYear">
+				<option value="2013">2013년</option>
+			</select>
+			<select class="mt10" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
+		</div>
+		<div class="span3">
+			<div class="input-append pull-right mt10">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleList']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
+					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.searchQuery }" placeholder="검색어">
+					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<br />
+		
 		<table class="table table-striped table-hover">
 		<tr>
 			<th>정산월</th>
