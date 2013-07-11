@@ -61,6 +61,12 @@ $(function(){
 	$("#loginBtn").click(function(){
 		$("#loginForm").submit();
 	});
+	
+	$("#joinBtn").click(function(event) {
+	  	event.preventDefault();
+		console.info("sSSS");
+		window.location.href = "join.do";
+	});
 });
 </script>
 </head>
@@ -82,6 +88,7 @@ $(function(){
 				<input type="checkbox" value="remember-me"> Keep me signed in
 			</label>
 			<button id="loginBtn" class="btn btn-large btn-primary" type="button">Login</button>
+			<button id="joinBtn" class="btn btn-large" type="button">Join</button>
 			<c:if test="${ result eq 0 }">
 				<div class="alert alert-error">로그인에 실패 하였습니다.</div>
 			</c:if>

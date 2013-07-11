@@ -3,12 +3,17 @@ package com.bsg.pcms.dto;
 public class UserDTO extends CommonDTO{
 	
 	private int user_mgmtseq;
+	
 	private String id;
 	private String pwd;
+	private String team;
 	private String name;
+	private String title;
 	private String phoneno;
 	private String email;
 	private String level_cd;
+	
+	
 	public int getUser_mgmtseq() {
 		return user_mgmtseq;
 	}
@@ -20,6 +25,18 @@ public class UserDTO extends CommonDTO{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getTeam() {
+		return team;
+	}
+	public void setTeam(String team) {
+		this.team = team;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getPwd() {
 		return pwd;
@@ -53,7 +70,7 @@ public class UserDTO extends CommonDTO{
 	}
 	@Override
 	public String toString() {
-		return String.format("UserDTO [user_mgmtseq=%s, id=%s, pwd=%s, name=%s, phoneno=%s, email=%s, level_cd=%s, toString()=%s]", user_mgmtseq, id, pwd, name, phoneno, email, level_cd, super.toString());
+		return "\nUserDTO [user_mgmtseq=" + user_mgmtseq + ", id=" + id + ", pwd=" + pwd + ", team=" + team + ", name=" + name + ", title=" + title + ", phoneno=" + phoneno + ", email=" + email + ", level_cd=" + level_cd + "]\n";
 	}
 	
 	

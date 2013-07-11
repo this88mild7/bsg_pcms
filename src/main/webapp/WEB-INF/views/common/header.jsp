@@ -50,11 +50,35 @@
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
 				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
 			</c:if>
+			<!-- 
 			<div class="pull-right">
 				<span><button id="btn-logout" type="button" class="btn btn-small">logout</button></span> 
 			</div>
 			<div class="user-info pull-right">
 				<span>${ sessionScope["user"].id } 님</span> 
+			</div>
+			<div class="btn-group">
+				<button class="btn"></button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				
+				<ul class="dropdown-menu">
+					<li>계정설정</li>
+					<li>로그아웃</li>
+				</ul>
+			</div>
+			 -->
+			<div class="pull-right">
+				<i class="icon-wrench"></i>
+			</div>
+			<div class="btn-group pull-right">
+				<a class="btn" href="#"><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
+					data-toggle="dropdown" href="#"><span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'><i class="icon-pencil"></i>계정설정</a></li>
+					<li><a href="<spring:eval expression="@urlProp['userLogout']"/>">로그아웃</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>

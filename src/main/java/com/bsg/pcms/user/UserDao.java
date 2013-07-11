@@ -7,27 +7,32 @@ import org.springframework.stereotype.Component;
 
 import com.bsg.pcms.dto.UserDTO;
 
-
 @Component
-public class UserDao extends SqlSessionDaoSupport{
-	
-	public int hasUser(UserDTO member) {
+public class UserDao extends SqlSessionDaoSupport {
 
-		return (Integer) getSqlSession().selectOne( "userQuery.getLoginResult", member );         
-    }
-	
+	public int hasUser(UserDTO userDTO) {
+		return (Integer) getSqlSession().selectOne("userQuery.getLoginResult", userDTO);
+	}
+
 	/**
-	 * 현재는 단순이 ID 만 가져옴
-	 * 사용자 권한에 대한 정책 결정이 아직 되어 있지 않음
-	 * @param member
+	 * 현재는 단순이 ID 만 가져옴 사용자 권한에 대한 정책 결정이 아직 되어 있지 않음
+	 * 
+	 * @param userDTO
 	 * @return
 	 */
-	public UserDTO getUser(UserDTO member) {
-		return (UserDTO) getSqlSession().selectOne( "userQuery.getUser", member );
+	public UserDTO getUser(UserDTO userDTO) {
+		return (UserDTO) getSqlSession().selectOne("userQuery.getUser", userDTO);
+	}
+	
+	public int createUser(UserDTO userDTO) {
+		return getSqlSession().insert("userQuery.createUser", userDTO);
+	}
+	
+	public int updateUser(UserDTO userDTO) {
+		return getSqlSession().update("userQuery.updateUser", userDTO);
 	}
 
 	public List<UserDTO> getUserList() {
-		
-		return (List<UserDTO>) getSqlSession().selectList( "userQuery.getUserList" );
+		return getSqlSession().selectList("userQuery.getUserList");
 	}
 }
