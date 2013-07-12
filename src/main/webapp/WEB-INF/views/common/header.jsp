@@ -69,14 +69,11 @@
 				</ul>
 			</div>
 			 -->
-			<div class="pull-right">
-				<i class="icon-wrench"></i>
-			</div>
 			<div class="btn-group pull-right">
 				<a class="btn" href="#"><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
 					data-toggle="dropdown" href="#"><span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li><a href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'><i class="icon-pencil"></i>계정설정</a></li>
+					<li><a href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'>계정설정</a></li>
 					<li><a href="<spring:eval expression="@urlProp['userLogout']"/>">로그아웃</a></li>
 				</ul>
 			</div>
