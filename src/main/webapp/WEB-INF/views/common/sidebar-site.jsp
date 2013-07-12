@@ -4,5 +4,4 @@
 
 <div class="sidebar lnb">
 	<a href="<spring:eval expression="@urlProp['siteManage']"/>">회원관리</a>
-	<a href="#">메뉴미정</a>
 </div>

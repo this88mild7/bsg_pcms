@@ -42,27 +42,79 @@ body {
 <script>
 $(function(){
 	
-	{ //테스트용 아이디,비번
-		$( '.form-signin input')
-			.eq(0).val( "test" )
-			.end()
-			.eq(1).val( "123" );
-		/*
-		*/
-	}
-	
 	//유효성 체크
 	$("input").not("[type=submit]").jqBootstrapValidation();
 	
-	$("#loginBtn").click(function(){
-		$("#loginForm").submit();
+	$("#joinForm").submit(function(){
+		if( $("#isValidOk").val() < 1) {
+			bootbox.alert("올바르지 않은 값이 있습니다.");
+			return false;
+		}	
+	});
+	
+	$("#btnJoin").click(function(event) {
+		event.preventDefault();
+		$("#joinForm").submit();
 	});
 	
 	$("#joinBtn").click(function(event) {
 	  	event.preventDefault();
-		console.info("sSSS");
 		window.location.href = "join.do";
 	});
+	
+	//아이디 중복검사
+	$("#id").keyup(function(){
+		var $this = $(this);
+		
+		$.ajax({
+			url : "<spring:eval expression="@urlProp['userAjaxGetUser']"/>",
+			type : "GET",
+			contentType : "text/html; charset=utf-8" ,
+			data : {
+				id : $this.val()
+			},
+			dataType : "json",
+			success : function( data ) {
+				if( data.code == 200 ) {
+					$(".id-group").removeClass("success").addClass("error");
+					$("#idCheckResult")
+						.html("")
+						.append("<li>이미 존재하는 아이디 입니다.</li>")
+						.css("color", "#b94a48");
+					$("#isValidOk").val(0);
+				} else {
+					$(".id-group").removeClass("error").addClass("success");
+					$("#idCheckResult")
+						.html("")
+						.append("<li>사용 가능한 아이디 입니다.</li>")
+						.css("color", "#468847");
+					$("#isValidOk").val(1);
+				} 
+			},
+			error : function() {
+				$("#isValidOk").val(0);
+			}
+		});
+	});
+	
+	//비밀번호 재확인
+	$("#rePwd").keyup(function(){
+		var $this = $(this);
+		
+		if( $this.val() != $("#pwd").val() ) {
+			$(".pwd-group").addClass("error");
+			$("#pwdCheckResult")
+				.html("")
+				.append("<li>입력한 비밀번호랑 맞지 않습니다.</li>")
+				.css("color", "#b94a48");
+			$("#isValidOk").val(0);
+		} else {
+			$(".pwd-group").removeClass("error");
+			$("#pwdCheckResult").html("");
+			$("#isValidOk").val(1);
+		}
+	});
+	
 });
 </script>
 </head>
@@ -73,13 +125,22 @@ $(function(){
 				<div class="control-group">
 					<label class="control-label" for="id"></label>
 					<div class="controls">
-						<h3>회원가입</h3>
+						<c:choose>
+							<c:when test="${isUpdate}">
+								<h3>회원 정보수정</h3> <small>&gt;&gt; 정보를 수정할 수 있습니다.</small>
+							</c:when>
+							<c:otherwise>
+								<h3>회원가입</h3> <small>&gt;&gt; 회원 정보를 입력해 주세요.</small>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group id-group">
 					<label class="control-label" for="id"><img src='<spring:eval expression="@urlProp['v']"/>'> 아이디</label>
 					<div class="controls">
 						<input type="text" id="id" name="id" placeholder="아이디" value="${ user.id }" class="input-xlarge" data-validation-required-message="아이디를 입력해 주세요." required />
+						<ul id="idCheckResult"></ul>
+						<div class="help-block"></div>
 					</div>
 				</div>
 				<div class="control-group">
@@ -106,10 +167,11 @@ $(function(){
 						<input type="password" id="pwd" name="pwd" placeholder="비밀번호" value="" class="input-xlarge" required />
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group pwd-group">
 					<label class="control-label" for="rePwd"><img src='<spring:eval expression="@urlProp['v']"/>'> 비밀번호 확인</label>
 					<div class="controls">
 						<input type="password" id="rePwd" name="rePwd" placeholder="비밀번호 확인" value="" class="input-xlarge" required />
+						<ul id="pwdCheckResult"></ul>
 					</div>
 				</div>
 				<div class="control-group">
@@ -122,17 +184,20 @@ $(function(){
 							</c:when>
 							<c:otherwise>
 								<button id="btnCalcel" class="btn">취소</button>
-								<button id="btnJoin" class="btn btn-primary">가입</button>
+								<button type="button" id="btnJoin" class="btn btn-primary">가입</button>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 			</div>
+			<input type="hidden" id="isValidOk" name="isValidOk" value="0" />
 		</form>
 	</div>
 	<!-- /container -->
 
 	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/bootbox.min.js"></script>
+	<script src="/js/jquery.blockUI.js"></script>
 	<script src="/js/jquery.placeholder.min.js"></script>
 	<script src="/js/jqBootstrapValidation.js"></script>
 	<script src="/js/bigstar.js"></script>

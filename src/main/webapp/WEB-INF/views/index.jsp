@@ -46,11 +46,29 @@ body {
 <script>
 $(function(){
 	
+	if( "${param.result}".length ) {
+		//가입 성공 URL?result=1  
+		//가입 실패 URL?result=0  
+		if("${param.result}" == 1) {
+			bootbox.alert("가입 완료 되었습니다.");
+		} else if( "${param.result}" == 3 ) {
+			bootbox.alert("아이디 혹은 비밀번호를 확인해 주십시오.");
+		} else if( "${param.result}" == 4 ) {
+			bootbox.alert("접속 권한이 없습니다. 관리자에게 문의해 주세요.");
+		} else if( "${param.result}" == 5 ) {
+			bootbox.alert("잘못된 접속경로 입니다.");
+		} else if( "${param.result}" == 6 ) {
+			bootbox.alert("로그인 해주세요.");
+		} else {
+			bootbox.alert("가입 실패 하였습니다. 관리자에게 문의해 주세요.");
+		}
+	}
+	
 	{ //테스트용 아이디,비번
 		$( '.form-signin input')
-			.eq(0).val( "test" )
+			.eq(0).val( "bigstarglobal" )
 			.end()
-			.eq(1).val( "123" );
+			.eq(1).val( "0412" );
 		/*
 		*/
 	}
@@ -100,6 +118,7 @@ $(function(){
 	<!-- /container -->
 
 	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/bootbox.min.js"></script>
 	<script src="/js/jquery.placeholder.min.js"></script>
 	<script src="/js/jqBootstrapValidation.js"></script>
 	<script src="/js/bigstar.js"></script>

@@ -54,32 +54,45 @@ public class UserController {
 	@RequestMapping(value = "update.do", method = RequestMethod.GET)
 	public ModelAndView update(UserDTO userDTO) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("join");
+		mav.setViewName("user-update");
 		mav.addObject("isUpdate", true);
 		mav.addObject("user", userSevice.getUser(userDTO));
 		
 		return mav;
 	}
 	
+	@RequestMapping(value = "updateUserLevel.do", method = RequestMethod.GET)
+	public String updateUserLevel(UserDTO userDTO) {
+		int result = userSevice.updateUserLevel(userDTO);
+		return "redirect:/site/manage.do";
+	}
+
+	@RequestMapping(value = "deleteUser.do", method = RequestMethod.GET)
+	public String deleteUser(UserDTO userDTO) {
+		int result = userSevice.deleteUser(userDTO);
+		return "redirect:/site/manage.do";
+	}
+	
 	@RequestMapping(value = "updateAction.do", method = RequestMethod.POST)
 	public String updateAction(UserDTO userDTO) {
 		int result = userSevice.updateUser(userDTO);
-		// TODO 회원정보 수정 후 어떤 화면으로 가야 맞는가?
 		return "redirect:/dashboard.do";
 	}
+	
 
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
-	public String login(UserDTO member, HttpServletRequest request) {
+	public String login(UserDTO userDTO, HttpServletRequest request) {
 
-		if (userSevice.hasNoUser(member)) {
-			return "redirect:/index.do?result=0";
+		UserDTO loginDTO = userSevice.getLoginResult(userDTO);
+		if (loginDTO == null) {
+			return "redirect:/index.do?result=3";
+		} else if(loginDTO.getLevel_cd().equalsIgnoreCase("2")) {
+			return "redirect:/index.do?result=4";
 		}
 
-		UserDTO resultDTO = userSevice.getUser(member);
-
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("id", resultDTO.getId());
-		map.put("level_cd", resultDTO.getLevel_cd());
+		map.put("id", loginDTO.getId());
+		map.put("level_cd", loginDTO.getLevel_cd());
 
 		request.getSession().setAttribute("user", map);
 

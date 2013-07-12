@@ -13,7 +13,7 @@
 	}
 }
 .gnb>a {
-	width: 120px;
+	width: 12%;
 	line-height: 57px;
 	display: inline-block;
 	text-align: center;
@@ -47,52 +47,35 @@
 			<a class="customer" href="<spring:eval expression="@urlProp['saleCompanyList']"/>">판매관리</a>
 			<a class="balance" href="<spring:eval expression="@urlProp['balanceSaleList']"/>">정산</a>						
 			<a class="statistics" href="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">통계</a>						
-			<c:if test="${sessionScope['user'].leve_cd eq 0}">
-				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
-			</c:if>
-			<!-- 
-			<div class="pull-right">
-				<span><button id="btn-logout" type="button" class="btn btn-small">logout</button></span> 
-			</div>
-			<div class="user-info pull-right">
-				<span>${ sessionScope["user"].id } 님</span> 
-			</div>
-			<div class="btn-group">
-				<button class="btn"></button>
-				<button class="btn dropdown-toggle" data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
-				
-				<ul class="dropdown-menu">
-					<li>계정설정</li>
-					<li>로그아웃</li>
-				</ul>
-			</div>
-			 -->
+	
+			<!-- USER INFOMATION -->
 			<div class="btn-group pull-right">
-				<a class="btn" href="#"><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
+				<a class="btn" href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
 					data-toggle="dropdown" href="#"><span class="caret"></span></a>
 				<ul class="dropdown-menu">
+					<c:if test="${sessionScope['user'].level_cd eq 0}">
+						<li><a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사원관리</a></li>
+					</c:if>
 					<li><a href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'>계정설정</a></li>
 					<li><a href="<spring:eval expression="@urlProp['userLogout']"/>">로그아웃</a></li>
 				</ul>
 			</div>
+			<!-- USER INFOMATION -->
 		</div>
 	</div>
 </div>
 <script>
 $(function(){
 	
-//로그아웃
-$("#btn-logout").click(function(){
-	window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
-});
-
-//GNB 하이라이트 표시
-var nav_seq = $("body").data("nav_seq");
-$("div.gnb")
-	.find("a").eq( nav_seq ).addClass( "active" );
-
+	console.info( '${ sessionScope["user"]}' );
+	//로그아웃
+	$("#btn-logout").click(function(){
+		window.location.href = '<spring:eval expression="@urlProp['logout']"/>';			
+	});
+	
+	//GNB 하이라이트 표시
+	var nav_seq = $("body").data("nav_seq");
+	$("div.gnb").find("a").eq( nav_seq ).addClass( "active" );
 
 });
 </script>

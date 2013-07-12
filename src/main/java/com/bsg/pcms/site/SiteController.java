@@ -34,7 +34,7 @@ public class SiteController {
 		mav.addObject( "leftMenuSeq", bigstarConstant.LEFT_MEMBER);
 		mav.addObject( "navSeq", bigstarConstant.HEADER_SITE);
 		
-		mav.addObject( "memberList", userService.getUserList() );
+		mav.addObject( "userList", userService.getUserList() );
 
 		return mav;
 		

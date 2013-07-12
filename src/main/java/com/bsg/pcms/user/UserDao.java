@@ -10,8 +10,8 @@ import com.bsg.pcms.dto.UserDTO;
 @Component
 public class UserDao extends SqlSessionDaoSupport {
 
-	public int hasUser(UserDTO userDTO) {
-		return (Integer) getSqlSession().selectOne("userQuery.getLoginResult", userDTO);
+	public UserDTO getLoginResult(UserDTO userDTO) {
+		return (UserDTO)getSqlSession().selectOne("userQuery.getLoginResult", userDTO);
 	}
 
 	/**
@@ -21,7 +21,7 @@ public class UserDao extends SqlSessionDaoSupport {
 	 * @return
 	 */
 	public UserDTO getUser(UserDTO userDTO) {
-		return (UserDTO) getSqlSession().selectOne("userQuery.getUser", userDTO);
+		return (UserDTO)getSqlSession().selectOne("userQuery.getUser", userDTO);
 	}
 	
 	public int createUser(UserDTO userDTO) {
@@ -30,6 +30,14 @@ public class UserDao extends SqlSessionDaoSupport {
 	
 	public int updateUser(UserDTO userDTO) {
 		return getSqlSession().update("userQuery.updateUser", userDTO);
+	}
+	
+	public int deleteUser(UserDTO userDTO) {
+		return getSqlSession().update("userQuery.deleteUser", userDTO);
+	}
+	
+	public int updateUserLevel(UserDTO userDTO) {
+		return getSqlSession().update("userQuery.updateUserLevel", userDTO);
 	}
 
 	public List<UserDTO> getUserList() {

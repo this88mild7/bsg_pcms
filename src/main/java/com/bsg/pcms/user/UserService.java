@@ -13,34 +13,35 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 
-	/**
-	 * @param user
-	 *            ( id & pwd )
-	 * @return 로그인 성공 1, 실패 0
+	public UserDTO getLoginResult(UserDTO userDTO) {
+		return userDao.getLoginResult(userDTO);
+	}
+
+	public UserDTO getUser(UserDTO userDTO) {
+		return userDao.getUser(userDTO);
+	}
+
+	public int createUser(UserDTO userDTO) {
+		return userDao.createUser(userDTO);
+	}
+
+	public int updateUser(UserDTO userDTO) {
+		return userDao.updateUser(userDTO);
+	}
+	
+	/** 준회원 -> 회원으로 변경
+	 * @return
 	 */
-	public boolean hasUser(UserDTO user) {
-		int resultCount = userDao.hasUser(user);
-		if (resultCount > 0) {
-			return true;
-		} else {
-			return false;
-		}
+	public int updateUserLevel(UserDTO userDTO) {
+		return userDao.updateUserLevel(userDTO);
 	}
 
-	public boolean hasNoUser(UserDTO user) {
-		return hasUser(user) ? false : true;
-	}
-
-	public UserDTO getUser(UserDTO user) {
-		return userDao.getUser(user);
-	}
-
-	public int createUser(UserDTO user) {
-		return userDao.createUser(user);
-	}
-
-	public int updateUser(UserDTO user) {
-		return userDao.updateUser(user);
+	/** del_yn = 'Y' 로 변경
+	 * @param userDTO
+	 * @return
+	 */
+	public int deleteUser(UserDTO userDTO) {
+		return userDao.deleteUser(userDTO);
 	}
 
 	public List<UserDTO> getUserList() {
