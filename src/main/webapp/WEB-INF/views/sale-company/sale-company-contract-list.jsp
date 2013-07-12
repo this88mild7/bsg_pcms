@@ -11,6 +11,23 @@
 </div>
 <div class="row-fluid product-box" data-json='${ jsonStr }'>
  <div class="span12">
+ 
+ 	<form class="no-margin-bottom" id="search-form" action="<spring:eval expression="@urlProp['saleCompanyContractList']"/>">
+		<div class="input-prepend input-append pull-right">
+			<div class="btn-group">
+				<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+				<ul id="search-menu" class="dropdown-menu">
+					<li><a href="#">전체</a></li>
+					<li><a href="#">판매처명</a></li>
+				</ul>
+			</div>
+			<input type="hidden" id="searchType" name="searchType" value="전체">			
+			<input class="inputError" type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${search.searchQuery }">
+			<button id="btn-search" class="btn" type="button"><i class="icon-search"></i></button>
+		</div>
+	</form>
+	
+	<!-- 
 	<div class="pull-right">
 		<div class="btn-group">
 			<a id="search-toggle" class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
@@ -27,6 +44,7 @@
 			</form>
 		</div>
 	</div>
+	 -->	
 	
 	<table class="table table-bordered table-hover">
 		<thead>

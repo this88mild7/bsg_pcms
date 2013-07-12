@@ -15,6 +15,9 @@
    
     <definition name="index" template="/WEB-INF/views/index.jsp">
     </definition>
+
+    <definition name="join" template="/WEB-INF/views/join.jsp">
+    </definition>
     
     <!-- DASHBOARD -->
     <definition name="dashboard" extends=".layout-default">

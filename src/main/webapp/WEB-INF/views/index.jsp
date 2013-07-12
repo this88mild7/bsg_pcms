@@ -1,5 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,71 +55,40 @@ $(function(){
 		*/
 	}
 	
-	//index 폼 체크
-	$(".form-signin").validate({
-			rules: {
-				id: {
-					required: true,
-				},
-				pwd: {
-					required: true,
-				}
-			},
-			messages: {
-				id: {
-					required: "Username",
-				},
-				pwd: {
-					required: "Password",
-				}
-			},
-			// the errorPlacement has to take the table layout into account
-			errorPlacement: function(error, element) {
-				if ( element.is(":radio") )
-					error.appendTo( element.parent().next().next() );
-				else if ( element.is(":checkbox") )
-					error.appendTo ( element.next() );
-				else {
-					//error.appendTo( element );
-					//element.after( error );
-					$( element )
-						.attr( "placeholder", $( error ).text() )
-						.parent()
-						.addClass( "error" );
-					
-				}
-			},
-			success: function(label, element) {
-				// set &nbsp; as text for IE
-				label.html("&nbsp;").addClass("checked");
-				$(element).parent().removeClass( "error" );
-			},
-			highlight: function(element, errorClass) {
-				$(element).parent().next().find("." + errorClass).removeClass("checked");
-			}
-		});
+	//유효성 체크
+	$("input").not("[type=submit]").jqBootstrapValidation();
 	
+	$("#loginBtn").click(function(){
+		$("#loginForm").submit();
+	});
+	
+	$("#joinBtn").click(function(event) {
+	  	event.preventDefault();
+		console.info("sSSS");
+		window.location.href = "join.do";
+	});
 });
 </script>
 </head>
 <body>
 	<div class="container">
 		
-		<form class="form-signin" method="POST" action="login.do">
+		<form id="loginForm" class="form-signin" method="POST" action="login.do">
 		
 			<h2 class="form-signin-heading">
-				<img class="logo" src="/img/logo.png" />
+				<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
 			</h2>
 			<div class="control-group">
-				<input type="text" class="input-block-level" placeholder="Username" name="id" />
+				<input type="text" class="input-block-level" placeholder="Username" name="id" required/>
 			</div>
 			<div class="control-group">
-				<input type="password" class="input-block-level" placeholder="Password" name="pwd" /> 
+				<input type="password" class="input-block-level" placeholder="Password" name="pwd" required/> 
 			</div>
 			<label class="checkbox">
 				<input type="checkbox" value="remember-me"> Keep me signed in
 			</label>
-			<button class="btn btn-large btn-primary" type="submit">Login</button>
+			<button id="loginBtn" class="btn btn-large btn-primary" type="button">Login</button>
+			<button id="joinBtn" class="btn btn-large" type="button">Join</button>
 			<c:if test="${ result eq 0 }">
 				<div class="alert alert-error">로그인에 실패 하였습니다.</div>
 			</c:if>
@@ -129,9 +100,8 @@ $(function(){
 	<!-- /container -->
 
 	<script src="/js/bootstrap.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" charset="ISO-8859-1"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.min.js"></script>
-	<script src="/js/bigstar-validation.js"></script>
+	<script src="/js/jquery.placeholder.min.js"></script>
+	<script src="/js/jqBootstrapValidation.js"></script>
 	<script src="/js/bigstar.js"></script>
 
 </body>

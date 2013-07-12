@@ -7,16 +7,6 @@
 .alert-info {
 	height : 250px;
 }
-#column-chart-layer {
-        height: 400px;
-        margin: 10px auto;
-        padding: 10px;
-      }
-#line-chart-layer {
-        height: 400px;
-        margin: 10px auto;
-        padding: 10px;
-      }
 h4 {
 	color: #B404AE;
 	float: left;
@@ -33,9 +23,6 @@ h4 {
 }
 #myTab>li.active>a {
 	color: #B404AE;
-}
-.tabbable .btn-url {
-	margin-left : 100px;
 }
 .tab-content .table {
 	margin : 0px 0px 0px;
@@ -58,7 +45,7 @@ h4 {
 	<div class="span6">
 		
 		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 최신등록상품</h4>
-		<span class="pull-right"><button class="btn btn-small btn-dashboard" data-url=""><i class="icon-list-alt"></i> 더보기</button></span>
+		<span class="pull-right"><button class="btn btn-small btn-url" data-url='<spring:eval expression="@urlProp['saleCompanyContractList']"/>'><i class="icon-list-alt"></i> 더보기</button></span>
 			
 			
 		<table class="table table-striped table-hover">
@@ -87,7 +74,7 @@ h4 {
 		 <ul id="myTab" class="nav nav-tabs">
 	      <li><a href="#cpTab" data-toggle="tab"><span class="star-box"><img src='<spring:eval expression="@urlProp['star']"/>'></span> CP업체</a></li>
 	      <li><a href="#customerTab" data-toggle="tab"><span class="star-box"><img src='<spring:eval expression="@urlProp['star']"/>'></span> 판매처</a></li>
-	      <li class="pull-right"><button class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['cpList']"/>"><i class="icon-list-alt"></i> 더보기</button></li>
+	      <li class="pull-right"><button id="cross" class="btn btn-small btn-url cross" data-url="<spring:eval expression="@urlProp['cpList']"/>"><i class="icon-list-alt"></i> 더보기</button></li>
 	    </ul>
    
 	    <div class="tab-content">
@@ -98,7 +85,7 @@ h4 {
 					<th>회사명</th>
 					<th>등록일</th>
 					<th>연락처</th>
-					<th>상세보기</th>
+					<th class="span2">상세보기</th>
 				</tr>
 				<c:forEach items="${cpList}" var="cp" varStatus="loop">
 					<c:choose>
@@ -122,7 +109,7 @@ h4 {
 					<th>판매처명</th>
 					<th>계약날짜</th>
 					<th>연락처</th>
-					<th>상세보기</th>
+					<th class="span2">상세보기</th>
 				</tr>
 				<c:forEach items="${saleCompanyList}" var="saleCompany" varStatus="loop">
 					<c:choose>
@@ -146,30 +133,24 @@ h4 {
 <hr />
 
 <div class="row-fluid">
-
-	<div class="span6">
-	
-		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> <span id="thisMonth"></span>월 판매처 판매통계</h4>
-		<span class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></span>
-		<div class="clearfix"></div>
-		<div id="column-chart-layer">
-			<!-- GOOGLE COLUMN CHART HERE -->
+	<div class="span12">
+		<div>
+			<div style="line-height: 46px;">
+				<button id="stats-product" class="btn btn-small"></button>
+				<button id="stats-sale" class="btn btn-small"></button>
+				<div class="pull-right">
+					<button id="stats-btn" class="btn btn-small btn-url" data-url="<spring:eval expression="@urlProp['statsProductDashboard']"/>"><i class="icon-list-alt"></i> 더보기</button>
+				</div>
+			</div>
 		</div>
-		
-	</div>
-	
-	<div class="span6">
-		
-		<h4><img src='<spring:eval expression="@urlProp['star']"/>'> 월 상품통계</h4>
-		<div class="pull-right"><button class="btn btn-small"><i class="icon-list-alt"></i> 더보기</button></div>
 		<div class="clearfix"></div>
-		<div id="line-chart-layer">
-			<!-- GOOGLE LINE CHART HERE -->
+		<div id="chart-layer">
+			<!-- GOOGLE CHART HERE -->
 		</div>
-		
 	</div>
-	
 </div>
+
+<br />
 
 	<!-- GOOGLE CHART API -->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -179,14 +160,6 @@ h4 {
     
 <script>
 $(function(){
-	var d = new Date();
-	$("#thisMonth").text( d.getMonth() + 1 );
-	//컬럼차트 그리기
-	createColumnChart();
-
-	//선차트 그리기
-	createLineChart();
-	
 	
 	//CP업체|판매처 탭 활성화
 	$("#myTab")
@@ -207,57 +180,55 @@ $(function(){
 						.eq(1).hide()
 						.end()
 						.eq(0).show();
+					
+					$("#cross").data("url", "<spring:eval expression="@urlProp['cpList']"/>");
+					
 				} else {
 					$("span.star-box")
 						.eq(0).hide()
 						.end()
 						.eq(1).show();
+					
+					$("#cross").data("url", "<spring:eval expression="@urlProp['saleCompanyList']"/>");
 				}
 			});
 		});
 	
+	$("#stats-product").click(function() {
+		var $this = $(this);
+		$this.addClass("btn-inverse");
+		$("#stats-sale").removeClass("btn-inverse");
+		$("#stats-btn").data('url','<spring:eval expression="@urlProp['statsProductDashboard']"/>');
+		createColumnChart({
+			type: 'product',
+			url: '<spring:eval expression="@urlProp['statsProductLineChart']"/>'
+		});	
+	});
+	
+	$("#stats-sale").click(function() {
+		var $this = $(this);
+		$this.addClass("btn-inverse");
+		$("#stats-product").removeClass("btn-inverse");
+		$("#stats-btn").data('url','<spring:eval expression="@urlProp['statsCompanyDashboard']"/>');
+		createColumnChart({
+			type: 'sale',
+			url: '<spring:eval expression="@urlProp['statsCompanyLineChart']"/>'
+		});	
+	});
+	
+	//차트 기본값 상품통계
+	var thisYear = new Date().toString('yyyy')
+	$("#stats-product").text( thisYear + '년 상품통계' );
+	$("#stats-sale").text( thisYear + '년 판매통계' );
+	$("#stats-product").trigger("click");
 	
 });
 
+//상품차트
 function createColumnChart(option){
 
-	var param = {searchEndDate:'2013-07'};
-	var url = '<spring:eval expression="@urlProp['statsCompanyPieChart']"/>';
-	
-	$.getJSON(url, param, function(data) {
-		console.info( data );
-		
-		if(data.code != 200) {
-			bootbox.alert( data.msg );
-			return false;
-		} else if(data.pieGraph.length == 0) {
-			bootbox.alert( "컬럼차트 데이터가 없습니다." );
-			return false;
-		}
-		
-		var columnFirstRow = [""];
-		var columnSecondRow = [""];
-		$.each( data.pieGraph, function(idx, ele){
-			
-			// For columnChart
-			columnFirstRow.push( ele.saleCompany );
-			columnSecondRow.push( ele.saleCount );
-			
-		});
-		
-		//GOOGLE PIE CHART API CALL
-		drawColumnChart({
-			id : "column-chart-layer",
-			rows : [ columnFirstRow, columnSecondRow ]
-		});
-	});
-	
-}
-
-function createLineChart(option){
-
 	var param;
-	var url = '<spring:eval expression="@urlProp['statsProductLineChart']"/>';
+	var url = option.url;
 	
 	$.getJSON(url, param, function(data) {
 		console.info( data );
@@ -270,60 +241,39 @@ function createLineChart(option){
 			return false;
 		}
 		
-		var lineRows = []; //구글 params
-		var firstRow = [ "" ];
-		//set company name
-		$.each( data.lineGraph, function(idx, ele){
-			firstRow.push( ele.contentName ); //['','companyName','companyName(n)']
-		});
-		lineRows.push(firstRow);
-		
-		//set data
+		var ggData = [],
+			firstRow = [ "" ];
 		for ( var begin = 0; begin <= 11; begin++ ) {
-			var dataRow = [ (begin+1) + "월" ];
+			var monthRow = [ (begin+1) + "월" ];
 			$.each( data.lineGraph, function(idx, ele){
-				dataRow.push( ele.monthCount[ begin ] ); 
+				if( begin == 0 ) {
+					if( option.type == 'product') {
+						firstRow.push( ele.contentName ); 
+					} else {
+						firstRow.push( ele.saleCompanyName );
+					}
+				}
+				monthRow.push( ele.monthCount[ begin ] ); 
 			});
-			
-			lineRows.push(dataRow);
+			if( begin == 0 ) {
+				ggData.push(firstRow);
+			}
+			ggData.push(monthRow);
 		}
 		
-		//GOOGLE LINE CHART API CALL
-		drawLineChart({
-			rows : lineRows,
-			id : "line-chart-layer"
-		});
-	});
-}
-
-function drawColumnChart( params ) {
-	console.info( "drawColumnChart" );
-	console.info( params );
-	
-	// Data
-	var data = google.visualization.arrayToDataTable( params.rows);
-	
-	var options = {
-			chartArea: {width: '80%', height: '80%'},
-			legend: {position: 'bottom'},
-			//hAxis: {title: "7월"},
-			backgroundColor:{fill:'white'},
-			bar:{groupWidth:"90%"}
-		};
-	var columnChart = new google.visualization.ColumnChart(document.getElementById( params.id ));
-	columnChart.draw(data, options);
-}
-  
-function drawLineChart( params ) {
-	console.info( params );
-    var data = google.visualization.arrayToDataTable( params.rows );
-
-	var options = {
-			chartArea: {width: '85%', height: '75%'},
-			legend: {position: 'bottom'}
+		// Data
+		var data = google.visualization.arrayToDataTable(ggData);
+		console.debug( "ggData ", ggData);
+		var options = {
+				height: 400,
+				chartArea: { height: '80%'},
+				legend: {position: 'bottom'},
+				yAxis: {title: "7월"},
+				backgroundColor:{fill:'white'},
+				bar:{groupWidth:"90%"}
 			};
-    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
-    lineChart.draw(data, options);
-    
+		var columnChart = new google.visualization.ColumnChart(document.getElementById("chart-layer"));
+		columnChart.draw(data, options);
+	});
 }
 </script>

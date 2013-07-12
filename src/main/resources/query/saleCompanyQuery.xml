@@ -245,6 +245,7 @@
 		</if>
 		
 		GROUP BY CT.CONTRACT_MGMTNO
+		ORDER BY CT.REG_DT DESC
 		LIMIT #{ startRownum }, #{ perPage }
    </select>
    
@@ -424,16 +425,19 @@
        AND CTR.CONTRACT_MGMTNO = #{contract_mgmtno}
    </select>
    <select id="salProductList" resultType="com.bsg.pcms.sale.company.dto.CompanyContractDTOEx" >
-        SELECT /* SaleCompany.contents 2013.06.03 최지순 */
+        SELECT /* SaleCompany.salProductList 2013.06.03 최지순 */
 			CON.NAME AS contents_name
 			,CON.CONTENTS_CD
 			,(SELECT COMPANY_NAME FROM COMPANY WHERE COMPANY_MGMTNO = CTR.COMPANY_MGMTNO) as COMPANY_NAME
 			,CTR.CONTRACT_TYPE
 			,CTR.CONTRACT_MGMTNO
-       FROM  CONTRACT CTR, CONTRACT_CONTENTS_GROUP CCG, CONTENTS CON
+       FROM  CONTRACT CTR, CONTRACT_CONTENTS_GROUP CCG, CONTENTS CON, COMPANY COM
        WHERE 1=1
        AND CTR.CONTRACT_MGMTNO = CCG.CONTRACT_MGMTNO
        AND CCG.CONTENTS_CD = CON.CONTENTS_CD
+       AND CTR.COMPANY_MGMTNO = COM.COMPANY_MGMTNO
+       AND COM.COMPANY_TYPE='SC'
+       AND CTR.DEL_YN = 'N'
        ORDER BY CTR.REG_DT DESC
    </select>
    

@@ -47,7 +47,7 @@ public class ContractDaoTest {
 		
 		ContractDTOEx ctd = new ContractDTOEx();
 		ctd.setCompany_mgmtno(companyMgmtno);
-		ctd.setSale_price(7777777);
+		ctd.setSale_price(7777777.0);
 		ctd.setLicense_cd("1");
 		ctd.setLicense_cd_detail("2");
 		ctd.setEtc("etc");

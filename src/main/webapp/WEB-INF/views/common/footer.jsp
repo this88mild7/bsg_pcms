@@ -2,13 +2,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<style>
+.company-text {
+	color : #dbe4ea;
+}
+</style>
 <footer>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row-fluid text-left footer-menu">
-			<div class="span2">
-				<h5>메인</h5>
-			</div>
-			<div class="span2">
+			<div class="offset1 span2">
 				<h5>업체 관리</h5>
 				<a href='<spring:eval expression="@urlProp['cpList']"/>'>업체 리스트</a>
 				<br />
@@ -37,11 +39,11 @@
 				<br />
 				<a href="<spring:eval expression="@urlProp['statsProductDashboard']"/>">상품통계</a>
 			</div>
+			<div class="span3">
+				<img src='<spring:eval expression="@urlProp['favicon']"/>' />
+				<br/>
+				<span class="company-text">&copy; 2013 Bigstar global co.Ltd,. All rights reserved.</span>
+			</div>
 		</div>
 	</div>
-	<span class="footer-logo">
-		<img src='<spring:eval expression="@urlProp['favicon']"/>' />
-		<br/>
-		<span>&copy; 2013 Bigstar global co.Ltd,. All rights reserved.</span>
-	</span>
 </footer>

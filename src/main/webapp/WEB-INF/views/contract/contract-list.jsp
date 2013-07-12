@@ -14,6 +14,23 @@
 
 	<div class="span12">
 		
+		<form class="no-margin-bottom" id="contractSearchForm" action="<spring:eval expression="@urlProp['contractSearch']"/>">
+			<div class="input-prepend input-append pull-right">
+				<div class="btn-group">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span id="search-type">전체</span><span class="caret"></span></a>
+					<ul class="dropdown-menu" id="query-list">
+						<li><a href="#">전체</a></li>
+						<li><a href="#">CP업체</a></li>
+						<li><a href="#">시리즈</a></li>
+					</ul>
+				</div>
+				<input type="hidden" id="type" name="type" >
+				<input type="text" id="query" name="query" value="${ search.query }">
+				<button id="btn-contract-search-form" class="btn" type="button"><i class="icon-search"></i></button>
+			</div>
+		</form>
+		
+		<!-- 
 		<div class="pull-right">
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span id="search-type">전체</span><span class="caret"></span></a>
@@ -31,6 +48,7 @@
 				</form>
 			</div>
 		</div>
+		 -->
 
 		<table class="table table-striped table-hover">
 		<tr>
@@ -39,7 +57,7 @@
 			<th>시리즈</th>
 			<th>계약기간</th>
 			<th>계약종류</th>
-			<th>계약대금</th>
+			<th>금액</th>
 			<th>수익률</th>
 			<th>상세보기</th>
 		</tr>

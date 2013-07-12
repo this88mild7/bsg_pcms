@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <div class="page-name">
 	<h4>
 		<img src='<spring:eval expression="@urlProp['star']"/>'> 판매 정산현황
@@ -8,16 +9,17 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchDate }" data-sort="${ search.sortingType }">
 
 	<div class="span12">
 		
+		<!-- 
 		<div>
 			<span class="">
 				<span>출력순</span>
-				<select id="sorting_type" name="sortingType" class="span2">
-					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >정산월</option>
-					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >매출순</option>
+				<select id="sortingTypeList" name="sortingType" class="span2">
+					<option value="1">정산월</option>
+					<option value="2">매출순</option>
 				</select>
 			</span>
 			<span class="ml mr">
@@ -42,12 +44,53 @@
 			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleList']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.searchQuery }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
 		</div>
+		 -->
+		<div class="span3">
+			<span>출력순</span>
+			<select id="sortingTypeList" name="sortingType" class="mt10">
+				<option value="1">정산월</option>
+				<option value="2">매출순</option>
+			</select>
+		</div>
+		<div class="span6">
+			기간설정
+			<select class="mt10" id="searchYear">
+				<option value="2013">2013년</option>
+			</select>
+			<select class="mt10" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
+		</div>
+		<div class="span3">
+			<div class="input-append pull-right mt10">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['balanceSaleList']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
+					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.searchQuery }" placeholder="검색어">
+					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<br />
+		
 		<table class="table table-striped table-hover">
 		<tr>
 			<th>정산월</th>
@@ -69,14 +112,14 @@
 			<td>${ balance.company_name }</td>
 			<td>${ balance.contents_name }</td>
 			<td class="count">${ balance.total_sale_count } </td>
-			<td class="price">${ balance.total_sale_price }</td>
-			<td class="price">${ balance.sale_commission }</td>
-			<td class="price">${ balance.cp_commission }</td>
+			<td class="price">${ balance.totalMoney }</td>
+			<td class="price">${ balance.saleMoney }</td>
+			<td class="price">${ balance.cpMoney }</td>
 			<!-- 
 			<td>${ balance.cp_commission }</td>
 			<td>${ balance.cp_commission }</td>
 			 -->
-			<td class="price">${ balance.owner_profit }</td>
+			<td class="price">${ balance.ownerMoney }</td>
 		</tr>
 		</c:forEach>
 		</table>
@@ -113,78 +156,50 @@ $(function(){
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
 	
-$("#btn-content-search-form").click(function(){
-	$("#sorting_type").val($("#sorting-type-select").val());
-	$("#searchStrDate").val($("#search-str-date").val());
-	$("#searchEndDate").val($("#search-end-date").val());
-	$("#contentSearchForm").submit();
-});
-
-$("#btn-content-search-form").change(function(){
-	$("#sorting_type").val($("#sorting-type-select").val());
-	$("#balance-sorting").submit();
-});
-
-//검색종류 클릭한 글자로 변경.
-$("ul.dropdown-menu").find("a").click(function(){
-	$("a.dropdown-toggle span" ).first().text( $(this).text() );
-});
-
-// null일때 length에러 나서 &&문 처리하였음.
-if( $("div.box").data("type") != null && 0 < $("div.box").data("type").length ) {
-	$("a.dropdown-toggle").find("span").first().text( $("div.box").data("type") );
-}
-
-// Enter키로 눌러서 검색시 type넣어주기
-$("#contentSearchForm").submit(function() {
-	var typeText = $("a.dropdown-toggle").find("span").first().text();
-	$("#type").val(typeText);
-    return true;
-});
-
-$("#btn-content-search-form").click(function(){
-	//현재 선택된 type
-	var typeText = $("a.dropdown-toggle").find("span").first().text();
-	$("#type").val(typeText);
-	$("#contentSearchForm").submit();
-});
-	
-
-//컨텐츠 삭제
-$("#btn-content-selected-delete").click(function(){
-	// 체크된 컨텐츠 리스트
-	var $checkedContentList = $("input[name='check_list']").filter(":checked");
-	
-	if( $checkedContentList.length === 0 ){
-		bootbox.alert("삭제할 콘텐츠를 선택해주세요.");
-	} else {
-		bootbox.confirm( "선택한 콘텐츠를 삭제하시겠습니까?", function(result) {
-			if( result ) {
-				var contentCd = "";
-				$.each( $checkedContentList, function(idx){
-					if( idx > 0 ) {
-						contentCd += ",";
-					}
-					contentCd += $(this).val();
-				});
-				
-				$("#strList").val(contentCd);
-				$("#hiddenForm").submit();
+	{//엘리먼트 이벤트
+		$("#btn-content-search-form").click(function() {
+			$("#contentSearchForm").submit();
+		});
+		
+		//출력순 변경에 따른 검색 hidden값 변경(기본값:1)
+		$("#sortingTypeList").change(function() {
+			$("#sortingType").val( $(this).val() );
+		});
+		
+		//검색시 searchDate 변경. 예)2013-07 로 변경
+		$("#contentSearchForm").submit(function() {
+			$("#searchDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+		});
+		
+		//검색어 입력후 ENTER키 입력하면 검색하기
+		$('#searchQuery').keyup(function( event ) {
+			if( event.which == 13 ) {
+				$("#btn-content-search-form").trigger("click");
 			}
-		}); 
+		});
 	}
-});
-
-
-function dataSortingCallBack(response){
-	var $balanceTable = $("#balance-table");
-	$balanceTable.empty();
-	$balanceTable.html(response);
-}
-
-function dataSortingError(response){
-	alert("에러 발생! 관리자에게 문의하여 주십시오.");
-}
+	
+	{//검색값 체크
+		var boxData = $("div.box").data();
+		
+		//출력순 선택
+		if( $(boxData.sort).length > 0 ) {
+			$("#sortingType").val( boxData.sort );
+			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
+		}
+		//년/월 선택
+		if( boxData.date.length > 0 ) {
+			var arr = boxData.date.split("-");
+			var year = arr[0];
+			var month = arr[1];
+			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
+			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
+		}
+	}
 
 });
 </script>

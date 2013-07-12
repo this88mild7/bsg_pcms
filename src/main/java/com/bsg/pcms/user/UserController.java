@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bsg.pcms.dashboard.DashboardController;
 import com.bsg.pcms.dto.UserDTO;
 import com.bsg.pcms.utility.BigstarConstant;
-import com.bsg.pcms.utility.BigstarProperties;
 
 @Controller
 public class UserController {
@@ -26,31 +24,55 @@ public class UserController {
 	BigstarConstant bigstarConstant;
 
 	@Autowired
-	private DashboardController dashboardController;
-
-	@Autowired
 	private UserService userSevice;
 
-	@Autowired
-	private BigstarProperties bigstarProperties;
-
-	/**
-	 * PMC 초기화면
-	 * 
+	/** 로그인 화면
 	 * @return
 	 */
 	@RequestMapping(value = "index.do", method = RequestMethod.GET)
-	public String index() {
-
-		return "index";
-
+	public ModelAndView index() {
+		return new ModelAndView("index");
+	}
+	
+	/** 회원가입 화면
+	 * @return
+	 */
+	@RequestMapping(value = "join.do", method = RequestMethod.GET)
+	public String join() {
+		return "join";
+	}
+	
+	@RequestMapping(value = "joinAction.do", method = RequestMethod.POST)
+	public String joinAction(UserDTO userDTO) {
+		int result = userSevice.createUser(userDTO);
+		return "redirect:/index.do?result=" + result;
+	}
+	
+	/** 회원정보 수정 화면
+	 * @return
+	 */
+	@RequestMapping(value = "update.do", method = RequestMethod.GET)
+	public ModelAndView update(UserDTO userDTO) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("join");
+		mav.addObject("isUpdate", true);
+		mav.addObject("user", userSevice.getUser(userDTO));
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "updateAction.do", method = RequestMethod.POST)
+	public String updateAction(UserDTO userDTO) {
+		int result = userSevice.updateUser(userDTO);
+		// TODO 회원정보 수정 후 어떤 화면으로 가야 맞는가?
+		return "redirect:/dashboard.do";
 	}
 
-	@RequestMapping(value = "login", method = RequestMethod.POST)
+	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String login(UserDTO member, HttpServletRequest request) {
 
 		if (userSevice.hasNoUser(member)) {
-			return "redirect:/index.do";
+			return "redirect:/index.do?result=0";
 		}
 
 		UserDTO resultDTO = userSevice.getUser(member);
@@ -65,11 +87,9 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
 	public String logout() {
-
 		return "redirect:/index.do";
-
 	}
 
 }

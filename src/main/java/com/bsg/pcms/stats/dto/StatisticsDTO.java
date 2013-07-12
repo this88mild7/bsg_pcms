@@ -8,6 +8,8 @@ import com.bsg.pcms.dto.CompanyDTO;
 
 public class StatisticsDTO extends CompanyDTO{
 	
+	private int rank;
+	
 	private int total_sale_count;
 	
 	private int total_sale_price;
@@ -33,8 +35,13 @@ public class StatisticsDTO extends CompanyDTO{
 	private String contents_name;
 	
 	private String contents_cd;
-
 	
+	private String searchDate;
+	
+	private int contentViewCount = 4;
+	
+	
+
 	public int getTotal_sale_count() {
 		return total_sale_count;
 	}
@@ -152,6 +159,28 @@ public class StatisticsDTO extends CompanyDTO{
 				+ contents_name + ", contents_cd=" + contents_cd + "]";
 	}
 
-	
-	
+	public String getSearchDate() {
+		return searchDate;
+	}
+
+	public void setSearchDate(String searchDate) {
+		this.searchDate = searchDate;
+	}
+
+	public int getContentViewCount() {
+		return contentViewCount;
+	}
+
+	public void setContentViewCount(int contentViewCount) {
+		this.contentViewCount = contentViewCount;
+	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
 }

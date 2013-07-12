@@ -4,32 +4,72 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userQuery">
 
-   <!-- INSERT -->
-   
-   <!-- SELECT -->
-   <select id="getLoginResult" parameterType="com.bsg.pcms.dto.UserDTO"  resultType="Integer">
-       SELECT /* userQuery.getLoginResult  정대원 */
-          COUNT(id) 
-       FROM    USER
-       WHERE   ID = #{ id }
-       AND     PWD = #{ pwd }
-   </select>
-   
-   <select id="getUser" parameterType="com.bsg.pcms.dto.UserDTO"  resultType="com.bsg.pcms.dto.UserDTO">
-       SELECT /* userQuery.getUser  정대원 */
-          id
-       FROM    USER
-       WHERE   id = #{ id }
-   </select>
-   
-   <select id="getUserList" resultType="com.bsg.pcms.dto.UserDTO">
-       SELECT /* userQuery.getUserList  정대원 */
-          *
-       FROM USER
-   </select>
-   
-   <!-- UPDATE -->
-   
-   <!-- DELETE -->
-   
+    <!-- INSERT -->
+    <insert id="createUser" parameterType="com.bsg.pcms.dto.UserDTO" useGeneratedKeys="true" keyProperty="user_mgmtseq">
+        INSERT INTO USER (
+            id,
+            pwd,
+            name,
+            team,
+            title,
+            phoneno,
+            email,
+            reg_dt,
+            mod_dt,
+            level_cd            
+        )
+        VALUES(
+            #{ id },
+            #{ pwd },
+            #{ name },
+            #{ team },
+            #{ title },
+            #{ phoneno },
+            #{ email },
+            NOW(),
+            NOW(),
+            '1'
+        )
+    </insert>
+
+    <!-- SELECT -->
+    <select id="getLoginResult" parameterType="com.bsg.pcms.dto.UserDTO" resultType="Integer">
+        SELECT /* userQuery.getLoginResult 정대원 */
+        COUNT(id)
+        FROM USER
+        WHERE ID = #{ id }
+        AND PWD = #{ pwd }
+    </select>
+
+    <select id="getUser" parameterType="com.bsg.pcms.dto.UserDTO" resultType="com.bsg.pcms.dto.UserDTO">
+        SELECT /* userQuery.getUser 정대원 */
+        	*
+        FROM USER
+        WHERE id = #{ id }
+    </select>
+
+    <select id="getUserList" resultType="com.bsg.pcms.dto.UserDTO">
+        SELECT /* userQuery.getUserList 정대원 */
+        *
+        FROM USER
+    </select>
+
+    <!-- UPDATE -->
+    <update id="updateUser" parameterType="com.bsg.pcms.dto.UserDTO">
+        UPDATE USER
+        <set>
+            pwd = #{ pwd },
+            name = #{ name },
+            team = #{ team },
+            title = #{ title },
+            phoneno = #{ phoneno },
+            email = #{ email },
+            level_cd = #{ level_cd },
+            mod_dt = NOW()
+        </set>
+        WHERE id = #{ id }
+    </update>
+
+    <!-- DELETE -->
+
 </mapper>

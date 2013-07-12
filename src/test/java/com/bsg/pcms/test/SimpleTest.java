@@ -1,13 +1,12 @@
 package com.bsg.pcms.test;
 
+import java.text.DecimalFormat;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bsg.pcms.dto.CommonDTO;
-import com.bsg.pcms.dto.ContentDTO;
 import com.bsg.pcms.utility.BankListMaker;
-import com.bsg.pcms.utility.PageUtil;
 
 public class SimpleTest {
 
@@ -67,6 +66,14 @@ public class SimpleTest {
 		arr[1] = 1;
 		
 		logger.info( arr + "" );
+	}
+	
+	@Test
+	public void testDoubleToString() {
+		double db = 26855451;
+		
+		DecimalFormat df = new DecimalFormat("#");
+        System.out.print(df.format(db));
 	}
 	
 	@Test

@@ -27,16 +27,19 @@ body {
 	font-family: Malgun Gothic, sans-serif, Dotum, Arial ;
 	min-width: 1024px; 
 }
+@media screen and (min-width: 401px) and (max-width: 1024px) {
+}
+@media screen and (min-width: 1025px){
+	.container-fluid { padding: 0 200px; }
+}
 
 
 /* --------------------------------------------------------------
 1. HEADER
 -------------------------------------------------------------- */
-@media (max-width: 979px) {
-	.navbar .brand {width: 154px;}
-	.loginfo{right:80px;}
-}
 .logo { width : 154px; height : 37px; }
+
+/*
 .nav > li { line-height: 37px; }
 .user { padding-top: 10px; } 
 .nav-header { font-size: 17px; }
@@ -50,6 +53,7 @@ form.no-margin-bottom { margin-bottom : 0px; }
 	border-bottom: 3px solid #ff8000;
 	*/
 }
+*/
 
 /* --------------------------------------------------------------
 2. CONTENT
@@ -62,17 +66,11 @@ form.no-margin-bottom { margin-bottom : 0px; }
 .page-name img{
 	margin-bottom: 5px;	
 }
-.container {
-	width: 1280px;
-}
 .table th, .table td {
 	text-align : center;
 }
-.ml {
-	margin-left : 100px;
-}
-.mr {
-	margin-right : 160px;
+.mt10 {
+	margin-top : 10px;
 }
 /* SIDEBAR */
 .sidebar {

@@ -27,14 +27,15 @@
 	</h4>
 </div>
 
-<div class="row-fluid box" data-query="${ search.query }" data-type="${ search.type }">
+<div class="row-fluid box" data-query="${ search.searchQuery }" data-date="${ search.searchDate }" data-sort="${ search.sortingType }">
 
+		<!-- 
 		<div class="row-fluid">
 			<span class="">
 				<span>출력순</span>
-				<select id="sorting_type" name="sortingType" class="span2">
-					<option value="1" <c:if test="${sortingType eq '1' }">selected="selected"</c:if> >총매출금액</option>
-					<option value="2" <c:if test="${sortingType eq '2' }">selected="selected"</c:if> >누적판매량</option>
+				<select id="sortingTypeList" name="sortingType" class="span2">
+					<option value="1">총매출금액</option>
+					<option value="2">누적판매량</option>
 				</select>
 			</span>
 			<span class="ml mr">
@@ -59,12 +60,52 @@
 			</span>
 			<div class="input-append">
 				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
 					<input type="hidden" id="searchDate" name="searchDate" >
 					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
 					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
 				</form>
 			</div>
 		</div>
+		 -->
+		<div class="span3">
+			<span>출력순</span>
+			<select id="sortingTypeList" name="sortingType" class="mt10">
+				<option value="1">총매출금액</option>
+					<option value="2">누적판매량</option>
+			</select>
+		</div>
+		<div class="span6">
+			기간설정
+			<select class="mt10" id="searchYear">
+				<option value="2013">2013년</option>
+			</select>
+			<select class="mt10" id="searchMonth">
+				<option value="01">1월</option>
+				<option value="02">2월</option>
+				<option value="03">3월</option>
+				<option value="04">4월</option>
+				<option value="05">5월</option>
+				<option value="06">6월</option>
+				<option value="07">7월</option>
+				<option value="08">8월</option>
+				<option value="09">9월</option>
+				<option value="10">10월</option>
+				<option value="11">11월</option>
+				<option value="12">12월</option>
+			</select>
+		</div>
+		<div class="span3">
+			<div class="input-append pull-right mt10">
+				<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">
+					<input type="hidden" id="sortingType" name="sortingType" value="1">
+					<input type="hidden" id="searchDate" name="searchDate" >
+					<input type="text" id="searchQuery" name="searchQuery" class="input-medium"  value="${ search.query }" placeholder="검색어">
+					<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<br />
 		
 		<table class="table table-striped table-hover">
 			<tr>
@@ -75,7 +116,7 @@
 			</tr>
 			<c:forEach items="${ tableList }" var="obj" varStatus="status">
 			<tr>
-				<td>${ status.count }</td>
+				<td>${ obj.rank }</td>
 				<td>${ obj.company_name }</td>
 				<td class="price">${ obj.total_sale_price }</td>
 				<td class="count">${ obj.total_sale_count }</td>
@@ -130,19 +171,54 @@ $(function(){
 	$('.price').autoNumeric("init",{aPad: false, aSign: " 원", pSign: "s" });
 	$('.count').autoNumeric("init",{aPad: false, aSign: " 건", pSign: "s" });
 	
+	
+	{//엘리먼트 이벤트
+		$("#btn-content-search-form").click(function() {
+			$("#contentSearchForm").submit();
+		});
+		//출력순 변경에 따른 검색 hidden값 변경(기본값:1)
+		$("#sortingTypeList").change(function() {
+			$("#sortingType").val( $(this).val() );
+		});
+		//검색시 searchDate 변경. 예)2013-07 로 변경
+		$("#contentSearchForm").submit(function() {
+			$("#searchDate").val( $("#searchYear").val() + "-" + $("#searchMonth").val() );
+		});
+		//검색어 입력후 ENTER키 입력하면 검색하기
+		$('#searchQuery').keyup(function( event ) {
+			if( event.which == 13 ) {
+				$("#btn-content-search-form").trigger("click");
+			}
+		});
+	}
+	
+	{//검색값 체크
+		var boxData = $("div.box").data();
+		
+		//출력순 선택
+		if( $(boxData.sort).length > 0 ) {
+			$("#sortingType").val( boxData.sort );
+			$("#sortingTypeList").find("option[value='" + boxData.sort + "']").prop("selected", true);
+		}
+		//년/월 선택
+		if( boxData.date.length > 0 ) {
+			var arr = boxData.date.split("-");
+			var year = arr[0];
+			var month = arr[1];
+			$("#searchYear").find("option[value='" + year + "']").prop("selected", true);
+			$("#searchMonth").find("option[value='" + month + "']").prop("selected", true);
+		}
+		//검색어 있다면 검색창에 넣어주기
+		if( boxData.query.length > 0 ) {
+			$("#searchQuery").val( boxData.query );
+		}
+	}
+	
 	//파이차트 그리기
 	createPieChart();
 
 	//선차트 그리기
 	createLineChart();
-	
-	{//엘리먼트 이벤트
-		$("#btn-content-search-form").click(function(){
-			var $this = $(this);
-			console.info( $this.val() );
-		});
-	}
-	
 });
 
 function createPieChart(option){
@@ -161,17 +237,21 @@ function createPieChart(option){
 			return false;
 		}
 		
-		var pieRows = [];
+		var ggData = [];
+		ggData.push( ["saleCompany", "saleValue"] );
 		$.each( data.pieGraph, function(idx, ele){
-			var pieData = [ ele.saleCompany, ele.saleCount ];
-			pieRows.push(pieData);
+			var pieData = [ ele.saleCompany, ele.saleValue ];
+			ggData.push(pieData);
 		});
 		
-		//GOOGLE PIE CHART API CALL
-		drawPieChart({
-			id : "pie-chart-layer",
-			rows : pieRows
-		});
+		var data = google.visualization.arrayToDataTable(ggData);
+		
+		var options = {
+				chartArea: {width: '90%', height: '80%'},
+				legend: {position: 'bottom'}
+				};
+		var pieChart = new google.visualization.PieChart(document.getElementById("pie-chart-layer"));
+		pieChart.draw(data, options);
 	});
 }
 
@@ -183,7 +263,7 @@ function createLineChart(option){
 	$.getJSON(url, param, function(data) {
 		console.info( data );
 		
-		if(data.code != 200) {
+		if(data.code != 200) { 
 			bootbox.alert( data.msg );
 			return false;
 		} else if(data.lineGraph.length == 0) {
@@ -191,13 +271,13 @@ function createLineChart(option){
 			return false;
 		}
 		
-		var lineRows = []; //구글 params
+		var ggData = []; //구글 params
 		var firstRow = [ "" ];
 		//set company name
 		$.each( data.lineGraph, function(idx, ele){
 			firstRow.push( ele.saleCompanyName ); //['','companyName','companyName(n)']
 		});
-		lineRows.push(firstRow);
+		ggData.push(firstRow);
 		
 		//set data
 		for ( var begin = 0; begin <= 11; begin++ ) {
@@ -206,41 +286,18 @@ function createLineChart(option){
 				dataRow.push( ele.monthCount[ begin ] ); 
 			});
 			
-			lineRows.push(dataRow);
+			ggData.push(dataRow);
 		}
 		
-		//GOOGLE LINE CHART API CALL
-		drawLineChart({
-			rows : lineRows,
-			id : "line-chart-layer"
-		});
+	    var data = google.visualization.arrayToDataTable(ggData);
+
+		var options = {
+				chartArea: {width: '80%', height: '75%'},
+				legend: {position: 'bottom'},
+				pointSize: 7
+				};
+	    var lineChart = new google.visualization.LineChart(document.getElementById("line-chart-layer"));
+	    lineChart.draw(data, options);
 	});
-}
-
-function drawPieChart( params ) {
-	console.info( params );
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'string');
-	data.addColumn('number', 'number');
-	data.addRows( params.rows );
-	
-	var options = {
-			chartArea: {width: '90%', height: '80%'},
-			legend: {position: 'bottom'}
-			};
-	var pieChart = new google.visualization.PieChart(document.getElementById( params.id ));
-	pieChart.draw(data, options);
-}
-  
-function drawLineChart( params ) {
-	console.info( params );
-    var data = google.visualization.arrayToDataTable( params.rows );
-
-	var options = {
-			chartArea: {width: '85%', height: '75%'},
-			legend: {position: 'bottom'}
-			};
-    var lineChart = new google.visualization.LineChart(document.getElementById( params.id));
-    lineChart.draw(data, options);
 }
 </script>

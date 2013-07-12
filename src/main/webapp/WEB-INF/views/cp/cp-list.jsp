@@ -9,9 +9,26 @@
 </div>
 
 <div class="row-fluid box cp-box" data-query="${ search.query }" data-type="${ search.type }">
-
+	
 	<div class="span12">
 		
+		<form class="no-margin-bottom" id="cpSearchForm" action="<spring:eval expression="@urlProp['cpList']"/>">
+			<div class="input-prepend input-append pull-right">
+				<div class="btn-group">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">전체</a></li>
+						<li><a href="#">회사명</a></li>
+						<li><a href="#">CP코드</a></li>
+					</ul>
+				</div>
+				<input type="hidden" id="type" name="type">
+				<input class="inputError" type="text" id="query" name="query" class="input-medium" value="${ search.query }">
+				<button id="cp-search-form-btn" class="btn" type="button"><i class="icon-search"></i></button>
+			</div>
+		</form>
+		
+		<!-- 
 		<div class="pull-right">
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
@@ -29,6 +46,7 @@
 				</form>
 			</div>
 		</div>
+		 -->
 
 		<table class="table table-striped table-hover">
 		<tr>

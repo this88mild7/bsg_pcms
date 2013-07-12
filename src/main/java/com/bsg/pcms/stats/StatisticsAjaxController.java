@@ -46,7 +46,7 @@ public class StatisticsAjaxController {
 	 * {
 			"pieGraph": [{
 				"saleCompany": "지순컴페니",
-				"saleCount": 235802
+				"saleValue": 235802
 			}],
 			"code": 200,
 			"msg": "OK"
@@ -69,7 +69,7 @@ public class StatisticsAjaxController {
 	 * response
 	 * {
 		"pieGraph": [{
-				"saleCount": 131653,
+				"saleValue": 131653,
 				"contentName": "Alphabet book"
 			}],
 			"code": 200,

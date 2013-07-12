@@ -44,17 +44,16 @@
 					</select>
 				</div>
 			</div>
+			<!-- 
 			<div class="control-group">
 				<label class="control-label" for="contractTypeList"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
 				<div class="controls">
 					<select size="1" id="contractTypeList" name="contract_type" data-cnt="${ fn:length( cpList ) }">
 						<option value="0">판매방식을 선택해 주세요.</option>
-						<!-- 
-							ajax
-						 -->
 					</select>
 				</div>
 			</div>
+			 -->
 			<div class="control-group">
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매기간</label>
 				<div class="controls">
@@ -261,10 +260,6 @@ $("#btn-sale-product-list").click(function(event){
 		$("#findProduct").modal('toggle');
 	});
 	
-	if ($("#seriesQuery").is(":focus")) {
-		
-	}
-	
 	//검색어 입력후 ENTER키 입력하면 검색하기
 	$('#seriesQuery').keyup(function( event ) {
 		if( event.which == 13 ) {
@@ -422,6 +417,8 @@ $('#salePeriodTip')
 {
 	//판매처 아이디가 변할때 마다 판매기종 가져오기
 	$("#saleCompanyList").change(function(){
+		
+		/*
 		var $this = $(this);
 		if($this.val() == 0) {
 			return false;
@@ -429,11 +426,11 @@ $('#salePeriodTip')
 		
 		var companyMgmtno = $("#saleCompanyList").find("option").filter(":selected").val();
 		
-		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContractType']"/>';
+		var url = '<spring:eval expression="@urlProp['ajaxBalanceSaleContents']"/>';
 		var param = { company_mgmtno : companyMgmtno };
 		$.getJSON(url, param, function(data) {
 			console.info(data);
-			if(data.code == 999) {
+			if(data.code != 200) {
 				bootbox.alert( data.msg );
 				return false;
 			}
@@ -458,6 +455,7 @@ $('#salePeriodTip')
 			});
 		})
 		.fail(function() { bootbox.alert( data.msg ); });
+		*/
 		
 	});
 	

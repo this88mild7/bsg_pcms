@@ -7,8 +7,10 @@
 	margin-bottom: 32px;
 	border-bottom: 1px dotted #e5e5e5;
 }
-.navbar>.container {
-	padding-left: 10px;
+@media screen and (min-width: 1025px){
+	.navbar>.container {
+		padding: 0 200px;
+	}
 }
 .gnb>a {
 	width: 120px;
@@ -29,11 +31,15 @@
 .brand {
 	width: 183px;
 }
+.user-info {
+	margin-right: 5px;
+	padding-top: 3px;
+}
 </style>
 <div class="navbar">
 	<div class="container">
 		<a class="brand" href="<spring:eval expression="@urlProp['dashboard']"/>">
-			<img class="logo" src="/img/logo.png" />
+			<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
 		</a>
 		<div class="gnb">
 			<a class="dashboard" href="<spring:eval expression="@urlProp['dashboard']"/>">메인</a>
@@ -44,10 +50,37 @@
 			<c:if test="${sessionScope['user'].leve_cd eq 0}">
 				<a class="site" href="<spring:eval expression="@urlProp['siteManage']"/>">사이트관리</a>
 			</c:if>
+			<!-- 
+			<div class="pull-right">
+				<span><button id="btn-logout" type="button" class="btn btn-small">logout</button></span> 
+			</div>
+			<div class="user-info pull-right">
+				<span>${ sessionScope["user"].id } 님</span> 
+			</div>
+			<div class="btn-group">
+				<button class="btn"></button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				
+				<ul class="dropdown-menu">
+					<li>계정설정</li>
+					<li>로그아웃</li>
+				</ul>
+			</div>
+			 -->
+			<div class="pull-right">
+				<i class="icon-wrench"></i>
+			</div>
+			<div class="btn-group pull-right">
+				<a class="btn" href="#"><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
+					data-toggle="dropdown" href="#"><span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'><i class="icon-pencil"></i>계정설정</a></li>
+					<li><a href="<spring:eval expression="@urlProp['userLogout']"/>">로그아웃</a></li>
+				</ul>
+			</div>
 		</div>
-		<p class="loginfo user">
-			${ sessionScope["user"].id } 님 <button id="btn-logout" type="button" class="btn btn-small">logout</button>
-		</p>
 	</div>
 </div>
 <script>

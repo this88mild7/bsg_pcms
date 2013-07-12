@@ -76,5 +76,43 @@ public class UserDaoTest {
 		assertThat(resultList.size(), is(not(0)));
 		logger.info("{}", resultList.size());
 	}
+	
+	@Test
+	public void testCreateUser(){
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId("abc");
+		userDTO.setPwd("123");
+		userDTO.setTeam("웹사업팀");
+		userDTO.setName("장그래");
+		userDTO.setTitle("사원");
+		userDTO.setPhoneno("0070");
+		userDTO.setEmail("abc@gmail.com");
+		
+		int result = userDao.createUser(userDTO);
+		assertNotNull(userDTO);
+		assertThat(result, is(not(0)));
+		logger.info("{}", userDTO);
+	}
+	
+	@Test
+	public void testUpdateUser(){
+		
+		String id = "1";
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(id);
+		userDTO.setPwd("123");
+		userDTO.setTeam("웹사업팀");
+		userDTO.setName("장그래");
+		userDTO.setTitle("사원");
+		userDTO.setPhoneno("0070");
+		userDTO.setEmail("abc@gmail.com");
+		
+		int result = userDao.updateUser(userDTO);
+		assertNotNull(userDTO);
+		assertThat(result, is(not(0)));
+		logger.info("{}", userDTO);
+	}
 
 }

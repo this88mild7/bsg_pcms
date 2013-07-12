@@ -13,19 +13,25 @@
 
 	<div class="span12">
 		
-		<c:if test="${!empty resultMsg}">
-		<div class="alert alert-error">
-		${resultMsg}
-		</div>
-		<script>
-		$( "div.alert" )
-			.css( "cursor", "pointer")
-			.click(function(){
-				$( this ).fadeOut( 1000 );
-			});
-		</script>
-		</c:if>
+		<form class="no-margin-bottom" id="contentSearchForm" action="<spring:eval expression="@urlProp['contentList']"/>">
+			<div class="input-prepend input-append pull-right">
+				<div class="btn-group">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">전체</a></li>
+						<li><a href="#">CP업체</a></li>
+						<li><a href="#">카테고리</a></li>
+						<li><a href="#">시리즈</a></li>
+						<li><a href="#">콘텐츠</a></li>
+					</ul>
+				</div>
+				<input type="hidden" id="type" name="type" >
+				<input type="text" id="query" name="query" value="${ search.query }">
+				<button id="btn-content-search-form" class="btn" type="button"><i class="icon-search"></i></button>
+			</div>
+		</form>
 		
+		<!-- 
 		<div class="pull-right">
 			<div class="btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span>전체</span><span class="caret"></span></a>
@@ -45,6 +51,7 @@
 				</form>
 			</div>
 		</div>
+		 -->
 
 		<table class="table table-striped table-hover">
 		<tr>

@@ -8,8 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/img/favicon.ico" />
 	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<!-- 
-	 <link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
 	 -->
 	<link href="/css/datepicker.css" rel="stylesheet">
 	<link href="/css/bigstar.css" rel="stylesheet" media="screen">
@@ -21,7 +21,7 @@
 
 	<tiles:insertAttribute name="header"/>
 	
-	<div class="container body-fix">
+	<div class="container-fluid body-fix">
 		<tiles:insertAttribute name="content"/>
 	</div>
 	
@@ -38,6 +38,7 @@
 	<script src="/js/locales/datepicker-kr.js"></script>
 	<script src="/js/bsg_ajax.js"></script>
 	<script src="/js/bsg_pcms_sale.js"></script>
+	<script src="/js/date.js"></script>
 	
 </body>
 </html>

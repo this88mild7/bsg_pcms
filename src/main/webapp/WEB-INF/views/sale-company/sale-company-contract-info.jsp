@@ -216,6 +216,18 @@ div#sale-content-list {
 				</div>
 			</div>
 			<div class="control-group">
+				<label class="control-label" for="saleType"><img src='<spring:eval expression="@urlProp['v']"/>'> 판매방식</label>
+				<div class="controls">
+					<select size="1" name="contract_type" id="product_sale_type">
+						<c:forEach items="${ contractTypeList }" var="contractType">
+							<option <c:if test="${contractType.cd == saleContractDetail.contract_type}"> selected="selected"</c:if> value="${ contractType.cd }" >
+								${ contractType.cd_detail }
+							</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label" for=""><img src='<spring:eval expression="@urlProp['v']"/>'> 콘텐츠</label>
 				<div class="controls">
 					<button id="btn-series-create" type="button" class="btn">시리즈등록</button>
