@@ -7,11 +7,6 @@
 	margin-bottom: 32px;
 	border-bottom: 1px dotted #e5e5e5;
 }
-@media screen and (min-width: 1025px){
-	.navbar>.container {
-		padding: 0 200px;
-	}
-}
 .gnb>a {
 	width: 12%;
 	line-height: 57px;
@@ -49,7 +44,7 @@
 			<a class="statistics" href="<spring:eval expression="@urlProp['statsCompanyDashboard']"/>">통계</a>						
 	
 			<!-- USER INFOMATION -->
-			<div class="btn-group pull-right">
+			<div class="btn-group pull-right" style="margin-top:5px; line-height:46px;">
 				<a class="btn" href='<spring:eval expression="@urlProp['userUpdate']"/>?id=${ sessionScope["user"].id }'><i class="icon-user"></i> ${ sessionScope["user"].id } 님</a> <a class="btn dropdown-toggle"
 					data-toggle="dropdown" href="#"><span class="caret"></span></a>
 				<ul class="dropdown-menu">

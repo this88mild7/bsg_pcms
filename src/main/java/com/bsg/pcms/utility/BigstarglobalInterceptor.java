@@ -32,7 +32,11 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 			if(	
 				//세션 체크 예외 리스트
 				! request.getServletPath().contains( "/index.do" ) &&
-				! request.getServletPath().contains( "/login.do" )
+				! request.getServletPath().contains( "/login.do" ) &&
+				! request.getServletPath().contains( "/join.do" ) &&
+				! request.getServletPath().contains( "/getUser.ajax" ) &&
+				! request.getServletPath().contains( "/joinAction.do" )
+				
 			){
 				
 				HttpSession session = request.getSession(false);

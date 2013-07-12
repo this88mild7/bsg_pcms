@@ -213,6 +213,14 @@ div#sale-content-list {
 				<label class="control-label" ><img src='<spring:eval expression="@urlProp['v']"/>'> 판매처 수익률(%) </label>
 				<div class="controls">
 					<input type="text" id="sale_profit_rate" name="sale_profit_rate" placeholder="수익률" value="${ saleContractDetail.sale_profit_rate }" data-validation-required-message="수익률은 필수값 입니다." required>
+					<a id="sale_profit_rateTip" href="#" data-toggle="tooltip" >tip</a>
+					<script>
+					$('#sale_profit_rateTip')
+						.tooltip({
+							"title":"판매처가 가져가는 비율을 적어주세요.",
+							"placement":"bottom"
+						});
+					</script>
 				</div>
 			</div>
 			<div class="control-group">

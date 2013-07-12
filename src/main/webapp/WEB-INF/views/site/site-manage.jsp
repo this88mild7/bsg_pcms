@@ -2,6 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<style>
+table .td-right {
+	text-align : right;
+}
+</style>
 <div class="row-fluid">
 
 	<div class="span12">
@@ -34,16 +39,11 @@
 			   	    			<c:otherwise>준회원</c:otherwise>
 			   	    		</c:choose> 
 			   	    	</td>
-			   	    	<td>
-			   	    		<c:choose>
-			   	    			<c:when test="${ user.level_cd eq 2 }">
-					   	    		<button class="btn btnDeleteUser" data-id="${ user.id }">삭제</button>
-					   	    		<button class="btn btnUpdateUserLevel" data-id="${ user.id }">승인</button>
-			   	    			</c:when>
-			   	    			<c:otherwise>
-					   	    		<button class="btn btnDeleteUser" data-id="${ user.id }">삭제</button>
-			   	    			</c:otherwise>
-			   	    		</c:choose> 
+			   	    	<td class="td-right">
+		   	    			<c:if test="${ user.level_cd eq 2 }">
+				   	    		<button class="btn btnUpdateUserLevel" data-id="${ user.id }">승인</button>
+		   	    			</c:if>
+			   	    		<button class="btn btnDeleteUser" data-id="${ user.id }">삭제</button>
 			   	    	</td>
 			        </tr>
 				</c:forEach>

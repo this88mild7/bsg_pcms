@@ -75,6 +75,7 @@ $(function(){
 			},
 			dataType : "json",
 			success : function( data ) {
+			console.info(data);
 				if( data.code == 200 ) {
 					$(".id-group").removeClass("success").addClass("error");
 					$("#idCheckResult")
@@ -125,14 +126,7 @@ $(function(){
 				<div class="control-group">
 					<label class="control-label" for="id"></label>
 					<div class="controls">
-						<c:choose>
-							<c:when test="${isUpdate}">
-								<h3>회원 정보수정</h3> <small>&gt;&gt; 정보를 수정할 수 있습니다.</small>
-							</c:when>
-							<c:otherwise>
-								<h3>회원가입</h3> <small>&gt;&gt; 회원 정보를 입력해 주세요.</small>
-							</c:otherwise>
-						</c:choose>
+						<h3>회원가입</h3>
 					</div>
 				</div>
 				<div class="control-group id-group">

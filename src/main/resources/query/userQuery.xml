@@ -16,7 +16,8 @@
             email,
             reg_dt,
             mod_dt,
-            level_cd            
+            level_cd      ,
+            del_yn      
         )
         VALUES(
             #{ id },
@@ -28,7 +29,8 @@
             #{ email },
             NOW(),
             NOW(),
-            '2'
+            '2',
+            'N'
         )
     </insert>
 
