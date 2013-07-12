@@ -20,7 +20,7 @@
     </definition>
     
     <!-- DASHBOARD -->
-    <definition name="dashboard" extends=".layout-default">
+    <definition name="dashboard" extends=".layout-dashboard">
         <put-attribute name="content" value="/WEB-INF/views/dashboard/dashboard.jsp" />
     </definition>
     

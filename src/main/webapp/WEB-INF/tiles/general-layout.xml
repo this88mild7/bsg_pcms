@@ -6,6 +6,11 @@
 <tiles-definitions>
     
     <definition name=".layout-default" template="/WEB-INF/views/common/layout-default.jsp">
+        <put-attribute name="header" value="WEB-INF/views/common/header.jsp" />
+        <put-attribute name="footer" value="WEB-INF/views/common/footer.jsp" />
+    </definition>
+    
+    <definition name=".layout-dashboard" template="/WEB-INF/views/common/layout-default.jsp">
         <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
         <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
     </definition>
