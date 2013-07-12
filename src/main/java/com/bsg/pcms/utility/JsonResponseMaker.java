@@ -1,7 +1,5 @@
 package com.bsg.pcms.utility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.bsg.pcms.dto.CateDTO;
 import com.bsg.pcms.dto.SeriesDTO;
+import com.bsg.pcms.dto.UserDTO;
 import com.bsg.pcms.provision.content.ContentDTOEx;
 import com.bsg.pcms.stats.dto.StatisticsDTO;
 
@@ -51,6 +50,18 @@ public class JsonResponseMaker {
 			setFailCode(json);
 		}
 
+		return json.toJSONString();
+	}
+	
+	public String generateGetUserJson(UserDTO userDTO) {
+		JSONObject json = new JSONObject();
+		
+		if (userDTO != null) {
+			setSucessCode(json);
+		} else {
+			setFailCode(json);
+		}
+		
 		return json.toJSONString();
 	}
 	

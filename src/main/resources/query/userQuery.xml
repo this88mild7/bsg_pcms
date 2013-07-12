@@ -28,17 +28,18 @@
             #{ email },
             NOW(),
             NOW(),
-            '1'
+            '2'
         )
     </insert>
 
     <!-- SELECT -->
-    <select id="getLoginResult" parameterType="com.bsg.pcms.dto.UserDTO" resultType="Integer">
+    <select id="getLoginResult" parameterType="com.bsg.pcms.dto.UserDTO" resultType="com.bsg.pcms.dto.UserDTO">
         SELECT /* userQuery.getLoginResult 정대원 */
-        COUNT(id)
+        	*
         FROM USER
-        WHERE ID = #{ id }
-        AND PWD = #{ pwd }
+        WHERE id = #{ id }
+        AND pwd = #{ pwd }
+        AND del_yn = 'N'
     </select>
 
     <select id="getUser" parameterType="com.bsg.pcms.dto.UserDTO" resultType="com.bsg.pcms.dto.UserDTO">
@@ -46,12 +47,15 @@
         	*
         FROM USER
         WHERE id = #{ id }
+        AND del_yn = 'N'
     </select>
 
     <select id="getUserList" resultType="com.bsg.pcms.dto.UserDTO">
         SELECT /* userQuery.getUserList 정대원 */
         *
         FROM USER
+        WHERE del_yn = 'N'
+        ORDER BY team, title, reg_dt
     </select>
 
     <!-- UPDATE -->
@@ -64,8 +68,23 @@
             title = #{ title },
             phoneno = #{ phoneno },
             email = #{ email },
-            level_cd = #{ level_cd },
             mod_dt = NOW()
+        </set>
+        WHERE id = #{ id }
+    </update>
+    
+    <update id="updateUserLevel" parameterType="com.bsg.pcms.dto.UserDTO">
+        UPDATE USER
+        <set>
+            level_cd = 1
+        </set>
+        WHERE id = #{ id }
+    </update>
+    
+    <update id="deleteUser" parameterType="com.bsg.pcms.dto.UserDTO">
+        UPDATE USER
+        <set>
+            del_yn = 'Y'
         </set>
         WHERE id = #{ id }
     </update>

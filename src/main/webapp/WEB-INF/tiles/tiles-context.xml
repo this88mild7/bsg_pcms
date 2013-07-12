@@ -139,4 +139,10 @@
         <put-attribute name="content" value="/WEB-INF/views/site/site-manage.jsp" />
     </definition>
     
+    <!-- USER -->
+    <definition name="user-update" extends=".layout-with-sidebar">
+        <put-attribute name="sidebar" value="" />
+        <put-attribute name="content" value="/WEB-INF/views/user/user-info.jsp" />
+    </definition>
+    
 </tiles-definitions>

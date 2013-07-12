@@ -49,7 +49,7 @@ public class UserDaoTest {
 	}
 
 	@Test
-	public void testHasMemeber() {
+	public void testHasUser() {
 		
 		UserDTO userDto = new UserDTO();
 		userDto.setId("test");
@@ -60,9 +60,9 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void testGetMemeber(){
+	public void testGetUser(){
 		UserDTO userDto = new UserDTO();
-		userDto.setId("test");
+		userDto.setId("test1");
 		userDto.setPwd("123");
 		UserDTO resultDTO = userDao.getUser(userDto);
 		assertNotNull(resultDTO);
@@ -70,7 +70,7 @@ public class UserDaoTest {
 	}
 	
 	@Test
-	public void testGetMemberList(){
+	public void testGetUserList(){
 		List<UserDTO> resultList = userDao.getUserList();
 		assertNotNull(resultList);
 		assertThat(resultList.size(), is(not(0)));
