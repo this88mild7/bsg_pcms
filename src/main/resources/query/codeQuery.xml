@@ -55,13 +55,13 @@
    <select id="contractTypeList" 
 		   resultType="com.bsg.pcms.code.dto.CodeDTO" 
 		   >
-       SELECT /* codeQuery.contractTypeList 2013.06.03 최지순 */
+       SELECT /* codeQuery.contractTypeList 2013.07.15 정대원 */
           CD, CD_DETAIL
        FROM  CD
        WHERE 1=1
        AND DEPTH_1 = 'CT'
        AND DEPTH_2 = '001' 
-       ORDER BY CD
+       ORDER BY REG_DT
    </select>
    
 </mapper>

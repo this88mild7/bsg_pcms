@@ -566,7 +566,7 @@ $(function(){
 			$("#price_text").text("지급대금");
 			$("#payments_type_text").text("지급방식");
 			$("#bank").hide();
-			$("#profit-group").show();
+			$("#profit-group").hide();
 			
 			setLicenseSelect();
 			$("#sale_profit_rate").autoNumeric('init',{
