@@ -8,7 +8,7 @@
 	border-bottom: 1px dotted #e5e5e5;
 }
 .gnb>a {
-	width: 12%;
+	width: 9%;
 	line-height: 57px;
 	display: inline-block;
 	text-align: center;
@@ -31,7 +31,7 @@
 	padding-top: 3px;
 }
 </style>
-<div class="navbar">
+<div id="header" class="navbar">
 	<div class="container">
 		<a class="brand" href="<spring:eval expression="@urlProp['dashboard']"/>">
 			<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
