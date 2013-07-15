@@ -82,7 +82,6 @@ $(function(){
 	
 	$("#joinBtn").click(function(event) {
 	  	event.preventDefault();
-		console.info("sSSS");
 		window.location.href = "join.do";
 	});
 });
