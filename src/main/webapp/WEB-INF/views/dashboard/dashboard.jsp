@@ -263,7 +263,7 @@ function createColumnChart(option){
 		
 		// Data
 		var data = google.visualization.arrayToDataTable(ggData);
-		console.debug( "ggData ", ggData);
+		console.info( "ggData ", ggData);
 		var options = {
 				height: 400,
 				chartArea: { height: '80%'},
