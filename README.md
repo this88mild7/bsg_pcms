@@ -7,6 +7,6 @@ PCMS(Publish Contents Management System)
 
 2. 개발 환경
  - 언어 : JAVA
- - 프레임워크 : Spring, myBatis, Tiles
+ - 프레임워크 : Spring, myBatis, Tiles, Maven
  - DBMS : Mysql
  - WAS : Tomcat 6.0
