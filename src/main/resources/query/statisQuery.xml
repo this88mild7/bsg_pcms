@@ -30,6 +30,9 @@
 		</if>
 		GROUP BY BAL.COMPANY_MGMTNO
 		<!-- 매출순 -->
+		<if test="sortingType == null">
+			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
+		</if>
 		<if test="sortingType == 1">
 			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
 		</if>
@@ -96,6 +99,9 @@
 		</if>
 		GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
 		<!-- 매출순 -->
+		<if test="sortingType == null">
+			ORDER BY SUM(BALD.SALE_PRICE) DESC
+		</if>
 		<if test="sortingType == 1">
 			ORDER BY SUM(BALD.SALE_PRICE) DESC
 		</if>
