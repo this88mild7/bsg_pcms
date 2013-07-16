@@ -56,6 +56,7 @@
 		<div class="span3">
 			<span>출력순</span>
 			<select id="sortingTypeList" name="sortingType" class="mt10 span6">
+				<option>선택</option>
 				<option value="1">정산월</option>
 				<option value="2">매출순</option>
 			</select>
@@ -63,9 +64,11 @@
 		<div class="span6">
 			기간설정
 			<select class="mt10 span3" id="searchYear">
+				<option value="0000">선택</option>
 				<option value="2013">2013년</option>
 			</select>
 			<select class="mt10 span3" id="searchMonth">
+				<option value="00">선택</option>
 				<option value="01">1월</option>
 				<option value="02">2월</option>
 				<option value="03">3월</option>
