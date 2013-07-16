@@ -251,8 +251,6 @@ function drawColumnChart( params ) {
 	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("drawColumnChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
@@ -290,8 +288,6 @@ function drawPieChart(option){
 	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("drawPieChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
@@ -311,7 +307,6 @@ function drawPieChart(option){
 			
 		});
 		
-		console.debug( ggData );
 		var data = google.visualization.arrayToDataTable(ggData);
 		
 		var options = {
@@ -330,8 +325,6 @@ function createLineChart(option){
 	var url = '<spring:eval expression="@urlProp['statsProductLineChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("createLineChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
