@@ -52,6 +52,12 @@ $(function(){
 			bootbox.alert("올바르지 않은 값이 있습니다.");
 			return false;
 		}	
+		
+		if(specChar.test($("#id").val())){
+			alert("not alpah");
+			$this.focus();
+			return false;
+		}
 	});
 	
 	$("#btnJoin").click(function(event) {
@@ -76,13 +82,7 @@ $(function(){
 	//아이디 검사
 	$("#id").focusout(function(){
 		var $this = $(this);
-		var $idValue = $this.val();
 		
-		if(specChar.test($idValue)){
-			alert("not alpah");
-			$this.focus();
-			return false;
-		}
 		$.ajax({
 			url : "<spring:eval expression="@urlProp['userAjaxGetUser']"/>",
 			type : "GET",

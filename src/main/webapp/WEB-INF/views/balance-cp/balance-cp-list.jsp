@@ -56,7 +56,6 @@
 		<div class="span3">
 			<span>출력순</span>
 			<select id="sortingTypeList" name="sortingType" class="mt10 span6">
-				<option>선택</option>
 				<option value="1">정산월</option>
 				<option value="2">매출순</option>
 			</select>
