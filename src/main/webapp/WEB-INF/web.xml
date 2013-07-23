@@ -49,6 +49,11 @@
         <url-pattern>*.ajax</url-pattern>
     </servlet-mapping>
     
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>*.excel</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>120</session-timeout> 
     </session-config>

@@ -20,7 +20,7 @@
     </logger>
     
     <logger name="java.sql">
-    	<level value="INFO" />
+    	<level value="DEBUG" />
     </logger>
     
     <!-- 
