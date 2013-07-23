@@ -64,14 +64,13 @@ $(function(){
 		}
 	}
 	
-	{ //테스트용 아이디,비번
-		$( '.form-signin input')
-			.eq(0).val( "bigstarglobal" )
-			.end()
-			.eq(1).val( "0412" );
-		/*
-		*/
-	}
+	
+	$('body').bind('keyup', function(e) {
+		if(e.keyCode==13){
+			$("#loginForm").submit();
+		}
+	});
+	
 	
 	//유효성 체크
 	$("input").not("[type=submit]").jqBootstrapValidation();
@@ -96,7 +95,7 @@ $(function(){
 				<img class="logo" src="<spring:eval expression="@urlProp['logo']"/>" />
 			</h2>
 			<div class="control-group">
-				<input type="text" class="input-block-level" placeholder="Username" name="id" required/>
+				<input type="text" class="input-block-level" placeholder="Username" name="id" required />
 			</div>
 			<div class="control-group">
 				<input type="password" class="input-block-level" placeholder="Password" name="pwd" required/> 

@@ -7,7 +7,7 @@
     	<!-- 패턴 레이아웃 설정.. -->
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%p %c{1} %L] - %m%n"/>
+            <param name="ConversionPattern" value="[%d] - %m%n"/>
         </layout>
     </appender>
    

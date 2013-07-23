@@ -74,7 +74,7 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 		long startTime = (Long) request.getAttribute("startTime");
 		long endTime = System.currentTimeMillis();
 		long executeTime = endTime - startTime;
-		logger.debug(" executeTime : " + executeTime + "ms");
+		logger.info("[RES]_["+request.getServletPath()+"]_EXECUTETIME_[ " + executeTime + "ms ]");
 	}
 
 	private void printRequestLog(HttpServletRequest request) {

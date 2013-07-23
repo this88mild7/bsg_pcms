@@ -22,13 +22,6 @@ public class StatisticsService {
 	StatisticsDao statDao;
 	
 	public List<StatisticsDTO> saleCompanys(StatisticsDTO requestParam) {
-		if(requestParam == null){
-			requestParam = new StatisticsDTO();
-		}
-		
-		if(StringUtils.isEmpty(requestParam.getSortingType())){
-			requestParam.setSortingType("2");
-		}
 		requestParam.setStartRownum((requestParam.getPageNum() - 1) * requestParam.getPerPage());
 		
 		List<StatisticsDTO> saleCompanys = statDao.saleCompanys(requestParam);
@@ -105,13 +98,6 @@ public class StatisticsService {
 	}
 	
 	public List<StatisticsDTO> products(StatisticsDTO param) {
-		if(param == null){
-			param = new StatisticsDTO();
-		}
-		
-		if(StringUtils.isBlank(param.getSortingType())){
-			param.setSortingType("2");
-		}
 		
 		List<StatisticsDTO> products = statDao.products(param);
 		

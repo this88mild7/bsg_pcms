@@ -20,6 +20,7 @@ import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
 import com.bsg.pcms.sale.company.svc.CompanyService;
 import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.BigstarParamChecker;
 import com.bsg.pcms.utility.PageUtil;
 
 @Controller
@@ -40,8 +41,15 @@ public class BalanceComController {
 	@Autowired
 	private PageUtil pageUtil;
 	
+	@Autowired
+	private BigstarParamChecker paramChecker;
+	
 	@RequestMapping(value = "list.do")
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
+		
+		if(paramChecker.invalidSearchDate(balanceDTOEx.getSearchDate())){
+			balanceDTOEx.setSearchDate(null);
+		}
 		
 		List<BalanceDTOEx> balanceList = balanceService.saleList(balanceDTOEx);
 		
@@ -94,6 +102,15 @@ public class BalanceComController {
 		
 		return mav;
 		
+	}
+	
+	private boolean invailedParam(BalanceDTOEx balanceDTOEx) {
+		String searchDate  = balanceDTOEx.getSearchDate();
+		if(searchDate != null && searchDate.equals("0000-00")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	
