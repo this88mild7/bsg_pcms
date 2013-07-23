@@ -80,6 +80,7 @@
 		
 		<div class="clearfix">
 			<p class="pull-right">
+				<button id="excel-down" class="btn">Excel 다운로드</button>
 				<button id="btn-content-selected-delete" class="btn">선택삭제</button>
 				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['contentCreate']"/>">콘텐츠 등록</button>
 			</p>
@@ -135,6 +136,11 @@ $("#btn-content-search-form").click(function(){
 	$("#contentSearchForm").submit();
 });
 	
+//엑셀 다운로드
+$("#excel-down").click(function(){
+	console.log("Hello world");
+});
+
 
 //컨텐츠 삭제
 $("#btn-content-selected-delete").click(function(){

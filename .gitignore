@@ -7,7 +7,7 @@
 
 *.DS_Store
 bin
-target
+target/
 .classpath
 .project
 .settings
