@@ -18,6 +18,11 @@
 	color: white;
 	font-size: 16px;
 	padding: 10px;
+}	
+#chart-title-dropbox{
+	margin-top: -5px;
+}
+
 }
 </style>
 <div class="page-name">
@@ -150,7 +155,7 @@
 			<div class="span8">
 				<div class="chart-title">
 					기간별 판매그래프
-					<select class="select-mini span3 pull-right">
+					<select id="chart-title-dropbox" class="select-mini span3 pull-right">
 						<option>2013년</option>
 					</select>
 				</div>
