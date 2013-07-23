@@ -16,6 +16,7 @@ import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.stats.dto.StatisticsDTO;
 import com.bsg.pcms.stats.svc.StatisticsService;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.BigstarParamChecker;
 import com.bsg.pcms.utility.PageUtil;
 
 @Controller
@@ -33,6 +34,9 @@ public class StatisticsController {
 	@Autowired
 	PageUtil pageUtil;
 	
+	@Autowired
+	private BigstarParamChecker paramChecker;
+	
 	/** 판매처 통계 대쉬보드
 	 * tableList setting properties: 
 	 * 	company_name, 
@@ -46,6 +50,12 @@ public class StatisticsController {
 	 */
 	@RequestMapping( value = "sale-company/dashboard.do", method = RequestMethod.GET )
 	public ModelAndView saleCompanyDashboard(StatisticsDTO requestParam) {
+		
+		
+		if(paramChecker.invalidSearchDate(requestParam.getSearchDate())){
+			requestParam.setSearchDate(null);
+		}
+		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics-sale-company-dashboard");
@@ -61,11 +71,16 @@ public class StatisticsController {
 		return mav;
 	}
 	
+
 	/** 상품 통계 대쉬보드
 	 * @return
 	 */
 	@RequestMapping( value = "product/dashboard.do", method = RequestMethod.GET )
 	public ModelAndView productDashboard(StatisticsDTO requestParam) {
+		
+		if(paramChecker.invalidSearchDate(requestParam.getSearchDate())){
+			requestParam.setSearchDate(null);
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("statistics-product-dashboard");
@@ -82,4 +97,5 @@ public class StatisticsController {
 		
 		return mav;
 	}
+	
 }

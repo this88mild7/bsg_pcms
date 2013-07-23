@@ -16,6 +16,7 @@ import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
 import com.bsg.pcms.dto.PageLinkDTO;
 import com.bsg.pcms.utility.BigstarConstant;
+import com.bsg.pcms.utility.BigstarParamChecker;
 import com.bsg.pcms.utility.PageUtil;
 
 @Controller
@@ -33,8 +34,15 @@ public class BalanceCpController {
 	@Autowired
 	private PageUtil pageUtil;
 	
+	@Autowired
+	private BigstarParamChecker paramChecker;
+	
 	@RequestMapping(value = "list.do")
 	public ModelAndView list(BalanceDTOEx balanceDTOEx) {
+		
+		if(paramChecker.invalidSearchDate(balanceDTOEx.getSearchDate())){
+			balanceDTOEx.setSearchDate(null);
+		}
 		
 		List<BalanceDTOEx> balanceList = balanceService.cpList(balanceDTOEx);
 		

@@ -141,7 +141,7 @@ data-currency="${ content.currency }"
 			<div class="control-group">
 				<label class="control-label" for="file_path">콘텐츠 파일경로</label>
 				<div class="controls">
-					<input type="text" id="file_path" name="file_path" placeholder="콘텐츠 파일경로" value="${ content.file_path }">
+					<input type="text" class="input-xxlarge" id="file_path" name="file_path" placeholder="콘텐츠 파일경로" value="${ content.file_path }">
 				</div>
 			</div>
 		</form>

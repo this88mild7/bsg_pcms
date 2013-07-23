@@ -77,15 +77,17 @@
 			<span>출력순</span>
 			<select id="sortingTypeList" name="sortingType" class="mt10 span6">
 				<option value="1">총매출금액</option>
-					<option value="2">누적판매량</option>
+				<option value="2">누적판매량</option>
 			</select>
 		</div>
 		<div class="span6">
 			기간설정
-			<select class="mt10 span3" id="searchYear">
+			<select class="mt10 span3" id="searchYear">				
+				<option value="0000">선택</option>
 				<option value="2013">2013년</option>
 			</select>
 			<select class="mt10 span3" id="searchMonth">
+				<option value="00">선택</option>
 				<option value="01">1월</option>
 				<option value="02">2월</option>
 				<option value="03">3월</option>
@@ -251,8 +253,6 @@ function drawColumnChart( params ) {
 	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("drawColumnChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
@@ -290,8 +290,6 @@ function drawPieChart(option){
 	var url = '<spring:eval expression="@urlProp['statsProductPieChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("drawPieChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );
@@ -311,7 +309,6 @@ function drawPieChart(option){
 			
 		});
 		
-		console.debug( ggData );
 		var data = google.visualization.arrayToDataTable(ggData);
 		
 		var options = {
@@ -330,8 +327,6 @@ function createLineChart(option){
 	var url = '<spring:eval expression="@urlProp['statsProductLineChart']"/>';
 	
 	$.getJSON(url, param, function(data) {
-		console.debug("createLineChart");
-		console.debug( data );
 		
 		if(data.code != 200) {
 			bootbox.alert( data.msg );

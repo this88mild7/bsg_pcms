@@ -42,6 +42,8 @@ body {
 <script>
 $(function(){
 	
+	var specChar = /[~!@\#$%^&*\()\-=+_']/gi;
+	
 	//유효성 체크
 	$("input").not("[type=submit]").jqBootstrapValidation();
 	
@@ -50,10 +52,25 @@ $(function(){
 			bootbox.alert("올바르지 않은 값이 있습니다.");
 			return false;
 		}	
+		
+		if(specChar.test($("#id").val())){
+			alert("not alpah");
+			$this.focus();
+			return false;
+		}
 	});
 	
 	$("#btnJoin").click(function(event) {
 		event.preventDefault();
+		
+	var $idValue = $("#id").val();
+		
+		if(specChar.test($idValue)){
+			alert("not alpah");
+			$this.focus();
+			return false;
+		}
+		
 		$("#joinForm").submit();
 	});
 	
@@ -62,8 +79,8 @@ $(function(){
 		window.location.href = "join.do";
 	});
 	
-	//아이디 중복검사
-	$("#id").keyup(function(){
+	//아이디 검사
+	$("#id").focusout(function(){
 		var $this = $(this);
 		
 		$.ajax({
@@ -83,6 +100,7 @@ $(function(){
 						.append("<li>이미 존재하는 아이디 입니다.</li>")
 						.css("color", "#b94a48");
 					$("#isValidOk").val(0);
+					$this.focus();
 				} else {
 					$(".id-group").removeClass("error").addClass("success");
 					$("#idCheckResult")
@@ -114,6 +132,11 @@ $(function(){
 			$("#pwdCheckResult").html("");
 			$("#isValidOk").val(1);
 		}
+	});
+	
+	
+	$("#btnCalcel").click(function(){
+		window.location.href="/index.do";
 	});
 	
 });
@@ -177,7 +200,7 @@ $(function(){
 								<button id="btnUpdate" class="btn btn-primary">수정하기</button>
 							</c:when>
 							<c:otherwise>
-								<button id="btnCalcel" class="btn">취소</button>
+								<button type="button" id="btnCalcel" class="btn">취소</button>
 								<button type="button" id="btnJoin" class="btn btn-primary">가입</button>
 							</c:otherwise>
 						</c:choose>

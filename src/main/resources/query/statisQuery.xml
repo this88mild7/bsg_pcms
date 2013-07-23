@@ -22,24 +22,23 @@
 		<if test="searchQuery != null">
 			AND COM.COMPANY_NAME like '%${searchQuery}%'
 		</if>
-		<if test="searchStrDate != null">
+		<if test="searchDate != null">
 		<![CDATA[
-			AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
-		]]>
-		</if>
-		<if test="searchEndDate != null">
-		<![CDATA[
-			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+			AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchDate}'
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchDate}' 
 		]]>
 		</if>
 		GROUP BY BAL.COMPANY_MGMTNO
-		<!-- 등록순 -->
-		<if test="sortingType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO DESC
-		</if>
 		<!-- 매출순 -->
-		<if test="sortingType == 2">
+		<if test="sortingType == null">
 			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
+		</if>
+		<if test="sortingType == 1">
+			ORDER BY SUM(BAL.TOTAL_SALE_PRICE) DESC
+		</if>
+		<!-- 누적판매량순 -->
+		<if test="sortingType == 2">
+			ORDER BY SUM(BAL.TOTAL_SALE_COUNT) DESC
 		</if>
 		LIMIT #{ startRownum }, #{ perPage }
 	</select>
@@ -62,14 +61,10 @@
 			<if test="searchQuery != null">
 				AND COM.COMPANY_NAME like '%${searchQuery}%'
 			</if>
-			<if test="searchStrDate != null">
+			<if test="searchDate != null">
 			<![CDATA[
-				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
-			]]>
-			</if>
-			<if test="searchEndDate != null">
-			<![CDATA[
-				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchDate}'
+				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchDate}' 
 			]]>
 			</if>
 			GROUP BY BAL.COMPANY_MGMTNO
@@ -96,27 +91,27 @@
 		<if test="searchQuery != null">
 			AND CON.NAME like '%${searchQuery}%'
 		</if>
-		<if test="searchStrDate != null">
+		<if test="searchDate != null">
 		<![CDATA[
-			AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
-		]]>
-		</if>
-		<if test="searchEndDate != null">
-		<![CDATA[
-			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+			AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchDate}'
+			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchDate}' 
 		]]>
 		</if>
 		GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
-		<!-- 등록순 -->
-		<if test="sortingType == 1">
-			ORDER BY BAL.BALANCE_MGMTNO DESC
-		</if>
 		<!-- 매출순 -->
-		<if test="sortingType == 2">
+		<if test="sortingType == null">
 			ORDER BY SUM(BALD.SALE_PRICE) DESC
+		</if>
+		<if test="sortingType == 1">
+			ORDER BY SUM(BALD.SALE_PRICE) DESC
+		</if>
+		<!-- 판매량순 -->
+		<if test="sortingType == 2">
+			ORDER BY SUM(BALD.SALE_COUNT) DESC
 		</if>
 		LIMIT #{ startRownum }, #{ perPage }
 	</select>
+	
 	<select id="productsCount" resultType="int" >
    		SELECT /* statisQuery.productsCount */
    			COUNT(*)
@@ -138,14 +133,10 @@
 			<if test="searchQuery != null">
 				AND CON.NAME like '%${searchQuery}%'
 			</if>
-			<if test="searchStrDate != null">
+			<if test="searchDate != null">
 			<![CDATA[
-				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchStrDate}'
-			]]>
-			</if>
-			<if test="searchEndDate != null">
-			<![CDATA[
-				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchEndDate}' 
+				AND DATE_FORMAT(BAL.SALE_STR_DATE, '%Y-%m') >= '${searchDate}'
+				AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') <= '${searchDate}' 
 			]]>
 			</if>
 			GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
@@ -167,7 +158,7 @@
 			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
 			AND COM.COMPANY_TYPE='SC'
 			<if test="searchEndDate !=null">
-			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchDate}'
 			</if>
 			GROUP BY BAL.COMPANY_MGMTNO
 			ORDER BY BAL.TOTAL_SALE_COUNT
@@ -194,7 +185,7 @@
 			AND CON.CONTENTS_CD = BALD.CONTENTS_CD
 			AND COM.COMPANY_TYPE='SC'
 			<if test="searchEndDate !=null">
-			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchDate}'
 			</if>
 			GROUP BY BAL.SALE_TYPE, BALD.CONTENTS_CD
 		) A
@@ -396,7 +387,7 @@
 			AND BALD.CONTENTS_CD = '${contents_cd}'
 			AND DATE_FORMAT(BAL.SALE_END_DATE, '%Y') = ${searchEndDate}
 			AND DATE_FORMAT(BAL.SALE_END_DATE, '%m') = '04'
-			), 0) AS '05'
+			), 0) AS '04'
 		, 
 			IFNULL(
 			(SELECT 
@@ -497,10 +488,10 @@
 			WHERE 1=1
 			AND COM.COMPANY_MGMTNO = BAL.COMPANY_MGMTNO
 			AND COM.COMPANY_TYPE='SC'
-			<if test="searchEndDate !=null">
-			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchEndDate}'
+			<if test="searchDate !=null">
+			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = '${searchDate}'
 			</if>
-			<if test="searchEndDate ==null">
+			<if test="searchDate ==null">
 			AND	DATE_FORMAT(BAL.SALE_END_DATE, '%Y-%m') = DATE_FORMAT(now(), '%Y-%m')
 			</if>
 			GROUP BY BAL.COMPANY_MGMTNO

@@ -14,7 +14,13 @@
 	<link href="/css/datepicker.css" rel="stylesheet">
 	<link href="/css/bigstar.css" rel="stylesheet" media="screen">
 	
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+ <!--[if lt IE 9]>
+     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+ <![endif]-->
+	
 	<script src="http://code.jquery.com/jquery.js"></script>
+	
 	
 </head>
 <body data-nav_seq="${ navSeq }">

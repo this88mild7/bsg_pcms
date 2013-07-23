@@ -63,9 +63,11 @@
 		<div class="span6">
 			기간설정
 			<select class="mt10 span3" id="searchYear">
+				<option value="0000">선택</option>
 				<option value="2013">2013년</option>
 			</select>
 			<select class="mt10 span3" id="searchMonth">
+				<option value="00">선택</option>
 				<option value="01">1월</option>
 				<option value="02">2월</option>
 				<option value="03">3월</option>
