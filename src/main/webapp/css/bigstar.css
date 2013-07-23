@@ -30,8 +30,8 @@ body {
 @media screen and (min-width: 401px) and (max-width: 1024px) {
 }
 @media screen and (min-width: 1025px){
-	/*.navbar>.container { padding: 0 200px; }*/
-	body { padding: 0 200px; }
+	#header { padding: 0 200px; }
+	.container-fluid { padding: 0 200px; }
 }
 
 
