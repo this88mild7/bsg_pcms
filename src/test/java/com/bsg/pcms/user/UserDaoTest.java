@@ -49,17 +49,6 @@ public class UserDaoTest {
 	}
 
 	@Test
-	public void testHasUser() {
-		
-		UserDTO userDto = new UserDTO();
-		userDto.setId("test");
-		userDto.setPwd("123");
-		
-		int resultCount = userDao.hasUser(userDto);
-		assertThat(resultCount, is(1));
-	}
-	
-	@Test
 	public void testGetUser(){
 		UserDTO userDto = new UserDTO();
 		userDto.setId("test1");

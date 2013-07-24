@@ -116,6 +116,21 @@
 		</c:forEach>
 		</table>
 		
+		<div class="clearfix">
+			<div class="pull-right">
+				<div class="btn-group">
+				    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Excel 다운로드
+				    <span class="caret"></span>
+				    </a>
+				    <ul class="dropdown-menu">
+				    	<li><a href="<spring:eval expression="@urlProp['balanceCpListExcel']"/>?pageNum=${pageLink.pageNum}&date=${search.searchDate}&query=${search.searchQuery}&sort=${search.sortingType}">현재 목록</a></li>
+				    	<li><a href="<spring:eval expression="@urlProp['balanceCpListExcel']"/>?pageNum=0">전체 목록</a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		
 		<c:if test="${ not empty pageLink }">
 		<div class="pagination pagination-centered">
 			<ul>

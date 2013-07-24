@@ -79,11 +79,20 @@
 		</table>
 		
 		<div class="clearfix">
-			<p class="pull-right">
-				<button id="excel-down" class="btn btn-url" data-url="<spring:eval expression="@urlProp['contentListExcel']"/>">Excel 다운로드</button>
+			<div class="pull-right">
+				<div class="btn-group">
+				    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Excel 다운로드
+				    <span class="caret"></span>
+				    </a>
+				    <ul class="dropdown-menu">
+				    	<li><a href="<spring:eval expression="@urlProp['contentListExcel']"/>?pageNum=${pageLink.pageNum}&type=${search.type}&query=${search.query}">현재 목록</a></li>
+				    	<li><a href="<spring:eval expression="@urlProp['contentListExcel']"/>?pageNum=0">전체 목록</a></li>
+				    </ul>
+				</div>
 				<button id="btn-content-selected-delete" class="btn">선택삭제</button>
 				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['contentCreate']"/>">콘텐츠 등록</button>
-			</p>
+			</div>
 		</div>
 		
 		<c:if test="${ not empty pageLink }">
@@ -136,12 +145,6 @@ $("#btn-content-search-form").click(function(){
 	$("#contentSearchForm").submit();
 });
 	
-//엑셀 다운로드
-$("#excel-down").click(function(){
-	console.log("Hello world");
-});
-
-
 //컨텐츠 삭제
 $("#btn-content-selected-delete").click(function(){
 	// 체크된 컨텐츠 리스트

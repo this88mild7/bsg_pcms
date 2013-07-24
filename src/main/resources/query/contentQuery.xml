@@ -186,7 +186,9 @@
             AND CONTENTS.contents_type IS NOT NULL
         </where>
         ORDER BY reg_dt DESC
-        LIMIT #{ startRownum }, #{ perPage }
+        <if test="pageNum gt 0">
+            LIMIT #{ startRownum }, #{ perPage }
+        </if>
     </select>
     
     <!-- UPDATE -->

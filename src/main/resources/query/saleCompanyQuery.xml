@@ -246,7 +246,9 @@
 		
 		GROUP BY CT.CONTRACT_MGMTNO
 		ORDER BY CT.REG_DT DESC
-		LIMIT #{ startRownum }, #{ perPage }
+        <if test="pageNum gt 0">
+            LIMIT #{ startRownum }, #{ perPage }
+        </if>
    </select>
    
    <select id="contractContensList" 

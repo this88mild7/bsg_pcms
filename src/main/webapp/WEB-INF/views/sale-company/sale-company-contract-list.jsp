@@ -93,10 +93,20 @@
 	
 	
 	<div class="clearfix">
-		<p class="pull-right">
+		<div class="pull-right">
+			<div class="btn-group">
+				    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Excel 다운로드
+				    <span class="caret"></span>
+				    </a>
+				    <ul class="dropdown-menu">
+				    	<li><a href="<spring:eval expression="@urlProp['saleCompanyContractListExcel']"/>?pageNum=${pageLink.pageNum}&type=${search.type}&query=${search.query}">현재 목록</a></li>
+				    	<li><a href="<spring:eval expression="@urlProp['saleCompanyContractListExcel']"/>?pageNum=0">전체 목록</a></li>
+				    </ul>
+				</div>
 			<button id="btn-selected-delete" class="btn">선택삭제</button>
 			<button id="btn-registe" class="btn btn-primary" data-url="<spring:eval expression="@urlProp['saleCompanyContractCreate']"/>">판매 계약 등록</button>
-		</p>
+		</div>
 	</div>
 	
 	<c:if test="${ not empty pageLink }">

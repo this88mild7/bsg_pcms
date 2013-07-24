@@ -75,7 +75,7 @@ div[class="tooltip-inner"] {
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for=""></label>
+				<label class="control-label" for="">콘텐츠 형식</label>
 				<div class="controls">
 					<div class="clearfix row-fluid">
 						<div class="text-center span2">책그림</div>
@@ -84,7 +84,7 @@ div[class="tooltip-inner"] {
 						<div class="text-center span2">3D</div>
 						<div class="text-center span2">GAME</div>
 					</div>
-					<div class="clearfix row-fluid">
+					<div class="clearfix row-fluid contentsTypeGroup">
 						<div class="span2">
 							<select name="isPicturebook" class="span12" size="1">
 								<option value="N">X</option>
@@ -358,8 +358,37 @@ $(function(){
 		$('#sale_price').autoNumeric('init',{aPad: false });
 		
 		$("#contractForm").submit(function(){
+
+			var hasContentType = false;
+			$("div.contentsTypeGroup").find(":selected").each(function(){
+				var $this = $(this); 
+				console.info( $this.val() );
+				if( $this.val() == "Y" ) {
+					hasContentType = true;
+				}
+			});
+
+			if( !hasContentType ) {
+				bootbox.alert("콘텐츠 형식이 반드시 1개는 선택되어야 합니다.");
+				return false;
+			}
 			
-			
+			if( isBlank($("#series_mgmtno").val()) || isBlank($("#cate_id").val()) ) {
+				bootbox.alert("콘텐츠를 선택해 주세요.");
+				return false;
+			}
+			if( isBlank($("#sale_profit_rate").val()) ) {
+				bootbox.alert("수익쉐어를 입력해 주세요.");
+				return false;
+			}
+			if( isBlank($("#sale_price").val()) ) {
+				bootbox.alert("판매단가를 입력해 주세요.");
+				return false;
+			}
+			if( isBlank($("input[name='str_date']").val()) || isBlank($("input[name='end_date']").val()) ) {
+				bootbox.alert("계약기간을 입력해 주세요.");
+				return false;
+			}
 			//금액 콤마 제거	(숫자만 가져옴)		
 			$('#sale_price').val($('#sale_price').autoNumeric('get'));
 			
@@ -874,4 +903,8 @@ $(function(){
 	//$("textarea").jqBootstrapValidation();
 	
 });
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}
 </script>

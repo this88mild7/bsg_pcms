@@ -2,5 +2,9 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
     "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-	<bean id="excelView" class="com.bsg.pcms.excel.view.ExcelView" />
+	<bean id="contentExcelView" class="com.bsg.pcms.excel.view.ContentExcelView" />
+	<bean id="contractExcelView" class="com.bsg.pcms.excel.view.ContractExcelView" />
+	<bean id="saleContractExcelView" class="com.bsg.pcms.excel.view.SaleContractExcelView" />
+	<bean id="balanceCompanyExcelView" class="com.bsg.pcms.excel.view.BalanceCompanyExcelView" />
+	<bean id="balanceSaleExcelView" class="com.bsg.pcms.excel.view.BalanceSaleExcelView" />
 </beans>

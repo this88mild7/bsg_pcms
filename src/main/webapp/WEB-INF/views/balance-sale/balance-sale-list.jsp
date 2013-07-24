@@ -126,9 +126,19 @@
 		</c:forEach>
 		</table>
 		<div class="clearfix">
-			<p class="pull-right">
-				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['balanceSaleInfo']"/>">매출입력</button>
-			</p>
+			<div class="pull-right">
+				<div class="btn-group">
+				    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Excel 다운로드
+				    <span class="caret"></span>
+				    </a>
+				    <ul class="dropdown-menu">
+				    	<li><a href="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>?pageNum=${pageLink.pageNum}&date=${search.searchDate}&query=${search.searchQuery}&sort=${search.sortingType}">현재 목록</a></li>
+				    	<li><a href="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>?pageNum=0">전체 목록</a></li>
+				    </ul>
+				</div>
+				<button class="btn btn-primary btn-url" data-url="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>">매출입력</button>
+			</div>
 		</div>
 		
 		<c:if test="${ not empty pageLink }">

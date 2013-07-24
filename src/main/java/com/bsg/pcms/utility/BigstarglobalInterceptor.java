@@ -19,9 +19,12 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger logger = LoggerFactory.getLogger(BigstarglobalInterceptor.class);
+	
+	//로그인 세션 검사
+	//false = ON || true = OFF
+	private boolean loginCheckOff = true;
 
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		
 		try {
 			long startTime = System.currentTimeMillis();
@@ -29,8 +32,12 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 
 			printRequestLog(request);
 			
+			if( loginCheckOff ) {
+				return true;
+			}
+			
 			if(	
-				//세션 체크 예외 리스트
+				//세션 체크 예외 URL 리스트
 				! request.getServletPath().contains( "/index.do" ) &&
 				! request.getServletPath().contains( "/login.do" ) &&
 				! request.getServletPath().contains( "/join.do" ) &&

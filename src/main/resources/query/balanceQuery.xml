@@ -120,7 +120,9 @@
 		<if test="sortingType == 4">
 			ORDER BY TOTAL_SALE_COUNT DESC
 		</if>
-		LIMIT #{ startRownum }, #{ perPage }
+		<if test="pageNum gt 0">
+    		LIMIT #{ startRownum }, #{ perPage }	
+		</if>
 	</select>
 	
 	
@@ -208,7 +210,9 @@
 		<if test="sortingType == 4">
 			ORDER BY BAL.TOTAL_SALE_COUNT DESC
 		</if>
-		LIMIT #{ startRownum }, #{ perPage }	
+		<if test="pageNum gt 0">
+    		LIMIT #{ startRownum }, #{ perPage }	
+		</if>
 	</select>
 	
 	<select id="salesCount" parameterType="com.bsg.pcms.balance.dto.BalanceDTOEx"  resultType="int">
