@@ -22,7 +22,7 @@ public class BigstarglobalInterceptor extends HandlerInterceptorAdapter {
 	
 	//로그인 세션 검사
 	//false = ON || true = OFF
-	private boolean loginCheckOff = true;
+	private boolean loginCheckOff = false;
 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		
