@@ -1,5 +1,6 @@
 package com.bsg.pcms.excel.view;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -82,12 +83,13 @@ public class BalanceCompanyExcelView extends AbstractJExcelView {
 			List<BalanceDTOEx> balanceList = (List<BalanceDTOEx>)model.get("balanceList");
 			logger.info("size {}", balanceList.size());
 			int row = 1;
+			DecimalFormat df = new DecimalFormat("#");
 			for(BalanceDTOEx bde : balanceList) {
 				sheet.addCell(new Label(BALANCE_MONTH, row, bde.getSale_str_date() + "", dataFormat));
 				sheet.addCell(new Label(SALE_COMPANY, row, bde.getCompany_name(), dataFormat)); 
 				sheet.addCell(new Label(CONTRACT_CONDITION, row, bde.getContract_type(), dataFormat)); 
-				sheet.addCell(new Label(TOTAL_PRICE, row, bde.getTotalMoney(), dataFormat)); 
-				sheet.addCell(new Label(FEE, row, bde.getCpMoney(), dataFormat)); 
+				sheet.addCell(new Label(TOTAL_PRICE, row, df.format(bde.getTotal_sale_price()), dataFormat)); 
+				sheet.addCell(new Label(FEE, row,  df.format(bde.getCp_commission()), dataFormat)); 
 				sheet.addCell(new Label(REG_DT, row, bde.getReg_dt().toString(), dataFormat)); 
 				row++;
 			}

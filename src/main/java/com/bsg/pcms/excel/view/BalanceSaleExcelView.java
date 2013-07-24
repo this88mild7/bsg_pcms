@@ -1,5 +1,6 @@
 package com.bsg.pcms.excel.view;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,15 +89,17 @@ public class BalanceSaleExcelView extends AbstractJExcelView {
 			List<BalanceDTOEx> balanceList = (List<BalanceDTOEx>)model.get("balanceList");
 			logger.info("size {}", balanceList.size());
 			int row = 1;
+			
+			DecimalFormat df = new DecimalFormat("#");
 			for(BalanceDTOEx bde : balanceList) {
 				sheet.addCell(new Label(BALANCE_MONTH, row, bde.getSale_str_date() + "", dataFormat));
 				sheet.addCell(new Label(SALE_COMPANY, row, bde.getCompany_name(), dataFormat)); 
 				sheet.addCell(new Label(PRODUCT, row, bde.getContents_name(), dataFormat)); 
-				sheet.addCell(new Label(SALE_COUNT, row, bde.getTotalMoney() + "", dataFormat)); 
-				sheet.addCell(new Label(TOTAL_PRICE, row, bde.getSaleMoney(), dataFormat)); 
-				sheet.addCell(new Label(SALE_COMPANY_FEE, row, bde.getSaleMoney(), dataFormat)); 
-				sheet.addCell(new Label(CP_FEE, row, bde.getCpMoney(), dataFormat)); 
-				sheet.addCell(new Label(GROSS, row, bde.getOwnerMoney(), dataFormat)); 
+				sheet.addCell(new Label(SALE_COUNT, row, bde.getTotal_sale_count() + "", dataFormat)); 
+				sheet.addCell(new Label(TOTAL_PRICE, row, df.format(bde.getTotal_sale_price()), dataFormat)); 
+				sheet.addCell(new Label(SALE_COMPANY_FEE, row, df.format(bde.getSale_commission()), dataFormat)); 
+				sheet.addCell(new Label(CP_FEE, row, df.format(bde.getCp_commission()), dataFormat)); 
+				sheet.addCell(new Label(GROSS, row, df.format(bde.getOwner_profit()), dataFormat)); 
 				row++;
 			}
 

@@ -133,7 +133,7 @@
 				    <span class="caret"></span>
 				    </a>
 				    <ul class="dropdown-menu">
-				    	<li><a href="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>?pageNum=${pageLink.pageNum}&date=${search.searchDate}&query=${search.searchQuery}&sort=${search.sortingType}">현재 목록</a></li>
+				    	<li><a href="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>?pageNum=${pageLink.pageNum}&searchDate=${search.searchDate}&searchQuery=${search.searchQuery}&sortingType=${search.sortingType}">현재 목록</a></li>
 				    	<li><a href="<spring:eval expression="@urlProp['balanceSaleListExcel']"/>?pageNum=0">전체 목록</a></li>
 				    </ul>
 				</div>
