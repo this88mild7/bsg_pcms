@@ -87,10 +87,11 @@ public class BalanceExcelController {
 	 * @param balanceDTOEx
 	 */
 	private void checkEmpty(BalanceDTOEx balanceDTOEx) {
-		if( balanceDTOEx.getSearchDate().length() == 0 ) {
+		
+		if( balanceDTOEx.getSearchDate() != null && balanceDTOEx.getSearchDate().length() == 0 ) {
 			balanceDTOEx.setSearchDate(null);
 		}
-		if( balanceDTOEx.getSearchQuery().length() == 0 ) {
+		if( balanceDTOEx.getSearchQuery() != null && balanceDTOEx.getSearchQuery().length() == 0 ) {
 			balanceDTOEx.setSearchQuery(null);
 		}
 	}
