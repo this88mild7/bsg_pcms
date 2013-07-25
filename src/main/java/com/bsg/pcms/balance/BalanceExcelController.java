@@ -3,25 +3,17 @@ package com.bsg.pcms.balance;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bsg.pcms.balance.dto.BalanceDTOEx;
 import com.bsg.pcms.balance.svc.BalanceService;
-import com.bsg.pcms.dto.BalanceDTO;
-import com.bsg.pcms.dto.PageLinkDTO;
-import com.bsg.pcms.sale.company.dto.CompanyDTOEx;
-import com.bsg.pcms.sale.company.svc.CompanyService;
-import com.bsg.pcms.utility.BankListMaker;
 import com.bsg.pcms.utility.BigstarConstant;
 import com.bsg.pcms.utility.BigstarParamChecker;
-import com.bsg.pcms.utility.PageUtil;
 
 @Controller
 @RequestMapping( value = "balance" )
@@ -36,12 +28,6 @@ public class BalanceExcelController {
 	private BalanceService balanceService;
 	
 	@Autowired
-	private CompanyService _saleCompanyService; 
-	
-	@Autowired
-	private PageUtil pageUtil;
-	
-	@Autowired
 	private BigstarParamChecker paramChecker;
 	
 	@RequestMapping(value = "sale-company/list.excel")
@@ -50,6 +36,8 @@ public class BalanceExcelController {
 		if(paramChecker.invalidSearchDate(balanceDTOEx.getSearchDate())){
 			balanceDTOEx.setSearchDate(null);
 		}
+		
+		this.checkEmpty(balanceDTOEx);
 		
 		List<BalanceDTOEx> balanceList = balanceService.saleList(balanceDTOEx);
 		
@@ -77,6 +65,8 @@ public class BalanceExcelController {
 			balanceDTOEx.setSearchDate(null);
 		}
 		
+		this.checkEmpty(balanceDTOEx);
+		
 		List<BalanceDTOEx> balanceList = balanceService.cpList(balanceDTOEx);
 		
 		DecimalFormat df = new DecimalFormat("#");
@@ -92,5 +82,16 @@ public class BalanceExcelController {
 		return mav;
 		
 	}
-	
+
+	/** 공백 값이 들어오면 NULL값으로 변경
+	 * @param balanceDTOEx
+	 */
+	private void checkEmpty(BalanceDTOEx balanceDTOEx) {
+		if( balanceDTOEx.getSearchDate().length() == 0 ) {
+			balanceDTOEx.setSearchDate(null);
+		}
+		if( balanceDTOEx.getSearchQuery().length() == 0 ) {
+			balanceDTOEx.setSearchQuery(null);
+		}
+	}
 }
